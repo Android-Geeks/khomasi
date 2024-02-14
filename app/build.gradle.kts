@@ -9,18 +9,18 @@ plugins {
 }
 
 android {
-    namespace = "com.company.app"
+    namespace = "com.company.khomasi"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.company.app"
+        applicationId = "com.company.khomasi"
         minSdk = 21
         //noinspection EditedTargetSdkVersion
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "com.company.app.HiltTestRunner"
+        testInstrumentationRunner = "com.company.khomasi.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -73,26 +73,26 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
 
     // Compose dependencies
-    implementation("androidx.activity:activity-compose:1.8.1")
+    implementation("androidx.activity:activity-compose:1.8.2")
     implementation(platform("androidx.compose:compose-bom:2023.09.01"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
 
-    val composeVersion = "1.5.4"
+    val composeVersion = "1.6.1"
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${composeVersion}")
     debugImplementation("androidx.compose.ui:ui-tooling:${composeVersion}")
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0-rc01")
-    implementation("androidx.navigation:navigation-compose:2.7.5")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
+    implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     // Coroutines
@@ -105,14 +105,14 @@ dependencies {
     kapt("androidx.hilt:hilt-compiler:1.1.0")
 
     //room
-    val room = "2.6.0"
+    val room = "2.6.1"
     implementation("androidx.room:room-runtime:${room}")
     implementation("androidx.room:room-ktx:${room}")
     ksp("androidx.room:room-compiler:${room}")
 
     //retrofit
     val retrofit = "2.9.0"
-    val okHttp = "4.11.0"
+    val okHttp = "4.12.0"
     implementation("com.squareup.retrofit2:retrofit:${retrofit}")
     implementation("com.squareup.retrofit2:converter-gson:${retrofit}")
     implementation("com.squareup.okhttp3:okhttp:${okHttp}")
@@ -124,7 +124,7 @@ dependencies {
     testImplementation("androidx.arch.core:core-testing:2.2.0")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation("com.google.truth:truth:1.1.3")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.0-beta02")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.1")
     testImplementation("com.squareup.okhttp3:mockwebserver:${okHttp}")
     testImplementation("com.squareup.okhttp3:okhttp:${okHttp}")
 

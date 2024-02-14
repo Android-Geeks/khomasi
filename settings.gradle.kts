@@ -13,5 +13,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AppStarter"
+rootProject.name = "Khomasi"
 include(":app")
