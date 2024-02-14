@@ -41,8 +41,6 @@ val lightErrorColor: Color = Color(0xFFFF3B30)
 val lightWarningColor: Color = Color(0xFFFF9500)
 val lightFixedColor3: Color = Color(0xFF0E0E0E)
 val lightSuccess: Color = Color(0xFF41BE88)
-val lightSuccess1: Color = Color(0xFF41BE89)
-
 
 
 
