@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="App.Starting.Theme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FF0E0E0E</item>
+        <item name="windowSplashScreenAnimatedIcon">@mipmap/dark_splash</item>
+        <item name="postSplashScreenTheme">@style/Theme.Khomasi</item>
+    </style>
+</resources>
