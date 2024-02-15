@@ -118,6 +118,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:${okHttp}")
     implementation("com.squareup.okhttp3:logging-interceptor:${okHttp}")
 
+    //Navigation
+    implementation("androidx.navigation:navigation-compose:2.7.7")
+
     // Local unit tests
     testImplementation("androidx.test:core:1.5.0")
     testImplementation("junit:junit:4.13.2")
