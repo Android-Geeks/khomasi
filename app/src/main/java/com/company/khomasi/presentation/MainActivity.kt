@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.company.khomasi.navigation.AppNavigation
-import com.company.khomasi.presentation.navigation.MyApp
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
