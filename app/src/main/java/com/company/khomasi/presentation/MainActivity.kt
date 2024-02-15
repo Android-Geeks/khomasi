@@ -3,7 +3,9 @@ package com.company.khomasi.presentation
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import com.company.khomasi.presentation.navigation.MyApp
+import androidx.compose.material3.Text
+import androidx.compose.ui.res.stringResource
+import com.company.khomasi.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -11,7 +13,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApp()
+            Text(
+                text = stringResource(id = R.string.app_name)
+            )
         }
     }
 }
