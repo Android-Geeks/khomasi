@@ -3,29 +3,29 @@ package com.company.khomasi.navigation
 import com.company.khomasi.R
 
 data class NavItem(
-    val label: String,
+    val label: Int,
     val icon: Int,
     val route: String
 )
 
 val listOfNavItems = listOf(
     NavItem(
-        label = "Home",
+        label = R.string.home,
         icon = R.drawable.housesimple,
         route = Screens.Home.name
     ),
     NavItem(
-        label = "Reservations",
+        label = R.string.my_bookings,
         icon = R.drawable.ticket,
-        route = Screens.MyReservations.name)
+        route = Screens.MyBookings.name)
     ,
     NavItem(
-        label = "Playgrounds",
+        label = R.string.fields,
         icon = R.drawable.soccerball,
         route = Screens.Playgrounds.name
     ),
     NavItem(
-        label = "Favorite",
+        label = R.string.favorites,
         icon = R.drawable.heart,
         route = Screens.Favorite.name
     )

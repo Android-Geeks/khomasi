@@ -18,11 +18,10 @@ fun PlaygroundsScreen(){
         contentAlignment = Alignment.Center
     ){
         Text(
-            text = "Playgrounds"
+            text = "Playgrounds Screen"
         )
     }
 }
-
 
 
 @Preview(showSystemUi = true)

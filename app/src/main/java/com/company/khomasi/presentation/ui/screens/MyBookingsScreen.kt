@@ -10,14 +10,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.company.khomasi.theme.KhomasiTheme
 
 @Composable
-fun MyReservationsScreen(){
+fun MyBookingsScreen(){
 
     Box(
         modifier = Modifier.fillMaxSize(),
         contentAlignment = Alignment.Center
     ){
         Text(
-            text = "My Reservations"
+            text = "My Bookings Screen"
         )
     }
 }
@@ -28,6 +28,6 @@ fun MyReservationsScreen(){
 @Composable
 fun MyReservationsPreview(){
     KhomasiTheme {
-        MyReservationsScreen()
+        MyBookingsScreen()
     }
 }

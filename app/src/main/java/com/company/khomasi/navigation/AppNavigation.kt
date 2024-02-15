@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
@@ -19,7 +20,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.presentation.ui.screens.FavoriteScreen
 import com.company.khomasi.presentation.ui.screens.HomeScreen
-import com.company.khomasi.presentation.ui.screens.MyReservationsScreen
+import com.company.khomasi.presentation.ui.screens.MyBookingsScreen
 import com.company.khomasi.presentation.ui.screens.PlaygroundsScreen
 import com.company.khomasi.theme.KhomasiTheme
 
@@ -49,11 +50,11 @@ fun AppNavigation(){
                     icon = {
                         Icon(
                             painter = painterResource(id = navItem.icon),
-                            contentDescription = navItem.label
+                            contentDescription = null
                         )
                     },
                     label = {
-                        Text(text = navItem.label)
+                        Text(text = stringResource(id = navItem.label))
                     }
                 )
                 }
@@ -74,8 +75,8 @@ fun AppNavigation(){
             composable(route = Screens.Favorite.name){
                 FavoriteScreen()
             }
-            composable(route = Screens.MyReservations.name){
-                MyReservationsScreen()
+            composable(route = Screens.MyBookings.name){
+                MyBookingsScreen()
             }
             composable(route = Screens.Playgrounds.name){
                 PlaygroundsScreen()
