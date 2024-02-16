@@ -27,12 +27,11 @@ val Typography = Typography(
         fontWeight = FontWeight.SemiBold,
         fontSize = 18.sp
     ),
-
     titleLarge = TextStyle(
-    fontFamily = Cairo,
-    fontWeight = FontWeight.Bold,
-    fontSize = 16.sp,
-),
+        fontFamily = Cairo,
+        fontWeight = FontWeight.Bold,
+        fontSize = 16.sp,
+    ),
     titleMedium = TextStyle(
         fontFamily = Cairo,
         fontWeight = FontWeight.SemiBold,
@@ -49,12 +48,12 @@ val Typography = Typography(
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp,
     ),
-    bodyMedium =  TextStyle(
+    bodyMedium = TextStyle(
         fontFamily = Cairo,
         fontWeight = FontWeight.SemiBold,
         fontSize = 14.sp,
     ),
-    bodySmall =  TextStyle(
+    bodySmall = TextStyle(
         fontFamily = Cairo,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
