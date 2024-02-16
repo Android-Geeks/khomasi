@@ -4,7 +4,7 @@ import androidx.compose.ui.graphics.Color
 
 // Dark color scheme
 val darkBackground = Color(0xFF0E0E0E)
-val darkPrimary = Color(0xFF47E266)
+val darkPrimary = Color(0xFF30D158)
 val darkSecondary = Color(0xFF90DA4D)
 val darkText = Color(0xFFFCFCFC)
 val darkSubText = Color(0xFFDAD6D6)
@@ -24,7 +24,7 @@ val darkSuccess: Color = Color(0xFF41BE88)
 
 // Light color scheme
 val lightBackground = Color(0xFFF5F5F5)
-val lightPrimary = Color(0xFF006E26)
+val lightPrimary = Color(0xFF00B562)
 val lightSecondary = Color(0xFF386B00)
 val lightText = Color(0xFF242424)
 val lightSubText = Color(0xFF5E5D5D)
