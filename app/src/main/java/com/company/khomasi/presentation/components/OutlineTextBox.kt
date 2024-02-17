@@ -4,7 +4,6 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -18,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.compose.runtime.InternalComposeApi
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -50,7 +48,7 @@ fun TextField(
                     contentDescription = null
                 )
             },
-            modifier = Modifier
+            modifier = modifier
                 .width(358.dp)
                 .height(82.dp)
                 .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -82,7 +80,7 @@ fun TextFieldWithoutIcon(
             value = value,
             onValueChange = onValueChange,
             singleLine = true,
-            modifier = Modifier
+            modifier = modifier
                 .width(358.dp)
                 .height(82.dp)
                 .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -115,7 +113,7 @@ fun TextFieldPreview() {
             placeholder = "Enter your email",
             keyBoardType = KeyboardType.Text,
             onDone = { /* handle done action */ },
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
         )
         TextFieldWithoutIcon(
             value = "text",
@@ -124,7 +122,7 @@ fun TextFieldPreview() {
             placeholder = "Enter your password",
             keyBoardType = KeyboardType.Password,
             onDone = { /* handle done action */ },
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier
         )
     }
 }
