@@ -2,6 +2,7 @@ package com.company.khomasi.presentation.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,7 +15,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,15 +27,15 @@ fun MyButton(
     text: String,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
-    icon: Painter? = null,
+    @DrawableRes icon: Int = 0,
 ) {
     Button(
         onClick = onClick,
         modifier = modifier
     ) {
         Row {
-            icon?.let {
-                Icon(painter = it, contentDescription = null)
+            if (icon != 0) {
+                Icon(painter = painterResource(id = icon), contentDescription = null)
                 Spacer(modifier = Modifier.width(4.dp))
             }
             Text(text = text, textAlign = TextAlign.Center)
@@ -47,27 +48,18 @@ fun MyButton(
 fun MyTextButton(
     text: String,
     onClick: () -> Unit,
-    icon: Painter? = null,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     TextButton(
         onClick = onClick,
         modifier = modifier,
     ) {
-        Row {
-            icon?.let {
-                Icon(painter = it, contentDescription = null)
-                Spacer(modifier = Modifier.width(4.dp))
-            }
-            Text(
-                text = text,
-                textAlign = TextAlign.Center,
-                textDecoration = TextDecoration.Underline
-            )
-        }
-
+        Text(
+            text = text,
+            textAlign = TextAlign.Center,
+            textDecoration = TextDecoration.Underline
+        )
     }
-
 }
 
 
@@ -98,7 +90,6 @@ fun ButtonPreview() {
             MyButton(
                 text = "Button",
                 onClick = { },
-                icon = null
             )
             MyOutlinedButton(
                 text = "Button",
@@ -107,7 +98,6 @@ fun ButtonPreview() {
             MyTextButton(
                 text = "Button",
                 onClick = { },
-                icon = null
             )
         }
     }
