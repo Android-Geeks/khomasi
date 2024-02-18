@@ -1,5 +1,7 @@
 package com.company.khomasi.presentation.onboarding.components
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,13 +42,14 @@ fun PagerIndicator(
     }
 }
 
-@Preview
+@Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO)
+@Preview(name = "Dark", uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun PagerIndicatorPreview() {
-    KhomasiTheme(darkTheme = false) {
+    KhomasiTheme {
         PagerIndicator(
             pagesSize = 2,
-            selectedPage = 0
+            selectedPage = 1
         )
     }
 }
