@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.components.booking_cards
 
+import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.Image
@@ -10,73 +11,107 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.theme.lightSubText
 
 @Composable
 fun BookingCard(
-     playgroundName: String
+    @DrawableRes playgroundNameImgId : Int,
+     playgroundName: String,
+     location : String,
+     date : String,
+     time : String,
+     price : String
 ){
-
-    Column(
-        modifier = Modifier
-            .fillMaxHeight()
-            .width(358.dp)
-//            .size(width = 358.dp, height = 432.dp)
-        ,horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Top
-
-    ) {
-        Image(
-            painter = painterResource(id = R.drawable.playground_image),
-            contentDescription = null,
+        Column(
             modifier = Modifier
                 .width(358.dp)
-                .height(120.dp)
-        )
 
-        Box(
-            modifier = Modifier.size(width = 358.dp, height = 312.dp)
+            , horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
         ) {
             Image(
-                painter = painterResource(id = R.drawable.hollow_rec),
+                painter = painterResource(id = playgroundNameImgId),
                 contentDescription = null,
-                contentScale = ContentScale.FillBounds
-            )
-            Box(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .width(358.dp)
+                    .height(120.dp)
+            )
+
+             Box(
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(
                         start = 8.dp, end = 8.dp, top = 16.dp
-                    )){
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.soccerball),
-                        contentDescription = null,
-                        tint = Color.White,
-                        modifier = Modifier.size(24.dp)
                     )
-                    Text(text = playgroundName)
+            ) {
+                Column()
+                {
+                    TextWithIcon(text = playgroundName, iconId = R.drawable.soccerball)
+
+                    TextWithIcon(text = location, iconId = R.drawable.mappin)
+
+                    TextWithIcon(text = date, iconId = R.drawable.calendar)
+
+                    TextWithIcon(text = time, iconId = R.drawable.clock)
+
+                    TextWithIcon(text = price, iconId = R.drawable.currencycircledollar)
+
+
+
 
                 }
             }
         }
-    }
+
 
 
 }
-
-@Preview(showSystemUi = true)
 @Composable
-fun ExpiredBookingCardPreview(){
-    KhomasiTheme() {
+fun TextWithIcon(
+    text : String,
+    @DrawableRes iconId : Int,
+){
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            painter = painterResource(id = iconId),
+            contentDescription = null,
+            tint = lightSubText,
+            modifier = Modifier.size(16.dp)
+        )
 
-        BookingCard("Zsc")
+        Spacer(modifier = Modifier.width(8.dp))
+
+        Text(
+            text = text,
+            style = MaterialTheme.typography.titleSmall,
+            color = lightSubText,
+            textAlign = TextAlign.Start
+        )
+    }
+}
+
+@Preview()
+@Composable
+fun BookingCardPreview(){
+    KhomasiTheme(darkTheme = true) {
+
+        BookingCard(
+            R.drawable.playground_image,
+            "Zsc",
+            "Tanta",
+            "1/10/2024",
+            "7 AM to 8 AM",
+            "50 $ per hour "
+        )
     }
 }
