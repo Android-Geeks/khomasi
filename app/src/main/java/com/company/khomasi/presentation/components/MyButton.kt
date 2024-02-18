@@ -16,15 +16,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
 
 @Composable
 fun MyButton(
-    text: String,
+    text: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
@@ -38,7 +40,7 @@ fun MyButton(
                 Icon(painter = painterResource(id = icon), contentDescription = null)
                 Spacer(modifier = Modifier.width(4.dp))
             }
-            Text(text = text, textAlign = TextAlign.Center)
+            Text(text = stringResource(id = text), textAlign = TextAlign.Center)
         }
     }
 }
@@ -46,18 +48,19 @@ fun MyButton(
 
 @Composable
 fun MyTextButton(
-    text: String,
+    text: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isUnderlined: Boolean = true,
 ) {
     TextButton(
         onClick = onClick,
         modifier = modifier,
     ) {
         Text(
-            text = text,
+            text = stringResource(id = text),
             textAlign = TextAlign.Center,
-            textDecoration = TextDecoration.Underline
+            textDecoration = if (isUnderlined) TextDecoration.Underline else TextDecoration.None
         )
     }
 }
@@ -65,7 +68,7 @@ fun MyTextButton(
 
 @Composable
 fun MyOutlinedButton(
-    text: String,
+    text: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -74,29 +77,29 @@ fun MyOutlinedButton(
         modifier = modifier
     ) {
         Text(
-            text = text,
+            text = stringResource(id = text),
             textAlign = TextAlign.Center,
             color = Color.White,
         )
     }
 }
 
-@Preview(name = "night", uiMode = UI_MODE_NIGHT_YES)
-@Preview(name = "light", uiMode = UI_MODE_NIGHT_NO)
+@Preview(name = "Night", uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO)
 @Composable
 fun ButtonPreview() {
     KhomasiTheme {
         Column {
             MyButton(
-                text = "Button",
+                text = R.string.skip,
                 onClick = { },
             )
             MyOutlinedButton(
-                text = "Button",
+                text = R.string.skip,
                 onClick = { },
             )
             MyTextButton(
-                text = "Button",
+                text = R.string.skip,
                 onClick = { },
             )
         }
