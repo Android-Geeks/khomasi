@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.components.booking_cards
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
@@ -26,27 +25,23 @@ import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.modifier.modifierLocalProvider
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import com.company.khomasi.presentation.components.BookingDetails
 import com.company.khomasi.presentation.components.MyButton
+import com.company.khomasi.presentation.components.Playground
 import com.company.khomasi.theme.lightSubText
 
 @Composable
 fun RecentlyConfirmedBookingCard (
-    @DrawableRes playgroundImageId : Int,
-    playgroundName: String,
-    location : String,
-    date : String,
-    time : String,
-    price : String,
-    verificationCode : String
+    bookingDetails: BookingDetails,
 ) {
     Box(
         Modifier
             .height(482.dp)
-            .width(358.dp)) {
+            .width(358.dp)
+    ) {
 
         Image(
             painter = painterResource(R.drawable.tacket_rect),
@@ -58,12 +53,7 @@ fun RecentlyConfirmedBookingCard (
         Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
 
             BookingCard(
-                playgroundImageId,
-                playgroundName = playgroundName,
-                location = location,
-                date = date,
-                time = time,
-                price = price
+                bookingDetails
             )
 
             Column(
@@ -100,7 +90,7 @@ fun RecentlyConfirmedBookingCard (
                     Spacer(modifier = Modifier.weight(1F))
 
                     Text(
-                        text = verificationCode,
+                        text = bookingDetails.verificationCode,
                         style = MaterialTheme.typography.displayLarge,
                         color = MaterialTheme.colorScheme.secondary,
                         textAlign = TextAlign.End,
@@ -117,7 +107,7 @@ fun RecentlyConfirmedBookingCard (
                     horizontalArrangement = Arrangement.Center
                 ) {
                     MyButton(
-                        text = stringResource(id = R.string.booking_confirmed),
+                        text =  R.string.booking_confirmed,
                         onClick = { /*TODO*/ },
                         Modifier.padding(horizontal = 85.dp))
                 }
@@ -130,16 +120,27 @@ fun RecentlyConfirmedBookingCard (
 @Preview
 @Composable
 fun RecentlyConfirmedBookingCardPreview () {
-    KhomasiTheme(darkTheme = false){
+    KhomasiTheme(){
         RecentlyConfirmedBookingCard(
-            R.drawable.playground_image,
-            "Zsc",
-            "Tanta",
-            "1/10/2024",
-            "7 AM to 8 AM",
-            "50 $ per hour ",
-            "2425"
+            BookingDetails(
+                "1/10/2024",
+                "7 AM to 8 AM",
+                "50 $ per hour ",
+                "2425",
+                Playground(
+                    "Zsc",
+                    "Tanta",
+                    "https://2u.pw/KqnLykO",
+                    3.8f,
+                    "50 $ per hour",
+                    "from 12 PM to 12 AM",
+                    true,
+                    false
+                ),
+                "_"
+            )
         )
+
     }
 
 }

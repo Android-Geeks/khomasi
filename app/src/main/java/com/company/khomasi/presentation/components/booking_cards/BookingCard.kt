@@ -3,42 +3,50 @@ package com.company.khomasi.presentation.components.booking_cards
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.ui.res.painterResource
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.company.khomasi.R
+import com.company.khomasi.presentation.components.BookingDetails
+import com.company.khomasi.presentation.components.Playground
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.lightSubText
 
 @Composable
 fun BookingCard(
-    @DrawableRes playgroundNameImgId : Int,
-     playgroundName: String,
-     location : String,
-     date : String,
-     time : String,
-     price : String
+    bookingDetails: BookingDetails
 ){
         Column(
             modifier = Modifier
                 .width(358.dp)
-
+                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
             , horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-            Image(
-                painter = painterResource(id = playgroundNameImgId),
-                contentDescription = null,
+
+            AsyncImage(
                 modifier = Modifier
                     .width(358.dp)
-                    .height(120.dp)
+                    .height(120.dp),
+                model = ImageRequest.Builder(context = LocalContext.current)
+                    .data(bookingDetails.playground.imageUrl)
+                    .crossfade(true)
+                    .build(),
+                contentDescription = null,
+                contentScale = ContentScale.FillWidth,
+//                error = painterResource(id = R.drawable.ic_broken_image),
+                placeholder = painterResource(id = R.drawable.playground_image)
             )
 
              Box(
@@ -50,18 +58,15 @@ fun BookingCard(
             ) {
                 Column()
                 {
-                    TextWithIcon(text = playgroundName, iconId = R.drawable.soccerball)
+                    TextWithIcon(text = bookingDetails.playground.name, iconId = R.drawable.soccerball)
 
-                    TextWithIcon(text = location, iconId = R.drawable.mappin)
+                    TextWithIcon(text = bookingDetails.playground.address, iconId = R.drawable.mappin)
 
-                    TextWithIcon(text = date, iconId = R.drawable.calendar)
+                    TextWithIcon(text = bookingDetails.date, iconId = R.drawable.calendar)
 
-                    TextWithIcon(text = time, iconId = R.drawable.clock)
+                    TextWithIcon(text = bookingDetails.time, iconId = R.drawable.clock)
 
-                    TextWithIcon(text = price, iconId = R.drawable.currencycircledollar)
-
-
-
+                    TextWithIcon(text = bookingDetails.playground.price, iconId = R.drawable.currencycircledollar)
 
                 }
             }
@@ -100,18 +105,28 @@ fun TextWithIcon(
     }
 }
 
-@Preview()
+@Preview
 @Composable
 fun BookingCardPreview(){
-    KhomasiTheme(darkTheme = true) {
-
+    KhomasiTheme() {
         BookingCard(
-            R.drawable.playground_image,
-            "Zsc",
-            "Tanta",
+            BookingDetails(
             "1/10/2024",
             "7 AM to 8 AM",
-            "50 $ per hour "
+            "50 $ per hour ",
+            "2425",
+            Playground(
+            "Zsc",
+            "Tanta",
+            "https://2u.pw/KqnLykO",
+            3.8f,
+            "50 $ per hour",
+            "from 12 PM to 12 AM",
+            true,
+            false
+            ),
+            "_"
+            )
         )
     }
 }
