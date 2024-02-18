@@ -9,12 +9,12 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -70,17 +70,24 @@ fun MyTextButton(
 fun MyOutlinedButton(
     text: Int,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    @DrawableRes icon: Int = 0,
 ) {
     OutlinedButton(
         onClick = onClick,
         modifier = modifier
     ) {
-        Text(
-            text = stringResource(id = text),
-            textAlign = TextAlign.Center,
-            color = Color.White,
-        )
+        Row {
+            if (icon != 0) {
+                Icon(painter = painterResource(id = icon), contentDescription = null)
+                Spacer(modifier = Modifier.width(4.dp))
+            }
+            Text(
+                text = stringResource(id = text),
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.primary
+            )
+        }
     }
 }
 
