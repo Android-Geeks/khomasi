@@ -8,10 +8,10 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.company.khomasi.R
 
-
 val Cairo = FontFamily(
     Font(R.font.cairo, FontWeight.Normal),
-    Font(R.font.cairo, FontWeight.Bold)
+    Font(R.font.cairo_semibold, FontWeight.SemiBold),
+    Font(R.font.cairo_bold, FontWeight.Bold)
 )
 
 // Set of Material typography styles to start with
