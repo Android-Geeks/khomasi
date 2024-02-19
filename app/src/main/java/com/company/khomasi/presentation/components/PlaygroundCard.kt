@@ -85,11 +85,8 @@ fun PlaygroundCard(
                     Spacer(modifier = modifier.weight(1f))
 
                     IconButton(onClick = { /*TODO*/ }) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.heart),
-                            contentDescription = " ",
-                            tint = Color.White,
-                            modifier = modifier.padding(0.125.dp)
+                        FavoriteIcon(
+
                         )
                     }
 
@@ -149,7 +146,7 @@ fun PlaygroundCard(
             )
             Row(modifier = modifier.fillMaxWidth()) {
             MyButton(
-                text = R.string.my_bookings,
+                text = R.string.field_description,
                 onClick = { /*TODO*/ },
                 modifier = modifier
                     .background(
