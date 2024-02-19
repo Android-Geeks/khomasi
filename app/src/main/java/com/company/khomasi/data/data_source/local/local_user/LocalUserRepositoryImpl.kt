@@ -1,4 +1,4 @@
-package com.company.khomasi.data.data_source.local.manager
+package com.company.khomasi.data.data_source.local.local_user
 
 import android.content.Context
 import androidx.datastore.core.DataStore

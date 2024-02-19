@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/App.Starting.Theme">
         <activity
-            android:name="com.company.khomasi.presentation.MainActivity"
+            android:name="com.company.khomasi.presentation.mainActivity.MainActivity"
             android:exported="true"
             android:theme="@style/App.Starting.Theme">
             <intent-filter>
