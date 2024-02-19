@@ -76,7 +76,7 @@ fun PlaygroundCard(
 
                        {
                            Text(
-                               text = "bookinggg",
+                               text = "booking",
                                textAlign = TextAlign.Start,
                                style = MaterialTheme.typography.bodyLarge
                            )
@@ -149,7 +149,7 @@ fun PlaygroundCard(
             )
             Row(modifier = modifier.fillMaxWidth()) {
             MyButton(
-                text = "view playground",
+                text = R.string.my_bookings,
                 onClick = { /*TODO*/ },
                 modifier = modifier
                     .background(
