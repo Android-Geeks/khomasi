@@ -1,17 +1,24 @@
 package com.company.khomasi.presentation.onboarding.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.company.khomasi.R
-import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.onboarding.Page
 import com.company.khomasi.presentation.onboarding.pages
 import com.company.khomasi.theme.KhomasiTheme
@@ -22,33 +29,41 @@ fun OnBoardingPage(
     modifier: Modifier = Modifier,
     page: Page,
 ) {
-    Column(modifier = modifier) {
-        MyTextButton(
-            text = R.string.skip,
-            onClick = { /*TODO*/ },
-            isUnderlined = false,
-            modifier = Modifier
-        )
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.Center
+    ) {
         Image(
             painter = painterResource(
-                id = when (page.title) {
-                    R.string.explore ->
-                        when(isSystemInDarkTheme()){
-                            false -> R.drawable.light_onboarding1
-                            true -> R.drawable.dark_onboarding1
-                        }
-                    R.string.book ->
-                        when(isSystemInDarkTheme()){
-                            false -> R.drawable.light_onboarding2
-                            true -> R.drawable.dark_onboarding2
-                        }
-                    else -> 0
-                }
+                id = getResourceId(
+                    page.title,
+                    isSystemInDarkTheme()
+                )
             ),
-            contentDescription = null
+            contentDescription = null,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+        )
+        Spacer(modifier = Modifier.padding(8.dp))
+        Text(
+            text = stringResource(id = page.title),
+            style = MaterialTheme.typography.displayLarge.copy(
+                fontSize = 28.sp
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
+        )
+        Text(
+            text = stringResource(id = page.description),
+            style = MaterialTheme.typography.titleSmall,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp),
         )
     }
 }
+
 
 fun getResourceId(pageTitle: Int, darkTheme: Boolean): Int {
     return when (pageTitle) {

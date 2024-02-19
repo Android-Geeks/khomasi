@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -30,17 +31,23 @@ fun MyButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
+    shape: CornerBasedShape = MaterialTheme.shapes.large,
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier
+        modifier = modifier,
+        shape = shape,
     ) {
         Row {
             if (icon != 0) {
                 Icon(painter = painterResource(id = icon), contentDescription = null)
                 Spacer(modifier = Modifier.width(4.dp))
             }
-            Text(text = stringResource(id = text), textAlign = TextAlign.Center)
+            Text(
+                text = stringResource(id = text),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge
+            )
         }
     }
 }
@@ -60,6 +67,7 @@ fun MyTextButton(
         Text(
             text = stringResource(id = text),
             textAlign = TextAlign.Center,
+            style = MaterialTheme.typography.titleMedium,
             textDecoration = if (isUnderlined) TextDecoration.Underline else TextDecoration.None
         )
     }
@@ -72,10 +80,12 @@ fun MyOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
+    shape: CornerBasedShape = MaterialTheme.shapes.large,
 ) {
     OutlinedButton(
         onClick = onClick,
-        modifier = modifier
+        modifier = modifier,
+        shape = shape,
     ) {
         Row {
             if (icon != 0) {
@@ -85,7 +95,8 @@ fun MyOutlinedButton(
             Text(
                 text = stringResource(id = text),
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleLarge
             )
         }
     }
