@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.navigation
+package com.company.khomasi.presentation.navigation.components
 
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
