@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -25,19 +25,25 @@ import com.company.khomasi.theme.lightSubText
 
 @Composable
 fun BookingCard(
-    bookingDetails: BookingDetails
+    bookingDetails: BookingDetails,
+    modifier : Modifier
 ){
+    Card(
+        modifier = modifier
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
+        colors = CardDefaults.cardColors(Color.Unspecified)
+
+    ){
         Column(
             modifier = Modifier
-                .width(358.dp)
-                .clip(RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp))
-            , horizontalAlignment = Alignment.CenterHorizontally,
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Top
         ) {
-
             AsyncImage(
                 modifier = Modifier
-                    .width(358.dp)
+                    .fillMaxWidth()
                     .height(120.dp),
                 model = ImageRequest.Builder(context = LocalContext.current)
                     .data(bookingDetails.playground.imageUrl)
@@ -49,7 +55,7 @@ fun BookingCard(
                 placeholder = painterResource(id = R.drawable.playground_image)
             )
 
-             Box(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
@@ -58,19 +64,29 @@ fun BookingCard(
             ) {
                 Column()
                 {
-                    TextWithIcon(text = bookingDetails.playground.name, iconId = R.drawable.soccerball)
+                    TextWithIcon(
+                        text = bookingDetails.playground.name,
+                        iconId = R.drawable.soccerball
+                    )
 
-                    TextWithIcon(text = bookingDetails.playground.address, iconId = R.drawable.mappin)
+                    TextWithIcon(
+                        text = bookingDetails.playground.address,
+                        iconId = R.drawable.mappin
+                    )
 
                     TextWithIcon(text = bookingDetails.date, iconId = R.drawable.calendar)
 
                     TextWithIcon(text = bookingDetails.time, iconId = R.drawable.clock)
 
-                    TextWithIcon(text = bookingDetails.playground.price, iconId = R.drawable.currencycircledollar)
+                    TextWithIcon(
+                        text = bookingDetails.playground.price,
+                        iconId = R.drawable.currencycircledollar
+                    )
 
                 }
             }
         }
+    }
 
 
 
@@ -126,7 +142,8 @@ fun BookingCardPreview(){
             false
             ),
             "_"
-            )
+            ),
+            Modifier
         )
     }
 }

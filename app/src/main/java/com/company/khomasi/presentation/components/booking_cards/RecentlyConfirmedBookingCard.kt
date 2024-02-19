@@ -19,11 +19,15 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -36,91 +40,102 @@ import com.company.khomasi.theme.lightSubText
 @Composable
 fun RecentlyConfirmedBookingCard (
     bookingDetails: BookingDetails,
+    modifier: Modifier = Modifier
 ) {
-    Box(
-        Modifier
+    Card(
+        modifier
             .height(482.dp)
-            .width(358.dp)
-    ) {
-
-        Image(
-            painter = painterResource(R.drawable.tacket_rect),
-            contentDescription = null,
-            contentScale = ContentScale.FillBounds,
+            .fillMaxWidth(),
+        shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
+        colors = CardDefaults.cardColors(Color.Unspecified),
+        elevation = CardDefaults.cardElevation(1.dp)
+        ) {
+        Box(
             modifier = Modifier.fillMaxSize()
-
-        )
-        Column(Modifier.fillMaxSize(), verticalArrangement = Arrangement.Top) {
-
-            BookingCard(
-                bookingDetails
+        ) {
+            Image(
+                painter = painterResource(R.drawable.tacket_rect),
+                contentDescription = null,
+                contentScale = ContentScale.FillBounds,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surface),
+                modifier = Modifier.fillMaxSize()
             )
-
             Column(
-                modifier = Modifier
-                    .width(358.dp)
-                    .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Top
             ) {
-                Spacer(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 8.dp)
-                        .height(1.dp)
-                        .border(width = 1.dp, color = Color(0xff838485))
+
+                BookingCard(
+                    bookingDetails,
+                    Modifier.fillMaxWidth()
                 )
 
-                Row(
-                    Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                ){
-                    Icon(
-                        painter = painterResource(id = R.drawable.key),
-                        contentDescription = null,
-                        tint = lightSubText,
-                        modifier = Modifier.size(16.dp)
-                    )
-
-                    Spacer(modifier = Modifier.width(8.dp))
-                    Text(
-                        text = stringResource(id = R.string.verification_code),
-                        style = MaterialTheme.typography.titleSmall,
-                        color = lightSubText,
-                        textAlign = TextAlign.Start
-                    )
-                    Spacer(modifier = Modifier.weight(1F))
-
-                    Text(
-                        text = bookingDetails.verificationCode,
-                        style = MaterialTheme.typography.displayLarge,
-                        color = MaterialTheme.colorScheme.secondary,
-                        textAlign = TextAlign.End,
-
-                        )
-                }
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                Row(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding( bottom = 20.dp),
-                    horizontalArrangement = Arrangement.Center
+                        .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
                 ) {
-                    MyButton(
-                        text =  R.string.booking_confirmed,
-                        onClick = { /*TODO*/ },
-                        Modifier.padding(horizontal = 85.dp))
+                    Spacer(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
+                            .height(1.dp)
+                            .border(width = 1.dp, color = Color(0xff838485))
+                    )
+
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.key),
+                            contentDescription = null,
+                            tint = lightSubText,
+                            modifier = Modifier.size(16.dp)
+                        )
+
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Text(
+                            text = stringResource(id = R.string.verification_code),
+                            style = MaterialTheme.typography.titleSmall,
+                            color = lightSubText,
+                            textAlign = TextAlign.Start
+                        )
+                        Spacer(modifier = Modifier.weight(1F))
+
+                        Text(
+                            text = bookingDetails.verificationCode,
+                            style = MaterialTheme.typography.displayLarge,
+                            color = MaterialTheme.colorScheme.secondary,
+                            textAlign = TextAlign.End,
+
+                            )
+                    }
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 20.dp),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        MyButton(
+                            text = R.string.booking_confirmed,
+                            onClick = {  },
+                            Modifier.padding(horizontal = 85.dp)
+                        )
+                    }
                 }
             }
-        }
 
+        }
     }
 }
-
 @Preview
 @Composable
 fun RecentlyConfirmedBookingCardPreview () {
-    KhomasiTheme(){
+    KhomasiTheme{
         RecentlyConfirmedBookingCard(
             BookingDetails(
                 "1/10/2024",
@@ -138,7 +153,7 @@ fun RecentlyConfirmedBookingCardPreview () {
                     false
                 ),
                 "_"
-            )
+            ),
         )
 
     }
