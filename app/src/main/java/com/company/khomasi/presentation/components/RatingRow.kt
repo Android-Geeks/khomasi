@@ -11,18 +11,18 @@ import com.company.khomasi.theme.KhomasiTheme
 
 
 @Composable
-fun RatingRow(rating: Int, onRatingChange: (Int) -> Unit, modifier: Modifier = Modifier) {
+fun RatingRow(rating: Float, onRatingChange: (Float) -> Unit, modifier: Modifier = Modifier) {
         AndroidView(
             factory = { context ->
                 RatingBar(context).apply {
-                    stepSize = 1f
+                    stepSize = 0.1f
 
                 }
             },
             update = { ratingBar ->
-                ratingBar.rating = rating.toFloat()
+                ratingBar.rating = rating
                 ratingBar.setOnRatingBarChangeListener { _, _, _ ->
-                    onRatingChange(ratingBar.rating.toInt())
+                    onRatingChange(ratingBar.rating)
                 }
             }
         )
@@ -32,7 +32,7 @@ fun RatingRow(rating: Int, onRatingChange: (Int) -> Unit, modifier: Modifier = M
 @Composable
 fun LightRatingRowPreview() {
     KhomasiTheme {
-        RatingRow(rating = 4, onRatingChange = {})
+        RatingRow(rating = 4f, onRatingChange = {})
     }
 
 }
