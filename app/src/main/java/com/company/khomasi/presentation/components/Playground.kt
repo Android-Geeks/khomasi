@@ -26,5 +26,5 @@ data class CommentDetails(
     val comment : String,
     val date: String,
     val time: String,
-
+    val rating: Float,
 )

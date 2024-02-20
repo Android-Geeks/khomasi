@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,30 +24,27 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.style.TextAlign
+import com.gowtham.ratingbar.RatingBar
 
 @Composable
-fun CommentCard ( commentDetails: CommentDetails){
-
+fun CommentCard(commentDetails: CommentDetails) {
     Card(
         modifier = Modifier.fillMaxWidth()
-    ){
-        Column(modifier = Modifier
+    ) {
+        Column(
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp)
-        ){
-            Row (
+        ) {
+            Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
-            ){
+            ) {
                 AsyncImage(
                     modifier = Modifier
                         .size(50.dp)
-                        .clip(RoundedCornerShape(50.dp)),
+                        .clip(CircleShape),
                     model = ImageRequest.Builder(context = LocalContext.current)
                         .data(commentDetails.userImageUrl)
                         .crossfade(true)
@@ -78,42 +73,31 @@ fun CommentCard ( commentDetails: CommentDetails){
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
-
-                Row(
-                    modifier = Modifier.size(width = 96.dp, height = 16.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                      for(i in 1..5)
-                          RatingStar()
-                }
+                RatingBar(
+                    value = commentDetails.rating,
+                    size = 18.dp,
+                    spaceBetween = 1.dp,
+                    painterEmpty = painterResource(id = R.drawable.unfilled_star),
+                    painterFilled = painterResource(id = R.drawable.filled_star),
+                    onValueChange = {},
+                    onRatingChanged = {},
+                    modifier = Modifier
+                        .padding(top = 6.dp)
+                        .align(Alignment.Top)
+                )
             }
             Text(
                 text = commentDetails.comment,
                 style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Start)
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .padding(top = 8.dp)
+            )
         }
 
     }
 }
 
-@Composable
-fun RatingStar(isClicked : Boolean = false){
-
-    var clicked by remember {
-        mutableStateOf(isClicked)
-    }
-    IconButton(
-        onClick = { clicked = !clicked},
-        modifier = Modifier.size(16.dp),
-    ) {
-        Icon(
-            painter = painterResource(id = if (clicked) R.drawable.star_1 else R.drawable.star),
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.size(16.dp)
-        )
-    }
-}
 
 @Preview
 @Composable
@@ -125,7 +109,8 @@ fun CommentCardPreview() {
                 "",
                 "very good playground",
                 "19 May 2024",
-                "2"
+                "2",
+                3.7f
             )
         )
     }

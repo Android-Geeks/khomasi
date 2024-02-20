@@ -141,6 +141,9 @@ dependencies {
     //Navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
+    //RatingBar
+    implementation ("com.github.a914-gowtham:compose-ratingbar:1.3.4")
+
     // Local unit tests
     testImplementation("androidx.test:core:1.5.0")
     testImplementation("junit:junit:4.13.2")
