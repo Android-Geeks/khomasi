@@ -4,6 +4,8 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
@@ -16,6 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
@@ -27,6 +30,7 @@ import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
 import com.company.khomasi.presentation.components.Playground
 import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.theme.darkSubText
 import com.company.khomasi.theme.lightSubText
 
 
@@ -34,17 +38,21 @@ import com.company.khomasi.theme.lightSubText
 fun BookingCard(
     bookingDetails: BookingDetails,
     modifier: Modifier = Modifier,
+    isDark: Boolean = isSystemInDarkTheme()
 ) {
     Card(
         modifier
-            .height(432.dp)
+            .height(
+                if (bookingDetails.statusOfBooking == BookingStatus.CONFIRMED) 482.dp else 432.dp
+            )
             .fillMaxWidth(),
         shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
         colors = CardDefaults.cardColors(Color.Unspecified),
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Box(
-            modifier = Modifier.fillMaxSize()
+            modifier = Modifier
+                .fillMaxSize(),
         ) {
             Image(
                 painter = painterResource(R.drawable.ticket_rect),
@@ -67,11 +75,60 @@ fun BookingCard(
                 ) {
                     when (bookingDetails.statusOfBooking) {
                         BookingStatus.CONFIRMED -> {
-                            MyButton(
-                                text = R.string.booking_confirmed,
-                                onClick = { },
-                                Modifier.padding(horizontal = 85.dp)
-                            )
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                            ) {
+                                Spacer(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(bottom = 8.dp)
+                                        .height(1.dp)
+                                        .border(width = 1.dp, color = Color(0xff838485))
+                                )
+                                Row(
+                                    Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically,
+                                ) {
+                                    Icon(
+                                        painter = painterResource(id = R.drawable.key),
+                                        contentDescription = null,
+                                        tint = if (isDark) darkSubText else lightSubText,
+                                        modifier = Modifier.size(16.dp)
+                                    )
+
+                                    Spacer(modifier = Modifier.width(8.dp))
+                                    Text(
+                                        text = stringResource(id = R.string.verification_code),
+                                        style = MaterialTheme.typography.titleSmall,
+                                        color = if (isDark) darkSubText else lightSubText,
+                                        textAlign = TextAlign.Start
+                                    )
+                                    Spacer(modifier = Modifier.weight(1f))
+
+                                    Text(
+                                        text = bookingDetails.verificationCode,
+                                        style = MaterialTheme.typography.displayLarge,
+                                        color = MaterialTheme.colorScheme.secondary,
+                                        textAlign = TextAlign.End,
+
+                                        )
+                                }
+
+                                Spacer(modifier = Modifier.weight(1f))
+
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    MyButton(
+                                        text = R.string.booking_confirmed,
+                                        onClick = { },
+                                        Modifier.padding(horizontal = 85.dp)
+                                    )
+                                }
+                            }
                         }
 
                         BookingStatus.PENDING -> {
@@ -83,6 +140,7 @@ fun BookingCard(
                                     .weight(1f)
                             )
                         }
+
                         BookingStatus.EXPIRED -> {
                             MyButton(
                                 text = R.string.rebook,
@@ -167,6 +225,7 @@ fun BookingCardDetails(
 fun TextWithIcon(
     text: String,
     @DrawableRes iconId: Int,
+    isDark : Boolean = isSystemInDarkTheme()
 ) {
     Row(
         modifier = Modifier
@@ -178,7 +237,7 @@ fun TextWithIcon(
         Icon(
             painter = painterResource(id = iconId),
             contentDescription = null,
-            tint = lightSubText,
+            tint = if (isDark) darkSubText else lightSubText,
             modifier = Modifier.size(16.dp)
         )
 
@@ -187,7 +246,7 @@ fun TextWithIcon(
         Text(
             text = text,
             style = MaterialTheme.typography.titleSmall,
-            color = lightSubText,
+            color = if (isDark) darkSubText else lightSubText,
             textAlign = TextAlign.Start
         )
     }
