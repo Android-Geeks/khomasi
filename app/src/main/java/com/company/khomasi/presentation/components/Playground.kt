@@ -17,8 +17,14 @@ data class BookingDetails(
     val price: String,
     val verificationCode: String,
     val playground: Playground,
-    val statusOfBooking:String
+    val statusOfBooking: BookingStatus
 )
+
+enum class BookingStatus{
+    PENDING,
+    CONFIRMED,
+    EXPIRED
+}
 
 data class CommentDetails(
     val userName: String,
