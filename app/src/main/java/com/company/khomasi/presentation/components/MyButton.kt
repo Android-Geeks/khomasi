@@ -3,6 +3,7 @@ package com.company.khomasi.presentation.components
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,6 +16,7 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -38,9 +40,15 @@ fun MyButton(
         modifier = modifier,
         shape = shape,
     ) {
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
             if (icon != 0) {
-                Icon(painter = painterResource(id = icon), contentDescription = null)
+                Icon(
+                    painter = painterResource(id = icon),
+                    contentDescription = null,
+                )
                 Spacer(modifier = Modifier.width(4.dp))
             }
             Text(
@@ -67,7 +75,6 @@ fun MyTextButton(
         Text(
             text = stringResource(id = text),
             textAlign = TextAlign.Center,
-            style = MaterialTheme.typography.titleMedium,
             textDecoration = if (isUnderlined) TextDecoration.Underline else TextDecoration.None
         )
     }
@@ -87,7 +94,10 @@ fun MyOutlinedButton(
         modifier = modifier,
         shape = shape,
     ) {
-        Row {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
             if (icon != 0) {
                 Icon(painter = painterResource(id = icon), contentDescription = null)
                 Spacer(modifier = Modifier.width(4.dp))
@@ -111,10 +121,12 @@ fun ButtonPreview() {
             MyButton(
                 text = R.string.skip,
                 onClick = { },
+                icon = R.drawable.clock
             )
             MyOutlinedButton(
                 text = R.string.skip,
                 onClick = { },
+                icon = R.drawable.clock
             )
             MyTextButton(
                 text = R.string.skip,
