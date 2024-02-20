@@ -10,12 +10,14 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
+
 private val lightThemeColors = lightColorScheme(
     primary = lightPrimary,
     onPrimary = lightBackground,
     secondary = lightSecondary,
     background = lightBackground,
     surface = lightCard,
+    onSurface = lightSubText
 )
 
 private val darkThemeColors = darkColorScheme(
@@ -24,6 +26,7 @@ private val darkThemeColors = darkColorScheme(
     secondary = darkSecondary,
     background = darkBackground,
     surface = darkCard,
+    onSurface = darkSubText
 )
 
 @Composable
@@ -48,3 +51,5 @@ fun KhomasiTheme(
         content = content
     )
 }
+
+
