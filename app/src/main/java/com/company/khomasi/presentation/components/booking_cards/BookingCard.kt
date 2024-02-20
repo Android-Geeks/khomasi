@@ -4,7 +4,6 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.layout.*
@@ -48,12 +47,7 @@ fun BookingCard(
             modifier = Modifier.fillMaxSize()
         ) {
             Image(
-                painter = painterResource(
-                    if (isSystemInDarkTheme())
-                        R.drawable.dark_ticket_rect
-                    else
-                        R.drawable.light_ticket_rect
-                ),
+                painter = painterResource(R.drawable.ticket_rect),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier.fillMaxSize(),
