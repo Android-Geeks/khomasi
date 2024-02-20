@@ -90,6 +90,7 @@ dependencies {
     //Coil
     implementation("io.coil-kt:coil-compose:2.5.0")
 
+
     //Datastore
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
 
@@ -140,6 +141,9 @@ dependencies {
 
     //Navigation
     implementation("androidx.navigation:navigation-compose:2.7.7")
+
+    //RatingBar
+    implementation ("com.github.a914-gowtham:compose-ratingbar:1.3.4")
 
     // Local unit tests
     testImplementation("androidx.test:core:1.5.0")
