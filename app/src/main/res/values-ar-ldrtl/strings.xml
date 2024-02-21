@@ -153,4 +153,7 @@
     <string name="terms_of_service">شروط الخدمة</string>
     <string name="send_verification_email">إرسال بريد التحقق</string>
     <string name="save_changes">حفظ التغييرات</string>
+    <string name="forgot_your_password">هل نسيت كلمة السر ؟</string>
+    <string name="enter_email_to_reset_password">أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور الخاصة بك.</string>
+    <string name="set_password">تعيين كلمة المرور</string>
 </resources>

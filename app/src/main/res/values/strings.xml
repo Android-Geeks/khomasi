@@ -153,4 +153,7 @@
     <string name="terms_of_service">Terms of Service</string>
     <string name="send_verification_email">Send Verification Email</string>
     <string name="save_changes">Save Changes</string>
+    <string name="forgot_your_password">Forgot your password ?</string>
+    <string name="enter_email_to_reset_password">Enter your email to reset your password.</string>
+    <string name="set_password">Set password</string>
 </resources>
