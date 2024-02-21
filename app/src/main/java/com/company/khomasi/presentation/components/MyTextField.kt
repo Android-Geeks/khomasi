@@ -34,7 +34,7 @@ import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
 
 @Composable
-fun TextField(
+fun MyTextField(
     value: String,
     onValueChange: (String) -> Unit,
     @StringRes label: Int,
@@ -47,7 +47,11 @@ fun TextField(
 ) {
     var isPassword by remember { mutableStateOf(keyBoardType == KeyboardType.Password) }
     Column {
-        Text(text = stringResource(id = label), textAlign = TextAlign.Start)
+        Text(
+            text = stringResource(id = label),
+            textAlign = TextAlign.Start,
+            modifier = modifier
+        )
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
@@ -97,7 +101,7 @@ fun TextField(
 @Composable
 fun TextFieldPreview() {
     KhomasiTheme {
-        TextField(
+        MyTextField(
             value = "Zeyad",
             onValueChange = { },
             label = R.string.phone_number,
