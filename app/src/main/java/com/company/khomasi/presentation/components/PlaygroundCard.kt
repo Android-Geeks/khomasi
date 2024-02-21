@@ -85,7 +85,8 @@ fun PlaygroundCard(
 
                     IconButton(onClick = { /*TODO*/ }) {
                         FavoriteIcon(
-
+                            isFavorite = false,
+                            onFavoriteClick = { /*TODO*/ },
                         )
                     }
 
@@ -175,7 +176,7 @@ fun PlaygroundCard(
 
 
 @Preview(name = "light", showBackground = true, uiMode = UI_MODE_NIGHT_NO)
-@Preview(name = "dark", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "dark", showBackground = true, uiMode = UI_MODE_NIGHT_YES, locale = "ar")
 @Composable
 fun PreviewCard() {
     KhomasiTheme {
