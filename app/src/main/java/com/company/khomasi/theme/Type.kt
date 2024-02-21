@@ -19,53 +19,53 @@ val Typography = Typography(
 
     displayLarge = TextStyle(
         fontFamily = Cairo,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight(700),
         fontSize = 18.sp
     ),
     displayMedium = TextStyle(
         fontFamily = Cairo,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight(500),
         fontSize = 18.sp
     ),
     titleLarge = TextStyle(
         fontFamily = Cairo,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight(700),
         fontSize = 16.sp,
     ),
     titleMedium = TextStyle(
         fontFamily = Cairo,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight(500),
         fontSize = 16.sp,
     ),
     titleSmall = TextStyle(
         fontFamily = Cairo,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight(400),
         fontSize = 16.sp,
     ),
 
     bodyLarge = TextStyle(
         fontFamily = Cairo,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight(700),
         fontSize = 14.sp,
     ),
     bodyMedium = TextStyle(
         fontFamily = Cairo,
-        fontWeight = FontWeight.SemiBold,
+        fontWeight = FontWeight(500),
         fontSize = 14.sp,
     ),
     bodySmall = TextStyle(
         fontFamily = Cairo,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight(400),
         fontSize = 14.sp,
     ),
     labelMedium = TextStyle(
         fontFamily = Cairo,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight(700),
         fontSize = 12.sp,
     ),
     labelSmall = TextStyle(
         fontFamily = Cairo,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight(400),
         fontSize = 12.sp,
     )
 )
