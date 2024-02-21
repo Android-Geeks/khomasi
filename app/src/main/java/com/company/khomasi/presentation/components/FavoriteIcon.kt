@@ -13,28 +13,28 @@ import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
 
 @Composable
-fun FavoriteIcon(modifier : Modifier = Modifier
+fun FavoriteIcon(
+    onFavoriteClick: () -> Unit,
+    isFavorite: Boolean,
+    modifier: Modifier = Modifier,
 ) {
-    var isFavorite by remember { mutableStateOf(false) }
-
-    Box(
-        modifier = modifier
-            .clickable {
-                isFavorite = !isFavorite
-            }
-    ) {
-            Icon(
-                painter = painterResource(id = if (isFavorite) R.drawable.heart_fill else R.drawable.heart),
-                contentDescription = " ",
-                tint = if (isFavorite) MaterialTheme.colorScheme.primary else Color.White
-            )
-    }
+    Icon(
+        painter = painterResource(id = if (isFavorite) R.drawable.heart_fill else R.drawable.heart),
+        contentDescription = " ",
+        tint = if (isFavorite) MaterialTheme.colorScheme.primary else Color.White,
+        modifier = modifier.clickable {
+            onFavoriteClick()
+        }
+    )
 }
 
 @Preview
 @Composable
 fun FavoriteIconPreview() {
     KhomasiTheme {
-    FavoriteIcon()
+        FavoriteIcon(
+            onFavoriteClick = { },
+            isFavorite = false
+        )
     }
 }
