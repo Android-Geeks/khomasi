@@ -153,4 +153,13 @@
     <string name="terms_of_service">Terms of Service</string>
     <string name="send_verification_email">Send Verification Email</string>
     <string name="save_changes">Save Changes</string>
+    <string name="privacy_policy">privacy policy</string>
+    <string name="bookable">bookable</string>
+    <string name="unbookable">unbookable</string>
+    <string name="view_playground">view playground</string>
+
+
+
+
+
 </resources>

@@ -83,6 +83,7 @@ fun MyOutlinedButton(
 ) {
     OutlinedButton(
         onClick = onClick,
+        shape = MaterialTheme.shapes.medium,
         modifier = modifier
     ) {
         Row(
