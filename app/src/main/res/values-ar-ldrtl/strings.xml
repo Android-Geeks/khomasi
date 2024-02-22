@@ -156,4 +156,11 @@
     <string name="forgot_your_password">هل نسيت كلمة السر ؟</string>
     <string name="enter_email_to_reset_password">أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور الخاصة بك.</string>
     <string name="set_password">تعيين كلمة المرور</string>
+    <string name="reset_password"> إعادة تعيين كلمة مرور جديد</string>
+    <string name="create_new_password">قم بانشاء كلمة مرور جديدة</string>
+    <string name="new_password">كلمة المرور الجديدة</string>
+    <string name="retype_password">اعد كتابة كلمة المرور</string>
+    <string name="back_to_login">العودة لتسجيل الدخول</string>
+    <string name="password_restrictions">أستخدم 8 أحرف أو أكثر مع مزيج من الحروف والأرقام والرموز</string>
+
 </resources>

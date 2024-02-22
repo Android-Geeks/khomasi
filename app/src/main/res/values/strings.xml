@@ -156,4 +156,10 @@
     <string name="forgot_your_password">Forgot your password ?</string>
     <string name="enter_email_to_reset_password">Enter your email to reset your password.</string>
     <string name="set_password">Set password</string>
+    <string name="reset_password">Reset a new password</string>
+    <string name="create_new_password">Create a new password</string>
+    <string name="new_password">New password</string>
+    <string name="retype_password">Re-type new password</string>
+    <string name="back_to_login">Back to login</string>
+    <string name="password_restrictions">Use 8 or more characters with a mix of letters, numbers, and symbols</string>
 </resources>
