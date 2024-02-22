@@ -30,7 +30,6 @@ fun RoundedFavoriteIcon(modifier: Modifier = Modifier) {
             .height(44.dp)
             .background(
                 color = if (isFavorite) MaterialTheme.colorScheme.error else Color.White,
-               // color= Color(color=MaterialTheme.colorScheme.primary),
                 shape = CircleShape
             )
             .clickable {
@@ -40,7 +39,7 @@ fun RoundedFavoriteIcon(modifier: Modifier = Modifier) {
     ) {
         Icon(
             painter = painterResource(id = R.drawable.heart),
-            contentDescription = " ",
+            contentDescription = null,
             modifier = modifier
                 .padding(10.dp)
                 .fillMaxSize(),
@@ -53,6 +52,6 @@ fun RoundedFavoriteIcon(modifier: Modifier = Modifier) {
 @Composable
 fun RoundedFavoriteIconPreview() {
     KhomasiTheme {
-    RoundedFavoriteIcon()
-}
+        RoundedFavoriteIcon()
+    }
 }

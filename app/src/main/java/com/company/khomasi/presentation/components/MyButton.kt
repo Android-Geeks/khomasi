@@ -35,7 +35,8 @@ fun MyButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier
+        modifier = modifier,
+        shape = MaterialTheme.shapes.medium,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -48,7 +49,10 @@ fun MyButton(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
             }
-            Text(text = stringResource(id = text), textAlign = TextAlign.Center)
+            Text(
+                text = stringResource(id = text),
+                textAlign = TextAlign.Center,
+            )
         }
     }
 }

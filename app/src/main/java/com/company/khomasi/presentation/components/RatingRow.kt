@@ -11,22 +11,28 @@ import com.company.khomasi.theme.KhomasiTheme
 
 
 @Composable
-fun RatingRow(rating: Float, onRatingChange: (Float) -> Unit, modifier: Modifier = Modifier) {
-        AndroidView(
-            factory = { context ->
-                RatingBar(context).apply {
-                    stepSize = 0.1f
+fun RatingRow(
+    rating: Float,
+    onRatingChange: (Float) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    AndroidView(
+        factory = { context ->
+            RatingBar(context).apply {
+                stepSize = 0.1f
 
-                }
-            },
-            update = { ratingBar ->
-                ratingBar.rating = rating
-                ratingBar.setOnRatingBarChangeListener { _, _, _ ->
-                    onRatingChange(ratingBar.rating)
-                }
             }
-        )
+        },
+        update = { ratingBar ->
+            ratingBar.rating = rating
+            ratingBar.setOnRatingBarChangeListener { _, _, _ ->
+                onRatingChange(ratingBar.rating)
+            }
+        },
+        modifier = modifier
+    )
 }
+
 @Preview(name = "Light Mode", showBackground = true, uiMode = UI_MODE_NIGHT_NO)
 @Preview(name = "Dark Mode", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
