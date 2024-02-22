@@ -2,7 +2,6 @@ package com.company.khomasi.presentation.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,15 +21,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
 
 @Composable
 fun PlaygroundCard(
+    playground: Playground,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -50,50 +54,55 @@ fun PlaygroundCard(
                 .background(color = MaterialTheme.colorScheme.background)
         ) {
             Box {
-                Image(
-                    painter = painterResource(id = R.drawable.playground),
-                    contentDescription = " ",
-                    modifier = modifier
-                        .fillMaxWidth()
-                        .height(131.dp),
-                    contentScale = ContentScale.FillWidth
-                )
+
+                AsyncImage(model = ImageRequest
+                    .Builder(context = LocalContext.current)
+                    .data(playground.imageUrl)
+                    .crossfade(true)
+                    .build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.FillWidth,
+                    placeholder =painterResource(id = R.drawable.playground) ,
+                modifier = modifier
+                    .fillMaxWidth()
+                    .height(131.dp)
+                    )
                 Row(
                     modifier = modifier
                         .height(62.dp)
                 ) {
-                   Column {
-                       Spacer(modifier = modifier.height(15.dp))
-                       Box(
-                           modifier = modifier
-                               .height(32.dp)
-                               .background(
-                                   color = MaterialTheme.colorScheme.background
-                               )
-                               .padding(start = 6.dp, top = 3.dp, end = 4.dp, bottom = 3.dp)
-                       )
+                    Column {
+                        Spacer(modifier = modifier.height(15.dp))
+                        Box(
+                            modifier = modifier
+                                .height(32.dp)
+                                .background(
+                                    color = MaterialTheme.colorScheme.background
+                                )
+                                .padding(start = 6.dp, top = 3.dp, end = 4.dp, bottom = 3.dp)
+                        )
 
-                       {
-                           Text(
-                               text = "booking",
-                               textAlign = TextAlign.Start,
-                               style = MaterialTheme.typography.bodyLarge
-                           )
-                       }
-                   }
+                        {
+                            val bookingText =if(playground.isBookable) stringResource(id = R.string.bookable)
+                            else stringResource(id = R.string.unbookable)
+                            Text(
+                                text = bookingText,
+                                textAlign = TextAlign.Start,
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        }
+                    }
                     Spacer(modifier = modifier.weight(1f))
 
-                    IconButton(onClick = { /*TODO*/ }) {
-                        FavoriteIcon(
-
-                        )
+                    IconButton(onClick = {  }) {
+                        FavoriteIcon()
                     }
 
                 }
             }
             Row(modifier = modifier.fillMaxWidth()) {
                 Text(
-                    text = "4.9",
+                    text = playground.rating.toString(),
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = modifier
@@ -110,7 +119,7 @@ fun PlaygroundCard(
                 )
                 Spacer(modifier = modifier.weight(2f))
                 Text(
-                    text = "playground",
+                    text = playground.name,
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.titleMedium,
                     modifier = modifier.weight(1f)
@@ -124,7 +133,7 @@ fun PlaygroundCard(
             ) {
                 Spacer(modifier = modifier.weight(2f))
                 Text(
-                    text = "location",
+                    text = playground.address,
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = modifier
@@ -140,26 +149,26 @@ fun PlaygroundCard(
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp)
-                   ,
+                ,
                 thickness = 1.dp
             )
             Row(modifier = modifier.fillMaxWidth()) {
-            MyButton(
-                text = R.string.field_description,
-                onClick = { /*TODO*/ },
-                modifier = modifier
-                    .background(
-                        color = MaterialTheme.colorScheme.primary,
-                        shape = MaterialTheme.shapes.medium
-                    )
-                    .padding(horizontal = 34.dp)
-                    .width(171.dp)
-                    .height(38.dp)
+                MyButton(
+                    text = R.string.view_playground,
+                    onClick = { },
+                    modifier = modifier
+                        .background(
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = MaterialTheme.shapes.medium
+                        )
+                        .padding(horizontal = 34.dp)
+                        .width(171.dp)
+                        .height(38.dp)
 
-            )
+                )
 
                 Spacer(modifier = modifier.weight(1f))
-                Text(text = "price",
+                Text(text = playground.price,
                     textAlign = TextAlign.End,
                     modifier = modifier.padding(top = 6.dp))
                 Icon(
@@ -167,11 +176,11 @@ fun PlaygroundCard(
                     contentDescription = " ",
                     modifier =modifier.padding(start = 4.dp, top = 11.dp)
                 )
-                }
             }
         }
-
     }
+
+}
 
 
 @Preview(name = "light", showBackground = true, uiMode = UI_MODE_NIGHT_NO)
@@ -180,6 +189,17 @@ fun PlaygroundCard(
 fun PreviewCard() {
     KhomasiTheme {
         PlaygroundCard(
+            playground = Playground(
+                name = "playground",
+                address = "location",
+                imageUrl = "https://www.pinterest.com/pin/339810734383350441/",
+                rating = 4.9f,
+                price = "price",
+                openingHours = "hour",
+                isFavorite = false,
+                isBookable = false
+            )
+
         )
     }
 }
