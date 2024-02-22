@@ -32,9 +32,11 @@ fun MyButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
+    buttonEnable : Boolean = true
 ) {
     Button(
         onClick = onClick,
+        enabled = buttonEnable,
         modifier = modifier
     ) {
         Row(
