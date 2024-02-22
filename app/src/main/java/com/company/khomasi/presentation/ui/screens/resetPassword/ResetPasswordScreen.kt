@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -70,14 +71,14 @@ fun ResetPasswordScreen(resetPassViewModel: ResetPasswordViewModel ) {
         MyButton(
             text = R.string.set_password,
             onClick = { /*TODO*/ },
-            modifier =  Modifier.padding(start = 8.dp, end = 8.dp, top = 32.dp, bottom = 16.dp)
+            modifier =  Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp, end = 8.dp, top = 32.dp)
         )
 
         MyTextButton(
             text = R.string.cancel,
             onClick = { /*TODO*/ },
-
-
         )
     }
 
