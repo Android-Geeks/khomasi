@@ -84,7 +84,7 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
 
     //Kotlinx Serialization
-    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation ("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
     implementation ("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
 
     //Coil
@@ -98,15 +98,15 @@ dependencies {
     implementation ("androidx.compose.foundation:foundation:1.6.1")
 
     //Accompanist
-    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.31.4-beta")
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
 
     // Compose dependencies
     implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2023.09.01"))
+    implementation(platform("androidx.compose:compose-bom:2024.02.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.material3:material3:1.2.0")
 
     val composeVersion = "1.6.1"
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${composeVersion}")
@@ -117,12 +117,12 @@ dependencies {
     implementation("androidx.hilt:hilt-navigation-compose:1.1.0")
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
     //Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.48.1")
-    kapt("com.google.dagger:hilt-android-compiler:2.48.1")
+    implementation("com.google.dagger:hilt-android:2.50")
+    kapt("com.google.dagger:hilt-android-compiler:2.50")
     kapt("androidx.hilt:hilt-compiler:1.1.0")
 
     //room
@@ -149,19 +149,19 @@ dependencies {
     testImplementation("androidx.test:core:1.5.0")
     testImplementation("junit:junit:4.13.2")
     testImplementation("androidx.arch.core:core-testing:2.2.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    testImplementation("com.google.truth:truth:1.1.3")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+    testImplementation("com.google.truth:truth:1.4.1")
     debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.1")
     testImplementation("com.squareup.okhttp3:mockwebserver:${okHttp}")
     testImplementation("com.squareup.okhttp3:okhttp:${okHttp}")
 
     // Instrumentation tests
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.48.1")
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.48.1")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.50")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.50")
     androidTestImplementation("junit:junit:4.13.2")
-    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
     androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
-    androidTestImplementation("com.google.truth:truth:1.1.3")
+    androidTestImplementation("com.google.truth:truth:1.4.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test:core-ktx:1.5.0")
     androidTestImplementation("androidx.test:runner:1.5.2")
