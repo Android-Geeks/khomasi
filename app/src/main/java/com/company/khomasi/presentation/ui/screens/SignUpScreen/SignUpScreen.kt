@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
@@ -36,18 +37,21 @@ import com.company.khomasi.theme.Shapes
 
 @Composable
 fun SignUpScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    signUpViewModel: SignUpViewModel= viewModel()
 ){
+  //  val signUpUiState by signUpViewModel.uiState.collectAsState()
+
     Column (modifier = modifier
         .background(color = MaterialTheme.colorScheme.background)
     )
     {
-        Spacer(modifier = modifier.height(177.dp))
+        Spacer(modifier = modifier.height(140.dp))
         Image(painter = painterResource(id = R.drawable.player) ,
             contentDescription = " ",
             modifier = modifier
                 .fillMaxWidth()
-                .height(245.dp)
+                .height(240.dp)
                 .padding(11.dp),
             contentScale = ContentScale.Crop
         )
@@ -55,7 +59,7 @@ fun SignUpScreen(
 
         MyOutlinedButton(
             text = R.string.create_account,
-            onClick = {  },
+            onClick = { signUpViewModel.createAccount() },
             modifier = modifier
                 .fillMaxWidth()
                 .height(48.dp)
@@ -63,13 +67,14 @@ fun SignUpScreen(
                 .border(
                     width = 1.1.dp,
                     color = MaterialTheme.colorScheme.primary,
-                    shape = MaterialTheme.shapes.medium)
+                    shape = MaterialTheme.shapes.medium
+                )
         )
 
         Spacer(modifier = modifier.height(16.dp))
 
         MyButton(text = R.string.login,
-            onClick = {  },
+            onClick = { signUpViewModel.logIn() },
             modifier = modifier
                 .fillMaxWidth()
                 .height(48.dp)
@@ -122,7 +127,7 @@ fun SignUpScreen(
                 contentDescription =null ,
                 modifier = modifier
                     .size(32.dp)
-                    .clickable { }
+                    .clickable {signUpViewModel.logo() }
             )
         }
         Spacer(modifier = modifier.height(22.dp))
@@ -140,7 +145,8 @@ fun SignUpScreen(
                 text = stringResource(id =R.string.privacy_policy),
                 color = MaterialTheme.colorScheme.primary,
                 textDecoration = TextDecoration.Underline,
-                modifier = modifier.clickable {  }
+                modifier = modifier
+                    .clickable { signUpViewModel.privacyAndPolicy() }
             )
 
             Text(text = stringResource(id = R.string.and),
@@ -148,10 +154,11 @@ fun SignUpScreen(
             )
 
             Text(
-                text = stringResource(id =R.string.privacy_policy),
+                text = stringResource(id =R.string.help_and_support),
                 color = MaterialTheme.colorScheme.primary,
                 textDecoration = TextDecoration.Underline,
-                modifier = modifier.clickable {  }
+                modifier = modifier
+                    .clickable {signUpViewModel.helpAndSupport()  }
 
             )
         }
