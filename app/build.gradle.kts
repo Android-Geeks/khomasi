@@ -95,7 +95,7 @@ dependencies {
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
 
     //Compose Foundation
-    implementation ("androidx.compose.foundation:foundation:1.6.1")
+    implementation ("androidx.compose.foundation:foundation:1.6.2")
 
     //Accompanist
     implementation ("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
@@ -109,7 +109,9 @@ dependencies {
     implementation("androidx.compose.material3:material3:1.2.0")
 
     val composeVersion = "1.6.1"
+    //noinspection GradleDependency
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:${composeVersion}")
+    //noinspection GradleDependency
     debugImplementation("androidx.compose.ui:ui-tooling:${composeVersion}")
 
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")

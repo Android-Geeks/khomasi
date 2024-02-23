@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.ui.screens.recreateNewPassword
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -32,7 +33,6 @@ import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkHint
 import com.company.khomasi.theme.lightHint
 import com.nulabinc.zxcvbn.Zxcvbn
-
 
 @Composable
 fun RecreateNewPasswordScreen(
@@ -113,7 +113,7 @@ fun RecreateNewPasswordScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 8.dp, end = 8.dp),
-            buttonEnable = recreateViewModel.checkPassMatching()
+            buttonEnable = recreateViewModel.checkPassMatching(recreateUiState.newPassword)
         )
 
         MyTextButton(
@@ -199,10 +199,11 @@ fun PasswordStrengthIndicator(
     }
 }
 
-@Preview(showSystemUi = true)
+//@Preview(name = "Night", showSystemUi = true,uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(name = "Light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ar", showSystemUi = true)
 @Composable
 fun RecreateNewPasswordPreview() {
-    KhomasiTheme(darkTheme = false) {
+    KhomasiTheme {
         RecreateNewPasswordScreen(
             RecreateNewPassViewModel()
         )

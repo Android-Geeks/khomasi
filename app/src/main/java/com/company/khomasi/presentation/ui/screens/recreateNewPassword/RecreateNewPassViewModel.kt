@@ -41,10 +41,10 @@ class RecreateNewPassViewModel : ViewModel() {
         }
     }
 
-    fun checkPassMatching() : Boolean{
+    fun checkPassMatching(password: String) : Boolean{
         _recreateUiState.update {
             it.copy(
-                buttonEnable = _recreateUiState.value.rewritingNewPassword == _recreateUiState.value.newPassword
+                buttonEnable = _recreateUiState.value.rewritingNewPassword == password
             )
         }
         return _recreateUiState.value.buttonEnable
