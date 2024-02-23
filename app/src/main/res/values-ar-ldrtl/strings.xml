@@ -157,5 +157,5 @@
     <string name="bookable">قابل للحجز</string>
     <string name="unbookable">غير قابل للحجز</string>
     <string name="view_playground">عرض الملعب</string>
-
+    <string name="and">و</string>
 </resources>

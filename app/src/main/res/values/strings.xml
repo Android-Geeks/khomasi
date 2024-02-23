@@ -157,9 +157,6 @@
     <string name="bookable">bookable</string>
     <string name="unbookable">unbookable</string>
     <string name="view_playground">view playground</string>
-
-
-
-
+    <string name="and">and</string>
 
 </resources>

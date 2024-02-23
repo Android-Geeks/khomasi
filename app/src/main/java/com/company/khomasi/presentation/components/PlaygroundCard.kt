@@ -98,6 +98,16 @@ fun PlaygroundCard(
             }
             Row(modifier = modifier.fillMaxWidth()) {
                 Text(
+                    text = playground.name,
+                    textAlign = TextAlign.Start,
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = modifier.weight(1f)
+                )
+                Spacer(modifier = modifier.weight(2f))
+
+                Text(
                     text = playground.rating.toString(),
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.bodyLarge,
@@ -111,34 +121,27 @@ fun PlaygroundCard(
                     modifier = modifier
                         .padding(top = 13.dp, start = 4.dp)
                 )
-                Spacer(modifier = modifier.weight(2f))
-                Text(
-                    text = playground.name,
-                    textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = modifier.weight(1f)
-                )
+
             }
             Row(
                 modifier = modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp)
             ) {
-                Spacer(modifier = modifier.weight(2f))
-                Text(
-                    text = playground.address,
-                    textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = modifier
-                )
                 Icon(
                     painter = painterResource(id = R.drawable.mappin),
                     contentDescription = null,
-                    modifier = modifier.padding(top = 7.dp, start = 4.dp)
+                    modifier = modifier.padding(top = 7.dp, end = 4.dp)
 
                 )
+                Text(
+                    text = playground.address,
+                    textAlign = TextAlign.Start,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = modifier
+                )
+
+
             }
             HorizontalDivider(
                 modifier = modifier
@@ -147,6 +150,25 @@ fun PlaygroundCard(
                 thickness = 1.dp
             )
             Row(modifier = modifier.fillMaxWidth()) {
+                Icon(
+                    painter = painterResource(id = R.drawable.currencycircledollar),
+                    contentDescription = null,
+                    modifier = modifier.padding(end = 4.dp, top = 12.dp)
+                )
+                Text(
+                    text = playground.price + " / ",
+                    textAlign = TextAlign.End,
+                    modifier = modifier
+                        .padding(top = 6.dp)
+                )
+
+                Text(
+                    text = playground.openingHours,
+                    textAlign = TextAlign.End,
+                    modifier = modifier
+                        .padding(top = 6.dp)
+                )
+                Spacer(modifier = modifier.weight(1.5f))
                 MyButton(
                     text = R.string.view_playground,
                     onClick = { },
@@ -155,22 +177,11 @@ fun PlaygroundCard(
                             color = MaterialTheme.colorScheme.primary,
                             shape = MaterialTheme.shapes.medium
                         )
-                        .padding(horizontal = 34.dp)
                         .width(171.dp)
-                        .height(38.dp)
+                        .height(42.dp)
                 )
 
-                Spacer(modifier = modifier.weight(1f))
-                Text(
-                    text = playground.price,
-                    textAlign = TextAlign.End,
-                    modifier = modifier.padding(top = 6.dp)
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.currencycircledollar),
-                    contentDescription = null,
-                    modifier = modifier.padding(start = 4.dp, top = 11.dp)
-                )
+
             }
         }
     }

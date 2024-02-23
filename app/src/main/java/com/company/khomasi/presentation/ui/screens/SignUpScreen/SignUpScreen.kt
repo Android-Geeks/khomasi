@@ -15,7 +15,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Divider
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,15 +26,13 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
-import com.company.khomasi.presentation.components.MyTextButton
-import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.Shapes
-import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 @Composable
 fun SignUpScreen(
@@ -62,6 +60,10 @@ fun SignUpScreen(
                 .fillMaxWidth()
                 .height(48.dp)
                 .padding(horizontal = 24.dp)
+                .border(
+                    width = 1.1.dp,
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = MaterialTheme.shapes.medium)
         )
 
         Spacer(modifier = modifier.height(16.dp))
@@ -80,20 +82,26 @@ fun SignUpScreen(
         Spacer(modifier = modifier.height(34.dp))
 
         Row (modifier = modifier.fillMaxWidth()){
-            Divider(thickness = 1.dp,
+            HorizontalDivider(thickness = 1.dp,
                 modifier = modifier
-                    .weight(1.5f)
-                    .padding(start = 34.dp,end=3.dp)
+                    .weight(1f)
+                    .padding(start = 34.dp, end = 3.dp)
                     .align(Alignment.CenterVertically)
             )
             Text(text = stringResource(id =R.string.or_register_via),
-                modifier = modifier.weight(0.7f)
-                    .padding(start = 5.dp))
-            Divider(thickness = 1.dp,
                 modifier = modifier
-                    .weight(1.5f)
-                    .padding(start = 3.dp,end=34.dp)
-                    .align(Alignment.CenterVertically)
+                    .weight(0.7f)
+                    .padding(start = 5.dp)
+                    ,
+            textAlign = TextAlign.Center
+            )
+
+            HorizontalDivider(
+                modifier = modifier
+                    .weight(1f)
+                    .padding(start = 3.dp, end = 34.dp)
+                    .align(Alignment.CenterVertically),
+                thickness = 1.dp
             )
         }
         Spacer(modifier = modifier.height(28.dp))
@@ -111,13 +119,13 @@ fun SignUpScreen(
         {
             Image(
                 painter = painterResource(id = R.drawable.icons_google),
-                contentDescription ="null" ,
+                contentDescription =null ,
                 modifier = modifier
                     .size(32.dp)
                     .clickable { }
             )
         }
-        Spacer(modifier = modifier.height(36.dp))
+        Spacer(modifier = modifier.height(22.dp))
 
         Text(text = stringResource(id = R.string.by_registering_you_agree_to),
             textAlign = TextAlign.Center,
@@ -128,14 +136,24 @@ fun SignUpScreen(
             modifier = modifier.fillMaxWidth()
         ) {
 
-            MyTextButton(
-                text = R.string.privacy_policy,
-                onClick = {  })
-            Text(text = "and",
-                color = MaterialTheme.colorScheme.primary)
+            Text(
+                text = stringResource(id =R.string.privacy_policy),
+                color = MaterialTheme.colorScheme.primary,
+                textDecoration = TextDecoration.Underline,
+                modifier = modifier.clickable {  }
+            )
 
-            MyTextButton(text =R.string.privacy_policy
-                , onClick = {  })
+            Text(text = stringResource(id = R.string.and),
+                color = MaterialTheme.colorScheme.primary
+            )
+
+            Text(
+                text = stringResource(id =R.string.privacy_policy),
+                color = MaterialTheme.colorScheme.primary,
+                textDecoration = TextDecoration.Underline,
+                modifier = modifier.clickable {  }
+
+            )
         }
     }
 }
@@ -144,7 +162,7 @@ fun SignUpScreen(
 @Preview(name="light", uiMode = UI_MODE_NIGHT_NO)
 @Composable
 fun SignUpPreview(){
-    KhomasiTheme {
+    MaterialTheme {
         SignUpScreen()
     }
 }
