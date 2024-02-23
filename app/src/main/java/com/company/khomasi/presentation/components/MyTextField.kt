@@ -44,6 +44,7 @@ fun MyTextField(
     leadingIcon: @Composable (() -> Unit)? = null,
     placeholder: String = "",
     imeAction: ImeAction = ImeAction.Done,
+    isError : Boolean = false
 ) {
     var isPassword by remember { mutableStateOf(keyBoardType == KeyboardType.Password) }
     Column {
@@ -91,7 +92,8 @@ fun MyTextField(
                 imeAction = imeAction
             ),
             keyboardActions = KeyboardActions(onDone = { onImeAction() }),
-            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None
+            visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
+            isError = isError
         )
     }
 }
