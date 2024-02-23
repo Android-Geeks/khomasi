@@ -10,15 +10,19 @@ class RecreateNewPassViewModel : ViewModel() {
     private val _recreateUiState = MutableStateFlow(RecreateNewPassUiState())
     val recreateUiState : StateFlow<RecreateNewPassUiState> = _recreateUiState.asStateFlow()
 
-
-
-    fun verifyVerificationCode(code : String) /*: Boolean*/{
+    fun onEnteringVerificationCode(code : String) {
         _recreateUiState.update {
             it.copy(
                 verificationCode = code
             )
         }
-//        return code == _recreateUiState.value.verificationCode
+    }
+    fun verifyVerificationCode(){
+        _recreateUiState.update {
+            it.copy(
+                isCodeTrue = _recreateUiState.value.verificationCode != "1234"
+            )
+        }
     }
 
     fun onEnteringPassword(password : String){
@@ -33,9 +37,17 @@ class RecreateNewPassViewModel : ViewModel() {
         _recreateUiState.update {
             it.copy(
                 rewritingNewPassword = password,
-                buttonEnable = _recreateUiState.value.rewritingNewPassword == password
             )
         }
+    }
+
+    fun checkPassMatching() : Boolean{
+        _recreateUiState.update {
+            it.copy(
+                buttonEnable = _recreateUiState.value.rewritingNewPassword == _recreateUiState.value.newPassword
+            )
+        }
+        return _recreateUiState.value.buttonEnable
     }
 
 

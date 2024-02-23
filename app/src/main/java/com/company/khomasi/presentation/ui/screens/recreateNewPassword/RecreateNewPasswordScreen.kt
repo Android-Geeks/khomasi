@@ -36,9 +36,9 @@ import com.nulabinc.zxcvbn.Zxcvbn
 
 @Composable
 fun RecreateNewPasswordScreen(
-    recreateNewPassViewModel: RecreateNewPassViewModel
+    recreateViewModel: RecreateNewPassViewModel
 ) {
-    val recreateNewPassUiState by recreateNewPassViewModel.recreateUiState.collectAsState()
+    val recreateUiState by recreateViewModel.recreateUiState.collectAsState()
 
     Column(
         modifier = Modifier
@@ -61,20 +61,21 @@ fun RecreateNewPasswordScreen(
         Spacer(modifier = Modifier.height(56.dp))
 
         MyTextField(
-            value = recreateNewPassUiState.verificationCode ,
-            onValueChange = {recreateNewPassViewModel.verifyVerificationCode(it)},
+            value = recreateUiState.verificationCode ,
+            onValueChange = {recreateViewModel.onEnteringVerificationCode(it)},
             label = R.string.verification_code ,
             onImeAction = {
-                // TODO:
+                recreateViewModel.verifyVerificationCode()
             },
-            keyBoardType = KeyboardType.Number
+            keyBoardType = KeyboardType.Number,
+            isError = recreateUiState.isCodeTrue
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
         MyTextField(
-            value = recreateNewPassUiState.newPassword ,
-            onValueChange = { recreateNewPassViewModel.onEnteringPassword(it) } ,
+            value = recreateUiState.newPassword ,
+            onValueChange = { recreateViewModel.onEnteringPassword(it) } ,
             label = R.string.new_password ,
             onImeAction = {
                 // TODO:
@@ -82,7 +83,10 @@ fun RecreateNewPasswordScreen(
             keyBoardType = KeyboardType.Password
         )
 
-        PasswordStrengthMeter(recreateNewPassUiState.newPassword)
+        PasswordStrengthMeter(
+            password = recreateUiState.newPassword,
+            enable = recreateUiState.newPassword != ""
+            )
 
         Text(
             text = stringResource(id = R.string.password_restrictions),
@@ -92,12 +96,11 @@ fun RecreateNewPasswordScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         MyTextField(
-            value = recreateNewPassUiState.rewritingNewPassword ,
-            onValueChange = {recreateNewPassViewModel.onReTypingPassword(it)},
+            value = recreateUiState.rewritingNewPassword ,
+            onValueChange = {recreateViewModel.onReTypingPassword(it)},
             label = R.string.retype_password,
             onImeAction = {
-                // TODO:
-
+                // TODO
             },
             keyBoardType = KeyboardType.Password
         )
@@ -110,7 +113,7 @@ fun RecreateNewPasswordScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 8.dp, end = 8.dp),
-            buttonEnable = recreateNewPassUiState.buttonEnable
+            buttonEnable = recreateViewModel.checkPassMatching()
         )
 
         MyTextButton(
@@ -121,7 +124,11 @@ fun RecreateNewPasswordScreen(
 }
 
 @Composable
-fun PasswordStrengthMeter(password: String) {
+fun PasswordStrengthMeter(
+    password: String,
+    enable: Boolean         // Change happened
+                            // "to avoid coloring the first partition when passStrength is 0 "
+) {
 
     val passwordStrength = Zxcvbn().measure(password).score
 
@@ -134,22 +141,26 @@ fun PasswordStrengthMeter(password: String) {
         PasswordStrengthIndicator(
             passwordStrength = passwordStrength,
             listOf(0, 1, 2, 3, 4),
-            Modifier.weight(1f)
+            Modifier.weight(1f),
+            enable
         )
         PasswordStrengthIndicator(
             passwordStrength = passwordStrength,
             listOf(2, 3, 4),
-            Modifier.weight(1f)
+            Modifier.weight(1f),
+            enable
         )
         PasswordStrengthIndicator(
             passwordStrength = passwordStrength,
             listOf(3, 4),
-            Modifier.weight(1f)
+            Modifier.weight(1f),
+            enable
         )
         PasswordStrengthIndicator(
             passwordStrength = passwordStrength,
             listOf(4),
-            Modifier.weight(1f)
+            Modifier.weight(1f),
+            enable
         )
     }
 }
@@ -158,7 +169,8 @@ fun PasswordStrengthMeter(password: String) {
 fun PasswordStrengthIndicator(
     passwordStrength: Int,
     coloringEnableRange: List<Int>,
-    modifier : Modifier = Modifier
+    modifier : Modifier = Modifier,
+    enable : Boolean = false,
 ){
     Box(
         modifier = modifier
@@ -170,15 +182,15 @@ fun PasswordStrengthIndicator(
                 shape = RoundedCornerShape(100.dp)
             )
     ){
-        if (passwordStrength in coloringEnableRange){
+        if (passwordStrength in coloringEnableRange && enable){
             Box(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(
                         color = when (passwordStrength) {
-                            1 -> Color.Red
-                            2 -> Color.Yellow
-                            3, 4 -> Color.Green
+                            0,1 -> Color.Red
+                            2,3 -> Color(0xFFF3F311)
+                            4 -> Color.Green
                             else -> Color(0xFFDDDDDD)
                         }
                     )
