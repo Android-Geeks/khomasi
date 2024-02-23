@@ -4,5 +4,12 @@ enum class Screens {
     Home,
     MyBookings,
     Playgrounds,
-    Favorite
+    Favorite,
+    OnBoarding,
+}
+
+enum class Routes {
+    AppStartNavigation,
+    KhomasiNavigation,
+    KhomasiNavigatorScreen,
 }

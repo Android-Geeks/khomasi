@@ -17,7 +17,7 @@ private val lightThemeColors = lightColorScheme(
     secondary = lightSecondary,
     background = lightBackground,
     surface = lightCard,
-    onSurface = lightSubText
+    tertiary = lightSubText
 )
 
 private val darkThemeColors = darkColorScheme(
@@ -26,7 +26,7 @@ private val darkThemeColors = darkColorScheme(
     secondary = darkSecondary,
     background = darkBackground,
     surface = darkCard,
-    onSurface = darkSubText
+    tertiary = darkSubText
 )
 
 @Composable

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -32,12 +33,14 @@ fun MyButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
+    shape: CornerBasedShape = MaterialTheme.shapes.large,
     buttonEnable : Boolean = true
 ) {
     Button(
         onClick = onClick,
+        modifier = modifier,
+        shape = shape,
         enabled = buttonEnable,
-        modifier = modifier
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -50,7 +53,11 @@ fun MyButton(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
             }
-            Text(text = stringResource(id = text), textAlign = TextAlign.Center)
+            Text(
+                text = stringResource(id = text),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.titleLarge
+            )
         }
     }
 }
@@ -82,10 +89,12 @@ fun MyOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
+    shape: CornerBasedShape = MaterialTheme.shapes.large,
 ) {
     OutlinedButton(
         onClick = onClick,
-        modifier = modifier
+        modifier = modifier,
+        shape = shape,
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -98,7 +107,8 @@ fun MyOutlinedButton(
             Text(
                 text = stringResource(id = text),
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.titleLarge
             )
         }
     }

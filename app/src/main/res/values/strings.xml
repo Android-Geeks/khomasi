@@ -15,8 +15,8 @@
     <string name="did_not_receive_the_code">Didn\'t receive the code?</string>
     <string name="resend_code_after">Resend code after</string>
     <string name="please_confirm_your_information">Please confirm your information</string>
-    <string name="reserve">Reserve</string>
-    <string name="reserve_a_time_that_suits_you">Reserve a time that suits you easily, \nand make it an unforgettable experience</string>
+    <string name="book">Book</string>
+    <string name="book_a_time_that_suits_you">Book a time that suits you easily, \nand make it an unforgettable experience</string>
     <string name="explore">Explore</string>
     <string name="discover_a_wide_range_of_sports_fields">Discover a wide range of sports fields \naround you</string>
     <string name="skip">Skip</string>
@@ -153,6 +153,10 @@
     <string name="terms_of_service">Terms of Service</string>
     <string name="send_verification_email">Send Verification Email</string>
     <string name="save_changes">Save Changes</string>
+    <string name="privacy_policy">privacy policy</string>
+    <string name="bookable">bookable</string>
+    <string name="unbookable">unbookable</string>
+    <string name="view_playground">view playground</string>
     <string name="forgot_your_password">Forgot your password ?</string>
     <string name="enter_email_to_reset_password">Enter your email to reset your password.</string>
     <string name="set_password">Set password</string>

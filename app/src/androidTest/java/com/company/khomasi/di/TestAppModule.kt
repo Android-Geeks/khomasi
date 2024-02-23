@@ -2,7 +2,7 @@ package com.company.khomasi.di
 
 import android.app.Application
 import androidx.room.Room
-import com.company.khomasi.data.data_source.local.AppDatabase
+import com.company.khomasi.data.data_source.local.database.AppDatabase
 import com.company.khomasi.data.data_source.remote.RetrofitService
 import com.company.khomasi.data.repository.AppRepositoryImpl
 import com.company.khomasi.domain.repository.AppRepository
