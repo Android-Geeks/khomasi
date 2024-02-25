@@ -34,15 +34,15 @@ import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
 
 @Composable
-fun TextField(
+fun MyTextField(
     value: String,
     onValueChange: (String) -> Unit,
     @StringRes label: Int,
-    onImeAction: () -> Unit,
     keyBoardType: KeyboardType,
     modifier: Modifier = Modifier,
     leadingIcon: @Composable (() -> Unit)? = null,
     placeholder: String = "",
+    keyboardActions : KeyboardActions = KeyboardActions.Default,
     imeAction: ImeAction = ImeAction.Done,
 ) {
     var isPassword by remember { mutableStateOf(keyBoardType == KeyboardType.Password) }
@@ -61,7 +61,6 @@ fun TextField(
                             contentDescription = null,
                             modifier = Modifier.size(24.dp)
                         )
-
                     }
                 }
             } else null,
@@ -86,7 +85,7 @@ fun TextField(
                 keyboardType = keyBoardType,
                 imeAction = imeAction
             ),
-            keyboardActions = KeyboardActions(onDone = { onImeAction() }),
+            keyboardActions = keyboardActions,
             visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None
         )
     }
@@ -97,13 +96,12 @@ fun TextField(
 @Composable
 fun TextFieldPreview() {
     KhomasiTheme {
-        TextField(
+        MyTextField(
             value = "Zeyad",
             onValueChange = { },
             label = R.string.phone_number,
             placeholder = "Enter your email",
-            keyBoardType = KeyboardType.Password,
-            onImeAction = { /* handle done action */ },
+            keyBoardType = KeyboardType.Text,
             modifier = Modifier
         )
     }
