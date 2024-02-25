@@ -113,7 +113,8 @@ fun RecreateNewPasswordScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 8.dp, end = 8.dp),
-            buttonEnable = recreateViewModel.checkPassMatching(recreateUiState.newPassword)
+            shape = MaterialTheme.shapes.medium,
+            buttonEnable = recreateViewModel.checkValidation(recreateUiState.newPassword)
         )
 
         MyTextButton(
