@@ -4,6 +4,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -32,6 +34,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.theme.darkText
+import com.company.khomasi.theme.lightText
 
 @Composable
 fun MyTextField(
@@ -42,12 +46,16 @@ fun MyTextField(
     modifier: Modifier = Modifier,
     leadingIcon: @Composable (() -> Unit)? = null,
     placeholder: String = "",
-    keyboardActions : KeyboardActions = KeyboardActions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     imeAction: ImeAction = ImeAction.Done,
 ) {
     var isPassword by remember { mutableStateOf(keyBoardType == KeyboardType.Password) }
     Column {
-        Text(text = stringResource(id = label), textAlign = TextAlign.Start)
+        Text(
+            text = stringResource(id = label),
+            textAlign = TextAlign.Start,
+            color = MaterialTheme.colorScheme.tertiary
+        )
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,

@@ -28,7 +28,8 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    RegisterScreen()
+                    Log.d("TAG", mainViewModel.startDestination.value)
+                    NavGraph(mainViewModel.startDestination.value)
                 }
             }
         }

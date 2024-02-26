@@ -13,6 +13,10 @@ class RegisterViewModel @Inject constructor(
     private val _user = mutableStateOf(UserState())
     val user: State<UserState> = _user
 
+    init {
+        clear()
+    }
+
     fun onFirstNameChange(firstName: String) {
         _user.value = _user.value.copy(firstName = firstName)
     }
@@ -37,10 +41,6 @@ class RegisterViewModel @Inject constructor(
         _user.value = _user.value.copy(phoneNumber = phoneNumber)
     }
 
-    fun onNextPage() {
-        _user.value = _user.value.copy(page = _user.value.page + 1)
-    }
-
     fun isValidCredentials(email: String, password: String): Boolean {
         val emailPattern = Regex("[a-zA-Z0–9._-]+@[a-z]+\\.+[a-z]+")
         val passwordPattern = Regex("^(?=.*[0–9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$")
@@ -50,5 +50,4 @@ class RegisterViewModel @Inject constructor(
     fun clear() {
         _user.value = UserState()
     }
-
 }
