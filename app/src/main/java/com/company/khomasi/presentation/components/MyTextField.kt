@@ -4,7 +4,6 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,19 +22,19 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
-import com.company.khomasi.theme.darkText
-import com.company.khomasi.theme.lightText
 
 @Composable
 fun MyTextField(
@@ -72,7 +71,24 @@ fun MyTextField(
                     }
                 }
             } else null,
-            prefix = if (keyBoardType == KeyboardType.Phone) {
+            suffix = if (keyBoardType == KeyboardType.Phone && LocalLayoutDirection.current == LayoutDirection.Rtl) {
+                {
+                    Row {
+                        Text(
+                            text = " | 20+ ",
+                            color = MaterialTheme.colorScheme.outline
+                        )
+                        Image(
+                            painter = painterResource(id = R.drawable.egypt),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .align(CenterVertically)
+                                .size(24.dp),
+                        )
+                    }
+                }
+            } else null,
+            prefix = if (keyBoardType == KeyboardType.Phone && LocalLayoutDirection.current == LayoutDirection.Ltr) {
                 {
                     Row {
                         Image(
@@ -82,7 +98,10 @@ fun MyTextField(
                                 .align(CenterVertically)
                                 .size(24.dp),
                         )
-                        Text(" +20 | ")
+                        Text(
+                            text = " +20 | ",
+                            color = MaterialTheme.colorScheme.outline
+                        )
                     }
                 }
             } else null,
@@ -99,8 +118,8 @@ fun MyTextField(
     }
 }
 
-@Preview(name = "dark", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-@Preview(name = "light", showBackground = true, uiMode = UI_MODE_NIGHT_NO)
+@Preview(name = "dark", showBackground = true, uiMode = UI_MODE_NIGHT_YES, locale = "en")
+@Preview(name = "light", showBackground = true, uiMode = UI_MODE_NIGHT_NO, locale = "ar")
 @Composable
 fun TextFieldPreview() {
     KhomasiTheme {
@@ -109,7 +128,7 @@ fun TextFieldPreview() {
             onValueChange = { },
             label = R.string.phone_number,
             placeholder = "Enter your email",
-            keyBoardType = KeyboardType.Text,
+            keyBoardType = KeyboardType.Phone,
             modifier = Modifier
         )
     }

@@ -3,12 +3,14 @@ package com.company.khomasi.presentation.register.pages
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
@@ -21,6 +23,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
+import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.presentation.register.RegisterViewModel
 import com.company.khomasi.theme.KhomasiTheme
@@ -44,7 +47,7 @@ fun RegisterDataPage(
     )
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceEvenly
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         when (userState.page) {
             1 -> {
@@ -120,6 +123,22 @@ fun RegisterDataPage(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
+        }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = R.string.already_have_an_account),
+                style = MaterialTheme.typography.bodySmall,
+                color = if (isDark) darkText else lightText
+            )
+            MyTextButton(
+                text = R.string.login,
+                isUnderlined = false,
+                onClick = { /*TODO*/ }
+            )
         }
 
     }

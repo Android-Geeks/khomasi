@@ -29,7 +29,6 @@ private val darkThemeColors = darkColorScheme(
     surface = darkCard,
     tertiary = darkSubText,
     outline = darkHint,
-
 )
 
 @Composable

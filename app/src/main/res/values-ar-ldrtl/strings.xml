@@ -31,6 +31,7 @@
     <string name="go">انطلق</string>
     <string name="quintet">خماسي</string>
     <string name="phone_or_email">رقم الهاتف أو البريد الإلكتروني</string>
+    <string name="already_have_an_account">هل لديك حساب؟ </string>
     <string name="your_name">اسمك</string>
     <string name="next">التالي</string>
     <string name="view_all">عرض الكل</string>
