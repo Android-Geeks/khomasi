@@ -75,7 +75,7 @@ fun PlaygroundCard(
                 ) {
                     val bookingText =
                         if (playground.isBookable) stringResource(id = R.string.bookable)
-                        else stringResource(id = R.string.unbookable)
+                        else stringResource(id = R.string.un_bookable)
                     Text(
                         text = bookingText,
                         textAlign = TextAlign.Start,
