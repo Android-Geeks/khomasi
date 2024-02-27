@@ -6,11 +6,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -45,20 +43,9 @@ fun LogIn(
 ) {
     val logInState by logInViewModel.uiState.collectAsState()
 
-    Box(modifier = modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(id = R.drawable.starting_player),
-            contentDescription = null,
-            modifier = modifier
-                .fillMaxWidth()
-                .height(245.dp)
-                .padding(top = 20.dp, start = 11.dp, end = 11.dp)
-        )
-
         Card(
             modifier = modifier
-                .fillMaxWidth()
-                .align(Alignment.BottomCenter),
+                .fillMaxWidth(),
             shape = MaterialTheme.shapes.large
 
         ) {
@@ -71,7 +58,7 @@ fun LogIn(
 
                 Text(
                     text = stringResource(id = R.string.you_are_almost_there),
-                    style = MaterialTheme.typography.displaySmall,
+                    style = MaterialTheme.typography.displayMedium,
                     color = MaterialTheme.colorScheme.onBackground,
                     modifier = modifier.fillMaxWidth()
                 )
@@ -92,8 +79,16 @@ fun LogIn(
                     label = R.string.password ,
                     onImeAction = {ImeAction.Done},
                     keyBoardType = KeyboardType.Password,
-                    supportingText = {logInViewModel.createAccount()}
 
+                )
+                Text(
+                    text = stringResource(id = R.string.forgot_your_password),
+                    style = MaterialTheme.typography.bodySmall,
+                    textAlign = TextAlign.End,
+                    modifier = modifier
+                        .clickable {logInViewModel.createAccount() }
+                        .fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.primary,
                 )
                 Spacer(modifier = modifier.height(24.dp))
 
@@ -121,8 +116,6 @@ fun LogIn(
 
                     Text(
                         text = stringResource(id = R.string.do_not_have_an_account),
-                        modifier = modifier
-                            .clickable { },
                         style = MaterialTheme.typography.bodySmall
                     )
 
@@ -133,7 +126,6 @@ fun LogIn(
                                        logInViewModel.createAccount()
                             },
                         color = MaterialTheme.colorScheme.primary,
-                        textDecoration = TextDecoration.Underline,
                         style = MaterialTheme.typography.bodySmall
 
                     )
@@ -222,8 +214,6 @@ fun LogIn(
         }
     }
 
-
-}
 
 
 @Preview(name = "light", uiMode = UI_MODE_NIGHT_NO, showBackground = true)

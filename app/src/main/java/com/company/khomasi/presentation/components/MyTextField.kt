@@ -4,7 +4,6 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,7 +12,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -43,7 +41,6 @@ fun MyTextField(
     onImeAction: () -> Unit,
     keyBoardType: KeyboardType,
     modifier: Modifier = Modifier,
-    supportingText: (() -> Unit?)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
     placeholder: String = "",
     imeAction: ImeAction = ImeAction.Done,
@@ -68,19 +65,7 @@ fun MyTextField(
                     }
                 }
             } else null,
-            supportingText = if (keyBoardType == KeyboardType.Password) {
-                {
-                    Text(
-                        text = stringResource(id = R.string.forgot_your_password),
-                        style = MaterialTheme.typography.bodySmall,
-                        textAlign = TextAlign.End,
-                        modifier = modifier
-                            .clickable { }
-                            .fillMaxWidth(),
-                        color = MaterialTheme.colorScheme.primary,
-                    )
-                }
-            } else null,
+
             prefix = if (keyBoardType == KeyboardType.Phone) {
                 {
                     Row {
