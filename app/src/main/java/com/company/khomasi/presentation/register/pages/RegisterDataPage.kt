@@ -4,8 +4,10 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,6 +23,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
@@ -47,14 +50,15 @@ fun RegisterDataPage(
     )
     Column(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.spacedBy(16.dp) // Adjust the spacing between items
     ) {
         when (userState.page) {
             1 -> {
                 Text(
                     text = stringResource(id = R.string.please_confirm_your_information),
                     style = MaterialTheme.typography.displayMedium,
-                    color = if (isDark) darkText else lightText
+                    color = if (isDark) darkText else lightText,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
                 MyTextField(
                     value = userState.firstName,
@@ -80,6 +84,8 @@ fun RegisterDataPage(
                     keyBoardType = KeyboardType.Phone,
                     keyboardActions = keyboardActions
                 )
+                // Spacer to take remaining space
+                Spacer(modifier = Modifier.weight(1f))
                 MyButton(
                     text = R.string.next,
                     onClick = { },
@@ -117,6 +123,8 @@ fun RegisterDataPage(
                     keyBoardType = KeyboardType.Password,
                     keyboardActions = keyboardActions
                 )
+                // Spacer to take remaining space
+                Spacer(modifier = Modifier.weight(1f))
                 MyButton(
                     text = R.string.create_account,
                     onClick = {},
@@ -140,7 +148,6 @@ fun RegisterDataPage(
                 onClick = { /*TODO*/ }
             )
         }
-
     }
 }
 
