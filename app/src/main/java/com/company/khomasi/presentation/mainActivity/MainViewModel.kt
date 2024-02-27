@@ -24,11 +24,13 @@ class MainViewModel @Inject constructor(
     val startDestination: State<String> = _startDestination
 
     init {
-        appEntryUseCases.readAppEntry().onEach { startFromHome ->
-            if (startFromHome)
-                _startDestination.value = Routes.KhomasiNavigation.name
-            else
-                _startDestination.value = Routes.AppStartNavigation.name
+        appEntryUseCases.readAppEntry().onEach { startingRoute ->
+            when (startingRoute) {
+                Routes.KhomasiNavigation -> _startDestination.value = Routes.KhomasiNavigation.name
+                Routes.AuthNavigation -> _startDestination.value = Routes.AuthNavigation.name
+                Routes.AppStartNavigation -> _startDestination.value =
+                    Routes.AppStartNavigation.name
+            }
             delay(200)
             _splashCondition.value = false
         }.launchIn(viewModelScope)

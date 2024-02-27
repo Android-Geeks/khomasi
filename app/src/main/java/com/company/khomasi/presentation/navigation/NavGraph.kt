@@ -37,12 +37,22 @@ fun NavGraph(
             }
         }
 
+        // Navigation for Auth
+        navigation(
+            route = Routes.AuthNavigation.name,
+            startDestination = Screens.Login.name
+        ) {
+            composable(route = Screens.Login.name) {
+
+            }
+        }
+
         // Navigation for Khomasi app
         navigation(
             route = Routes.KhomasiNavigation.name,
-            startDestination = Routes.KhomasiNavigatorScreen.name
+            startDestination = Screens.KhomasiNavigatorScreen.name
         ) {
-            composable(route = Routes.KhomasiNavigatorScreen.name) {
+            composable(route = Screens.KhomasiNavigatorScreen.name) {
                 KhomasiNavigator()
             }
         }
@@ -55,7 +65,7 @@ fun NavGraph(
 fun DefaultPreview() {
     KhomasiTheme {
         NavGraph(
-            startDestination = Screens.Home.name
+            startDestination = Routes.KhomasiNavigation.name
         )
     }
 }

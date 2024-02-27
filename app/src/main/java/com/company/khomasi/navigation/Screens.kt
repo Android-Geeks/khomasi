@@ -6,10 +6,12 @@ enum class Screens {
     Playgrounds,
     Favorite,
     OnBoarding,
+    Login,
+    KhomasiNavigatorScreen,
 }
 
 enum class Routes {
     AppStartNavigation,
     KhomasiNavigation,
-    KhomasiNavigatorScreen,
+    AuthNavigation,
 }
