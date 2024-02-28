@@ -1,0 +1,33 @@
+package com.company.khomasi.domain.model
+
+
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
+data class User(
+    @SerialName("city")
+    val city: String,
+    @SerialName("coins")
+    val coins: Int,
+    @SerialName("country")
+    val country: String,
+    @SerialName("email")
+    val email: String,
+    @SerialName("firstName")
+    val firstName: String,
+    @SerialName("lastName")
+    val lastName: String,
+    @SerialName("latitude")
+    val latitude: Int,
+    @SerialName("longitude")
+    val longitude: Int,
+    @SerialName("phoneNumber")
+    val phoneNumber: String,
+    @SerialName("profilePicture")
+    val profilePicture: String?,
+    @SerialName("rating")
+    val rating: Int,
+    @SerialName("userID")
+    val userID: String
+)

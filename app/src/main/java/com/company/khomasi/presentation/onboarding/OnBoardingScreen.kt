@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -30,8 +31,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnBoardingScreen(
     onSkipClick: () -> Unit,
+    x: String,
 ) {
-    Column(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
+    Text(text = x)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
+    ) {
         val pagerState = rememberPagerState(initialPage = 0) {
             pages.size
         }
@@ -89,7 +96,8 @@ fun OnBoardingScreen(
 fun OnBoardingScreenPreview() {
     KhomasiTheme {
         OnBoardingScreen(
-            onSkipClick = {}
+            onSkipClick = {},
+            x = "frtjththdeth"
         )
     }
 }
