@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.ui.screens.SignUpScreen
+package com.company.khomasi.presentation.ui.screens.signUpScreen
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -29,18 +29,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
+import com.company.khomasi.presentation.ui.screens.SignUpScreen.SignUpViewModel
 import com.company.khomasi.theme.Shapes
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
-    signUpViewModel: SignUpViewModel= viewModel()
+    signUpViewModel: SignUpViewModel = hiltViewModel()
 ){
-  //  val signUpUiState by signUpViewModel.uiState.collectAsState()
 
     Column (modifier = modifier
         .background(color = MaterialTheme.colorScheme.background)
