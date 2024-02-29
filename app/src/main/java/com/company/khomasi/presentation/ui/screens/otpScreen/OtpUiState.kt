@@ -1,7 +1,6 @@
 package com.company.khomasi.presentation.ui.screens.otpScreen
 
-class OtpUiState {
-      val email:String =" "
-      val code: String =" "
-
-}
+data class OtpUiState(
+    val code: String = "",
+    val email: String = ""
+)
