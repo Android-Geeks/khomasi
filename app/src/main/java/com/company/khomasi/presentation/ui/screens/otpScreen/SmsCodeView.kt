@@ -29,7 +29,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.theme.KhomasiTheme
 
 @Composable
@@ -39,19 +39,16 @@ fun SmsCodeView(
     textStyle: TextStyle,
     smsFulled: (String) -> Unit,
     modifier: Modifier = Modifier,
-    otpViewModel: OtpViewModel= viewModel()
+    otpViewModel: OtpViewModel= hiltViewModel()
 ) {
-    val enteredNumbers = remember {
-        mutableStateListOf(*Array(smsCodeLength) { "" })
-    }
     val focusRequesters: List<FocusRequester> = remember {
         (0 until smsCodeLength).map { FocusRequester() }
     }
-//    val enteredNumbers = remember {
-//        mutableStateListOf(
-//            *((0 until smsCodeLength).map { "" }.toTypedArray())
-//        )
-//    }
+    val enteredNumbers = remember {
+        mutableStateListOf(
+            *((0 until smsCodeLength).map { "" }.toTypedArray())
+        )
+    }
 
     Row(
         modifier = modifier

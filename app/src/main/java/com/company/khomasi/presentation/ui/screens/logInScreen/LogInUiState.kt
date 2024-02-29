@@ -1,4 +1,6 @@
 package com.company.khomasi.presentation.ui.screens.logInScreen
 
-class LogInUiState {
-}
+data class LogInUiState (
+    val password:String=" ",
+    val email:String=" "
+)

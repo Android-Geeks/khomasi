@@ -29,7 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.theme.KhomasiTheme
@@ -38,7 +38,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun OtpScreen(
     modifier: Modifier = Modifier,
-    otpViewModel: OtpViewModel = viewModel()
+    otpViewModel: OtpViewModel = hiltViewModel()
 ) {
     //val otpUiState by otpViewModel.uiState.collectAsState()
 

@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextField
@@ -39,7 +39,7 @@ import com.company.khomasi.theme.KhomasiTheme
 @Composable
 fun LogIn(
     modifier: Modifier = Modifier,
-    logInViewModel: LogInViewModel = viewModel()
+    logInViewModel: LogInViewModel = hiltViewModel()
 ) {
     val logInState by logInViewModel.uiState.collectAsState()
 
@@ -65,7 +65,7 @@ fun LogIn(
                 Spacer(modifier = modifier.height(24.dp))
 
                     MyTextField(
-                        value = logInViewModel.email ,
+                        value = logInState.email ,
                         onValueChange ={logInViewModel.updateEmail(it)} ,
                         label = R.string.email ,
                         onImeAction = {ImeAction.Done},
@@ -74,7 +74,7 @@ fun LogIn(
                 Spacer(modifier = modifier.height(24.dp))
 
                 MyTextField(
-                    value = logInViewModel.password ,
+                    value = logInState.password ,
                     onValueChange ={logInViewModel.updatePassword(it)} ,
                     label = R.string.password ,
                     onImeAction = {ImeAction.Done},

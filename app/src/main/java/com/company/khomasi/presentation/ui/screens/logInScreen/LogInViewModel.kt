@@ -1,45 +1,43 @@
 package com.company.khomasi.presentation.ui.screens.logInScreen
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
-class LogInViewModel :ViewModel() {
+class LogInViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(LogInUiState())
-    val uiState : StateFlow<LogInUiState> = _uiState.asStateFlow()
+    val uiState: StateFlow<LogInUiState> = _uiState.asStateFlow()
 
-
-   var email by mutableStateOf("")
-       private set
-
-    fun updateEmail(input: String) {
-        email = input
-    }
-    var password by mutableStateOf("")
-        private set
-
-    fun updatePassword(input: String) {
-        password = input
-    }
-    fun logIn(){
-
-    }
-    fun createAccount(){
-
+    fun updatePassword(newPassword: String) {
+        _uiState.value = _uiState.value.copy(password = newPassword)
     }
 
-    fun logo(){
-
+    fun updateEmail(newEmail: String) {
+        _uiState.value = _uiState.value.copy(email = newEmail)
     }
-    fun privacyAndPolicy(){
 
+    fun logIn() {
+        viewModelScope.launch {
+
+        }
     }
-    fun helpAndSupport(){
+
+    fun createAccount() {
+        viewModelScope.launch {
+        }
 
     }
 
+
+    fun logo() {
+    }
+
+    fun privacyAndPolicy() {
+    }
+
+    fun helpAndSupport() {
+    }
 }
