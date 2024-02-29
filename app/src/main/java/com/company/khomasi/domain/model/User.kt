@@ -19,9 +19,9 @@ data class User(
     @SerialName("lastName")
     val lastName: String,
     @SerialName("latitude")
-    val latitude: Int,
+    val latitude: Float,
     @SerialName("longitude")
-    val longitude: Int,
+    val longitude: Float,
     @SerialName("phoneNumber")
     val phoneNumber: String,
     @SerialName("profilePicture")
