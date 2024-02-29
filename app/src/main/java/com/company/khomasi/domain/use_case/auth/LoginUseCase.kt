@@ -7,4 +7,5 @@ class LoginUseCase(
 ) {
     suspend operator fun invoke(email: String, password: String) =
         remoteUserRepository.loginUser(email, password)
+
 }

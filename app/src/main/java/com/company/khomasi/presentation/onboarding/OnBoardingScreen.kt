@@ -20,6 +20,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
+import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.onboarding.components.OnBoardingPage
@@ -31,9 +33,14 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnBoardingScreen(
     onSkipClick: () -> Unit,
-    x: String,
+    x: DataState<UserLoginResponse>,
 ) {
-    Text(text = x)
+    val res = when (x) {
+        is DataState.Loading -> "Loading..."
+        is DataState.Success -> x.data.toString()
+        is DataState.Error -> x.message
+    }
+    Text(text = res)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -95,9 +102,6 @@ fun OnBoardingScreen(
 @Composable
 fun OnBoardingScreenPreview() {
     KhomasiTheme {
-        OnBoardingScreen(
-            onSkipClick = {},
-            x = "frtjththdeth"
-        )
+
     }
 }
