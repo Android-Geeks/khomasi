@@ -152,6 +152,7 @@
     <string name="help_and_support">المساعدة والدعم</string>
     <string name="terms_of_service">شروط الخدمة</string>
     <string name="send_verification_email">إرسال بريد التحقق</string>
+    <string name="enter_verification_email">ادخل بريد التحقق</string>
     <string name="save_changes">حفظ التغييرات</string>
     <string name="privacy_policy">سياسة الخصوصية</string>
     <string name="bookable">قابل للحجز</string>
@@ -161,5 +162,6 @@
     <string name="do_not_have_an_account">لاتملك حساب؟</string>
     <string name="create_an_account_now">إنشاء حساب الان</string>
     <string name="forgot_your_password">نسيت كلمة المرور؟</string>
+    <string name="Your_code_has_arrived_in_your_email">وصلك رمز تحقق على ايميلك</string>
 
 </resources>
