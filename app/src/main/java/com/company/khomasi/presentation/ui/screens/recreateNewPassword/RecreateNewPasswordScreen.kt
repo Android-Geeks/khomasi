@@ -17,7 +17,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,6 +32,10 @@ import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkHint
 import com.company.khomasi.theme.lightHint
 import com.nulabinc.zxcvbn.Zxcvbn
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+
 
 @Composable
 fun RecreateNewPasswordScreen(
@@ -130,39 +133,30 @@ fun PasswordStrengthMeter(
     enable: Boolean         // Change happened
                             // "to avoid coloring the first partition when passStrength is 0 "
 ) {
-
     val passwordStrength = Zxcvbn().measure(password).score
 
+    val indicatorColoringRange by remember {
+        mutableStateOf(listOf(
+            listOf(0, 1, 2, 3, 4),
+            listOf(2, 3, 4),
+            listOf(3, 4),
+            listOf(4)
+        ))
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.Center
     ){
-        PasswordStrengthIndicator(
-            passwordStrength = passwordStrength,
-            listOf(0, 1, 2, 3, 4),
-            Modifier.weight(1f),
-            enable
-        )
-        PasswordStrengthIndicator(
-            passwordStrength = passwordStrength,
-            listOf(2, 3, 4),
-            Modifier.weight(1f),
-            enable
-        )
-        PasswordStrengthIndicator(
-            passwordStrength = passwordStrength,
-            listOf(3, 4),
-            Modifier.weight(1f),
-            enable
-        )
-        PasswordStrengthIndicator(
-            passwordStrength = passwordStrength,
-            listOf(4),
-            Modifier.weight(1f),
-            enable
-        )
+        indicatorColoringRange.forEach { config ->
+            PasswordStrengthIndicator(
+                passwordStrength = passwordStrength,
+                coloringEnableRange = config,
+                modifier = Modifier.weight(1f),
+                enable = enable
+            )
+        }
     }
 }
 
@@ -189,8 +183,8 @@ fun PasswordStrengthIndicator(
                     .fillMaxSize()
                     .background(
                         color = when (passwordStrength) {
-                            0,1 -> Color.Red
-                            2,3 -> Color(0xFFF3F311)
+                            0, 1 -> Color.Red
+                            2, 3 -> Color(0xFFF3F311)
                             4 -> Color.Green
                             else -> Color(0xFFDDDDDD)
                         }
