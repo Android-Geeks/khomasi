@@ -3,6 +3,7 @@ package com.company.khomasi.presentation.components
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -87,12 +88,15 @@ fun MyOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
-    shape: CornerBasedShape = MaterialTheme.shapes.large,
+    shape: CornerBasedShape = MaterialTheme.shapes.medium,
 ) {
     OutlinedButton(
         onClick = onClick,
         modifier = modifier,
         shape = shape,
+        border = BorderStroke(1.dp,MaterialTheme.colorScheme.primary)
+
+
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,

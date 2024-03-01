@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.ui.screens.SignUpScreen
+package com.company.khomasi.presentation.ui.screens.signUpScreen
 
 import androidx.lifecycle.ViewModel
 

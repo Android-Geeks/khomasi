@@ -50,7 +50,7 @@ fun PlaygroundCard(
             .padding(8.dp)
     ) {
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.background)
         ) {
@@ -64,12 +64,12 @@ fun PlaygroundCard(
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
                     placeholder = painterResource(id = R.drawable.playground),
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .height(131.dp)
                 )
                 Row(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .height(62.dp)
                 ) {
@@ -80,7 +80,7 @@ fun PlaygroundCard(
                         text = bookingText,
                         textAlign = TextAlign.Start,
                         style = MaterialTheme.typography.bodyLarge,
-                        modifier = modifier
+                        modifier = Modifier
                             .padding(top = 12.dp)
                             .clip(RoundedCornerShape(topEnd = 4.dp, bottomEnd = 4.dp))
                             .background(
@@ -88,7 +88,7 @@ fun PlaygroundCard(
                             )
                             .padding(start = 5.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
                     )
-                    Spacer(modifier = modifier.weight(1f))
+                    Spacer(modifier = Modifier.weight(1f))
                     FavoriteIcon(
                         onFavoriteClick = { /*TODO*/ },
                         isFavorite = false,
@@ -96,83 +96,83 @@ fun PlaygroundCard(
                     )
                 }
             }
-            Row(modifier = modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = playground.name,
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = modifier.weight(1f)
+                    modifier = Modifier.weight(1f)
                 )
-                Spacer(modifier = modifier.weight(2f))
+                Spacer(modifier = Modifier.weight(2f))
 
                 Text(
                     text = playground.rating.toString(),
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.bodyLarge,
-                    modifier = modifier
+                    modifier = Modifier
                         .weight(0.2f)
                         .padding(top = 8.dp)
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.unfilled_star),
                     contentDescription = null,
-                    modifier = modifier
+                    modifier = Modifier
                         .padding(top = 13.dp, start = 4.dp)
                 )
 
             }
             Row(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.mappin),
                     contentDescription = null,
-                    modifier = modifier.padding(top = 7.dp, end = 4.dp)
+                    modifier = Modifier.padding(top = 7.dp, end = 4.dp)
 
                 )
                 Text(
                     text = playground.address,
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = modifier
+                    modifier = Modifier
                 )
 
 
             }
             HorizontalDivider(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp),
                 thickness = 1.dp
             )
-            Row(modifier = modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth()) {
                 Icon(
                     painter = painterResource(id = R.drawable.currencycircledollar),
                     contentDescription = null,
-                    modifier = modifier.padding(end = 4.dp, top = 12.dp)
+                    modifier = Modifier.padding(end = 4.dp, top = 12.dp)
                 )
                 Text(
                     text = playground.price + " / ",
                     textAlign = TextAlign.End,
-                    modifier = modifier
+                    modifier = Modifier
                         .padding(top = 6.dp)
                 )
 
                 Text(
                     text = playground.openingHours,
                     textAlign = TextAlign.End,
-                    modifier = modifier
+                    modifier = Modifier
                         .padding(top = 6.dp)
                 )
-                Spacer(modifier = modifier.weight(1.5f))
+                Spacer(modifier = Modifier.weight(1.5f))
                 MyButton(
                     text = R.string.view_playground,
                     onClick = { },
-                    modifier = modifier
+                    modifier = Modifier
                         .background(
                             color = MaterialTheme.colorScheme.primary,
                             shape = MaterialTheme.shapes.medium

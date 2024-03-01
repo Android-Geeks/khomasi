@@ -4,8 +4,8 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,49 +33,49 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
-import com.company.khomasi.presentation.ui.screens.SignUpScreen.SignUpViewModel
+import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.Shapes
+import com.company.khomasi.theme.darkHint
+import com.company.khomasi.theme.darkSubText
+import com.company.khomasi.theme.lightHint
+import com.company.khomasi.theme.lightSubText
 
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
-    signUpViewModel: SignUpViewModel = hiltViewModel()
+    signUpViewModel: SignUpViewModel = hiltViewModel(),
+    isDark: Boolean = isSystemInDarkTheme()
 ){
 
     Column (modifier = modifier
         .background(color = MaterialTheme.colorScheme.background)
     )
     {
-        Spacer(modifier = modifier.height(140.dp))
+        Spacer(modifier = Modifier.height(140.dp))
         Image(painter = painterResource(id = R.drawable.player) ,
             contentDescription = " ",
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .height(240.dp)
                 .padding(11.dp),
             contentScale = ContentScale.Crop
         )
-        Spacer(modifier = modifier.height(68.dp))
+        Spacer(modifier = Modifier.height(68.dp))
 
         MyOutlinedButton(
             text = R.string.create_account,
             onClick = { signUpViewModel.createAccount() },
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
                 .padding(horizontal = 24.dp)
-                .border(
-                    width = 1.1.dp,
-                    color = MaterialTheme.colorScheme.primary,
-                    shape = MaterialTheme.shapes.medium
-                )
         )
 
-        Spacer(modifier = modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
 
         MyButton(text = R.string.login,
             onClick = { signUpViewModel.logIn() },
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
                 .padding(horizontal = 24.dp)
@@ -84,34 +84,36 @@ fun SignUpScreen(
                     shape = MaterialTheme.shapes.medium
                 )
         )
-        Spacer(modifier = modifier.height(34.dp))
+        Spacer(modifier = Modifier.height(34.dp))
 
-        Row (modifier = modifier.fillMaxWidth()){
+        Row (modifier = Modifier.fillMaxWidth()){
             HorizontalDivider(thickness = 1.dp,
-                modifier = modifier
+                modifier = Modifier
                     .weight(1f)
                     .padding(start = 34.dp, end = 3.dp)
                     .align(Alignment.CenterVertically)
             )
-            Text(text = stringResource(id =R.string.or_register_via),
-                modifier = modifier
+            Text(
+                text = stringResource(id = R.string.or_register_via),
+                modifier = Modifier
                     .weight(0.7f)
-                    .padding(start = 5.dp)
-                    ,
-            textAlign = TextAlign.Center
+                    .padding(start = 5.dp),
+                textAlign = TextAlign.Center,
+                style = MaterialTheme.typography.bodySmall,
+                color = if (isDark) darkHint else lightHint
             )
 
             HorizontalDivider(
-                modifier = modifier
+                modifier = Modifier
                     .weight(1f)
                     .padding(start = 3.dp, end = 34.dp)
                     .align(Alignment.CenterVertically),
                 thickness = 1.dp
             )
         }
-        Spacer(modifier = modifier.height(28.dp))
+        Spacer(modifier = Modifier.height(28.dp))
         Box(
-            modifier = modifier
+            modifier = Modifier
                 .size(56.dp)
                 .background(
                     color = Color.White,
@@ -125,40 +127,47 @@ fun SignUpScreen(
             Image(
                 painter = painterResource(id = R.drawable.icons_google),
                 contentDescription =null ,
-                modifier = modifier
+                modifier = Modifier
                     .size(32.dp)
-                    .clickable {signUpViewModel.logo() }
+                    .clickable { signUpViewModel.logo() }
             )
         }
-        Spacer(modifier = modifier.height(22.dp))
+        Spacer(modifier = Modifier.height(22.dp))
 
         Text(text = stringResource(id = R.string.by_registering_you_agree_to),
             textAlign = TextAlign.Center,
-            modifier = modifier
+            style = MaterialTheme.typography.bodySmall,
+            color = if(isDark) darkSubText else lightSubText,
+            modifier = Modifier
                 .align(alignment = Alignment.CenterHorizontally))
         Row(verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
-            modifier = modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
 
             Text(
-                text = stringResource(id =R.string.privacy_policy),
+                text = stringResource(id = R.string.privacy_policy) ,
                 color = MaterialTheme.colorScheme.primary,
                 textDecoration = TextDecoration.Underline,
-                modifier = modifier
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier
                     .clickable { signUpViewModel.privacyAndPolicy() }
             )
 
-            Text(text = stringResource(id = R.string.and),
-                color = MaterialTheme.colorScheme.primary
-            )
+            Text(
+                text = stringResource(id = R.string.and),
+                style = MaterialTheme.typography.bodySmall,
+                color = if(isDark) darkSubText else lightSubText,
+                modifier = Modifier.padding(horizontal = 5.dp)
+                )
 
             Text(
-                text = stringResource(id =R.string.help_and_support),
+                text = stringResource(id = R.string.help_and_support),
                 color = MaterialTheme.colorScheme.primary,
                 textDecoration = TextDecoration.Underline,
-                modifier = modifier
-                    .clickable {signUpViewModel.helpAndSupport()  }
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier
+                    .clickable { signUpViewModel.helpAndSupport() }
 
             )
         }
@@ -169,7 +178,7 @@ fun SignUpScreen(
 @Preview(name="light", uiMode = UI_MODE_NIGHT_NO)
 @Composable
 fun SignUpPreview(){
-    MaterialTheme {
+    KhomasiTheme {
         SignUpScreen()
     }
 }
