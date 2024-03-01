@@ -1,27 +1,10 @@
 package com.company.khomasi.domain
 
-data class DataState<out T>(
-    val data: T? = null,
-    val error: String? = null,
-    val loading: Boolean = false
-) {
-
-    companion object {
-
-        fun <T> success(data: T): DataState<T> {
-            return DataState(data = data)
-        }
-
-        fun <T> error(message: String): DataState<T> {
-            return DataState(error = message)
-        }
-
-        fun <T> loading(): DataState<T> = DataState(loading = true)
-    }
+sealed class DataState<out T> {
+    data class Success<out T>(val data: T) : DataState<T>()
+    data class Error(val message: String) : DataState<Nothing>()
+    data object Loading : DataState<Nothing>()
 }
-
-
-
 
 
 

@@ -32,7 +32,8 @@ fun NavGraph(
             composable(route = Screens.OnBoarding.name) {
                 val viewModel: OnboardingViewModel = hiltViewModel()
                 OnBoardingScreen(
-                    onSkipClick = { viewModel.onSkipClick() }
+                    onSkipClick = { viewModel.onSkipClick() },
+                    // x = viewModel.x.collectAsState().value
                 )
             }
         }
