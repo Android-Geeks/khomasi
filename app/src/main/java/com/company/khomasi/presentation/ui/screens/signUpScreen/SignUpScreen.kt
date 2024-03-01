@@ -161,7 +161,7 @@ fun SignUpScreen(
                 style = MaterialTheme.typography.bodySmall,
                 color = if(isDark) darkSubText else lightSubText,
                 modifier = Modifier.padding(horizontal = 5.dp)
-                )
+            )
 
             Text(
                 text = stringResource(id = R.string.help_and_support),
