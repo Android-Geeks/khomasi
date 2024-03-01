@@ -2,7 +2,6 @@ package com.company.khomasi.presentation.navigation
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -34,7 +33,7 @@ fun NavGraph(
                 val viewModel: OnboardingViewModel = hiltViewModel()
                 OnBoardingScreen(
                     onSkipClick = { viewModel.onSkipClick() },
-                    x = viewModel.x.collectAsState().value
+                    // x = viewModel.x.collectAsState().value
                 )
             }
         }

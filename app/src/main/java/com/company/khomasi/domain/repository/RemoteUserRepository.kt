@@ -8,10 +8,14 @@ import com.company.khomasi.domain.model.VerificationResponse
 import kotlinx.coroutines.flow.Flow
 
 interface RemoteUserRepository {
-    suspend fun registerUser(userDetails: UserDetails): UserRegisterResponse
+    suspend fun registerUser(userDetails: UserDetails): Flow<DataState<UserRegisterResponse>>
     suspend fun loginUser(email: String, password: String): Flow<DataState<UserLoginResponse>>
-    suspend fun getVerificationCode(email: String): VerificationResponse
-    suspend fun confirmEmail(email: String, code: String): String
-    suspend fun recoverAccount(email: String, code: String, newPassword: String): String
+    suspend fun getVerificationCode(email: String): Flow<DataState<VerificationResponse>>
+    suspend fun confirmEmail(email: String, code: String): Flow<DataState<String>>
+    suspend fun recoverAccount(
+        email: String,
+        code: String,
+        newPassword: String
+    ): Flow<DataState<String>>
 
 }
