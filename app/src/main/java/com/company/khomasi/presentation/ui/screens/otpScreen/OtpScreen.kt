@@ -7,6 +7,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -59,13 +60,13 @@ fun OtpScreen(
                 text = stringResource(id = R.string.Your_code_has_arrived_in_your_email),
                 style = MaterialTheme.typography.displayMedium,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth(),
                 textAlign = TextAlign.Start
             )
-            Spacer(modifier = modifier.height(84.dp))
+            Spacer(modifier = Modifier.height(84.dp))
             Row(
-                modifier = modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
@@ -74,7 +75,7 @@ fun OtpScreen(
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Start
                 )
-                Spacer(modifier = modifier.weight(0.9f))
+                Spacer(modifier = Modifier.weight(0.9f))
                 Text(
                    text = "zeyad@gmail.com",
                     //text= otpUiState.email,
@@ -92,14 +93,15 @@ fun OtpScreen(
                 smsFulled = otpViewModel::updateSmsCode
             )
 
-            Spacer(modifier = modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             MyButton(
                 text = R.string.confirm,
                 onClick = {
                     otpViewModel.logIn()
                 },
-                modifier = modifier
+                contentPadding = PaddingValues(horizontal = 34.dp, vertical = 9.dp),
+                modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp)
                     .padding(horizontal = 10.dp)
@@ -108,12 +110,12 @@ fun OtpScreen(
                         shape = MaterialTheme.shapes.medium
                     )
             )
-            Spacer(modifier = modifier.height(32.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center,
-                modifier = modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
 
                 Text(
@@ -123,7 +125,7 @@ fun OtpScreen(
 
                 Text(
                     text = stringResource(id = R.string.resend_code),
-                    modifier = modifier
+                    modifier = Modifier
                         .clickable {
                             otpViewModel.resendCode()
                         },
@@ -134,7 +136,7 @@ fun OtpScreen(
 
             }
 
-            Spacer(modifier = modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             var time by remember { mutableStateOf(59) }
             LaunchedEffect(Unit) {
@@ -146,7 +148,7 @@ fun OtpScreen(
             val minutes = String.format("%02d", time / 60)
             val seconds = String.format("%02d", time % 60)
             Row (
-                modifier = modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center
             ){
 

@@ -9,6 +9,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -65,6 +66,7 @@ fun SignUpScreen(
         MyOutlinedButton(
             text = R.string.create_account,
             onClick = { signUpViewModel.createAccount() },
+            contentPadding = PaddingValues(vertical = 34.dp, horizontal = 9.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
@@ -75,6 +77,7 @@ fun SignUpScreen(
 
         MyButton(text = R.string.login,
             onClick = { signUpViewModel.logIn() },
+            contentPadding = PaddingValues(vertical = 9.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
@@ -102,7 +105,6 @@ fun SignUpScreen(
                 style = MaterialTheme.typography.bodySmall,
                 color = if (isDark) darkHint else lightHint
             )
-
             HorizontalDivider(
                 modifier = Modifier
                     .weight(1f)

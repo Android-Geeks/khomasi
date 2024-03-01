@@ -3,6 +3,7 @@ package com.company.khomasi.presentation.onboarding
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -75,9 +76,11 @@ fun OnBoardingScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth(),
-                shape = MaterialTheme.shapes.medium
+                shape = MaterialTheme.shapes.medium,
+                contentPadding = PaddingValues(vertical = 9.dp),
 
-            )
+
+                )
         }
 
     }

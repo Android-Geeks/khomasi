@@ -1,6 +1,7 @@
 package com.company.khomasi.presentation.ui.screens.otpScreen
 
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.key
@@ -31,6 +31,8 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.theme.darkHint
+import com.company.khomasi.theme.lightHint
 
 @Composable
 fun SmsCodeView(
@@ -39,6 +41,7 @@ fun SmsCodeView(
     textStyle: TextStyle,
     smsFulled: (String) -> Unit,
     modifier: Modifier = Modifier,
+    isDark : Boolean = isSystemInDarkTheme(),
     otpViewModel: OtpViewModel= hiltViewModel()
 ) {
     val focusRequesters: List<FocusRequester> = remember {
@@ -62,7 +65,8 @@ fun SmsCodeView(
                     .width(60.dp)
                     .height(60.dp)
                     .border(
-                        width = 0.5.dp, color = Color.LightGray,
+                        width = 0.5.dp,
+                        color = if(isDark) darkHint else lightHint,
                         shape = MaterialTheme.shapes.small
 
                     )

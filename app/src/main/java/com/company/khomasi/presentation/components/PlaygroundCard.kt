@@ -5,6 +5,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -73,6 +74,12 @@ fun PlaygroundCard(
                         .fillMaxWidth()
                         .height(62.dp)
                 ) {
+                    FavoriteIcon(
+                        onFavoriteClick = {  },
+                        isFavorite = false,
+                        modifier = Modifier.padding(top = 12.dp, start = 6.dp)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
                     val bookingText =
                         if (playground.isBookable) stringResource(id = R.string.bookable)
                         else stringResource(id = R.string.un_bookable)
@@ -82,25 +89,20 @@ fun PlaygroundCard(
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier
                             .padding(top = 12.dp)
-                            .clip(RoundedCornerShape(topEnd = 4.dp, bottomEnd = 4.dp))
+                            .clip(RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp))
                             .background(
                                 color = MaterialTheme.colorScheme.background
                             )
                             .padding(start = 5.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
                     )
-                    Spacer(modifier = Modifier.weight(1f))
-                    FavoriteIcon(
-                        onFavoriteClick = { /*TODO*/ },
-                        isFavorite = false,
-                        modifier = Modifier.padding(top = 12.dp, end = 6.dp)
-                    )
+
                 }
             }
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = playground.name,
                     textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleSmall,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f)
@@ -110,7 +112,7 @@ fun PlaygroundCard(
                 Text(
                     text = playground.rating.toString(),
                     textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.bodyLarge,
+                    style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier
                         .weight(0.2f)
                         .padding(top = 8.dp)
@@ -158,6 +160,7 @@ fun PlaygroundCard(
                 Text(
                     text = playground.price + " / ",
                     textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .padding(top = 6.dp)
                 )
@@ -165,6 +168,7 @@ fun PlaygroundCard(
                 Text(
                     text = playground.openingHours,
                     textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .padding(top = 6.dp)
                 )
@@ -172,6 +176,7 @@ fun PlaygroundCard(
                 MyButton(
                     text = R.string.view_playground,
                     onClick = { },
+                    contentPadding = PaddingValues(vertical = 4.dp),
                     modifier = Modifier
                         .background(
                             color = MaterialTheme.colorScheme.primary,

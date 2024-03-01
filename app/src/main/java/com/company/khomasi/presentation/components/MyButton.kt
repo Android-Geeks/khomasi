@@ -6,11 +6,14 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -35,11 +38,15 @@ fun MyButton(
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
     shape: CornerBasedShape = MaterialTheme.shapes.large,
+    contentPadding : PaddingValues,
+    color : ButtonColors? = null
 ) {
     Button(
         onClick = onClick,
         modifier = modifier,
         shape = shape,
+        contentPadding = contentPadding,
+        colors = color ?: ButtonDefaults.buttonColors()
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -55,7 +62,8 @@ fun MyButton(
             Text(
                 text = stringResource(id = text),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
+
             )
         }
     }
@@ -88,6 +96,7 @@ fun MyOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
+    contentPadding : PaddingValues,
     shape: CornerBasedShape = MaterialTheme.shapes.medium,
 ) {
     OutlinedButton(
@@ -103,15 +112,18 @@ fun MyOutlinedButton(
             horizontalArrangement = Arrangement.Center
         ) {
             if (icon != 0) {
-                Icon(painter = painterResource(id = icon), contentDescription = null)
+                Icon(
+                    painter = painterResource(id = icon),
+                    contentDescription = null,
+                )
                 Spacer(modifier = Modifier.width(4.dp))
             }
             Text(
                 text = stringResource(id = text),
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.titleLarge
-            )
+                style = MaterialTheme.typography.titleLarge,
+
+                )
         }
     }
 }
@@ -125,12 +137,15 @@ fun ButtonPreview() {
             MyButton(
                 text = R.string.skip,
                 onClick = { },
-                icon = R.drawable.clock
+                icon = R.drawable.clock,
+                contentPadding = PaddingValues(vertical = 4.dp, horizontal = 34.dp)
             )
             MyOutlinedButton(
                 text = R.string.skip,
                 onClick = { },
-                icon = R.drawable.clock
+                icon = R.drawable.clock,
+                contentPadding = PaddingValues(vertical = 4.dp, horizontal = 34.dp)
+
             )
             MyTextButton(
                 text = R.string.skip,

@@ -31,7 +31,9 @@ import com.company.khomasi.presentation.components.MyOutlinedButton
 import com.company.khomasi.presentation.components.Playground
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkSubText
+import com.company.khomasi.theme.darkWarningColor
 import com.company.khomasi.theme.lightSubText
+import com.company.khomasi.theme.lightWarningColor
 
 
 @Composable
@@ -125,7 +127,9 @@ fun BookingCard(
                                     MyButton(
                                         text = R.string.booking_confirmed,
                                         onClick = { },
-                                        Modifier.padding(horizontal = 85.dp)
+                                        shape = MaterialTheme.shapes.medium,
+                                        color = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
+                                        contentPadding = PaddingValues(vertical = 4.dp, horizontal = 34.dp),
                                     )
                                 }
                             }
@@ -135,26 +139,37 @@ fun BookingCard(
                             MyButton(
                                 text = R.string.waiting,
                                 onClick = { },
+                                shape = MaterialTheme.shapes.medium,
                                 modifier = Modifier
                                     .padding(start = 92.dp, end = 92.dp)
-                                    .weight(1f)
-                            )
+                                    .weight(1f),
+                                color = if (isDark) ButtonDefaults.buttonColors(darkWarningColor) else ButtonDefaults.buttonColors(lightWarningColor),
+                                contentPadding = PaddingValues(horizontal = 34.dp,vertical = 4.dp),
+                                )
                         }
 
                         BookingStatus.EXPIRED -> {
                             MyButton(
                                 text = R.string.rebook,
                                 onClick = { },
+                                shape = MaterialTheme.shapes.medium,
                                 icon = R.drawable.arrowscounterclockwise,
-                                modifier = Modifier.weight(1f)
-                            )
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .height(46.dp),
+                                contentPadding = PaddingValues(vertical = 4.dp, horizontal = 24.dp),
+                                )
+
                             Spacer(modifier = Modifier.width(8.dp))
+
                             MyOutlinedButton(
                                 text = R.string.rate_field,
                                 onClick = { },
                                 icon = R.drawable.chatcircledots,
-                                modifier = Modifier.weight(1f)
-                            )
+                                modifier = Modifier
+                                    .weight(1f) ,
+                                contentPadding = PaddingValues(vertical = 4.dp, horizontal = 34.dp),
+                                )
                         }
                     }
 
