@@ -6,6 +6,7 @@ plugins {
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
     id("com.google.devtools.ksp")
+    kotlin("plugin.serialization")
 }
 
 android {
@@ -83,24 +84,17 @@ dependencies {
     // Splash Api
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-    //Kotlinx Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
-
     //Coil
     implementation("io.coil-kt:coil-compose:2.5.0")
 
-    // Constraint Layout
-    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-
     //Datastore
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation ("androidx.datastore:datastore-preferences:1.0.0")
 
     //Compose Foundation
-    implementation("androidx.compose.foundation:foundation:1.6.1")
+    implementation ("androidx.compose.foundation:foundation:1.6.1")
 
     //Accompanist
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
 
     // Compose dependencies
     implementation("androidx.activity:activity-compose:1.8.2")
@@ -137,7 +131,6 @@ dependencies {
     val retrofit = "2.9.0"
     val okHttp = "4.12.0"
     implementation("com.squareup.retrofit2:retrofit:${retrofit}")
-    implementation("com.squareup.retrofit2:converter-gson:${retrofit}")
     implementation("com.squareup.okhttp3:okhttp:${okHttp}")
     implementation("com.squareup.okhttp3:logging-interceptor:${okHttp}")
 
