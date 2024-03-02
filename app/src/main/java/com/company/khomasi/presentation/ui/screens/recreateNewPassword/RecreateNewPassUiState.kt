@@ -1,9 +1,11 @@
 package com.company.khomasi.presentation.ui.screens.recreateNewPassword
 
 data class RecreateNewPassUiState(
-    val verificationCode : String = "",
+    val userEmail : String = "hophop23103@gmail.com",
+    val enteredVerificationCode : String = "",
+    val realVerificationCode : String = "",
     val newPassword : String = "",
     val rewritingNewPassword  : String = "",
     val buttonEnable : Boolean = false,
-    val isCodeTrue : Boolean = false
+    val isCodeTrue : Boolean = true
 )

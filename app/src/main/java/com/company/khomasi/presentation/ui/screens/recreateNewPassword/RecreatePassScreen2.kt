@@ -2,6 +2,7 @@ package com.company.khomasi.presentation.ui.screens.recreateNewPassword
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,13 +36,25 @@ import com.nulabinc.zxcvbn.Zxcvbn
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.compose.rememberNavController
+import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.VerificationResponse
 
 
 @Composable
-fun RecreateNewPasswordScreen(
-    recreateViewModel: RecreateNewPassViewModel
+fun RecreatePassScreen2(
+    recreateViewModel: RecreateNewPassViewModel = hiltViewModel(),
 ) {
     val recreateUiState by recreateViewModel.recreateUiState.collectAsState()
+
+    val res by recreateViewModel.verificationRes.collectAsState()
+    val code = when(res){
+        is DataState.Loading -> "Loading..."
+        is DataState.Success -> (res as DataState.Success<VerificationResponse>).data.code.toString()
+        is DataState.Error -> (res as DataState.Error).message
+    }
 
     Column(
         modifier = Modifier
@@ -52,26 +65,30 @@ fun RecreateNewPasswordScreen(
     ) {
         Text(
             text = stringResource(id = R.string.reset_password),
-            modifier = Modifier.padding(bottom = 8.dp),
+            modifier = Modifier
+                .padding(bottom = 8.dp)
+                .clickable { recreateViewModel.onClickButton() },
             style = MaterialTheme.typography.titleMedium
         )
 
         Text(
-            text = stringResource(id = R.string.create_new_password),
+//            text = stringResource(id = R.string.create_new_password),
+            text = code,
             style = MaterialTheme.typography.bodyMedium
         )
 
         Spacer(modifier = Modifier.height(56.dp))
 
+
         MyTextField(
-            value = recreateUiState.verificationCode ,
+            value = recreateUiState.enteredVerificationCode ,
             onValueChange = {recreateViewModel.onEnteringVerificationCode(it)},
             label = R.string.verification_code ,
             onImeAction = {
-                recreateViewModel.verifyVerificationCode()
-            },
+                recreateViewModel.verifyVerificationCode(code)
+                          },
             keyBoardType = KeyboardType.Number,
-            isError = recreateUiState.isCodeTrue
+            isError = !recreateUiState.isCodeTrue
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -122,7 +139,8 @@ fun RecreateNewPasswordScreen(
 
         MyTextButton(
             text = R.string.back_to_login,
-            onClick = { /*TODO*/ },
+            onClick = {
+                      },
             )
     }
 }
@@ -199,8 +217,6 @@ fun PasswordStrengthIndicator(
 @Composable
 fun RecreateNewPasswordPreview() {
     KhomasiTheme {
-        RecreateNewPasswordScreen(
-            RecreateNewPassViewModel()
-        )
+        RecreatePassScreen2()
     }
 }

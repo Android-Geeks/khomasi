@@ -2,6 +2,7 @@ package com.company.khomasi.presentation.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.use_case.app_entry.AppEntryUseCases
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel

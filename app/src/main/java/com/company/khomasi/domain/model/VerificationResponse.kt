@@ -8,6 +8,7 @@ import kotlinx.serialization.Serializable
 data class VerificationResponse(
     @SerialName("code")
     val code: Int,
+    val email : String,
     @SerialName("message")
     val message: String
 )
