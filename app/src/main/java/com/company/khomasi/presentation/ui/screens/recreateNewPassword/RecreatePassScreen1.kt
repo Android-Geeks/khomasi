@@ -26,11 +26,8 @@ import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.lightText
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.VerificationResponse
-import com.company.khomasi.navigation.Screens
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
 
