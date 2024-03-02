@@ -75,17 +75,29 @@ class RecreateNewPassViewModel @Inject constructor(
 
     fun passwordMatchingCheck():Boolean{
         return _recreateUiState.value.newPassword == _recreateUiState.value.rewritingNewPassword
+                && _recreateUiState.value.rewritingNewPassword.isNotEmpty()
     }
 
-    fun checkValidation(password: String): Boolean {
+    fun checkValidation(): Boolean {
         _recreateUiState.update {
             it.copy(
-                buttonEnable = passwordMatchingCheck()
+                buttonEnable2 = passwordMatchingCheck()
             )
         }
-        return _recreateUiState.value.buttonEnable
-//               && _recreateUiState.value.enteredVerificationCode.length == 5
-//                && password.length >= 8
+        return _recreateUiState.value.buttonEnable2 && _recreateUiState.value.isCodeTrue
+
+    }
+    fun onButtonClickedScreen2(){
+
+        if (_recreateUiState.value.buttonEnable2){
+            viewModelScope.launch{
+                authUseCases.recoverAccountUseCase(
+                    _recreateUiState.value.userEmail,
+                    _recreateUiState.value.enteredVerificationCode,
+                    _recreateUiState.value.rewritingNewPassword
+                )
+            }
+        }
     }
 
 

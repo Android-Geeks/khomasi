@@ -6,6 +6,6 @@ data class RecreateNewPassUiState(
     val realVerificationCode : String = "",
     val newPassword : String = "",
     val rewritingNewPassword  : String = "",
-    val buttonEnable : Boolean = false,
+    val buttonEnable2 : Boolean = false,
     val isCodeTrue : Boolean = true
 )

@@ -37,13 +37,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.VerificationResponse
-
+import com.company.khomasi.presentation.components.PasswordStrengthMeter
 
 @Composable
 fun RecreatePassScreen2(
-    recreateViewModel: RecreateNewPassViewModel = hiltViewModel(),
+    recreateViewModel: RecreateNewPassViewModel =  hiltViewModel() ,
 ) {
     val recreateUiState by recreateViewModel.recreateUiState.collectAsState()
 
@@ -70,16 +72,18 @@ fun RecreatePassScreen2(
         )
 
         Text(
-//            text = stringResource(id = R.string.create_new_password),
+            text = stringResource(id = R.string.create_new_password),
+            style = MaterialTheme.typography.bodyMedium
+        )
+        Text(
             text = code,
             style = MaterialTheme.typography.bodyMedium
         )
-
         Spacer(modifier = Modifier.height(56.dp))
 
 
         MyTextField(
-            value = recreateUiState.enteredVerificationCode ,
+            value = recreateUiState.enteredVerificationCode.take(5) ,
             onValueChange = {recreateViewModel.onEnteringVerificationCode(it)},
             label = R.string.verification_code ,
             onImeAction = {
@@ -120,93 +124,26 @@ fun RecreatePassScreen2(
             onImeAction = {
                 // TODO
             },
-            keyBoardType = KeyboardType.Password
+            keyBoardType = KeyboardType.Password,
+            isError = !!recreateViewModel.passwordMatchingCheck() && recreateUiState.rewritingNewPassword.isNotEmpty()
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
         MyButton(
             text = R.string.set_password,
-            onClick = { /*TODO*/ },
+            onClick = { recreateViewModel.onButtonClickedScreen2() },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 8.dp, end = 8.dp),
             shape = MaterialTheme.shapes.medium,
-            buttonEnable = recreateViewModel.checkValidation(recreateUiState.newPassword)
+            buttonEnable = recreateViewModel.checkValidation()
         )
 
         MyTextButton(
             text = R.string.back_to_login,
-            onClick = {
-                      },
+            onClick = {},
             )
-    }
-}
-
-@Composable
-fun PasswordStrengthMeter(
-    password: String,
-    enable: Boolean         // Change happened
-                            // "to avoid coloring the first partition when passStrength is 0 "
-) {
-    val passwordStrength = Zxcvbn().measure(password).score
-
-    val indicatorColoringRange by remember {
-        mutableStateOf(listOf(
-            listOf(0, 1, 2, 3, 4),
-            listOf(2, 3, 4),
-            listOf(3, 4),
-            listOf(4)
-        ))
-    }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        horizontalArrangement = Arrangement.Center
-    ){
-        indicatorColoringRange.forEach { config ->
-            PasswordStrengthIndicator(
-                passwordStrength = passwordStrength,
-                coloringEnableRange = config,
-                modifier = Modifier.weight(1f),
-                enable = enable
-            )
-        }
-    }
-}
-
-@Composable
-fun PasswordStrengthIndicator(
-    passwordStrength: Int,
-    coloringEnableRange: List<Int>,
-    modifier : Modifier = Modifier,
-    enable : Boolean = false,
-){
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .height(4.dp)
-            .padding(horizontal = 4.dp)
-            .background(
-                color = Color(0xFFDDDDDD),
-                shape = RoundedCornerShape(100.dp)
-            )
-    ){
-        if (passwordStrength in coloringEnableRange && enable){
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        color = when (passwordStrength) {
-                            0, 1 -> Color.Red
-                            2, 3 -> Color(0xFFF3F311)
-                            4 -> Color.Green
-                            else -> Color(0xFFDDDDDD)
-                        }
-                    )
-            )
-        }
     }
 }
 
