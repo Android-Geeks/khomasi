@@ -65,7 +65,7 @@ fun RecreatePassScreen2(
             text = stringResource(id = R.string.reset_password),
             modifier = Modifier
                 .padding(bottom = 8.dp)
-                .clickable { recreateViewModel.onClickButton() },
+                .clickable { recreateViewModel.onClickButtonScreen1() },
             style = MaterialTheme.typography.titleMedium
         )
 

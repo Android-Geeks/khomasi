@@ -82,7 +82,7 @@ fun RecreatePassScreen1(
         MyButton(
             text = R.string.set_password,
             onClick = {
-                recreateNewPassViewModel.onClickButton()
+                recreateNewPassViewModel.onClickButtonScreen1()
                       },
             modifier = Modifier
                 .fillMaxWidth()

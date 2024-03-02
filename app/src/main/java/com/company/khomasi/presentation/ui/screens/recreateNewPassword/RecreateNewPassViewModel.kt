@@ -30,10 +30,9 @@ class RecreateNewPassViewModel @Inject constructor(
                 userEmail = email
             )
         }
-
     }
 
-    fun onClickButton(){
+    fun onClickButtonScreen1(){
         viewModelScope.launch {
             authUseCases.getVerificationCodeUseCase(_recreateUiState.value.userEmail)
                 .collect {
@@ -41,6 +40,7 @@ class RecreateNewPassViewModel @Inject constructor(
                 }
         }
     }
+//------------------------------------------------------------------------------------------------//
     fun onEnteringVerificationCode(code: String) {
         _recreateUiState.update {
             it.copy(
@@ -73,14 +73,18 @@ class RecreateNewPassViewModel @Inject constructor(
         }
     }
 
+    fun passwordMatchingCheck():Boolean{
+        return _recreateUiState.value.newPassword == _recreateUiState.value.rewritingNewPassword
+    }
+
     fun checkValidation(password: String): Boolean {
         _recreateUiState.update {
             it.copy(
-                buttonEnable = _recreateUiState.value.rewritingNewPassword == password
+                buttonEnable = passwordMatchingCheck()
             )
         }
-        return _recreateUiState.value.buttonEnable &&
-                _recreateUiState.value.enteredVerificationCode.length == 5
+        return _recreateUiState.value.buttonEnable
+//               && _recreateUiState.value.enteredVerificationCode.length == 5
 //                && password.length >= 8
     }
 
