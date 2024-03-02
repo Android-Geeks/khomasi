@@ -40,6 +40,7 @@ fun PlaygroundCard(
     playground: Playground,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
     Card(
         modifier = modifier
             .fillMaxWidth()
@@ -203,7 +204,7 @@ fun PreviewCard() {
             playground = Playground(
                 name = "playground",
                 address = "location",
-                imageUrl = "https://www.pinterest.com/pin/339810734383350441/",
+                imageUrl = "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg",
                 rating = 4.9f,
                 price = "price",
                 openingHours = "hour",

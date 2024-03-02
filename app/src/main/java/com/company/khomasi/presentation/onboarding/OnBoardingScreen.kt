@@ -31,8 +31,19 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnBoardingScreen(
     onSkipClick: () -> Unit,
+    // x: DataState<UserLoginResponse>,
 ) {
-    Column(modifier = Modifier.fillMaxSize().systemBarsPadding()) {
+//    val res = when (x) {
+//        is DataState.Loading -> "Loading..."
+//        is DataState.Success -> x.data.toString()
+//        is DataState.Error -> x.message
+//    }
+//    Text(text = res)
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .systemBarsPadding()
+    ) {
         val pagerState = rememberPagerState(initialPage = 0) {
             pages.size
         }
@@ -91,8 +102,6 @@ fun OnBoardingScreen(
 @Composable
 fun OnBoardingScreenPreview() {
     KhomasiTheme {
-        OnBoardingScreen(
-            onSkipClick = {}
-        )
+
     }
 }

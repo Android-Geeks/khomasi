@@ -1,16 +1,26 @@
 package com.company.khomasi.di
 
 
+import com.company.khomasi.data.data_source.remote.RemoteUserRepositoryImpl
 import com.company.khomasi.data.data_source.remote.RetrofitService
-import com.google.gson.GsonBuilder
+import com.company.khomasi.domain.repository.RemoteUserRepository
+import com.company.khomasi.domain.use_case.auth.AuthUseCases
+import com.company.khomasi.domain.use_case.auth.ConfirmEmailUseCase
+import com.company.khomasi.domain.use_case.auth.GetVerificationCodeUseCase
+import com.company.khomasi.domain.use_case.auth.LoginUseCase
+import com.company.khomasi.domain.use_case.auth.RecoverAccountUseCase
+import com.company.khomasi.domain.use_case.auth.RegisterUseCase
+import com.company.khomasi.utils.Constants.BASE_URL
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -27,16 +37,32 @@ object NetworkModule {
         }.build()
     }
 
-    @Singleton
     @Provides
+    @Singleton
     fun provideService(okHttpClient: OkHttpClient): RetrofitService {
         return Retrofit.Builder()
-            .baseUrl("www.google.com")
+            .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create(GsonBuilder().create()))
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .build()
             .create(RetrofitService::class.java)
     }
 
+    @Provides
+    @Singleton  // Warning
+    fun provideRemoteUserRepository(
+        retrofitService: RetrofitService
+    ): RemoteUserRepository = RemoteUserRepositoryImpl(retrofitService)
 
+    @Provides
+    @Singleton
+    fun provideAuthUseCases(
+        remoteUserRepository: RemoteUserRepository
+    ): AuthUseCases = AuthUseCases(
+        confirmEmailUseCase = ConfirmEmailUseCase(remoteUserRepository),
+        registerUseCase = RegisterUseCase(remoteUserRepository),
+        loginUseCase = LoginUseCase(remoteUserRepository),
+        getVerificationCodeUseCase = GetVerificationCodeUseCase(remoteUserRepository),
+        recoverAccountUseCase = RecoverAccountUseCase(remoteUserRepository)
+    )
 }
