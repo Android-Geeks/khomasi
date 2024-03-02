@@ -53,7 +53,8 @@ fun SignUpScreen(
     )
     {
         Spacer(modifier = Modifier.height(140.dp))
-        Image(painter = painterResource(id = R.drawable.player) ,
+        Image(
+            painter = painterResource(id = R.drawable.player),
             contentDescription = " ",
             modifier = Modifier
                 .fillMaxWidth()
@@ -75,7 +76,8 @@ fun SignUpScreen(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        MyButton(text = R.string.login,
+        MyButton(
+            text = R.string.login,
             onClick = { signUpViewModel.logIn() },
             contentPadding = PaddingValues(vertical = 9.dp),
             modifier = Modifier
@@ -89,8 +91,9 @@ fun SignUpScreen(
         )
         Spacer(modifier = Modifier.height(34.dp))
 
-        Row (modifier = Modifier.fillMaxWidth()){
-            HorizontalDivider(thickness = 1.dp,
+        Row(modifier = Modifier.fillMaxWidth()) {
+            HorizontalDivider(
+                thickness = 1.dp,
                 modifier = Modifier
                     .weight(1f)
                     .padding(start = 34.dp, end = 3.dp)
@@ -128,7 +131,7 @@ fun SignUpScreen(
         {
             Image(
                 painter = painterResource(id = R.drawable.icons_google),
-                contentDescription =null ,
+                contentDescription = null,
                 modifier = Modifier
                     .size(32.dp)
                     .clickable { signUpViewModel.logo() }
@@ -136,19 +139,22 @@ fun SignUpScreen(
         }
         Spacer(modifier = Modifier.height(22.dp))
 
-        Text(text = stringResource(id = R.string.by_registering_you_agree_to),
+        Text(
+            text = stringResource(id = R.string.by_registering_you_agree_to),
             textAlign = TextAlign.Center,
             style = MaterialTheme.typography.bodySmall,
-            color = if(isDark) darkSubText else lightSubText,
+            color = if (isDark) darkSubText else lightSubText,
             modifier = Modifier
-                .align(alignment = Alignment.CenterHorizontally))
-        Row(verticalAlignment = Alignment.CenterVertically,
+                .align(alignment = Alignment.CenterHorizontally)
+        )
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
 
             Text(
-                text = stringResource(id = R.string.privacy_policy) ,
+                text = stringResource(id = R.string.privacy_policy),
                 color = MaterialTheme.colorScheme.primary,
                 textDecoration = TextDecoration.Underline,
                 style = MaterialTheme.typography.bodySmall,
@@ -159,7 +165,7 @@ fun SignUpScreen(
             Text(
                 text = stringResource(id = R.string.and),
                 style = MaterialTheme.typography.bodySmall,
-                color = if(isDark) darkSubText else lightSubText,
+                color = if (isDark) darkSubText else lightSubText,
                 modifier = Modifier.padding(horizontal = 5.dp)
             )
 
