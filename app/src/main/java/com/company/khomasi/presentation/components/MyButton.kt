@@ -38,7 +38,7 @@ fun MyButton(
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
     shape: CornerBasedShape = MaterialTheme.shapes.large,
-    contentPadding : PaddingValues,
+    contentPadding : PaddingValues = PaddingValues(0.dp),
     color : ButtonColors? = null
 ) {
     Button(
@@ -96,7 +96,7 @@ fun MyOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
-    contentPadding : PaddingValues,
+    contentPadding : PaddingValues = PaddingValues(0.dp),
     shape: CornerBasedShape = MaterialTheme.shapes.medium,
 ) {
     OutlinedButton(

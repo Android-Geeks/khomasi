@@ -159,7 +159,7 @@
     <string name="un_bookable">غير قابل للحجز</string>
     <string name="view_playground">عرض الملعب</string>
     <string name="and">و</string>
-    <string name="do_not_have_an_account">لاتملك حساب؟</string>
+    <string name="do_not_have_an_account">لا تملك حساب؟</string>
     <string name="create_an_account_now">إنشاء حساب الان</string>
     <string name="forgot_your_password">نسيت كلمة المرور؟</string>
     <string name="Your_code_has_arrived_in_your_email">وصلك رمز تحقق على ايميلك</string>

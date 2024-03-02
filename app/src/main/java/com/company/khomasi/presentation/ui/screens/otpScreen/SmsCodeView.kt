@@ -68,7 +68,6 @@ fun SmsCodeView(
                         width = 0.5.dp,
                         color = if(isDark) darkHint else lightHint,
                         shape = MaterialTheme.shapes.small
-
                     )
                     .focusRequester(focusRequester = focusRequesters[index])
                     .onKeyEvent { keyEvent: KeyEvent ->
@@ -142,7 +141,6 @@ fun otpPreview() {
             textStyle = MaterialTheme.typography.displayLarge,
             smsFulled = viewModel::updateSmsCode,
             otpViewModel = viewModel
-
         )
     }
 

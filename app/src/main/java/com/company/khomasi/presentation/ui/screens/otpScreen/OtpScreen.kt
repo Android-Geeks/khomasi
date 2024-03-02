@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -42,122 +41,116 @@ fun OtpScreen(
     otpViewModel: OtpViewModel = hiltViewModel()
 ) {
     //val otpUiState by otpViewModel.uiState.collectAsState()
-
-    Card(
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .fillMaxWidth(),
-        shape = MaterialTheme.shapes.large
-
+            .fillMaxWidth()
+            .padding(16.dp)
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = modifier
+
+        Text(
+            text = stringResource(id = R.string.Your_code_has_arrived_in_your_email),
+            style = MaterialTheme.typography.displayMedium,
+            color = MaterialTheme.colorScheme.onBackground,
+            modifier = Modifier
+                .fillMaxWidth(),
+            textAlign = TextAlign.Start
+        )
+        Spacer(modifier = Modifier.padding(16.dp))
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = stringResource(id = R.string.enter_verification_email),
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.Start
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = "zeyad@gmail.com",
+                //text= otpUiState.email,
+                style = MaterialTheme.typography.bodyMedium,
+                textAlign = TextAlign.End,
+                textDecoration = TextDecoration.Underline
+            )
+        }
+        Spacer(modifier = Modifier.padding(2.dp))
+        SmsCodeView(
+            smsCodeLength = 5,
+            // Need to add colors here
+            textFieldColors = TextFieldDefaults.colors(),
+            textStyle = MaterialTheme.typography.displayLarge,
+            smsFulled = otpViewModel::updateSmsCode
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        MyButton(
+            text = R.string.confirm,
+            onClick = {
+                otpViewModel.login()
+            },
+            contentPadding = PaddingValues(horizontal = 34.dp, vertical = 9.dp),
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp)
+                .height(48.dp)
+                .padding(horizontal = 10.dp)
+                .background(
+                    color = MaterialTheme.colorScheme.primary,
+                    shape = MaterialTheme.shapes.medium
+                )
+        )
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center,
+            modifier = Modifier.fillMaxWidth()
         ) {
 
             Text(
-                text = stringResource(id = R.string.Your_code_has_arrived_in_your_email),
-                style = MaterialTheme.typography.displayMedium,
-                color = MaterialTheme.colorScheme.onBackground,
+                text = stringResource(id = R.string.did_not_receive_the_code),
+                style = MaterialTheme.typography.bodySmall
+            )
+            Spacer(modifier = Modifier.padding(2.dp))
+            Text(
+                text = stringResource(id = R.string.resend_code),
                 modifier = Modifier
-                    .fillMaxWidth(),
-                textAlign = TextAlign.Start
-            )
-            Spacer(modifier = Modifier.height(84.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = stringResource(id = R.string.enter_verification_email),
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.Start
-                )
-                Spacer(modifier = Modifier.weight(0.9f))
-                Text(
-                   text = "zeyad@gmail.com",
-                    //text= otpUiState.email,
-                    style = MaterialTheme.typography.bodyMedium,
-                    textAlign = TextAlign.End,
-                    textDecoration = TextDecoration.Underline
-                )
-            }
-            SmsCodeView(
-                smsCodeLength = 5,
-                textFieldColors = TextFieldDefaults.colors(
-                    focusedTextColor = MaterialTheme.colorScheme.primary,
-                ),
-                textStyle = MaterialTheme.typography.displayLarge,
-                smsFulled = otpViewModel::updateSmsCode
+                    .clickable {
+                        otpViewModel.resendCode()
+                    },
+                color = MaterialTheme.colorScheme.primary,
+                style = MaterialTheme.typography.bodySmall
+
             )
 
-            Spacer(modifier = Modifier.height(24.dp))
+        }
 
-            MyButton(
-                text = R.string.confirm,
-                onClick = {
-                    otpViewModel.logIn()
-                },
-                contentPadding = PaddingValues(horizontal = 34.dp, vertical = 9.dp),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(48.dp)
-                    .padding(horizontal = 10.dp)
-                    .background(
-                        color = MaterialTheme.colorScheme.primary,
-                        shape = MaterialTheme.shapes.medium
-                    )
-            )
-            Spacer(modifier = Modifier.height(32.dp))
+        Spacer(modifier = Modifier.height(8.dp))
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-
-                Text(
-                    text = stringResource(id = R.string.did_not_receive_the_code),
-                    style = MaterialTheme.typography.bodySmall
-                )
-
-                Text(
-                    text = stringResource(id = R.string.resend_code),
-                    modifier = Modifier
-                        .clickable {
-                            otpViewModel.resendCode()
-                        },
-                    color = MaterialTheme.colorScheme.primary,
-                    style = MaterialTheme.typography.bodySmall
-
-                )
-
+        var time by remember { mutableStateOf(59) }
+        LaunchedEffect(Unit) {
+            while (time > 0) {
+                delay(1000)
+                time--
             }
-
-            Spacer(modifier = Modifier.height(8.dp))
-
-            var time by remember { mutableStateOf(59) }
-            LaunchedEffect(Unit) {
-                while (time > 0) {
-                    delay(1000)
-                    time--
-                }
-            }
-            val minutes = String.format("%02d", time / 60)
-            val seconds = String.format("%02d", time % 60)
-            Row (
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
-            ){
+        }
+        val minutes = String.format("%02d", time / 60)
+        val seconds = String.format("%02d", time % 60)
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
 
             Text(
-                text = stringResource(id = R.string.resend_code_after)+"  ",
+                text = stringResource(id = R.string.resend_code_after),
                 textAlign = TextAlign.Start,
                 style = MaterialTheme.typography.bodySmall
 
             )
+            Spacer(modifier = Modifier.padding(2.dp))
             Text(
                 text = "$minutes:$seconds",
                 textAlign = TextAlign.Start,
@@ -168,8 +161,8 @@ fun OtpScreen(
     }
 
 
-    }
 }
+
 
 @Preview(name = "light", uiMode = UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "dark", uiMode = UI_MODE_NIGHT_YES)
