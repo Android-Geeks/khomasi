@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.ui.screens.recreateNewPassword
+package com.company.khomasi.presentation.recreateNewPassword
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -25,24 +25,24 @@ import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.lightText
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
-
 @Composable
 fun RecreatePassScreen1(
     recreateNewPassViewModel: RecreateNewPassViewModel = hiltViewModel()
 ) {
     val recreateNewPassUiState by recreateNewPassViewModel.recreateUiState.collectAsState()
+    val verificationRes by recreateNewPassViewModel.verificationRes.collectAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-    val x by recreateNewPassViewModel.verificationRes.collectAsState()
-
-    val res = when (x) {
+    val res = when (verificationRes) {
         is DataState.Loading -> "Loading..."
-        is DataState.Success -> (x as DataState.Success<VerificationResponse>).data.code.toString()
-        is DataState.Error -> (x as DataState.Error).message
+        is DataState.Success -> (verificationRes as DataState.Success<VerificationResponse>).data.code.toString()
+        is DataState.Error -> (verificationRes as DataState.Error).message
     }
 
     Column(
@@ -58,7 +58,7 @@ fun RecreatePassScreen1(
             modifier = Modifier.size(width = (93.8).dp, (123.2).dp)
         )
         Text(
-            text = res /*stringResource(id = R.string.forgot_your_password)*/,
+            text = stringResource(id = R.string.forgot_your_password),
             style = MaterialTheme.typography.titleMedium,
             modifier = Modifier.padding(top = 40.dp),
             color = lightText
@@ -76,14 +76,14 @@ fun RecreatePassScreen1(
             value = recreateNewPassUiState.userEmail,
             onValueChange = { recreateNewPassViewModel.onUserEmailChange(it) },
             label = R.string.email,
-            onImeAction = {  },
+            onImeAction = { keyboardController?.hide() },
             keyBoardType = KeyboardType.Email,
         )
         MyButton(
             text = R.string.set_password,
             onClick = {
                 recreateNewPassViewModel.onClickButtonScreen1()
-                      },
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 8.dp, end = 8.dp, top = 32.dp)
@@ -91,18 +91,16 @@ fun RecreatePassScreen1(
 
         MyTextButton(
             text = R.string.cancel,
-            onClick = {
-            },
+            onClick = {},
         )
     }
-
 }
 
 
 @Preview(showSystemUi = true)
 @Composable
 fun ResetPasswordScreenPreview() {
-    KhomasiTheme() {
+    KhomasiTheme{
         RecreatePassScreen1()
     }
 }

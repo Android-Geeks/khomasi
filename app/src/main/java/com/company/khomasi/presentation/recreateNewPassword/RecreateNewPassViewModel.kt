@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.ui.screens.recreateNewPassword
+package com.company.khomasi.presentation.recreateNewPassword
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -50,10 +50,12 @@ class RecreateNewPassViewModel @Inject constructor(
     }
 
     fun verifyVerificationCode(code: String) {
-        _recreateUiState.update {
-            it.copy(
-                isCodeTrue = _recreateUiState.value.enteredVerificationCode == code
-            )
+        _recreateUiState.let {
+            it.update { currentState ->
+                currentState.copy(
+                    isCodeTrue = currentState.enteredVerificationCode == code
+                )
+            }
         }
     }
 
@@ -68,27 +70,31 @@ class RecreateNewPassViewModel @Inject constructor(
     fun onReTypingPassword(password: String) {
         _recreateUiState.update {
             it.copy(
-                rewritingNewPassword = password,
+                rewritingNewPassword = password
             )
         }
     }
 
-    fun passwordMatchingCheck():Boolean{
-        return _recreateUiState.value.newPassword == _recreateUiState.value.rewritingNewPassword
-                && _recreateUiState.value.rewritingNewPassword.isNotEmpty()
+    fun checkPasswordMatching(){
+        _recreateUiState.let {
+            it.update { currentState ->
+                currentState.copy(
+                    isTwoPassEquals = currentState.newPassword == currentState.rewritingNewPassword
+                            && currentState.rewritingNewPassword.isNotEmpty()
+                )
+            }
+        }
     }
-
     fun checkValidation(): Boolean {
         _recreateUiState.update {
             it.copy(
-                buttonEnable2 = passwordMatchingCheck()
+                buttonEnable2 = _recreateUiState.value.isTwoPassEquals
             )
         }
-        return _recreateUiState.value.buttonEnable2 && _recreateUiState.value.isCodeTrue
-
+        return _recreateUiState.value.newPassword == _recreateUiState.value.rewritingNewPassword
+                && _recreateUiState.value.isCodeTrue
     }
     fun onButtonClickedScreen2(){
-
         if (_recreateUiState.value.buttonEnable2){
             viewModelScope.launch{
                 authUseCases.recoverAccountUseCase(

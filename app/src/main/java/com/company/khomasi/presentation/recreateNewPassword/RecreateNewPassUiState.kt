@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.ui.screens.recreateNewPassword
+package com.company.khomasi.presentation.recreateNewPassword
 
 data class RecreateNewPassUiState(
     val userEmail : String = "hophop23103@gmail.com",
@@ -7,5 +7,6 @@ data class RecreateNewPassUiState(
     val newPassword : String = "",
     val rewritingNewPassword  : String = "",
     val buttonEnable2 : Boolean = false,
-    val isCodeTrue : Boolean = true
+    val isCodeTrue : Boolean = true,
+    val isTwoPassEquals : Boolean = true,
 )

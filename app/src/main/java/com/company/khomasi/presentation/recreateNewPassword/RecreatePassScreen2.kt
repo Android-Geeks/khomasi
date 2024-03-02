@@ -1,26 +1,21 @@
-package com.company.khomasi.presentation.ui.screens.recreateNewPassword
+package com.company.khomasi.presentation.recreateNewPassword
 
 import android.content.res.Configuration
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,30 +27,27 @@ import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkHint
 import com.company.khomasi.theme.lightHint
-import com.nulabinc.zxcvbn.Zxcvbn
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.presentation.components.PasswordStrengthMeter
 
 @Composable
-fun RecreatePassScreen2(
-    recreateViewModel: RecreateNewPassViewModel =  hiltViewModel() ,
+fun RecreatePassScreen2 (
+    recreateViewModel: RecreateNewPassViewModel = hiltViewModel()
 ) {
+
     val recreateUiState by recreateViewModel.recreateUiState.collectAsState()
+    val verificationRes by recreateViewModel.verificationRes.collectAsState()
+    val keyboardController = LocalSoftwareKeyboardController.current
 
-    val res by recreateViewModel.verificationRes.collectAsState()
-    val code = when(res){
+    val code = when(verificationRes){
         is DataState.Loading -> "Loading..."
-        is DataState.Success -> (res as DataState.Success<VerificationResponse>).data.code.toString()
-        is DataState.Error -> (res as DataState.Error).message
+        is DataState.Success -> (verificationRes as DataState.Success<VerificationResponse>).data.code.toString()
+        is DataState.Error -> (verificationRes as DataState.Error).message
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -75,12 +67,11 @@ fun RecreatePassScreen2(
             text = stringResource(id = R.string.create_new_password),
             style = MaterialTheme.typography.bodyMedium
         )
-        Text(
+        /*        Text(
             text = code,
             style = MaterialTheme.typography.bodyMedium
-        )
+        )*/
         Spacer(modifier = Modifier.height(56.dp))
-
 
         MyTextField(
             value = recreateUiState.enteredVerificationCode.take(5) ,
@@ -88,9 +79,10 @@ fun RecreatePassScreen2(
             label = R.string.verification_code ,
             onImeAction = {
                 recreateViewModel.verifyVerificationCode(code)
+                keyboardController?.hide()
                           },
             keyBoardType = KeyboardType.Number,
-            isError = !recreateUiState.isCodeTrue
+            isError = !(recreateUiState.isCodeTrue)
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -100,14 +92,14 @@ fun RecreatePassScreen2(
             onValueChange = { recreateViewModel.onEnteringPassword(it) } ,
             label = R.string.new_password ,
             onImeAction = {
-                // TODO:
+                keyboardController?.hide()
             },
             keyBoardType = KeyboardType.Password
         )
 
         PasswordStrengthMeter(
             password = recreateUiState.newPassword,
-            enable = recreateUiState.newPassword != ""
+            enable = recreateUiState.newPassword.isNotEmpty()
             )
 
         Text(
@@ -119,20 +111,23 @@ fun RecreatePassScreen2(
 
         MyTextField(
             value = recreateUiState.rewritingNewPassword ,
-            onValueChange = {recreateViewModel.onReTypingPassword(it)},
+            onValueChange = { recreateViewModel.onReTypingPassword(it) },
             label = R.string.retype_password,
             onImeAction = {
-                // TODO
+                recreateViewModel.checkPasswordMatching()
+                keyboardController?.hide()
             },
             keyBoardType = KeyboardType.Password,
-            isError = !!recreateViewModel.passwordMatchingCheck() && recreateUiState.rewritingNewPassword.isNotEmpty()
+            isError = !(recreateUiState.isTwoPassEquals)
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
         MyButton(
             text = R.string.set_password,
-            onClick = { recreateViewModel.onButtonClickedScreen2() },
+            onClick = {
+                recreateViewModel.onButtonClickedScreen2()
+            },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 8.dp, end = 8.dp),
@@ -147,7 +142,7 @@ fun RecreatePassScreen2(
     }
 }
 
-//@Preview(name = "Night", showSystemUi = true,uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(name = "Night", showSystemUi = true,uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview(name = "Light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ar", showSystemUi = true)
 @Composable
 fun RecreateNewPasswordPreview() {
