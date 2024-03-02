@@ -12,6 +12,7 @@ class OtpViewModel : ViewModel() {
     val uiState : StateFlow<OtpUiState> = _uiState.asStateFlow()
 
 
+
     fun updateSmsCode(newCode: String) {
         _uiState.value = _uiState.value.copy(code = newCode)
         Log.d("OtpViewModel", "updateSmsCode: ${_uiState.value.code}")

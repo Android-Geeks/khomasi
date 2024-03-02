@@ -2,6 +2,7 @@ package com.company.khomasi.presentation.ui.screens.signUpScreen
 
 import androidx.lifecycle.ViewModel
 
+
 class SignUpViewModel : ViewModel() {
 
 
@@ -22,5 +23,6 @@ class SignUpViewModel : ViewModel() {
     fun helpAndSupport(){
 
     }
+
 
 }

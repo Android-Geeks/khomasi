@@ -100,11 +100,13 @@ fun LogIn(
                 color = MaterialTheme.colorScheme.primary,
             )
             Spacer(modifier = Modifier.height(24.dp))
-
+            val isValid = logInViewModel.isValidCredentials( logInViewModel.email ,logInViewModel.password)
             MyButton(
                 text = R.string.login,
                 onClick = {
-                    logInViewModel.logIn()
+                    if (isValid) {
+                        logInViewModel.logIn()
+                    }
                 },
                 contentPadding = PaddingValues(vertical = 9.dp),
                 modifier = Modifier
