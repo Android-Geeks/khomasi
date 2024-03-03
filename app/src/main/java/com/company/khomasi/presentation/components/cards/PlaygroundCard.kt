@@ -5,10 +5,8 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,8 +31,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
-import com.company.khomasi.presentation.components.iconButtons.FavoriteIcon
 import com.company.khomasi.presentation.components.MyButton
+import com.company.khomasi.presentation.components.iconButtons.FavoriteIcon
 import com.company.khomasi.theme.KhomasiTheme
 
 @Composable
@@ -42,11 +40,9 @@ fun PlaygroundCard(
     playground: Playground,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(265.dp)
             .background(
                 color = MaterialTheme.colorScheme.background,
                 shape = MaterialTheme.shapes.large
@@ -55,7 +51,6 @@ fun PlaygroundCard(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.background)
         ) {
             Box {
@@ -175,21 +170,18 @@ fun PlaygroundCard(
                     modifier = Modifier
                         .padding(top = 6.dp)
                 )
-                Spacer(modifier = Modifier.weight(1.5f))
+                Spacer(modifier = Modifier.weight(1f))
                 MyButton(
                     text = R.string.view_playground,
                     onClick = { },
-                    contentPadding = PaddingValues(vertical = 4.dp),
                     modifier = Modifier
                         .background(
                             color = MaterialTheme.colorScheme.primary,
                             shape = MaterialTheme.shapes.medium
                         )
                         .width(171.dp)
-                        .height(42.dp)
+                        .height(48.dp)
                 )
-
-
             }
         }
     }
