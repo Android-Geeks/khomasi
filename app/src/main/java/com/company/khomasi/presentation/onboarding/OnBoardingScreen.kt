@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -30,14 +29,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnBoardingScreen(
     onSkipClick: () -> Unit,
-    // x: DataState<UserLoginResponse>,
 ) {
-//    val res = when (x) {
-//        is DataState.Loading -> "Loading..."
-//        is DataState.Success -> x.data.toString()
-//        is DataState.Error -> x.message
-//    }
-//    Text(text = res)
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -86,11 +78,8 @@ fun OnBoardingScreen(
                 },
                 modifier = Modifier
                     .fillMaxWidth(),
-                shape = MaterialTheme.shapes.medium
-
             )
         }
-
     }
 }
 

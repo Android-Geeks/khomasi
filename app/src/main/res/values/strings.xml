@@ -31,6 +31,7 @@
     <string name="go">Go</string>
     <string name="quintet">Quintet</string>
     <string name="phone_or_email">Phone number or Email</string>
+    <string name="already_have_an_account">Already have an account?</string>
     <string name="your_name">Your name</string>
     <string name="next">Next</string>
     <string name="view_all">View All</string>
@@ -153,8 +154,9 @@
     <string name="terms_of_service">Terms of Service</string>
     <string name="send_verification_email">Send Verification Email</string>
     <string name="save_changes">Save Changes</string>
-    <string name="privacy_policy">privacy policy</string>
+    <string name="privacy_policy">Privacy Policy</string>
     <string name="bookable">bookable</string>
+    <string name="un_bookable">un bookable</string>
     <string name="unbookable">unbookable</string>
     <string name="view_playground">view playground</string>
     <string name="forgot_your_password">Forgot your password ?</string>
@@ -166,4 +168,12 @@
     <string name="retype_password">Re-type new password</string>
     <string name="back_to_login">Back to login</string>
     <string name="password_restrictions">Use 8 or more characters with a mix of letters, numbers, and symbols</string>
+    <string name="and">and</string>
+    <string name="do_not_have_an_account">Do not have an account?</string>
+    <string name="create_an_account_now">Create an account now</string>
+    <string name="forgot_your_password">Forgot your password?</string>
+    <string name="Your_code_has_arrived_in_your_email">Your code has arrived in your email</string>
+    <string name="enter_verification_email">Enter the verification code</string>
+
+
 </resources>

@@ -11,6 +11,7 @@ import com.company.khomasi.domain.repository.LocalUserRepository
 import com.company.khomasi.domain.use_case.app_entry.AppEntryUseCases
 import com.company.khomasi.domain.use_case.app_entry.ReadAppEntry
 import com.company.khomasi.domain.use_case.app_entry.SaveAppEntry
+import com.company.khomasi.domain.use_case.app_entry.SaveIsLogin
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -42,7 +43,7 @@ object LocalModule {
 
     @Provides
     @Singleton
-    fun provideLocalUserManger(
+    fun provideLocalUserRepository(
         application: Application
     ): LocalUserRepository = LocalUserRepositoryImpl(context = application)
 
@@ -52,7 +53,8 @@ object LocalModule {
         localUserManger: LocalUserRepository
     ): AppEntryUseCases = AppEntryUseCases(
         readAppEntry = ReadAppEntry(localUserManger),
-        saveAppEntry = SaveAppEntry(localUserManger)
+        saveAppEntry = SaveAppEntry(localUserManger),
+        saveIsLogin = SaveIsLogin(localUserManger)
     )
 
 }

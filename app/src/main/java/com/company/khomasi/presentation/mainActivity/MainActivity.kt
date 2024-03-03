@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import com.company.khomasi.presentation.navigation.NavGraph
+import com.company.khomasi.presentation.register.RegisterScreen
 import com.company.khomasi.theme.KhomasiTheme
 import dagger.hilt.android.AndroidEntryPoint
 

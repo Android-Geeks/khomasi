@@ -5,6 +5,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -51,7 +52,7 @@ fun PlaygroundCard(
             .padding(8.dp)
     ) {
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.background)
         ) {
@@ -65,113 +66,128 @@ fun PlaygroundCard(
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
                     placeholder = painterResource(id = R.drawable.playground),
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .height(131.dp)
                 )
                 Row(
-                    modifier = modifier
+                    modifier = Modifier
                         .fillMaxWidth()
                         .height(62.dp)
                 ) {
+                    FavoriteIcon(
+                        onFavoriteClick = {  },
+                        isFavorite = false,
+                        modifier = Modifier.padding(top = 12.dp, start = 6.dp)
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
                     val bookingText =
                         if (playground.isBookable) stringResource(id = R.string.bookable)
-                        else stringResource(id = R.string.unbookable)
+                        else stringResource(id = R.string.un_bookable)
                     Text(
                         text = bookingText,
                         textAlign = TextAlign.Start,
                         style = MaterialTheme.typography.bodyLarge,
-                        modifier = modifier
+                        modifier = Modifier
                             .padding(top = 12.dp)
-                            .clip(RoundedCornerShape(topEnd = 4.dp, bottomEnd = 4.dp))
+                            .clip(RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp))
                             .background(
                                 color = MaterialTheme.colorScheme.background
                             )
                             .padding(start = 5.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
                     )
-                    Spacer(modifier = modifier.weight(1f))
-                    FavoriteIcon(
-                        onFavoriteClick = { /*TODO*/ },
-                        isFavorite = false,
-                        modifier = Modifier.padding(top = 12.dp, end = 6.dp)
-                    )
+
                 }
             }
-            Row(modifier = modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    text = playground.name,
+                    textAlign = TextAlign.Start,
+                    style = MaterialTheme.typography.titleSmall,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                    modifier = Modifier.weight(1f)
+                )
+                Spacer(modifier = Modifier.weight(2f))
+
                 Text(
                     text = playground.rating.toString(),
                     textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = modifier
+                    style = MaterialTheme.typography.bodySmall,
+                    modifier = Modifier
                         .weight(0.2f)
                         .padding(top = 8.dp)
                 )
                 Icon(
                     painter = painterResource(id = R.drawable.unfilled_star),
                     contentDescription = null,
-                    modifier = modifier
+                    modifier = Modifier
                         .padding(top = 13.dp, start = 4.dp)
                 )
-                Spacer(modifier = modifier.weight(2f))
-                Text(
-                    text = playground.name,
-                    textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.titleMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    modifier = modifier.weight(1f)
-                )
+
             }
             Row(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp)
             ) {
-                Spacer(modifier = modifier.weight(2f))
-                Text(
-                    text = playground.address,
-                    textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.bodyMedium,
-                    modifier = modifier
-                )
                 Icon(
                     painter = painterResource(id = R.drawable.mappin),
                     contentDescription = null,
-                    modifier = modifier.padding(top = 7.dp, start = 4.dp)
+                    modifier = Modifier.padding(top = 7.dp, end = 4.dp)
 
                 )
+                Text(
+                    text = playground.address,
+                    textAlign = TextAlign.Start,
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier
+                )
+
+
             }
             HorizontalDivider(
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxWidth()
                     .padding(bottom = 8.dp),
                 thickness = 1.dp
             )
-            Row(modifier = modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Icon(
+                    painter = painterResource(id = R.drawable.currencycircledollar),
+                    contentDescription = null,
+                    modifier = Modifier.padding(end = 4.dp, top = 12.dp)
+                )
+                Text(
+                    text = playground.price + " / ",
+                    textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier
+                        .padding(top = 6.dp)
+                )
+
+                Text(
+                    text = playground.openingHours,
+                    textAlign = TextAlign.End,
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier
+                        .padding(top = 6.dp)
+                )
+                Spacer(modifier = Modifier.weight(1.5f))
                 MyButton(
                     text = R.string.view_playground,
                     onClick = { },
-                    modifier = modifier
+                    contentPadding = PaddingValues(vertical = 4.dp),
+                    modifier = Modifier
                         .background(
                             color = MaterialTheme.colorScheme.primary,
                             shape = MaterialTheme.shapes.medium
                         )
-                        .padding(horizontal = 34.dp)
                         .width(171.dp)
-                        .height(38.dp)
+                        .height(42.dp)
                 )
 
-                Spacer(modifier = modifier.weight(1f))
-                Text(
-                    text = playground.price,
-                    textAlign = TextAlign.End,
-                    modifier = modifier.padding(top = 6.dp)
-                )
-                Icon(
-                    painter = painterResource(id = R.drawable.currencycircledollar),
-                    contentDescription = null,
-                    modifier = modifier.padding(start = 4.dp, top = 11.dp)
-                )
+
             }
         }
     }

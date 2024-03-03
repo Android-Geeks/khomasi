@@ -9,6 +9,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -50,37 +51,36 @@ fun RatingCard(
                 .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.background)
         ) {
-            Box(modifier = modifier) {
+            Box(modifier = Modifier) {
                 Image(
                     painter = painterResource(id = R.drawable.group_lines),
                     contentDescription = null,
-                    modifier = modifier
+                    modifier = Modifier
                         .width(95.dp)
                         .fillMaxSize()
                 )
                 Column(
                     verticalArrangement = Arrangement.SpaceEvenly,
-                    modifier = modifier.padding(horizontal = 8.dp)
+                    modifier = Modifier.padding(horizontal = 8.dp)
                 )
                 {
-                    Spacer(modifier = modifier.weight(0.5f))
+                    Spacer(modifier = Modifier.weight(0.5f))
                     MyButton(
-                        text = buttonText, onClick = { /*TODO*/ },
-                        modifier = modifier
-                            .background(
-                                color = MaterialTheme.colorScheme.primary,
-                                shape = MaterialTheme.shapes.small
-                            )
-                    )
-                    Spacer(modifier = modifier.weight(0.5f))
+                        text = buttonText,
+                        onClick = {  },
+                        shape = MaterialTheme.shapes.small,
+                        contentPadding = PaddingValues(horizontal = 10.dp, vertical = 6.dp),
+                        modifier = Modifier
+                        )
+                    Spacer(modifier = Modifier.weight(0.5f))
 
                 }
             }
-            Spacer(modifier = modifier.weight(0.9f))
+            Spacer(modifier = Modifier.weight(0.9f))
             Column(
                 horizontalAlignment = Alignment.End,
                 verticalArrangement = Arrangement.SpaceEvenly,
-                modifier = modifier
+                modifier = Modifier
                     .fillMaxHeight()
                     .padding(horizontal = 8.dp)
             ) {
@@ -100,7 +100,7 @@ fun RatingCard(
                             painter = painterResource(timeIcon),
                             contentDescription = " ",
                             tint = MaterialTheme.colorScheme.primary,
-                            modifier = modifier.padding(top = 6.dp, start = 4.dp)
+                            modifier = Modifier.padding(top = 6.dp, start = 4.dp)
                         )
                     }
                 }

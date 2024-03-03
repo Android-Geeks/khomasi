@@ -33,17 +33,26 @@ fun NavGraph(
                 val viewModel: OnboardingViewModel = hiltViewModel()
                 OnBoardingScreen(
                     onSkipClick = { viewModel.onSkipClick() },
-                    // x = viewModel.x.collectAsState().value
                 )
+            }
+        }
+
+        // Navigation for Auth
+        navigation(
+            route = Routes.AuthNavigation.name,
+            startDestination = Screens.AuthNavigatorScreen.name
+        ) {
+            composable(route = Screens.AuthNavigatorScreen.name) {
+                AuthNavigator()
             }
         }
 
         // Navigation for Khomasi app
         navigation(
             route = Routes.KhomasiNavigation.name,
-            startDestination = Routes.KhomasiNavigatorScreen.name
+            startDestination = Screens.KhomasiNavigatorScreen.name
         ) {
-            composable(route = Routes.KhomasiNavigatorScreen.name) {
+            composable(route = Screens.KhomasiNavigatorScreen.name) {
                 KhomasiNavigator()
             }
         }
@@ -56,7 +65,7 @@ fun NavGraph(
 fun DefaultPreview() {
     KhomasiTheme {
         NavGraph(
-            startDestination = Screens.Home.name
+            startDestination = Routes.KhomasiNavigation.name
         )
     }
 }
