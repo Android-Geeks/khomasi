@@ -59,11 +59,11 @@ class LoginViewModel @Inject constructor(
     }
 
     fun privacyAndPolicy() {
-        TODO("Not yet implemented")
+
     }
 
     fun helpAndSupport() {
-        TODO("Not yet implemented")
+
     }
 
     fun isValidEmailAndPassword(email: String, password: String): Boolean {

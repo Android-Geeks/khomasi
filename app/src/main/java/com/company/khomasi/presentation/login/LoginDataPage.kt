@@ -178,7 +178,8 @@ fun LoginDataPage(
                     color = Color.White,
                     shape = Shapes.extraLarge
                 )
-                .align(Alignment.CenterHorizontally),
+                .align(Alignment.CenterHorizontally)
+                .clickable { loginViewModel.loginWithGmail() },
             contentAlignment = Alignment.Center,
         ) {
             Image(
@@ -186,7 +187,6 @@ fun LoginDataPage(
                 contentDescription = null,
                 modifier = Modifier
                     .size(32.dp)
-                    .clickable { loginViewModel.loginWithGmail() }
             )
         }
         Spacer(modifier = Modifier.height(22.dp))

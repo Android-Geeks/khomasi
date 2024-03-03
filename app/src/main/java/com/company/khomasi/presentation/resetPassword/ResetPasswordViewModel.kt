@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
+import com.company.khomasi.utils.CheckInputValidation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,13 +17,18 @@ import javax.inject.Inject
 @HiltViewModel
 class ResetPasswordViewModel @Inject constructor(
     private val authUseCases: AuthUseCases,
-): ViewModel() {
+) : ViewModel() {
 
     private val _recreateUiState = MutableStateFlow(ResetPasswordUiState())
     val recreateUiState: StateFlow<ResetPasswordUiState> = _recreateUiState.asStateFlow()
 
-    private val _verificationRes = MutableStateFlow<DataState<VerificationResponse>>(DataState.Loading)
+    private val _verificationRes =
+        MutableStateFlow<DataState<VerificationResponse>>(DataState.Loading)
     val verificationRes: StateFlow<DataState<VerificationResponse>> = _verificationRes
+
+    private val _recoverResponse =
+        MutableStateFlow<DataState<String>>(DataState.Loading)
+    val recoverResponse: StateFlow<DataState<String>> = _recoverResponse
 
     fun onUserEmailChange(email: String) {
         _recreateUiState.update {
@@ -32,7 +38,7 @@ class ResetPasswordViewModel @Inject constructor(
         }
     }
 
-    fun onClickButtonScreen1(){
+    fun onClickButtonScreen1() {
         viewModelScope.launch {
             authUseCases.getVerificationCodeUseCase(_recreateUiState.value.userEmail)
                 .collect {
@@ -40,7 +46,8 @@ class ResetPasswordViewModel @Inject constructor(
                 }
         }
     }
-//------------------------------------------------------------------------------------------------//
+
+    //------------------------------------------------------------------------------------------------//
     fun onEnteringVerificationCode(code: String) {
         _recreateUiState.update {
             it.copy(
@@ -75,7 +82,7 @@ class ResetPasswordViewModel @Inject constructor(
         }
     }
 
-    fun checkPasswordMatching(){
+    fun checkPasswordMatching() {
         _recreateUiState.let {
             it.update { currentState ->
                 currentState.copy(
@@ -85,6 +92,7 @@ class ResetPasswordViewModel @Inject constructor(
             }
         }
     }
+
     fun checkValidation(): Boolean {
         _recreateUiState.update {
             it.copy(
@@ -92,19 +100,20 @@ class ResetPasswordViewModel @Inject constructor(
             )
         }
         return _recreateUiState.value.newPassword == _recreateUiState.value.rewritingNewPassword
-                && _recreateUiState.value.isCodeTrue
+                && CheckInputValidation.isPasswordValid(_recreateUiState.value.newPassword)
     }
-    fun onButtonClickedScreen2(){
-        if (_recreateUiState.value.buttonEnable2){
-            viewModelScope.launch{
+
+    fun onButtonClickedScreen2() {
+        if (_recreateUiState.value.buttonEnable2 && _recreateUiState.value.isCodeTrue) {
+            viewModelScope.launch {
                 authUseCases.recoverAccountUseCase(
                     _recreateUiState.value.userEmail,
                     _recreateUiState.value.enteredVerificationCode,
                     _recreateUiState.value.rewritingNewPassword
-                )
+                ).collect {
+                    _recoverResponse.value = it
+                }
             }
         }
     }
-
-
 }

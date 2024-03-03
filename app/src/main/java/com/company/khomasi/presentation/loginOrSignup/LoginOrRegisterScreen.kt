@@ -117,7 +117,7 @@ fun LoginOrRegisterScreen(
                     shape = Shapes.extraLarge
                 )
                 .align(Alignment.CenterHorizontally)
-                .clickable { TODO("When Google API Finished") },
+                .clickable { /*to make*/ },
             contentAlignment = Alignment.Center,
         ) {
             Image(
@@ -151,7 +151,7 @@ fun LoginOrRegisterScreen(
                 textDecoration = TextDecoration.Underline,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier
-                    .clickable { TODO("When Privacy and Policy Written") }
+                    .clickable { /*to make*/ }
             )
 
             Text(
@@ -167,8 +167,7 @@ fun LoginOrRegisterScreen(
                 textDecoration = TextDecoration.Underline,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier
-                    .clickable { TODO("When Help and Support Written") }
-
+                    .clickable { /*to make*/ }
             )
         }
     }

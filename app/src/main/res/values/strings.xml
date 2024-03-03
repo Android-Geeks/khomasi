@@ -167,7 +167,7 @@
     <string name="new_password">New password</string>
     <string name="retype_password">Re-type new password</string>
     <string name="back_to_login">Back to login</string>
-    <string name="password_restrictions">Use 8 or more characters with a mix of letters, numbers, and symbols</string>
+    <string name="password_restrictions">Use 12 or more characters with a mix of letters, numbers, and symbols</string>
     <string name="and">and</string>
     <string name="do_not_have_an_account">Do not have an account?</string>
     <string name="create_an_account_now">Create an account now</string>

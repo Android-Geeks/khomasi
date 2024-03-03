@@ -8,10 +8,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.navigation.Screens
-import com.company.khomasi.presentation.register.RegisterScreen
 import com.company.khomasi.presentation.login.LoginScreen
 import com.company.khomasi.presentation.loginOrSignup.LoginOrRegisterScreen
 import com.company.khomasi.presentation.otpScreen.OtpScreen
+import com.company.khomasi.presentation.register.RegisterScreen
+import com.company.khomasi.presentation.resetPassword.ResetPassword1
+import com.company.khomasi.presentation.resetPassword.ResetPassword2
 
 @Composable
 fun AuthNavigator() {
@@ -31,7 +33,7 @@ fun AuthNavigator() {
             composable(route = Screens.Login.name) {
                 LoginScreen(
                     onRegisterClick = { navController.navigate(Screens.Register.name) },
-                    onForgotPasswordClick = { navController.navigate(Screens.ResetPassword.name) },
+                    onForgotPasswordClick = { navController.navigate(Screens.ResetPassword1.name) },
                 )
             }
             composable(route = Screens.Register.name) {
@@ -44,8 +46,16 @@ fun AuthNavigator() {
             composable(route = Screens.OTP.name) {
                 OtpScreen()
             }
-            composable(route = Screens.ResetPassword.name) {
-                // ResetPasswordScreen()
+            composable(route = Screens.ResetPassword1.name) {
+                ResetPassword1(
+                    onSetPasswordClick = { navController.navigate(Screens.ResetPassword2.name) },
+                    onCancelClick = { navController.popBackStack() }
+                )
+            }
+            composable(route = Screens.ResetPassword2.name) {
+                ResetPassword2(
+                    onBackToLogin = { navController.navigate(Screens.Login.name) }
+                )
             }
         }
     }
