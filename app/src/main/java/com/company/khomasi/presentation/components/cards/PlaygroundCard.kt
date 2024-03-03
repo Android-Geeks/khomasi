@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -73,7 +74,7 @@ fun PlaygroundCard(
                         .height(62.dp)
                 ) {
                     FavoriteIcon(
-                        onFavoriteClick = {  },
+                        onFavoriteClick = { },
                         isFavorite = false,
                         modifier = Modifier.padding(top = 12.dp, start = 6.dp)
                     )
@@ -140,8 +141,6 @@ fun PlaygroundCard(
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                 )
-
-
             }
             HorizontalDivider(
                 modifier = Modifier
@@ -149,26 +148,28 @@ fun PlaygroundCard(
                     .padding(bottom = 8.dp),
                 thickness = 1.dp
             )
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.currencycircledollar),
                     contentDescription = null,
-                    modifier = Modifier.padding(end = 4.dp, top = 12.dp)
+                    modifier = Modifier.padding(
+                        end = 4.dp,
+                        top = 3.dp
+                    )
                 )
                 Text(
                     text = playground.price + " / ",
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier
-                        .padding(top = 6.dp)
                 )
 
                 Text(
                     text = playground.openingHours,
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier
-                        .padding(top = 6.dp)
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 MyButton(

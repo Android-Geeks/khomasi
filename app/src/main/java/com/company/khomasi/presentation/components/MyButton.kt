@@ -100,7 +100,7 @@ fun MyOutlinedButton(
         onClick = onClick,
         modifier = modifier,
         shape = shape,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
