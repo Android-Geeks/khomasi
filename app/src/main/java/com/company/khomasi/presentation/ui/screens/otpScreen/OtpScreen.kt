@@ -159,17 +159,14 @@ fun OtpScreen(
 
         }
     }
-
-
 }
 
 
 @Preview(name = "light", uiMode = UI_MODE_NIGHT_NO, showBackground = true)
 @Preview(name = "dark", uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun LogInPreview() {
+fun OtpPreview() {
     KhomasiTheme {
         OtpScreen()
-
     }
 }

@@ -6,26 +6,4 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class LoginOrSignupViewModel @Inject constructor(
-
-) : ViewModel() {
-    fun createAccount() {
-
-    }
-
-    fun login() {
-
-    }
-
-    fun logo() {
-
-    }
-
-    fun privacyAndPolicy() {
-
-    }
-
-    fun helpAndSupport() {
-
-    }
-}
+class LoginOrSignupViewModel @Inject constructor() : ViewModel()

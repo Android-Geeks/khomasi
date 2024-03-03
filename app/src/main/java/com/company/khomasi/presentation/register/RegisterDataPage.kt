@@ -1,5 +1,7 @@
-package com.company.khomasi.presentation.register.pages
+package com.company.khomasi.presentation.register
 
+import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -13,6 +15,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -23,25 +26,47 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
+import com.company.khomasi.domain.DataState
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
-import com.company.khomasi.presentation.register.RegisterViewModel
-import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
 
 @Composable
 fun RegisterDataPage(
     viewModel: RegisterViewModel,
+    onLoginClick: () -> Unit,
+    onDoneClick: () -> Unit,
+    backToLoginOrRegister: () -> Unit,
     localFocusManager: FocusManager = LocalFocusManager.current,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
-    isDark: Boolean = isSystemInDarkTheme()
+    isDark: Boolean = isSystemInDarkTheme(),
 ) {
-    val userState = viewModel.user.value
+    val userState = viewModel.uiState.value
+    BackHandler {
+        if (userState.page == 2) {
+            viewModel.onBack()
+        } else {
+            backToLoginOrRegister()
+        }
+    }
+    val registerState = viewModel.registerState.collectAsState()
+    when (registerState.value) {
+        is DataState.Loading -> {
+            Log.d("RegisterDataPage", "Loading")
+        }
+
+        is DataState.Success -> {
+            onDoneClick()
+        }
+
+        is DataState.Error -> {
+            Log.d("RegisterDataPage", "Error: ${registerState.value}")
+        }
+    }
     val keyboardActions = KeyboardActions(
         onNext = { localFocusManager.moveFocus(FocusDirection.Down) },
         onDone = {
@@ -63,7 +88,7 @@ fun RegisterDataPage(
                 )
                 MyTextField(
                     value = userState.firstName,
-                    onValueChange = { viewModel.onFirstNameChange(it) },
+                    onValueChange = viewModel::onFirstNameChange,
                     label = R.string.first_name,
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Text,
@@ -71,7 +96,7 @@ fun RegisterDataPage(
                 )
                 MyTextField(
                     value = userState.lastName,
-                    onValueChange = { viewModel.onLastNameChange(it) },
+                    onValueChange = viewModel::onLastNameChange,
                     label = R.string.last_name,
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Text,
@@ -79,7 +104,7 @@ fun RegisterDataPage(
                 )
                 MyTextField(
                     value = userState.phoneNumber,
-                    onValueChange = { viewModel.onPhoneNumberChange(it) },
+                    onValueChange = viewModel::onPhoneNumberChange,
                     label = R.string.phone_number,
                     imeAction = ImeAction.Done,
                     keyBoardType = KeyboardType.Phone,
@@ -88,7 +113,16 @@ fun RegisterDataPage(
                 Spacer(modifier = Modifier.height(84.dp))
                 MyButton(
                     text = R.string.next,
-                    onClick = { },
+                    onClick = {
+                        if (viewModel.isValidNameAndPhoneNumber(
+                                userState.firstName,
+                                userState.lastName,
+                                userState.phoneNumber
+                            )
+                        ) {
+                            viewModel.onNextClick()
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -101,7 +135,7 @@ fun RegisterDataPage(
                 )
                 MyTextField(
                     value = userState.email,
-                    onValueChange = { viewModel.onEmailChange(it) },
+                    onValueChange = viewModel::onEmailChange,
                     label = R.string.email,
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Email,
@@ -109,7 +143,7 @@ fun RegisterDataPage(
                 )
                 MyTextField(
                     value = userState.password,
-                    onValueChange = { viewModel.onPasswordChange(it) },
+                    onValueChange = viewModel::onPasswordChange,
                     label = R.string.password,
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Password,
@@ -117,7 +151,7 @@ fun RegisterDataPage(
                 )
                 MyTextField(
                     value = userState.confirmPassword,
-                    onValueChange = { viewModel.onConfirmPasswordChange(it) },
+                    onValueChange = viewModel::onConfirmPasswordChange,
                     label = R.string.confirm_password,
                     imeAction = ImeAction.Done,
                     keyBoardType = KeyboardType.Password,
@@ -126,7 +160,15 @@ fun RegisterDataPage(
                 Spacer(modifier = Modifier.height(84.dp))
                 MyButton(
                     text = R.string.create_account,
-                    onClick = {},
+                    onClick = {
+                        if (viewModel.isValidEmailAndPassword(
+                                userState.email,
+                                userState.password
+                            )
+                        ) {
+                            viewModel.onRegister()
+                        }
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -144,18 +186,21 @@ fun RegisterDataPage(
             MyTextButton(
                 text = R.string.login,
                 isUnderlined = false,
-                onClick = { /*TODO*/ }
+                onClick = onLoginClick
             )
         }
     }
 }
 
-@Preview
-@Composable
-fun RegisterDataPagePreview() {
-    KhomasiTheme {
-        RegisterDataPage(
-            viewModel = RegisterViewModel(),
-        )
-    }
-}
+//@Preview
+//@Composable
+//fun RegisterDataPagePreview() {
+//    KhomasiTheme {
+//        RegisterDataPage(
+//            onNextClick = {  },
+//            onLoginClick = {  },
+//            route = "",
+//            onDoneClick = { },
+//        )
+//    }
+//}

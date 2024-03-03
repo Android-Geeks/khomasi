@@ -1,6 +1,6 @@
 package com.company.khomasi.presentation.register
 
-data class UserState(
+data class RegisterUiState(
     val firstName: String = "",
     val lastName: String = "",
     val email: String = "",
