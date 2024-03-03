@@ -1,13 +1,14 @@
 package com.company.khomasi.navigation
 
 enum class Screens {
+    KhomasiNavigatorScreen,
+    AuthNavigatorScreen,
     Home,
     MyBookings,
     Playgrounds,
     Favorite,
     OnBoarding,
     Login,
-    KhomasiNavigatorScreen,
     Register,
     LoginOrRegister,
     OTP,

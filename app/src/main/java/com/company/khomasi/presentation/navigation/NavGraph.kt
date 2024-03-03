@@ -12,10 +12,6 @@ import com.company.khomasi.navigation.Routes
 import com.company.khomasi.navigation.Screens
 import com.company.khomasi.presentation.onboarding.OnBoardingScreen
 import com.company.khomasi.presentation.onboarding.OnboardingViewModel
-import com.company.khomasi.presentation.register.RegisterScreen
-import com.company.khomasi.presentation.ui.screens.login.LoginScreen
-import com.company.khomasi.presentation.ui.screens.loginOrSignup.LoginOrRegisterScreen
-import com.company.khomasi.presentation.ui.screens.otpScreen.OtpScreen
 import com.company.khomasi.theme.KhomasiTheme
 
 @Composable
@@ -37,7 +33,6 @@ fun NavGraph(
                 val viewModel: OnboardingViewModel = hiltViewModel()
                 OnBoardingScreen(
                     onSkipClick = { viewModel.onSkipClick() },
-                    // x = viewModel.x.collectAsState().value
                 )
             }
         }
@@ -45,24 +40,11 @@ fun NavGraph(
         // Navigation for Auth
         navigation(
             route = Routes.AuthNavigation.name,
-            startDestination = Screens.Login.name
+            startDestination = Screens.AuthNavigatorScreen.name
         ) {
-            composable(route = Screens.LoginOrRegister.name) {
-                LoginOrRegisterScreen()
+            composable(route = Screens.AuthNavigatorScreen.name) {
+                AuthNavigator()
             }
-            composable(route = Screens.Login.name) {
-                LoginScreen()
-            }
-            composable(route = Screens.Register.name) {
-                RegisterScreen()
-            }
-            composable(route = Screens.OTP.name) {
-                OtpScreen()
-            }
-            composable(route = Screens.ResetPassword.name) {
-                // ResetPasswordScreen()
-            }
-
         }
 
         // Navigation for Khomasi app
