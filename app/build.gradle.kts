@@ -127,6 +127,10 @@ dependencies {
     implementation("androidx.room:room-ktx:${room}")
     ksp("androidx.room:room-compiler:${room}")
 
+    // Kotlinx Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+
     //retrofit
     val retrofit = "2.9.0"
     val okHttp = "4.12.0"
