@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -70,7 +69,6 @@ fun LogIn(
             value = loginState.email,
             onValueChange = { loginViewModel.updateEmail(it) },
             label = R.string.email,
-            onImeAction = { ImeAction.Done },
             keyBoardType = KeyboardType.Text
         )
         Spacer(modifier = Modifier.height(24.dp))
@@ -79,7 +77,6 @@ fun LogIn(
             value = loginState.password,
             onValueChange = { loginViewModel.updatePassword(it) },
             label = R.string.password,
-            onImeAction = { ImeAction.Done },
             keyBoardType = KeyboardType.Password,
         )
         Text(
