@@ -155,7 +155,6 @@
     <string name="send_verification_email">إرسال بريد التحقق</string>
     <string name="enter_verification_email">ادخل بريد التحقق</string>
     <string name="save_changes">حفظ التغييرات</string>
-    <string name="forgot_your_password">هل نسيت كلمة السر ؟</string>
     <string name="enter_email_to_reset_password">أدخل بريدك الإلكتروني لإعادة تعيين كلمة المرور الخاصة بك.</string>
     <string name="set_password">تعيين كلمة المرور</string>
     <string name="reset_password"> إعادة تعيين كلمة مرور جديد</string>
@@ -164,10 +163,10 @@
     <string name="retype_password">اعد كتابة كلمة المرور</string>
     <string name="back_to_login">العودة لتسجيل الدخول</string>
     <string name="password_restrictions">أستخدم 8 أحرف أو أكثر مع مزيج من الحروف والأرقام والرموز</string>
-
     <string name="privacy_policy">سياسة الخصوصية</string>
     <string name="bookable">قابل للحجز</string>
     <string name="un_bookable">غير قابل للحجز</string>
+    <string name="unbookable">غير قابل للحجز</string>
     <string name="view_playground">عرض الملعب</string>
     <string name="and">و</string>
     <string name="do_not_have_an_account">لا تملك حساب؟</string>
