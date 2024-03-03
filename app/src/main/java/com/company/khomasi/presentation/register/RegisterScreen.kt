@@ -41,8 +41,8 @@ fun RegisterScreen(
     )
 }
 
-@Preview(name = "Light", showSystemUi = true, uiMode = UI_MODE_NIGHT_NO, locale = "ar")
-@Preview(name = "Night", showSystemUi = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO, locale = "en")
+@Preview(name = "Night", uiMode = UI_MODE_NIGHT_YES, locale = "ar")
 @Composable
 fun RegisterScreenPreview() {
     KhomasiTheme {

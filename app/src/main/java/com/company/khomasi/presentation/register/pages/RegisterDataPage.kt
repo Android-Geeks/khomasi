@@ -5,9 +5,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -49,7 +50,7 @@ fun RegisterDataPage(
         }
     )
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.wrapContentHeight(),
         verticalArrangement = Arrangement.spacedBy(16.dp) // Adjust the spacing between items
     ) {
         when (userState.page) {
@@ -84,8 +85,7 @@ fun RegisterDataPage(
                     keyBoardType = KeyboardType.Phone,
                     keyboardActions = keyboardActions
                 )
-                // Spacer to take remaining space
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.height(84.dp))
                 MyButton(
                     text = R.string.next,
                     onClick = { },
@@ -123,8 +123,7 @@ fun RegisterDataPage(
                     keyBoardType = KeyboardType.Password,
                     keyboardActions = keyboardActions
                 )
-                // Spacer to take remaining space
-                Spacer(modifier = Modifier.weight(1f))
+                Spacer(modifier = Modifier.height(84.dp))
                 MyButton(
                     text = R.string.create_account,
                     onClick = {},

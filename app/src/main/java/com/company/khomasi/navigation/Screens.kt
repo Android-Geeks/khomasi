@@ -8,6 +8,10 @@ enum class Screens {
     OnBoarding,
     Login,
     KhomasiNavigatorScreen,
+    Register,
+    LoginOrRegister,
+    OTP,
+    ResetPassword,
 }
 
 enum class Routes {

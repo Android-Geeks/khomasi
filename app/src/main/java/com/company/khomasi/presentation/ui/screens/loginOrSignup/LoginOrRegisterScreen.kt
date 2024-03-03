@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.ui.screens.login
+package com.company.khomasi.presentation.ui.screens.loginOrSignup
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -9,7 +9,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,13 +19,12 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,7 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
-import com.company.khomasi.presentation.components.MyTextField
+import com.company.khomasi.presentation.components.MyOutlinedButton
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.Shapes
 import com.company.khomasi.theme.darkHint
@@ -43,94 +41,48 @@ import com.company.khomasi.theme.lightHint
 import com.company.khomasi.theme.lightSubText
 
 @Composable
-fun LogIn(
+fun LoginOrRegisterScreen(
     modifier: Modifier = Modifier,
-    isDark: Boolean = isSystemInDarkTheme(),
-    loginViewModel: LoginViewModel = hiltViewModel()
+    loginOrSignupViewModel: LoginOrSignupViewModel = hiltViewModel(),
+    isDark: Boolean = isSystemInDarkTheme()
 ) {
-    val loginState = loginViewModel.uiState.collectAsState().value
-
     Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .fillMaxWidth()
-            .padding(12.dp)
-    ) {
-
-        Text(
-            text = stringResource(id = R.string.you_are_almost_there),
-            style = MaterialTheme.typography.displayMedium,
-            color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-
-        MyTextField(
-            value = loginState.email,
-            onValueChange = { loginViewModel.updateEmail(it) },
-            label = R.string.email,
-            keyBoardType = KeyboardType.Text
-        )
-        Spacer(modifier = Modifier.height(24.dp))
-
-        MyTextField(
-            value = loginState.password,
-            onValueChange = { loginViewModel.updatePassword(it) },
-            label = R.string.password,
-            keyBoardType = KeyboardType.Password,
-        )
-        Text(
-            text = stringResource(id = R.string.forgot_your_password),
-            style = MaterialTheme.typography.bodySmall,
-            textAlign = TextAlign.End,
+            .background(color = MaterialTheme.colorScheme.background)
+    )
+    {
+        Spacer(modifier = Modifier.height(130.dp))
+        Image(
+            painter = painterResource(id = R.drawable.player),
+            contentDescription = null,
             modifier = Modifier
-                .clickable { loginViewModel.createAccount() }
-                .fillMaxWidth(),
-            color = MaterialTheme.colorScheme.primary,
+                .fillMaxWidth()
+                .height(240.dp)
+                .padding(11.dp),
+            contentScale = ContentScale.Crop
         )
-        Spacer(modifier = Modifier.height(24.dp))
+        Spacer(modifier = Modifier.height(68.dp))
 
-        MyButton(
-            text = R.string.login,
-            onClick = {
-                loginViewModel.login()
-            },
-            contentPadding = PaddingValues(vertical = 9.dp),
+        MyOutlinedButton(
+            text = R.string.create_account,
+            onClick = { loginOrSignupViewModel.createAccount() },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)
-                .padding(horizontal = 10.dp)
-                .background(
-                    color = MaterialTheme.colorScheme.primary,
-                    shape = MaterialTheme.shapes.medium
-                )
+                .padding(horizontal = 24.dp)
         )
-        Spacer(modifier = Modifier.height(24.dp))
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
-        ) {
+        Spacer(modifier = Modifier.height(16.dp))
 
-            Text(
-                text = stringResource(id = R.string.do_not_have_an_account),
-                style = MaterialTheme.typography.bodySmall
-            )
-            Spacer(modifier = Modifier.padding(2.dp))
-            Text(
-                text = stringResource(id = R.string.create_an_account_now),
-                modifier = Modifier
-                    .clickable {
-                        loginViewModel.createAccount()
-                    },
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.bodySmall
-
-            )
-
-        }
-        Spacer(modifier = Modifier.height(24.dp))
+        MyButton(
+            text = R.string.login,
+            onClick = { loginOrSignupViewModel.login() },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(48.dp)
+                .padding(horizontal = 24.dp)
+        )
+        Spacer(modifier = Modifier.height(34.dp))
 
         Row(modifier = Modifier.fillMaxWidth()) {
             HorizontalDivider(
@@ -143,8 +95,7 @@ fun LogIn(
             Text(
                 text = stringResource(id = R.string.or_register_via),
                 modifier = Modifier
-                    .weight(0.7f)
-                    .padding(start = 5.dp),
+                    .padding(horizontal = 5.dp),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodySmall,
                 color = if (isDark) darkHint else lightHint
@@ -175,7 +126,7 @@ fun LogIn(
                 contentDescription = null,
                 modifier = Modifier
                     .size(32.dp)
-                    .clickable { loginViewModel.logo() }
+                    .clickable { loginOrSignupViewModel.logo() }
             )
         }
         Spacer(modifier = Modifier.height(22.dp))
@@ -191,7 +142,9 @@ fun LogIn(
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 16.dp)
         ) {
 
             Text(
@@ -200,7 +153,7 @@ fun LogIn(
                 textDecoration = TextDecoration.Underline,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier
-                    .clickable { loginViewModel.privacyAndPolicy() }
+                    .clickable { loginOrSignupViewModel.privacyAndPolicy() }
             )
 
             Text(
@@ -216,21 +169,18 @@ fun LogIn(
                 textDecoration = TextDecoration.Underline,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier
-                    .clickable { loginViewModel.helpAndSupport() }
+                    .clickable { loginOrSignupViewModel.helpAndSupport() }
 
             )
         }
     }
 }
 
-
-@Preview(name = "light", uiMode = UI_MODE_NIGHT_NO)
 @Preview(name = "dark", uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "light", uiMode = UI_MODE_NIGHT_NO)
 @Composable
-fun LogInPreview() {
+fun SignUpPreview() {
     KhomasiTheme {
-
-        LogIn()
-
+        LoginOrRegisterScreen()
     }
 }
