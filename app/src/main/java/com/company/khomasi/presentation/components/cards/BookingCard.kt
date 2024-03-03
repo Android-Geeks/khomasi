@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.components.booking_cards
+package com.company.khomasi.presentation.components.cards
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -24,11 +24,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
-import com.company.khomasi.presentation.components.BookingDetails
-import com.company.khomasi.presentation.components.BookingStatus
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
-import com.company.khomasi.presentation.components.Playground
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkSubText
 import com.company.khomasi.theme.darkWarningColor

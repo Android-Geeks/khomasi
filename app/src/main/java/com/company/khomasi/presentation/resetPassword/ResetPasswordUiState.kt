@@ -1,6 +1,6 @@
-package com.company.khomasi.presentation.recreateNewPassword
+package com.company.khomasi.presentation.resetPassword
 
-data class RecreateNewPassUiState(
+data class ResetPasswordUiState(
     val userEmail : String = "hophop23103@gmail.com",
     val enteredVerificationCode : String = "",
     val realVerificationCode : String = "",

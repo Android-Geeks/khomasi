@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.components
+package com.company.khomasi.presentation.components.cards
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
+import com.company.khomasi.presentation.components.iconButtons.FavoriteIcon
+import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.theme.KhomasiTheme
 
 @Composable

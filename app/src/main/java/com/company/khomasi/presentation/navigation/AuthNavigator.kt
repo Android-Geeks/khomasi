@@ -9,9 +9,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.navigation.Screens
 import com.company.khomasi.presentation.register.RegisterScreen
-import com.company.khomasi.presentation.ui.screens.login.LoginScreen
-import com.company.khomasi.presentation.ui.screens.loginOrSignup.LoginOrRegisterScreen
-import com.company.khomasi.presentation.ui.screens.otpScreen.OtpScreen
+import com.company.khomasi.presentation.login.LoginScreen
+import com.company.khomasi.presentation.loginOrSignup.LoginOrRegisterScreen
+import com.company.khomasi.presentation.otpScreen.OtpScreen
 
 @Composable
 fun AuthNavigator() {

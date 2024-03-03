@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.components
+package com.company.khomasi.presentation.components.cards
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -29,6 +29,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
+import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.theme.KhomasiTheme
 
 @Composable

@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.ui.screens.otpScreen
+package com.company.khomasi.presentation.otpScreen
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -42,7 +42,7 @@ fun SmsCodeView(
     smsFulled: (String) -> Unit,
     modifier: Modifier = Modifier,
     isDark : Boolean = isSystemInDarkTheme(),
-    otpViewModel: OtpViewModel= hiltViewModel()
+    otpViewModel: OtpViewModel = hiltViewModel()
 ) {
     val focusRequesters: List<FocusRequester> = remember {
         (0 until smsCodeLength).map { FocusRequester() }

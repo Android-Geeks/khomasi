@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.components
+package com.company.khomasi.presentation.components.iconButtons
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

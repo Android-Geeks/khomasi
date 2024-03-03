@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.recreateNewPassword
+package com.company.khomasi.presentation.resetPassword
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -35,10 +35,10 @@ import com.company.khomasi.theme.lightText
 
 @Composable
 fun RecreatePassScreen1(
-    recreateNewPassViewModel: RecreateNewPassViewModel = hiltViewModel()
+    resetPasswordViewModel: ResetPasswordViewModel = hiltViewModel()
 ) {
-    val recreateNewPassUiState by recreateNewPassViewModel.recreateUiState.collectAsState()
-    val verificationRes by recreateNewPassViewModel.verificationRes.collectAsState()
+    val recreateNewPassUiState by resetPasswordViewModel.recreateUiState.collectAsState()
+    val verificationRes by resetPasswordViewModel.verificationRes.collectAsState()
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val res = when (verificationRes) {
@@ -76,7 +76,7 @@ fun RecreatePassScreen1(
 
         MyTextField(
             value = recreateNewPassUiState.userEmail,
-            onValueChange = { recreateNewPassViewModel.onUserEmailChange(it) },
+            onValueChange = { resetPasswordViewModel.onUserEmailChange(it) },
             label = R.string.email,
             keyboardActions = KeyboardActions(
                 onDone = {
@@ -88,7 +88,7 @@ fun RecreatePassScreen1(
         MyButton(
             text = R.string.set_password,
             onClick = {
-                recreateNewPassViewModel.onClickButtonScreen1()
+                resetPasswordViewModel.onClickButtonScreen1()
             },
             modifier = Modifier
                 .fillMaxWidth()

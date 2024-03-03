@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.components
+package com.company.khomasi.presentation.components.cards
 
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.layout.Arrangement

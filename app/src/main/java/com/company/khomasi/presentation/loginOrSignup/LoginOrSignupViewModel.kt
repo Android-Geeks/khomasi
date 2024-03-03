@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.ui.screens.loginOrSignup
+package com.company.khomasi.presentation.loginOrSignup
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

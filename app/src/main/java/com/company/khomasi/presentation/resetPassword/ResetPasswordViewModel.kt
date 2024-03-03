@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.recreateNewPassword
+package com.company.khomasi.presentation.resetPassword
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,12 +14,12 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class RecreateNewPassViewModel @Inject constructor(
+class ResetPasswordViewModel @Inject constructor(
     private val authUseCases: AuthUseCases,
 ): ViewModel() {
 
-    private val _recreateUiState = MutableStateFlow(RecreateNewPassUiState())
-    val recreateUiState: StateFlow<RecreateNewPassUiState> = _recreateUiState.asStateFlow()
+    private val _recreateUiState = MutableStateFlow(ResetPasswordUiState())
+    val recreateUiState: StateFlow<ResetPasswordUiState> = _recreateUiState.asStateFlow()
 
     private val _verificationRes = MutableStateFlow<DataState<VerificationResponse>>(DataState.Loading)
     val verificationRes: StateFlow<DataState<VerificationResponse>> = _verificationRes
