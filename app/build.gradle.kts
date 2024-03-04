@@ -15,7 +15,7 @@ android {
 
     defaultConfig {
         applicationId = "com.company.khomasi"
-        minSdk = 21
+        minSdk = 23
         //noinspection EditedTargetSdkVersion
         targetSdk = 34
         versionCode = 1

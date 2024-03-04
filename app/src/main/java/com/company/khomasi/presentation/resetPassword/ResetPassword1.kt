@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.presentation.components.Loading
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
@@ -45,7 +46,7 @@ fun ResetPassword1(
 
     when (verificationRes) {
         is DataState.Loading -> {
-            Log.d("ResetPassword1", "Loading...")
+            Loading()
         }
 
         is DataState.Success -> {
