@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkSubText
@@ -70,7 +71,8 @@ fun LossConnection(
 
             MyTextButton(
                 text = R.string.retry,
-                onClick = { onClickRetry() }
+                onClick = { onClickRetry() },
+                textSize = 16.sp
             )
 
         }
