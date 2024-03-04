@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.ui.screens.login
+package com.company.khomasi.presentation.login
 
 data class LoginUiState(
     val password: String = "",

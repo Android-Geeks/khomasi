@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.ui.screens.otpScreen
+package com.company.khomasi.presentation.otpScreen
 
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
@@ -7,7 +7,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -92,7 +91,6 @@ fun OtpScreen(
             onClick = {
                 otpViewModel.login()
             },
-            contentPadding = PaddingValues(horizontal = 34.dp, vertical = 9.dp),
             modifier = Modifier
                 .fillMaxWidth()
                 .height(48.dp)

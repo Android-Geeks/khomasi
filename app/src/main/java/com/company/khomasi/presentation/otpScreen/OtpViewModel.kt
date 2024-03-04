@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.ui.screens.otpScreen
+package com.company.khomasi.presentation.otpScreen
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

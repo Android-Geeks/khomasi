@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.ui.screens.otpScreen
+package com.company.khomasi.presentation.otpScreen
 
 data class OtpUiState(
     val code: String = "",

@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.ui.screens.login
+package com.company.khomasi.presentation.login
 
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -59,11 +59,11 @@ class LoginViewModel @Inject constructor(
     }
 
     fun privacyAndPolicy() {
-        TODO("Not yet implemented")
+
     }
 
     fun helpAndSupport() {
-        TODO("Not yet implemented")
+
     }
 
     fun isValidEmailAndPassword(email: String, password: String): Boolean {

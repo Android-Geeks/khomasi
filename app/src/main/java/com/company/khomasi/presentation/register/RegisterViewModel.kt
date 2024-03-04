@@ -9,6 +9,7 @@ import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.UserDetails
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
+import com.company.khomasi.utils.CheckInputValidation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -77,25 +78,19 @@ class RegisterViewModel @Inject constructor(
         lastName: String,
         phoneNumber: String
     ): Boolean {
-        // First name should have at least 3 characters and not contain numbers
-        val isFirstNameValid = firstName.length >= 3 && !firstName.any { it.isDigit() }
+        val isFirstNameValid = CheckInputValidation.isFirstNameValid(firstName)
 
-        // Last name should have at least 3 characters and not contain numbers
-        val isLastNameValid = lastName.length >= 3 && !lastName.any { it.isDigit() }
+        val isLastNameValid = CheckInputValidation.isLastNameValid(lastName)
 
-        // Phone number should start with '010', '011', '012', or '015' and consist of 11 digits
-        val isPhoneNumberValid = phoneNumber.matches(Regex("^(010|011|012|015)\\d{8}\$"))
+        val isPhoneNumberValid = CheckInputValidation.isPhoneNumberValid(phoneNumber)
 
         return isFirstNameValid && isLastNameValid && isPhoneNumberValid
     }
 
     fun isValidEmailAndPassword(email: String, password: String): Boolean {
-        // Use a regular expression to validate email format
-        val isEmailValid = email.matches(Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"))
-
-        // Password should have at least 12 characters, a number, a symbol, and no spaces
+        val isEmailValid = CheckInputValidation.isEmailValid(email)
         val isPasswordValid =
-            password.matches(Regex("^(?=.*[0-9])(?=.*[!@#$%^&*])(?=\\S+\$).{12,}\$"))
+            CheckInputValidation.isPasswordValid(password)
 
         return isEmailValid && isPasswordValid && _uiState.value.password == _uiState.value.confirmPassword
     }

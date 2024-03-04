@@ -162,7 +162,7 @@
     <string name="new_password">كلمة المرور الجديدة</string>
     <string name="retype_password">اعد كتابة كلمة المرور</string>
     <string name="back_to_login">العودة لتسجيل الدخول</string>
-    <string name="password_restrictions">أستخدم 8 أحرف أو أكثر مع مزيج من الحروف والأرقام والرموز</string>
+    <string name="password_restrictions">أستخدم 12 أحرف أو أكثر مع مزيج من الحروف والأرقام والرموز</string>
     <string name="privacy_policy">سياسة الخصوصية</string>
     <string name="bookable">قابل للحجز</string>
     <string name="un_bookable">غير قابل للحجز</string>

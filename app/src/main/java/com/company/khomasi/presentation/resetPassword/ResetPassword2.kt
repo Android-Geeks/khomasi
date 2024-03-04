@@ -1,7 +1,6 @@
-package com.company.khomasi.presentation.recreateNewPassword
+package com.company.khomasi.presentation.resetPassword
 
 import android.content.res.Configuration
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,18 +14,17 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
@@ -36,19 +34,31 @@ import com.company.khomasi.theme.darkHint
 import com.company.khomasi.theme.lightHint
 
 @Composable
-fun RecreatePassScreen2(
-    recreateViewModel: RecreateNewPassViewModel = hiltViewModel()
+fun ResetPassword2(
+    recreateViewModel: ResetPasswordViewModel = hiltViewModel(),
+    onBackToLogin: () -> Unit
 ) {
 
-    val recreateUiState by recreateViewModel.recreateUiState.collectAsState()
-    val verificationRes by recreateViewModel.verificationRes.collectAsState()
+    val recreateUiState = recreateViewModel.recreateUiState.collectAsState().value
+    val verificationRes = recreateViewModel.verificationRes.collectAsState().value
+    val recoverRes = recreateViewModel.recoverResponse.collectAsState().value
     val keyboardController = LocalSoftwareKeyboardController.current
 
     val code = when (verificationRes) {
         is DataState.Loading -> "Loading..."
-        is DataState.Success -> (verificationRes as DataState.Success<VerificationResponse>).data.code.toString()
-        is DataState.Error -> (verificationRes as DataState.Error).message
+        is DataState.Success -> verificationRes.data.code.toString()
+        is DataState.Error -> verificationRes.message
     }
+
+    when (recoverRes) {
+        is DataState.Loading -> {}
+        is DataState.Success -> {
+            onBackToLogin()
+        }
+
+        is DataState.Error -> {}
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -59,8 +69,8 @@ fun RecreatePassScreen2(
         Text(
             text = stringResource(id = R.string.reset_password),
             modifier = Modifier
-                .padding(bottom = 8.dp)
-                .clickable { recreateViewModel.onClickButtonScreen1() },
+                .padding(bottom = 8.dp),
+            //.clickable { recreateViewModel.onClickButtonScreen1() },
             style = MaterialTheme.typography.titleMedium
         )
 
@@ -84,6 +94,7 @@ fun RecreatePassScreen2(
                     keyboardController?.hide()
                 }
             ),
+            imeAction = ImeAction.Next,
             keyBoardType = KeyboardType.Number,
             isError = !(recreateUiState.isCodeTrue)
         )
@@ -144,7 +155,7 @@ fun RecreatePassScreen2(
 
         MyTextButton(
             text = R.string.back_to_login,
-            onClick = {},
+            onClick = onBackToLogin,
         )
     }
 }
@@ -159,6 +170,6 @@ fun RecreatePassScreen2(
 @Composable
 fun RecreateNewPasswordPreview() {
     KhomasiTheme {
-        RecreatePassScreen2()
+        ResetPassword2 { }
     }
 }

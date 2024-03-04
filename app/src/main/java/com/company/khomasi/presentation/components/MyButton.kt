@@ -6,7 +6,6 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
@@ -37,9 +36,8 @@ fun MyButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
-    shape: CornerBasedShape = MaterialTheme.shapes.large,
-    buttonEnable : Boolean = true,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
+    shape: CornerBasedShape = MaterialTheme.shapes.medium,
+    buttonEnable: Boolean = true,
     color: ButtonColors? = null
 ) {
     Button(
@@ -47,7 +45,6 @@ fun MyButton(
         modifier = modifier,
         shape = shape,
         enabled = buttonEnable,
-        contentPadding = contentPadding,
         colors = color ?: ButtonDefaults.buttonColors()
     ) {
         Row(
@@ -98,13 +95,12 @@ fun MyOutlinedButton(
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
     shape: CornerBasedShape = MaterialTheme.shapes.medium,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
 ) {
     OutlinedButton(
         onClick = onClick,
         modifier = modifier,
         shape = shape,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary)
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -134,13 +130,11 @@ fun ButtonPreview() {
                 text = R.string.skip,
                 onClick = { },
                 icon = R.drawable.clock,
-                contentPadding = PaddingValues(vertical = 4.dp, horizontal = 34.dp)
             )
             MyOutlinedButton(
                 text = R.string.skip,
                 onClick = { },
                 icon = R.drawable.clock,
-                contentPadding = PaddingValues(vertical = 4.dp, horizontal = 34.dp)
             )
             MyTextButton(
                 text = R.string.skip,

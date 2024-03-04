@@ -1,14 +1,12 @@
-package com.company.khomasi.presentation.components
+package com.company.khomasi.presentation.components.cards
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -20,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -33,6 +32,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
+import com.company.khomasi.presentation.components.MyButton
+import com.company.khomasi.presentation.components.iconButtons.FavoriteIcon
 import com.company.khomasi.theme.KhomasiTheme
 
 @Composable
@@ -40,11 +41,9 @@ fun PlaygroundCard(
     playground: Playground,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .height(265.dp)
             .background(
                 color = MaterialTheme.colorScheme.background,
                 shape = MaterialTheme.shapes.large
@@ -53,7 +52,6 @@ fun PlaygroundCard(
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.background)
         ) {
             Box {
@@ -76,7 +74,7 @@ fun PlaygroundCard(
                         .height(62.dp)
                 ) {
                     FavoriteIcon(
-                        onFavoriteClick = {  },
+                        onFavoriteClick = { },
                         isFavorite = false,
                         modifier = Modifier.padding(top = 12.dp, start = 6.dp)
                     )
@@ -143,8 +141,6 @@ fun PlaygroundCard(
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                 )
-
-
             }
             HorizontalDivider(
                 modifier = Modifier
@@ -152,42 +148,41 @@ fun PlaygroundCard(
                     .padding(bottom = 8.dp),
                 thickness = 1.dp
             )
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Icon(
                     painter = painterResource(id = R.drawable.currencycircledollar),
                     contentDescription = null,
-                    modifier = Modifier.padding(end = 4.dp, top = 12.dp)
+                    modifier = Modifier.padding(
+                        end = 4.dp,
+                        top = 3.dp
+                    )
                 )
                 Text(
                     text = playground.price + " / ",
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier
-                        .padding(top = 6.dp)
                 )
 
                 Text(
                     text = playground.openingHours,
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier
-                        .padding(top = 6.dp)
                 )
-                Spacer(modifier = Modifier.weight(1.5f))
+                Spacer(modifier = Modifier.weight(1f))
                 MyButton(
                     text = R.string.view_playground,
                     onClick = { },
-                    contentPadding = PaddingValues(vertical = 4.dp),
                     modifier = Modifier
                         .background(
                             color = MaterialTheme.colorScheme.primary,
                             shape = MaterialTheme.shapes.medium
                         )
                         .width(171.dp)
-                        .height(42.dp)
+                        .height(48.dp)
                 )
-
-
             }
         }
     }
