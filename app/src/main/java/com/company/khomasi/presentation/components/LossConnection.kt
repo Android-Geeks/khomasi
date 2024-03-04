@@ -1,6 +1,8 @@
 package com.company.khomasi.presentation.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,10 +22,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.theme.darkSubText
+import com.company.khomasi.theme.darkText
+import com.company.khomasi.theme.lightSubText
+import com.company.khomasi.theme.lightText
 
 
 @Composable
-fun LossConnection(){
+fun LossConnection(
+    onClickRetry :() -> Unit
+){
     Card(
         modifier = Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(Color.Transparent),
@@ -33,7 +41,12 @@ fun LossConnection(){
             horizontalAlignment = Alignment.CenterHorizontally
         ){
             Image(
-                painter = painterResource(id = R.drawable.loss_connection_light),
+                painter = if (isSystemInDarkTheme()){
+                    painterResource(id = R.drawable.loss_connection_dark)
+                }
+                else{
+                    painterResource(id = R.drawable.loss_connection_light)
+                },
                 contentDescription = null,
                 modifier = Modifier.size(161.dp, 130.dp),
             )
@@ -41,33 +54,34 @@ fun LossConnection(){
 
             Text(
                 text = stringResource(id = R.string.internet_connection_lost),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                color = if(isSystemInDarkTheme()) darkText else lightText
             )
 
             Spacer(modifier = Modifier.height(16.dp))
 
             Text(
                 text = stringResource(id = R.string.check_network_status),
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                color = if(isSystemInDarkTheme()) darkSubText else lightSubText
             )
 
             Spacer(modifier = Modifier.height(56.dp))
 
             MyTextButton(
                 text = R.string.retry,
-                onClick = { /*TODO*/ }
+                onClick = { onClickRetry() }
             )
 
         }
     }
-
-
 }
 
-@Preview(locale = "ar")
+@Preview(name = "Night", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(name = "Light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ar")
 @Composable
 fun LossConnectionPreview() {
     KhomasiTheme(darkTheme = true){
-        LossConnection()
+        LossConnection{}
     }
 }

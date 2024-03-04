@@ -19,7 +19,20 @@
         </State>
       </entry>
       <entry key="LossConnectionPreview">
-        <State />
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="C:\Users\sata\.android\avd\Pixel_4_API_33.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-03-04T02:14:18.927482500Z" />
+        </State>
       </entry>
       <entry key="RecreateNewPasswordPreview - Light">
         <State>
