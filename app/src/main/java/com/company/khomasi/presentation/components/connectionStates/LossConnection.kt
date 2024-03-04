@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.components
+package com.company.khomasi.presentation.components.connectionStates
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.company.khomasi.R
+import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkSubText
 import com.company.khomasi.theme.darkText
