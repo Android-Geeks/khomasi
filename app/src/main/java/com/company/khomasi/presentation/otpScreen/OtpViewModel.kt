@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.otpScreen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,15 +16,41 @@ class OtpViewModel @Inject constructor(
     val uiState: StateFlow<OtpUiState> = _uiState.asStateFlow()
 
     fun updateSmsCode(newCode: String) {
-        _uiState.value = _uiState.value.copy(code = newCode)
-        Log.d("OtpViewModel", "updateSmsCode: ${_uiState.value.code}")
+        if (_uiState.value.code == newCode) {
+            _uiState.value = _uiState.value.copy(
+                code = newCode,
+                isCodeCorrect = true
+            )
+        }
+        else {
+            _uiState.value = _uiState.value.copy(
+                isCodeCorrect = false
+            )
+        }
+    }
+    fun updateEmail(newEmail: String) {
+        _uiState.value = _uiState.value.copy(
+            email = newEmail,
+        )
     }
 
     fun login() {
+        val email = _uiState.value.email
+        val code = _uiState.value.code
+        if (verifyOtp(email, code)) {
+
+        } else
+        {
+
+        }
 
     }
+    private fun verifyOtp(email: String, code: String): Boolean
+    {
+        return code == "1234"
+    }
 
-    fun resendCode() {
+        fun resendCode() {
 
     }
 

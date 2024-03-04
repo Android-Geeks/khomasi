@@ -1,7 +1,6 @@
 package com.company.khomasi.presentation.otpScreen
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +13,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -31,8 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.theme.KhomasiTheme
-import com.company.khomasi.theme.darkHint
-import com.company.khomasi.theme.lightHint
 
 @Composable
 fun SmsCodeView(
@@ -41,7 +40,6 @@ fun SmsCodeView(
     textStyle: TextStyle,
     smsFulled: (String) -> Unit,
     modifier: Modifier = Modifier,
-    isDark : Boolean = isSystemInDarkTheme(),
     otpViewModel: OtpViewModel = hiltViewModel()
 ) {
     val focusRequesters: List<FocusRequester> = remember {
@@ -52,6 +50,8 @@ fun SmsCodeView(
             *((0 until smsCodeLength).map { "" }.toTypedArray())
         )
     }
+    val otpUiState by otpViewModel.uiState.collectAsState()
+
 
     Row(
         modifier = modifier
@@ -66,7 +66,8 @@ fun SmsCodeView(
                     .height(60.dp)
                     .border(
                         width = 0.5.dp,
-                        color = if(isDark) darkHint else lightHint,
+                        color = if (otpUiState.isCodeCorrect) MaterialTheme.colorScheme.outline
+                        else MaterialTheme.colorScheme.error,
                         shape = MaterialTheme.shapes.small
                     )
                     .focusRequester(focusRequester = focusRequesters[index])
@@ -90,7 +91,6 @@ fun SmsCodeView(
                 singleLine = true,
                 value = enteredNumbers.getOrNull(index)?.trim() ?: "",
                 maxLines = 1,
-                colors = textFieldColors,
                 onValueChange = { value: String ->
                     when {
                         value.isDigitsOnly() -> {

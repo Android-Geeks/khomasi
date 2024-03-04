@@ -17,6 +17,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,10 +25,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
@@ -39,7 +43,7 @@ fun OtpScreen(
     modifier: Modifier = Modifier,
     otpViewModel: OtpViewModel = hiltViewModel()
 ) {
-    //val otpUiState by otpViewModel.uiState.collectAsState()
+    val otpUiState by otpViewModel.uiState.collectAsState()
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
@@ -68,8 +72,7 @@ fun OtpScreen(
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = "zeyad@gmail.com",
-                //text= otpUiState.email,
+                text=otpUiState.email,
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.End,
                 textDecoration = TextDecoration.Underline
@@ -78,10 +81,13 @@ fun OtpScreen(
         Spacer(modifier = Modifier.padding(2.dp))
         SmsCodeView(
             smsCodeLength = 5,
-            // Need to add colors here
-            textFieldColors = TextFieldDefaults.colors(),
-            textStyle = MaterialTheme.typography.displayLarge,
-            smsFulled = otpViewModel::updateSmsCode
+            textFieldColors = TextFieldDefaults.colors(MaterialTheme.colorScheme.primary),
+            textStyle = TextStyle(
+                fontSize = 24.sp,
+                textAlign = TextAlign.Center,
+                fontWeight = FontWeight.Bold
+            ),
+            smsFulled = otpViewModel::updateSmsCode,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
