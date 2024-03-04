@@ -146,8 +146,11 @@ dependencies {
     //RatingBar
     implementation ("com.github.a914-gowtham:compose-ratingbar:1.3.4")
 
+    //Password meter
     implementation("com.nulab-inc:zxcvbn:1.5.2")
 
+    // Loading
+    implementation ("com.github.commandiron:ComposeLoading:1.0.4")
 
     // Local unit tests
     testImplementation("androidx.test:core:1.5.0")
