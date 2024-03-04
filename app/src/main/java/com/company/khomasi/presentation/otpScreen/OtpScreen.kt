@@ -95,7 +95,8 @@ fun OtpScreen(
         MyButton(
             text = R.string.confirm,
             onClick = {
-                otpViewModel.login()
+                if (otpUiState.isCodeCorrect)
+                    otpViewModel.login()
             },
             modifier = Modifier
                 .fillMaxWidth()
@@ -107,7 +108,15 @@ fun OtpScreen(
                 )
         )
         Spacer(modifier = Modifier.height(32.dp))
-
+        var time by remember { mutableStateOf(59) }
+        LaunchedEffect(Unit) {
+            while (time > 0) {
+                delay(1000)
+                time--
+            }
+        }
+        val minutes = String.format("%02d", time / 60)
+        val seconds = String.format("%02d", time % 60)
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center,
@@ -123,7 +132,8 @@ fun OtpScreen(
                 text = stringResource(id = R.string.resend_code),
                 modifier = Modifier
                     .clickable {
-                        otpViewModel.resendCode()
+                        if (time == 1)
+                            otpViewModel.resendCode()
                     },
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodySmall
@@ -134,15 +144,8 @@ fun OtpScreen(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        var time by remember { mutableStateOf(59) }
-        LaunchedEffect(Unit) {
-            while (time > 0) {
-                delay(1000)
-                time--
-            }
-        }
-        val minutes = String.format("%02d", time / 60)
-        val seconds = String.format("%02d", time % 60)
+
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center

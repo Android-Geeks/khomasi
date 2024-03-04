@@ -9,7 +9,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OtpViewModel @Inject constructor(
-
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(OtpUiState())
@@ -21,37 +20,17 @@ class OtpViewModel @Inject constructor(
                 code = newCode,
                 isCodeCorrect = true
             )
-        }
-        else {
+        } else {
             _uiState.value = _uiState.value.copy(
                 isCodeCorrect = false
             )
         }
     }
-    fun updateEmail(newEmail: String) {
-        _uiState.value = _uiState.value.copy(
-            email = newEmail,
-        )
-    }
-
     fun login() {
-        val email = _uiState.value.email
-        val code = _uiState.value.code
-        if (verifyOtp(email, code)) {
-
-        } else
-        {
-
-        }
 
     }
-    private fun verifyOtp(email: String, code: String): Boolean
-    {
-        return code == "1234"
-    }
-
-        fun resendCode() {
-
+    fun resendCode():String {
+        return _uiState.value.code
     }
 
 }
