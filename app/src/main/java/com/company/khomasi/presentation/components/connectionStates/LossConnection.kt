@@ -72,7 +72,7 @@ fun LossConnection(
 
             MyTextButton(
                 text = R.string.retry,
-                onClick = { onClickRetry() },
+                onClick = onClickRetry,
                 textSize = 16.sp
             )
 
