@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.presentation.components.Loading
+import com.company.khomasi.presentation.components.connectionStates.Loading
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
