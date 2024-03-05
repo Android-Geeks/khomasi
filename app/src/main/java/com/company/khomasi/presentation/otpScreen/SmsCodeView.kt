@@ -61,7 +61,7 @@ fun SmsCodeView(
     ) {
         for (index in 0 until smsCodeLength) {
             OutlinedTextField(
-                modifier = modifier
+                modifier = Modifier
                     .width(60.dp)
                     .height(60.dp)
                     .border(
@@ -123,7 +123,7 @@ fun SmsCodeView(
             if (fulled.length == smsCodeLength) {
                 smsFulled.invoke(fulled)
             }
-            Spacer(modifier = modifier.width(16.dp))
+            Spacer(modifier = Modifier.width(16.dp))
         }
     }
 }
