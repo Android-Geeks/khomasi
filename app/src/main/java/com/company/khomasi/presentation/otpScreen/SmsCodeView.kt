@@ -3,15 +3,12 @@ package com.company.khomasi.presentation.otpScreen
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -27,16 +24,13 @@ import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.company.khomasi.theme.KhomasiTheme
 
 @Composable
 fun SmsCodeView(
     smsCodeLength: Int,
-    textFieldColors: TextFieldColors,
     textStyle: TextStyle,
     smsFulled: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -52,12 +46,11 @@ fun SmsCodeView(
     }
     val otpUiState by otpViewModel.uiState.collectAsState()
 
-
     Row(
         modifier = modifier
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         for (index in 0 until smsCodeLength) {
             OutlinedTextField(
@@ -123,25 +116,26 @@ fun SmsCodeView(
             if (fulled.length == smsCodeLength) {
                 smsFulled.invoke(fulled)
             }
-            Spacer(modifier = Modifier.width(16.dp))
         }
     }
 }
 
-@Preview(showSystemUi = true)
-@Composable
-fun otpPreview() {
-    val viewModel = OtpViewModel()
-    KhomasiTheme {
-        SmsCodeView(
-            smsCodeLength = 5,
-            textFieldColors = TextFieldDefaults.colors(
-                focusedTextColor = MaterialTheme.colorScheme.primary,
-            ),
-            textStyle = MaterialTheme.typography.displayLarge,
-            smsFulled = viewModel::updateSmsCode,
-            otpViewModel = viewModel
-        )
-    }
-
-}
+//@Preview(showSystemUi = true)
+//@Composable
+//fun otpPreview() {
+//    val viewModel = OtpViewModel(
+//        authUseCases = AuthUseCases()
+//    )
+//    KhomasiTheme {
+//        SmsCodeView(
+//            smsCodeLength = 5,
+//            textFieldColors = TextFieldDefaults.colors(
+//                focusedTextColor = MaterialTheme.colorScheme.primary,
+//            ),
+//            textStyle = MaterialTheme.typography.displayLarge,
+//            smsFulled = viewModel::updateSmsCode,
+//            otpViewModel = viewModel
+//        )
+//    }
+//
+//}

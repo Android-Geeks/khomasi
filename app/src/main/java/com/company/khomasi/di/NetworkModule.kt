@@ -21,6 +21,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -34,6 +35,9 @@ object NetworkModule {
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             addInterceptor(loggingInterceptor)
+            connectTimeout(1, TimeUnit.MINUTES) // connect timeout
+            readTimeout(30, TimeUnit.SECONDS) // socket timeout
+            writeTimeout(15, TimeUnit.SECONDS) // write timeout
         }.build()
     }
 
@@ -49,7 +53,7 @@ object NetworkModule {
     }
 
     @Provides
-    @Singleton  // Warning
+    @Singleton
     fun provideRemoteUserRepository(
         retrofitService: RetrofitService
     ): RemoteUserRepository = RemoteUserRepositoryImpl(retrofitService)

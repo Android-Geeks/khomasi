@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.register
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -10,6 +9,7 @@ import com.company.khomasi.domain.model.UserDetails
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
 import com.company.khomasi.utils.CheckInputValidation
+import com.company.khomasi.utils.ExchangeData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,7 +30,6 @@ class RegisterViewModel @Inject constructor(
 
     fun onRegister() {
         viewModelScope.launch {
-            Log.d("RegisterViewModel", "onRegister: ${_uiState.value}")
             authUseCases.registerUseCase(
                 UserDetails(
                     firstName = _uiState.value.firstName,
@@ -45,6 +44,10 @@ class RegisterViewModel @Inject constructor(
                 )
             ).collect {
                 _registerState.value = it
+                if (it is DataState.Success) {
+                    ExchangeData.email.set(it.data.email)
+                    ExchangeData.otp.set(it.data.code)
+                }
             }
         }
     }

@@ -44,7 +44,9 @@ fun AuthNavigator() {
                 )
             }
             composable(route = Screens.OTP.name) {
-                OtpScreen()
+                OtpScreen(
+                    onEmailConfirmed = { navController.navigate(Screens.Login.name) }
+                )
             }
             composable(route = Screens.ResetPassword1.name) {
                 ResetPassword1(

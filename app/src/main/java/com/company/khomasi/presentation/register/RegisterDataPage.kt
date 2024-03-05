@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.register
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +14,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -28,11 +26,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
-import com.company.khomasi.domain.DataState
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
-import com.company.khomasi.presentation.components.connectionStates.Loading
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
 
@@ -40,7 +36,6 @@ import com.company.khomasi.theme.lightText
 fun RegisterDataPage(
     viewModel: RegisterViewModel,
     onLoginClick: () -> Unit,
-    onDoneClick: () -> Unit,
     backToLoginOrRegister: () -> Unit,
     localFocusManager: FocusManager = LocalFocusManager.current,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
@@ -54,27 +49,10 @@ fun RegisterDataPage(
             backToLoginOrRegister()
         }
     }
-    when (val registerState = viewModel.registerState.collectAsState().value) {
-        is DataState.Loading -> {
-            Loading()
-        }
 
-        is DataState.Success -> {
-            onDoneClick()
-        }
-
-        is DataState.Error -> {
-            Log.d("RegisterDataPage", "Error: $registerState")
-        }
-
-        is DataState.Empty -> {
-            Log.d("RegisterDataPage", "Empty")
-        }
-    }
     val keyboardActions = KeyboardActions(
         onNext = { localFocusManager.moveFocus(FocusDirection.Down) },
         onDone = {
-            localFocusManager.clearFocus()
             keyboardController?.hide()
         }
     )
