@@ -1,5 +1,6 @@
 package com.company.khomasi.data.data_source.remote
 
+import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.UserDetails
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterResponse
@@ -24,12 +25,15 @@ interface RetrofitService {
     suspend fun getVerificationCode(@Query("email") email: String): VerificationResponse
 
     @PUT("Account/ConfirmEmail")
-    suspend fun confirmEmail(@Query("email") email: String, @Query("code") code: String): String
+    suspend fun confirmEmail(
+        @Query("email") email: String,
+        @Query("code") code: String
+    ): MessageResponse
 
     @PUT("Account/RecoverAccount")
     suspend fun recoverAccount(
         @Query("email") email: String,
         @Query("code") code: String,
         @Query("newPassword") newPassword: String
-    ): String
+    ): MessageResponse
 }

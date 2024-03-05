@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
 import com.company.khomasi.utils.ExchangeData
@@ -42,9 +43,9 @@ class OtpViewModel @Inject constructor(
         )
     val otpState: StateFlow<DataState<VerificationResponse>> = _otpState
 
-    private val _confirmEmailState: MutableStateFlow<DataState<String>> =
+    private val _confirmEmailState: MutableStateFlow<DataState<MessageResponse>> =
         MutableStateFlow(DataState.Empty)
-    val confirmEmailState: StateFlow<DataState<String>> = _confirmEmailState
+    val confirmEmailState: StateFlow<DataState<MessageResponse>> = _confirmEmailState
 
 
     fun updateSmsCode(newCode: String) {

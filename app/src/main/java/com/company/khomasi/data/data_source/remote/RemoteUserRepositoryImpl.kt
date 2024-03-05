@@ -2,6 +2,7 @@ package com.company.khomasi.data.data_source.remote
 
 
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.UserDetails
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterResponse
@@ -54,7 +55,10 @@ class RemoteUserRepositoryImpl(
         }.flowOn(Dispatchers.IO)
     }
 
-    override suspend fun confirmEmail(email: String, code: String): Flow<DataState<String>> {
+    override suspend fun confirmEmail(
+        email: String,
+        code: String
+    ): Flow<DataState<MessageResponse>> {
         return flow {
             emit(DataState.Loading)
             try {
@@ -70,7 +74,7 @@ class RemoteUserRepositoryImpl(
         email: String,
         code: String,
         newPassword: String
-    ): Flow<DataState<String>> {
+    ): Flow<DataState<MessageResponse>> {
         return flow {
             emit(DataState.Loading)
             try {

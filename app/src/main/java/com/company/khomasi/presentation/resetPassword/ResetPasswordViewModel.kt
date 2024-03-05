@@ -3,6 +3,7 @@ package com.company.khomasi.presentation.resetPassword
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
 import com.company.khomasi.utils.CheckInputValidation
@@ -27,8 +28,8 @@ class ResetPasswordViewModel @Inject constructor(
     val verificationRes: StateFlow<DataState<VerificationResponse>> = _verificationRes
 
     private val _recoverResponse =
-        MutableStateFlow<DataState<String>>(DataState.Empty)
-    val recoverResponse: StateFlow<DataState<String>> = _recoverResponse
+        MutableStateFlow<DataState<MessageResponse>>(DataState.Empty)
+    val recoverResponse: StateFlow<DataState<MessageResponse>> = _recoverResponse
 
     fun onUserEmailChange(email: String) {
         _recreateUiState.update {
