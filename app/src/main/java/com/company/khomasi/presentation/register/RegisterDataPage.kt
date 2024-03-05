@@ -32,6 +32,7 @@ import com.company.khomasi.domain.DataState
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
+import com.company.khomasi.presentation.components.connectionStates.Loading
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
 
@@ -53,10 +54,9 @@ fun RegisterDataPage(
             backToLoginOrRegister()
         }
     }
-    val registerState = viewModel.registerState.collectAsState()
-    when (registerState.value) {
+    when (val registerState = viewModel.registerState.collectAsState().value) {
         is DataState.Loading -> {
-            Log.d("RegisterDataPage", "Loading")
+            Loading()
         }
 
         is DataState.Success -> {
@@ -64,7 +64,11 @@ fun RegisterDataPage(
         }
 
         is DataState.Error -> {
-            Log.d("RegisterDataPage", "Error: ${registerState.value}")
+            Log.d("RegisterDataPage", "Error: $registerState")
+        }
+
+        is DataState.Empty -> {
+            Log.d("RegisterDataPage", "Empty")
         }
     }
     val keyboardActions = KeyboardActions(

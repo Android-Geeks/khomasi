@@ -23,11 +23,11 @@ class ResetPasswordViewModel @Inject constructor(
     val recreateUiState: StateFlow<ResetPasswordUiState> = _recreateUiState.asStateFlow()
 
     private val _verificationRes =
-        MutableStateFlow<DataState<VerificationResponse>>(DataState.Loading)
+        MutableStateFlow<DataState<VerificationResponse>>(DataState.Empty)
     val verificationRes: StateFlow<DataState<VerificationResponse>> = _verificationRes
 
     private val _recoverResponse =
-        MutableStateFlow<DataState<String>>(DataState.Loading)
+        MutableStateFlow<DataState<String>>(DataState.Empty)
     val recoverResponse: StateFlow<DataState<String>> = _recoverResponse
 
     fun onUserEmailChange(email: String) {

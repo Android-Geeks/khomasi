@@ -21,16 +21,16 @@ fun Loading(modifier : Modifier = Modifier){
             .fillMaxSize()
             .background(Color(0x80000000)),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         ThreeBounce(
             color = MaterialTheme.colorScheme.primary,
-            size = DpSize(45.dp, 45.dp),
+            size = DpSize(75.dp, 75.dp)
         )
     }
 }
 
-@Preview
+@Preview(showSystemUi = true)
 @Composable
 fun LoadingPreview() {
-    KhomasiTheme{ Loading() }
+    KhomasiTheme { Loading() }
 }

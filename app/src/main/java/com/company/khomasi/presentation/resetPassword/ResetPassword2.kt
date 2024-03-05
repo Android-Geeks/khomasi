@@ -25,11 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.presentation.components.connectionStates.Loading
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.presentation.components.PasswordStrengthMeter
+import com.company.khomasi.presentation.components.connectionStates.Loading
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkHint
 import com.company.khomasi.theme.lightHint
@@ -49,15 +49,23 @@ fun ResetPassword2(
         is DataState.Loading -> "Loading..."
         is DataState.Success -> verificationRes.data.code.toString()
         is DataState.Error -> verificationRes.message
+        is DataState.Empty -> "Empty"
     }
 
     when (recoverRes) {
-        is DataState.Loading -> { Loading()
+        is DataState.Loading -> {
+            Loading()
         }
+
         is DataState.Success -> {
             onBackToLogin()
         }
-        is DataState.Error -> {}
+
+        is DataState.Error -> {
+
+        }
+
+        is DataState.Empty -> {}
     }
 
     Column(

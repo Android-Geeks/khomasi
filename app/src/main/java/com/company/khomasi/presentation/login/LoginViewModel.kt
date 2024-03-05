@@ -24,7 +24,7 @@ class LoginViewModel @Inject constructor(
     val uiState: State<LoginUiState> = _uiState
 
     private val _loginState: MutableStateFlow<DataState<UserLoginResponse>> =
-        MutableStateFlow(DataState.Loading)
+        MutableStateFlow(DataState.Empty)
     val loginState: StateFlow<DataState<UserLoginResponse>> = _loginState
 
 
@@ -38,6 +38,7 @@ class LoginViewModel @Inject constructor(
 
     fun login() {
         viewModelScope.launch {
+            _loginState.value = DataState.Loading
             authUseCases.loginUseCase(
                 _uiState.value.email,
                 _uiState.value.password
