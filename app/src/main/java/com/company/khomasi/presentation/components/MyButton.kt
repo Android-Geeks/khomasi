@@ -26,7 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
 
@@ -74,6 +76,7 @@ fun MyTextButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     isUnderlined: Boolean = true,
+    textSize: TextUnit = 14.sp
 ) {
     TextButton(
         onClick = onClick,
@@ -82,7 +85,8 @@ fun MyTextButton(
         Text(
             text = stringResource(id = text),
             textAlign = TextAlign.Center,
-            textDecoration = if (isUnderlined) TextDecoration.Underline else TextDecoration.None
+            textDecoration = if (isUnderlined) TextDecoration.Underline else TextDecoration.None,
+            fontSize = textSize
         )
     }
 }

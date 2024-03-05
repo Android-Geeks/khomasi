@@ -25,7 +25,7 @@ class RegisterViewModel @Inject constructor(
     val uiState: State<RegisterUiState> = _uiState
 
     private val _registerState: MutableStateFlow<DataState<UserRegisterResponse>> =
-        MutableStateFlow(DataState.Loading)
+        MutableStateFlow(DataState.Empty)
     val registerState: StateFlow<DataState<UserRegisterResponse>> = _registerState
 
     fun onRegister() {

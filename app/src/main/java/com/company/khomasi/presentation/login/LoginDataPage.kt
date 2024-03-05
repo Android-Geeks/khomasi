@@ -32,6 +32,7 @@ import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextField
+import com.company.khomasi.presentation.components.connectionStates.Loading
 import com.company.khomasi.theme.Shapes
 import com.company.khomasi.theme.darkHint
 import com.company.khomasi.theme.darkSubText
@@ -52,7 +53,7 @@ fun LoginDataPage(
     val loginUiState = loginViewModel.uiState.value
     when (loginViewModel.loginState.collectAsState().value) {
         is DataState.Loading -> {
-            Log.d("LoginDataPage", "Loading")
+            Loading()
         }
 
         is DataState.Success -> {
@@ -61,6 +62,10 @@ fun LoginDataPage(
 
         is DataState.Error -> {
             Log.d("LoginDataPage", "Error: ${loginViewModel.loginState.collectAsState().value}")
+        }
+
+        is DataState.Empty -> {
+            Log.d("LoginDataPage", "Empty")
         }
     }
     Column(
