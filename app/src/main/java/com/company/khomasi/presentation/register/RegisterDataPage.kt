@@ -14,8 +14,6 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -34,8 +32,6 @@ import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
 import com.company.khomasi.utils.CheckInputValidation
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
 import com.company.khomasi.presentation.components.PasswordStrengthMeter
 
 @Composable
@@ -48,15 +44,6 @@ fun RegisterDataPage(
     isDark: Boolean = isSystemInDarkTheme(),
 ) {
     val userState = viewModel.uiState.value
-
-    var validate1  by remember {
-        mutableStateOf(false)
-    }
-    var validate2  by remember {
-        mutableStateOf(false)
-    }
-
-
 
     BackHandler {
         if (userState.page == 2) {
@@ -91,10 +78,7 @@ fun RegisterDataPage(
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Text,
                     keyboardActions = keyboardActions,
-                    isError = (
-                            validate1
-                            &&! (CheckInputValidation.isLastNameValid(userState.firstName))
-                            )
+                    isError = (userState.validating1 && !(CheckInputValidation.isLastNameValid(userState.firstName)))
                 )
                 MyTextField(
                     value = userState.lastName,
@@ -103,16 +87,11 @@ fun RegisterDataPage(
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Text,
                     keyboardActions = keyboardActions,
-                    isError = (
-//                            lNameValidatingSwitch
-                            validate1
-                                    &&! (CheckInputValidation.isLastNameValid(userState.lastName))
-                            )
+                    isError = (userState.validating1 && !(CheckInputValidation.isLastNameValid(userState.lastName)))
                 )
-                if (
-                        validate1
-                    && ((!CheckInputValidation.isLastNameValid(userState.lastName)) ||
-                          (!CheckInputValidation.isFirstNameValid(userState.firstName)))
+                if (userState.validating1
+                    && ((!CheckInputValidation.isLastNameValid(userState.lastName))
+                            || (!CheckInputValidation.isFirstNameValid(userState.firstName)))
                     ){
                     Text(
                         text = stringResource( R.string.invalid_name_message),
@@ -127,13 +106,9 @@ fun RegisterDataPage(
                     imeAction = ImeAction.Done,
                     keyBoardType = KeyboardType.Phone,
                     keyboardActions = keyboardActions,
-                    isError = (
-                            validate1
-                                    && !CheckInputValidation.isPhoneNumberValid(userState.phoneNumber))
+                    isError = (userState.validating1 && !CheckInputValidation.isPhoneNumberValid(userState.phoneNumber))
                 )
-                if (
-                    validate1
-                    && !CheckInputValidation.isPhoneNumberValid(userState.phoneNumber)){
+                if (userState.validating1 && !CheckInputValidation.isPhoneNumberValid(userState.phoneNumber)){
                     Text(
                         text = stringResource( R.string.invalid_phone_number_message),
                         style = MaterialTheme.typography.labelSmall,
@@ -144,7 +119,6 @@ fun RegisterDataPage(
                 MyButton(
                     text = R.string.next,
                     onClick = {
-                        validate1 = true
                         if (viewModel.isValidNameAndPhoneNumber(
                                 userState.firstName,
                                 userState.lastName,
@@ -171,9 +145,9 @@ fun RegisterDataPage(
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Email,
                     keyboardActions = keyboardActions,
-                    isError = (validate2 && !CheckInputValidation.isEmailValid(userState.email))
+                    isError = (userState.validating2 && !CheckInputValidation.isEmailValid(userState.email))
                 )
-                if (validate2 && !CheckInputValidation.isEmailValid(userState.email)){
+                if (userState.validating2 && !CheckInputValidation.isEmailValid(userState.email)){
                     Text(
                         text = stringResource(R.string.invalid_email_message),
                         style = MaterialTheme.typography.labelSmall,
@@ -187,7 +161,7 @@ fun RegisterDataPage(
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Password,
                     keyboardActions = keyboardActions,
-                    isError = (validate2 && !CheckInputValidation.isPasswordValid(userState.password))
+                    isError = (userState.validating2 && !CheckInputValidation.isPasswordValid(userState.password))
                 )
                 PasswordStrengthMeter(
                     password = userState.password,
@@ -195,7 +169,7 @@ fun RegisterDataPage(
                 )
 
                 Text(
-                    if (validate2 && !CheckInputValidation.isPasswordValid(userState.password)){
+                    if (userState.validating2 && !CheckInputValidation.isPasswordValid(userState.password)){
                         stringResource(R.string.invalid_pass_message)
                     }
                     else{
@@ -203,7 +177,7 @@ fun RegisterDataPage(
 
                     },
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (validate2 && !CheckInputValidation.isPasswordValid(userState.password)) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
+                    color = if (userState.validating2 && !CheckInputValidation.isPasswordValid(userState.password)) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
                 )
                 MyTextField(
                     value = userState.confirmPassword,
@@ -215,11 +189,18 @@ fun RegisterDataPage(
                     isError =  (userState.password != userState.confirmPassword
                             && userState.confirmPassword.isNotEmpty())
                 )
+                if (userState.password != userState.confirmPassword
+                    && userState.confirmPassword.isNotEmpty()){
+                    Text(
+                        text = stringResource(R.string.not_matched_passwords),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
                 Spacer(modifier = Modifier.height(84.dp))
                 MyButton(
                     text = R.string.create_account,
                     onClick = {
-                        validate2 = true
                         if (viewModel.isValidEmailAndPassword(
                                 userState.email,
                                 userState.password

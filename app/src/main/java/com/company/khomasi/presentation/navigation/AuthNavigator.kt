@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -12,8 +13,7 @@ import com.company.khomasi.presentation.login.LoginScreen
 import com.company.khomasi.presentation.loginOrSignup.LoginOrRegisterScreen
 import com.company.khomasi.presentation.otpScreen.OtpScreen
 import com.company.khomasi.presentation.register.RegisterScreen
-import com.company.khomasi.presentation.resetPassword.ResetPassword1
-import com.company.khomasi.presentation.resetPassword.ResetPassword2
+import com.company.khomasi.presentation.resetPassword.ResetPassword
 
 @Composable
 fun AuthNavigator() {
@@ -33,7 +33,7 @@ fun AuthNavigator() {
             composable(route = Screens.Login.name) {
                 LoginScreen(
                     onRegisterClick = { navController.navigate(Screens.Register.name) },
-                    onForgotPasswordClick = { navController.navigate(Screens.ResetPassword1.name) },
+                    onForgotPasswordClick = { navController.navigate(Screens.ResetPassword.name) },
                 )
             }
             composable(route = Screens.Register.name) {
@@ -48,18 +48,15 @@ fun AuthNavigator() {
                     onEmailConfirmed = { navController.navigate(Screens.Login.name) }
                 )
             }
-            composable(route = Screens.ResetPassword1.name) {
-                ResetPassword1(
-                    onSetPasswordClick = { navController.navigate(Screens.ResetPassword2.name) },
-                    onCancelClick = { navController.popBackStack() }
-                )
-            }
-            composable(route = Screens.ResetPassword2.name) {
-                ResetPassword2(
+            composable(route = Screens.ResetPassword.name) {
+                ResetPassword(
+                    resetViewModel = hiltViewModel(),
+                    onCancelClick = { navController.popBackStack() },
                     onBackToLogin = { navController.navigate(Screens.Login.name) }
                 )
+
             }
         }
-    }
 
+    }
 }

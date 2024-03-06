@@ -173,7 +173,7 @@
     <string name="create_an_account_now">إنشاء حساب الان</string>
     <string name="forgot_your_password">نسيت كلمة المرور؟</string>
     <string name="Your_code_has_arrived_in_your_email">وصلك رمز تحقق على ايميلك</string>
-    <string name="invalid_pass_message">تأكد من أن كلمة المرور الخاصة بك تحتوي على 12 حرفًاأو أكثر مع مزيج من الحروف والأرقام والرموز، ولا تحتوي على مسافة بيضاء.</string>
+    <string name="invalid_pass_message">تأكد من أن كلمة المرور الخاصة بك تحتوي على 12 حرفًا أو أكثر مع مزيج من الحروف والأرقام والرموز، ولا تحتوي على مسافة بيضاء.</string>
     <string name="invalid_email_message"> البريد الإلكتروني غير صالح</string>
     <string name="invalid_phone_number_message">رقم الهاتف غير صحيح</string>
     <string name="invalid_name_message">يجب أن يحتوي الاسم على حرفين على الأقل ولا يحتوي على أرقام.</string>

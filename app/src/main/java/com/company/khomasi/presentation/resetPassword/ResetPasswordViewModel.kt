@@ -20,8 +20,8 @@ class ResetPasswordViewModel @Inject constructor(
     private val authUseCases: AuthUseCases,
 ) : ViewModel() {
 
-    private val _recreateUiState = MutableStateFlow(ResetPasswordUiState())
-    val recreateUiState: StateFlow<ResetPasswordUiState> = _recreateUiState.asStateFlow()
+    private val _resetUiState = MutableStateFlow(ResetPasswordUiState())
+    val resetUiState: StateFlow<ResetPasswordUiState> = _resetUiState.asStateFlow()
 
     private val _verificationRes =
         MutableStateFlow<DataState<VerificationResponse>>(DataState.Empty)
@@ -32,7 +32,7 @@ class ResetPasswordViewModel @Inject constructor(
     val recoverResponse: StateFlow<DataState<MessageResponse>> = _recoverResponse
 
     fun onUserEmailChange(email: String) {
-        _recreateUiState.update {
+        _resetUiState.update {
             it.copy(
                 userEmail = email
             )
@@ -40,17 +40,21 @@ class ResetPasswordViewModel @Inject constructor(
     }
 
     fun onClickButtonScreen1() {
-        viewModelScope.launch {
-            authUseCases.getVerificationCodeUseCase(_recreateUiState.value.userEmail)
+        _resetUiState.value = _resetUiState.value.copy(validating1 = true)
+
+        if (CheckInputValidation.isEmailValid(resetUiState.value.userEmail)) {
+            viewModelScope.launch {
+            authUseCases.getVerificationCodeUseCase(_resetUiState.value.userEmail)
                 .collect {
                     _verificationRes.value = it
                 }
         }
     }
+    }
 
     //------------------------------------------------------------------------------------------------//
     fun onEnteringVerificationCode(code: String) {
-        _recreateUiState.update {
+        _resetUiState.update {
             it.copy(
                 enteredVerificationCode = code
             )
@@ -58,7 +62,7 @@ class ResetPasswordViewModel @Inject constructor(
     }
 
     fun verifyVerificationCode(code: String) {
-        _recreateUiState.let {
+        _resetUiState.let {
             it.update { currentState ->
                 currentState.copy(
                     isCodeTrue = currentState.enteredVerificationCode == code
@@ -68,7 +72,7 @@ class ResetPasswordViewModel @Inject constructor(
     }
 
     fun onEnteringPassword(password: String) {
-        _recreateUiState.update {
+        _resetUiState.update {
             it.copy(
                 newPassword = password
             )
@@ -76,34 +80,42 @@ class ResetPasswordViewModel @Inject constructor(
     }
 
     fun onReTypingPassword(password: String) {
-        _recreateUiState.update {
+        _resetUiState.update {
             it.copy(
                 rewritingNewPassword = password
             )
         }
     }
     private fun checkValidation(): Boolean {
-        _recreateUiState.update {
+        _resetUiState.update {
             it.copy(
-                buttonEnable2 = _recreateUiState.value.newPassword == _recreateUiState.value.rewritingNewPassword
-                        && _recreateUiState.value.rewritingNewPassword.isNotEmpty()
+                buttonEnable2 = _resetUiState.value.newPassword == _resetUiState.value.rewritingNewPassword
+                        && _resetUiState.value.rewritingNewPassword.isNotEmpty()
             )
         }
-        return _recreateUiState.value.newPassword == _recreateUiState.value.rewritingNewPassword
-                && CheckInputValidation.isPasswordValid(_recreateUiState.value.newPassword)
+        return _resetUiState.value.newPassword == _resetUiState.value.rewritingNewPassword
+                && CheckInputValidation.isPasswordValid(_resetUiState.value.newPassword)
     }
 
     fun onButtonClickedScreen2() {
-        if (checkValidation() && _recreateUiState.value.isCodeTrue) {
+        _resetUiState.value = _resetUiState.value.copy(validating2 = true)
+        if (checkValidation() && _resetUiState.value.isCodeTrue) {
             viewModelScope.launch {
                 authUseCases.recoverAccountUseCase(
-                    _recreateUiState.value.userEmail,
-                    _recreateUiState.value.enteredVerificationCode,
-                    _recreateUiState.value.rewritingNewPassword
+                    _resetUiState.value.userEmail,
+                    _resetUiState.value.enteredVerificationCode,
+                    _resetUiState.value.rewritingNewPassword
                 ).collect {
                     _recoverResponse.value = it
                 }
             }
+            onNextClick()
         }
+    }
+    fun onBack() {
+        _resetUiState.value = _resetUiState.value.copy(page = _resetUiState.value.page - 1)
+    }
+    fun onNextClick() {
+        _resetUiState.value = _resetUiState.value.copy(page = _resetUiState.value.page + 1)
     }
 }

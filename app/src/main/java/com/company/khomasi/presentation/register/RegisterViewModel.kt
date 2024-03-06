@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.register
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -87,6 +86,7 @@ class RegisterViewModel @Inject constructor(
         val isLastNameValid = CheckInputValidation.isLastNameValid(lastName)
 
         val isPhoneNumberValid = CheckInputValidation.isPhoneNumberValid(phoneNumber)
+         _uiState.value = _uiState.value.copy(validating1 = true)
 
         return isFirstNameValid && isLastNameValid && isPhoneNumberValid
     }
@@ -94,7 +94,7 @@ class RegisterViewModel @Inject constructor(
     fun isValidEmailAndPassword(email: String, password: String): Boolean {
         val isEmailValid = CheckInputValidation.isEmailValid(email)
         val isPasswordValid = CheckInputValidation.isPasswordValid(password)
-
+        _uiState.value = _uiState.value.copy(validating2 = true)
         return isEmailValid && isPasswordValid && _uiState.value.password == _uiState.value.confirmPassword
     }
 
