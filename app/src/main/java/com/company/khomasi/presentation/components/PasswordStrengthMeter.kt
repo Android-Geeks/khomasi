@@ -26,7 +26,14 @@ fun PasswordStrengthMeter(
     enable: Boolean         // Change happened
     // "to avoid coloring the first partition when passStrength is 0 "
 ) {
-    val passwordStrength = Zxcvbn().measure(password).score
+    var passwordStrength =Zxcvbn().measure(password).score
+
+        if (!password.matches(Regex("^(?=.*[0-9])(?=.*[!@#$%^&*])(?=\\S+\$).{12,}\$"))) {
+        if (passwordStrength > 2){
+            passwordStrength = 2
+        }
+    }
+
 
     val indicatorColoringRange by remember {
         mutableStateOf(listOf(
