@@ -51,7 +51,8 @@ fun MyTextField(
     placeholder: String = "",
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     imeAction: ImeAction = ImeAction.Done,
-    isError : Boolean = false
+    isError: Boolean = false,
+    supportingText: @Composable (() -> Unit)? = null
 ) {
     var isPassword by remember { mutableStateOf(keyBoardType == KeyboardType.Password) }
     Column {
@@ -113,6 +114,7 @@ fun MyTextField(
                     }
                 }
             } else null,
+            supportingText = supportingText,
             modifier = modifier
                 .fillMaxWidth(),
             placeholder = { Text(text = placeholder) },

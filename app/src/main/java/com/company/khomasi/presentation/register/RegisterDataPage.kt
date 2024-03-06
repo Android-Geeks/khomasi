@@ -29,10 +29,10 @@ import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
+import com.company.khomasi.presentation.components.PasswordStrengthMeter
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
 import com.company.khomasi.utils.CheckInputValidation
-import com.company.khomasi.presentation.components.PasswordStrengthMeter
 
 @Composable
 fun RegisterDataPage(
@@ -78,7 +78,20 @@ fun RegisterDataPage(
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Text,
                     keyboardActions = keyboardActions,
-                    isError = (userState.validating1 && !(CheckInputValidation.isLastNameValid(userState.firstName)))
+                    isError = (userState.validating1 && !(CheckInputValidation.isFirstNameValid(
+                        userState.firstName
+                    ))),
+                    supportingText = {
+                        if (userState.validating1 && !(CheckInputValidation.isFirstNameValid(
+                                userState.firstName
+                            ))
+                        )
+                            Text(
+                                text = stringResource(R.string.invalid_name_message),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                    }
                 )
                 MyTextField(
                     value = userState.lastName,
@@ -87,18 +100,31 @@ fun RegisterDataPage(
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Text,
                     keyboardActions = keyboardActions,
-                    isError = (userState.validating1 && !(CheckInputValidation.isLastNameValid(userState.lastName)))
+                    isError = (userState.validating1 && !(CheckInputValidation.isLastNameValid(
+                        userState.lastName
+                    ))),
+                    supportingText = {
+                        if (userState.validating1 && !(CheckInputValidation.isLastNameValid(
+                                userState.lastName
+                            ))
+                        )
+                            Text(
+                                text = stringResource(R.string.invalid_name_message),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                    }
                 )
-                if (userState.validating1
-                    && ((!CheckInputValidation.isLastNameValid(userState.lastName))
-                            || (!CheckInputValidation.isFirstNameValid(userState.firstName)))
-                    ){
-                    Text(
-                        text = stringResource( R.string.invalid_name_message),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
+//                if (userState.validating1
+//                    && ((!CheckInputValidation.isLastNameValid(userState.lastName))
+//                            || (!CheckInputValidation.isFirstNameValid(userState.firstName)))
+//                ) {
+//                    Text(
+//                        text = stringResource(R.string.invalid_name_message),
+//                        style = MaterialTheme.typography.labelSmall,
+//                        color = MaterialTheme.colorScheme.error
+//                    )
+//                }
                 MyTextField(
                     value = userState.phoneNumber,
                     onValueChange = viewModel::onPhoneNumberChange,
@@ -106,15 +132,28 @@ fun RegisterDataPage(
                     imeAction = ImeAction.Done,
                     keyBoardType = KeyboardType.Phone,
                     keyboardActions = keyboardActions,
-                    isError = (userState.validating1 && !CheckInputValidation.isPhoneNumberValid(userState.phoneNumber))
+                    isError = (userState.validating1 && !CheckInputValidation.isPhoneNumberValid(
+                        userState.phoneNumber
+                    )),
+                    supportingText = {
+                        if (userState.validating1 && !CheckInputValidation.isPhoneNumberValid(
+                                userState.phoneNumber
+                            )
+                        )
+                            Text(
+                                text = stringResource(R.string.invalid_phone_number_message),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                    }
                 )
-                if (userState.validating1 && !CheckInputValidation.isPhoneNumberValid(userState.phoneNumber)){
-                    Text(
-                        text = stringResource( R.string.invalid_phone_number_message),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
+//                if (userState.validating1 && !CheckInputValidation.isPhoneNumberValid(userState.phoneNumber)) {
+//                    Text(
+//                        text = stringResource(R.string.invalid_phone_number_message),
+//                        style = MaterialTheme.typography.labelSmall,
+//                        color = MaterialTheme.colorScheme.error
+//                    )
+//                }
                 Spacer(modifier = Modifier.height(84.dp))
                 MyButton(
                     text = R.string.next,
@@ -145,15 +184,26 @@ fun RegisterDataPage(
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Email,
                     keyboardActions = keyboardActions,
-                    isError = (userState.validating2 && !CheckInputValidation.isEmailValid(userState.email))
+                    isError = (userState.validating2 && !CheckInputValidation.isEmailValid(userState.email)),
+                    supportingText = {
+                        if (userState.validating2 && !CheckInputValidation.isEmailValid(
+                                userState.email
+                            )
+                        )
+                            Text(
+                                text = stringResource(R.string.invalid_email_message),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                    }
                 )
-                if (userState.validating2 && !CheckInputValidation.isEmailValid(userState.email)){
-                    Text(
-                        text = stringResource(R.string.invalid_email_message),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
+//                if (userState.validating2 && !CheckInputValidation.isEmailValid(userState.email)) {
+//                    Text(
+//                        text = stringResource(R.string.invalid_email_message),
+//                        style = MaterialTheme.typography.labelSmall,
+//                        color = MaterialTheme.colorScheme.error
+//                    )
+//                }
                 MyTextField(
                     value = userState.password,
                     onValueChange = viewModel::onPasswordChange,
@@ -161,24 +211,48 @@ fun RegisterDataPage(
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Password,
                     keyboardActions = keyboardActions,
-                    isError = (userState.validating2 && !CheckInputValidation.isPasswordValid(userState.password))
-                )
-                PasswordStrengthMeter(
-                    password = userState.password,
-                    enable = userState.password.isNotEmpty()
-                )
+                    isError = (userState.validating2 && !CheckInputValidation.isPasswordValid(
+                        userState.password
+                    )),
+                    supportingText = {
+                        Column {
+                            PasswordStrengthMeter(
+                                password = userState.password,
+                                enable = userState.password.isNotEmpty()
+                            )
+                            Text(
+                                text =
+                                if (userState.validating2 && !CheckInputValidation.isPasswordValid(
+                                        userState.password
+                                    )
+                                ) {
+                                    stringResource(id = R.string.invalid_pass_message)
+                                } else {
+                                    stringResource(id = R.string.password_restrictions)
+                                },
+                                style = MaterialTheme.typography.labelSmall,
+                                color = if (userState.validating2 && !CheckInputValidation.isPasswordValid(
+                                        userState.password
+                                    )
+                                ) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
+                            )
 
-                Text(
-                    if (userState.validating2 && !CheckInputValidation.isPasswordValid(userState.password)){
-                        stringResource(R.string.invalid_pass_message)
+                        }
                     }
-                    else{
-                        stringResource(id = R.string.password_restrictions)
-
-                    },
-                    style = MaterialTheme.typography.labelSmall,
-                    color = if (userState.validating2 && !CheckInputValidation.isPasswordValid(userState.password)) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
                 )
+
+//                Text(
+//                    if (userState.validating2 && !CheckInputValidation.isPasswordValid(userState.password)) {
+//                        stringResource(R.string.invalid_pass_message)
+//                    } else {
+//                        stringResource(id = R.string.password_restrictions),
+//                    },
+//                    style = MaterialTheme.typography.labelSmall,
+//                    color = if (userState.validating2 && !CheckInputValidation.isPasswordValid(
+//                            userState.password
+//                        )
+//                    ) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
+//                )
                 MyTextField(
                     value = userState.confirmPassword,
                     onValueChange = viewModel::onConfirmPasswordChange,
@@ -186,17 +260,29 @@ fun RegisterDataPage(
                     imeAction = ImeAction.Done,
                     keyBoardType = KeyboardType.Password,
                     keyboardActions = keyboardActions,
-                    isError =  (userState.password != userState.confirmPassword
-                            && userState.confirmPassword.isNotEmpty())
+                    isError = (userState.password != userState.confirmPassword
+                            && userState.confirmPassword.isNotEmpty()),
+                    supportingText = {
+                        if (userState.password != userState.confirmPassword
+                            && userState.confirmPassword.isNotEmpty()
+                        ) {
+                            Text(
+                                text = stringResource(R.string.not_matched_passwords),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
                 )
-                if (userState.password != userState.confirmPassword
-                    && userState.confirmPassword.isNotEmpty()){
-                    Text(
-                        text = stringResource(R.string.not_matched_passwords),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.error
-                    )
-                }
+//                if (userState.password != userState.confirmPassword
+//                    && userState.confirmPassword.isNotEmpty()
+//                ) {
+//                    Text(
+//                        text = stringResource(R.string.not_matched_passwords),
+//                        style = MaterialTheme.typography.labelSmall,
+//                        color = MaterialTheme.colorScheme.error
+//                    )
+//                }
                 Spacer(modifier = Modifier.height(84.dp))
                 MyButton(
                     text = R.string.create_account,

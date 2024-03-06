@@ -40,11 +40,11 @@ import com.company.khomasi.theme.lightText
 import com.company.khomasi.utils.CheckInputValidation
 
 @Composable
-fun ResetPassword (
+fun ResetPassword(
     resetViewModel: ResetPasswordViewModel,
     onCancelClick: () -> Unit,
     onBackToLogin: () -> Unit
-){
+) {
 
     val resetUiState = resetViewModel.resetUiState.collectAsState().value
     val verificationRes = resetViewModel.verificationRes.collectAsState().value
@@ -84,88 +84,103 @@ fun ResetPassword (
 
     Column(modifier = Modifier.fillMaxSize()) {
 
-        when(resetUiState.page){
-             1 ->
-                 Box {
-                     Column(
-                         modifier = Modifier
-                             .fillMaxSize()
-                             .padding(top = 50.dp, start = 16.dp, end = 16.dp),
-                         verticalArrangement = Arrangement.Top,
-                         horizontalAlignment = Alignment.CenterHorizontally
-                     ) {
-                         Image(
-                             painter = painterResource(id = R.drawable.protect_key),
-                             contentDescription = null,
-                             modifier = Modifier.size(width = (93.8).dp, (123.2).dp)
-                         )
-                         Text(
-                             text = stringResource(id = R.string.forgot_your_password),
-                             style = MaterialTheme.typography.titleMedium,
-                             modifier = Modifier.padding(top = 40.dp),
-                             color = lightText
-                         )
-                         Text(
-                             text = stringResource(id = R.string.enter_email_to_reset_password),
-                             style = MaterialTheme.typography.bodyMedium,
-                             modifier = Modifier.padding(top = 8.dp),
-                             color = MaterialTheme.colorScheme.onSurface
-                         )
+        when (resetUiState.page) {
+            1 ->
+                Box {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = 50.dp, start = 16.dp, end = 16.dp),
+                        verticalArrangement = Arrangement.Top,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.protect_key),
+                            contentDescription = null,
+                            modifier = Modifier.size(width = (93.8).dp, (123.2).dp)
+                        )
+                        Text(
+                            text = stringResource(id = R.string.forgot_your_password),
+                            style = MaterialTheme.typography.titleMedium,
+                            modifier = Modifier.padding(top = 40.dp),
+                            color = lightText
+                        )
+                        Text(
+                            text = stringResource(id = R.string.enter_email_to_reset_password),
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier.padding(top = 8.dp),
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
 
-                         Spacer(modifier = Modifier.height(54.dp))
+                        Spacer(modifier = Modifier.height(54.dp))
 
-                         MyTextField(
-                             value = resetUiState.userEmail,
-                             onValueChange = { resetViewModel.onUserEmailChange(it) },
-                             label = R.string.email,
-                             keyBoardType = KeyboardType.Email,
-                             keyboardActions = KeyboardActions(
-                                 onDone = { keyboardController?.hide() }
-                             ),
-                             isError = (resetUiState.validating1 && !CheckInputValidation.isEmailValid(resetUiState.userEmail))
-                         )
-                         if (resetUiState.validating1 && !CheckInputValidation.isEmailValid(resetUiState.userEmail)){
-                             Text(
-                                 text = stringResource(R.string.invalid_email_message),
-                                 style = MaterialTheme.typography.labelSmall,
-                                 color = MaterialTheme.colorScheme.error,
-                                 textAlign = TextAlign.Start
-                             )
-                         }
-                         MyButton(
-                             text = R.string.set_password,
-                             onClick = {
-                                 resetViewModel.onClickButtonScreen1()
-                             },
-                             modifier = Modifier
-                                 .fillMaxWidth()
-                                 .padding(start = 8.dp, end = 8.dp, top = 32.dp)
-                         )
+                        MyTextField(
+                            value = resetUiState.userEmail,
+                            onValueChange = { resetViewModel.onUserEmailChange(it) },
+                            label = R.string.email,
+                            keyBoardType = KeyboardType.Email,
+                            keyboardActions = KeyboardActions(
+                                onDone = { keyboardController?.hide() }
+                            ),
+                            isError = (resetUiState.validating1 && !CheckInputValidation.isEmailValid(
+                                resetUiState.userEmail
+                            )),
+                            supportingText = {
+                                if (resetUiState.validating1 && !CheckInputValidation.isEmailValid(
+                                        resetUiState.userEmail
+                                    )
+                                ) {
+                                    Text(
+                                        text = stringResource(R.string.invalid_email_message),
+                                        style = MaterialTheme.typography.labelSmall,
+                                        color = MaterialTheme.colorScheme.error,
+                                        textAlign = TextAlign.Start
+                                    )
+                                }
+                            }
+                        )
+//                         if (resetUiState.validating1 && !CheckInputValidation.isEmailValid(resetUiState.userEmail)){
+//                             Text(
+//                                 text = stringResource(R.string.invalid_email_message),
+//                                 style = MaterialTheme.typography.labelSmall,
+//                                 color = MaterialTheme.colorScheme.error,
+//                                 textAlign = TextAlign.Start
+//                             )
+//                         }
+                        MyButton(
+                            text = R.string.set_password,
+                            onClick = {
+                                resetViewModel.onClickButtonScreen1()
+                            },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(start = 8.dp, end = 8.dp, top = 32.dp)
+                        )
 
-                         MyTextButton(
-                             text = R.string.cancel,
-                             onClick = onCancelClick,
-                         )
-                     }
-                     when (verificationRes) {
-                         is DataState.Loading -> {
-                             Loading()
-                         }
+                        MyTextButton(
+                            text = R.string.cancel,
+                            onClick = onCancelClick,
+                        )
+                    }
+                    when (verificationRes) {
+                        is DataState.Loading -> {
+                            Loading()
+                        }
 
-                         is DataState.Success -> {
-                             resetViewModel.onNextClick()
-                             Log.d("ResetPassword1", "${verificationRes.data.code}")
-                         }
+                        is DataState.Success -> {
+                            resetViewModel.onNextClick()
+                            Log.d("ResetPassword1", "${verificationRes.data.code}")
+                        }
 
-                         is DataState.Error -> {
-                             Log.d("ResetPassword1", verificationRes.message)
-                         }
+                        is DataState.Error -> {
+                            Log.d("ResetPassword1", verificationRes.message)
+                        }
 
-                         is DataState.Empty -> {
-                             Log.d("ResetPassword1", "Empty")
-                         }
-                     }
-                 }
+                        is DataState.Empty -> {
+                            Log.d("ResetPassword1", "Empty")
+                        }
+                    }
+                }
 
             2 ->
                 Column(
@@ -175,111 +190,141 @@ fun ResetPassword (
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                Text(
-                    text = stringResource(id = R.string.reset_password),
-                    modifier = Modifier
-                        .padding(bottom = 8.dp),
-                    //.clickable { resetViewModel.onClickButtonScreen1() },
-                    style = MaterialTheme.typography.titleMedium
-                )
-
-                Text(
-                    text = stringResource(id = R.string.create_new_password),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                /*        Text(
-                    text = code,
-                    style = MaterialTheme.typography.bodyMedium
-                )*/
-                Spacer(modifier = Modifier.height(56.dp))
-
-                MyTextField(
-                    value = resetUiState.enteredVerificationCode.take(5),
-                    onValueChange = { resetViewModel.onEnteringVerificationCode(it) },
-                    label = R.string.verification_code,
-                    keyboardActions = KeyboardActions(
-                        onNext = {
-                            resetViewModel.verifyVerificationCode(code)
-                            localFocusManager.moveFocus(FocusDirection.Down)
-                        }
-                    ),
-                    imeAction = ImeAction.Next,
-                    keyBoardType = KeyboardType.Number,
-                    isError = !(resetUiState.isCodeTrue)
-                )
-
-                Spacer(modifier = Modifier.height(32.dp))
-                MyTextField(
-                    value = resetUiState.newPassword,
-                    onValueChange = { resetViewModel.onEnteringPassword(it) },
-                    label = R.string.new_password,
-                    keyboardActions = KeyboardActions(
-                        onNext = {
-                            localFocusManager.moveFocus(FocusDirection.Down)
-                        }
-                    ),
-                    keyBoardType = KeyboardType.Password,
-                    imeAction = ImeAction.Next,
-                )
-
-                PasswordStrengthMeter(
-                    password = resetUiState.newPassword,
-                    enable = resetUiState.newPassword.isNotEmpty()
-                )
-
-                Text(
-                    if (resetUiState.validating2 && !CheckInputValidation.isPasswordValid(resetUiState.newPassword)){
-                        stringResource(R.string.invalid_pass_message)
-                    }
-                    else{
-                        stringResource(id = R.string.password_restrictions)
-
-                    },
-                    style = MaterialTheme.typography.labelSmall,
-                    color = if (resetUiState.validating2 && !CheckInputValidation.isPasswordValid(resetUiState.newPassword)) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
-                )
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                MyTextField(
-                    value = resetUiState.rewritingNewPassword,
-                    onValueChange = { resetViewModel.onReTypingPassword(it) },
-                    label = R.string.retype_password,
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            keyboardController?.hide()
-                        }
-                    ),
-                    keyBoardType = KeyboardType.Password,
-                    isError = (resetUiState.newPassword != resetUiState.rewritingNewPassword
-                            && resetUiState.rewritingNewPassword.isNotEmpty())
-                )
-                if (resetUiState.newPassword != resetUiState.rewritingNewPassword
-                    && resetUiState.rewritingNewPassword.isNotEmpty()){
                     Text(
-                        text = stringResource(R.string.not_matched_passwords),
-                        style = MaterialTheme.typography.labelSmall,
-                        color = MaterialTheme.colorScheme.error
+                        text = stringResource(id = R.string.reset_password),
+                        modifier = Modifier
+                            .padding(bottom = 8.dp),
+                        //.clickable { resetViewModel.onClickButtonScreen1() },
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    Text(
+                        text = stringResource(id = R.string.create_new_password),
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                    /*        Text(
+                        text = code,
+                        style = MaterialTheme.typography.bodyMedium
+                    )*/
+                    Spacer(modifier = Modifier.height(56.dp))
+
+                    MyTextField(
+                        value = resetUiState.enteredVerificationCode.take(5),
+                        onValueChange = { resetViewModel.onEnteringVerificationCode(it) },
+                        label = R.string.verification_code,
+                        keyboardActions = KeyboardActions(
+                            onNext = {
+                                resetViewModel.verifyVerificationCode(code)
+                                localFocusManager.moveFocus(FocusDirection.Down)
+                            }
+                        ),
+                        imeAction = ImeAction.Next,
+                        keyBoardType = KeyboardType.Number,
+                        isError = !(resetUiState.isCodeTrue)
+                    )
+
+                    Spacer(modifier = Modifier.height(32.dp))
+                    MyTextField(
+                        value = resetUiState.newPassword,
+                        onValueChange = { resetViewModel.onEnteringPassword(it) },
+                        label = R.string.new_password,
+                        keyboardActions = KeyboardActions(
+                            onNext = {
+                                localFocusManager.moveFocus(FocusDirection.Down)
+                            }
+                        ),
+                        keyBoardType = KeyboardType.Password,
+                        imeAction = ImeAction.Next,
+                        isError = (resetUiState.validating2 && !CheckInputValidation.isPasswordValid(
+                            resetUiState.newPassword
+                        )),
+                        supportingText = {
+                            Column {
+                                PasswordStrengthMeter(
+                                    password = resetUiState.newPassword,
+                                    enable = resetUiState.newPassword.isNotEmpty()
+                                )
+                                Text(
+                                    text = if (resetUiState.validating2 && !CheckInputValidation.isPasswordValid(
+                                            resetUiState.newPassword
+                                        )
+                                    ) {
+                                        stringResource(id = R.string.invalid_pass_message)
+                                    } else {
+                                        stringResource(id = R.string.password_restrictions)
+                                    },
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = if (resetUiState.validating2 && !CheckInputValidation.isPasswordValid(
+                                            resetUiState.newPassword
+                                        )
+                                    ) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
+                                )
+                            }
+
+                        }
+                    )
+
+
+//                Text(
+//                    if (resetUiState.validating2 && !CheckInputValidation.isPasswordValid(resetUiState.newPassword)){
+//                        stringResource(R.string.invalid_pass_message)
+//                    }
+//                    else{
+//                        stringResource(id = R.string.password_restrictions)
+//
+//                    },
+//                    style = MaterialTheme.typography.labelSmall,
+//                    color = if (resetUiState.validating2 && !CheckInputValidation.isPasswordValid(resetUiState.newPassword)) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
+//                )
+
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    MyTextField(
+                        value = resetUiState.rewritingNewPassword,
+                        onValueChange = { resetViewModel.onReTypingPassword(it) },
+                        label = R.string.retype_password,
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                keyboardController?.hide()
+                            }
+                        ),
+                        keyBoardType = KeyboardType.Password,
+                        isError = (resetUiState.newPassword != resetUiState.rewritingNewPassword
+                                && resetUiState.rewritingNewPassword.isNotEmpty()),
+                        supportingText = {
+                            Text(
+                                text = stringResource(R.string.not_matched_passwords),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    )
+//                if (resetUiState.newPassword != resetUiState.rewritingNewPassword
+//                    && resetUiState.rewritingNewPassword.isNotEmpty()){
+//                    Text(
+//                        text = stringResource(R.string.not_matched_passwords),
+//                        style = MaterialTheme.typography.labelSmall,
+//                        color = MaterialTheme.colorScheme.error
+//                    )
+//                }
+                    Spacer(modifier = Modifier.height(32.dp))
+
+                    MyButton(
+                        text = R.string.set_password,
+                        onClick = {
+                            resetViewModel.onButtonClickedScreen2()
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 8.dp, end = 8.dp),
+                        shape = MaterialTheme.shapes.medium,
+                    )
+
+                    MyTextButton(
+                        text = R.string.back_to_login,
+                        onClick = onBackToLogin,
                     )
                 }
-                Spacer(modifier = Modifier.height(32.dp))
-
-                MyButton(
-                    text = R.string.set_password,
-                    onClick = {
-                        resetViewModel.onButtonClickedScreen2()
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 8.dp, end = 8.dp),
-                    shape = MaterialTheme.shapes.medium,
-                )
-
-                MyTextButton(
-                    text = R.string.back_to_login,
-                    onClick = onBackToLogin,
-                )
-            }
 
         }
     }
