@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import com.nulabinc.zxcvbn.Zxcvbn
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -19,17 +20,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.theme.KhomasiTheme
-
+import androidx.compose.runtime.setValue
 @Composable
 fun PasswordStrengthMeter(
     password: String,
     enable: Boolean         // Change happened
     // "to avoid coloring the first partition when passStrength is 0 "
 ) {
-    var passwordStrength =Zxcvbn().measure(password).score
+    var passwordStrength by remember(password) {
+        mutableIntStateOf(Zxcvbn().measure(password).score)
+    }
 
-        if (!password.matches(Regex("^(?=.*[0-9])(?=.*[!@#$%^&*])(?=\\S+\$).{12,}\$"))) {
-        if (passwordStrength > 2){
+    if (!password.matches(Regex("^(?=.*[0-9])(?=.*[!@#$%^&*])(?=\\S+\$).{12,}\$"))) {
+        if (passwordStrength > 2) {
             passwordStrength = 2
         }
     }
