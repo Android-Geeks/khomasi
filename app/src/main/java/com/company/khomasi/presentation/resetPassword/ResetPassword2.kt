@@ -1,7 +1,6 @@
 package com.company.khomasi.presentation.resetPassword
 
 import android.content.res.Configuration
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,8 +13,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -31,9 +35,9 @@ import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.presentation.components.PasswordStrengthMeter
 import com.company.khomasi.presentation.components.connectionStates.Loading
 import com.company.khomasi.theme.KhomasiTheme
-import com.company.khomasi.theme.darkHint
-import com.company.khomasi.theme.lightHint
-
+import com.company.khomasi.utils.CheckInputValidation
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 @Composable
 fun ResetPassword2(
     recreateViewModel: ResetPasswordViewModel = hiltViewModel(),
@@ -44,7 +48,10 @@ fun ResetPassword2(
     val verificationRes = recreateViewModel.verificationRes.collectAsState().value
     val recoverRes = recreateViewModel.recoverResponse.collectAsState().value
     val keyboardController = LocalSoftwareKeyboardController.current
-
+    val localFocusManager: FocusManager = LocalFocusManager.current
+    var validatingSwitch by remember {
+        mutableStateOf(false)
+    }
     val code = when (verificationRes) {
         is DataState.Loading -> "Loading..."
         is DataState.Success -> verificationRes.data.code.toString()
@@ -100,7 +107,7 @@ fun ResetPassword2(
             keyboardActions = KeyboardActions(
                 onNext = {
                     recreateViewModel.verifyVerificationCode(code)
-                    keyboardController?.hide()
+                    localFocusManager.moveFocus(FocusDirection.Down)
                 }
             ),
             imeAction = ImeAction.Next,
@@ -109,17 +116,18 @@ fun ResetPassword2(
         )
 
         Spacer(modifier = Modifier.height(32.dp))
-
         MyTextField(
             value = recreateUiState.newPassword,
             onValueChange = { recreateViewModel.onEnteringPassword(it) },
             label = R.string.new_password,
             keyboardActions = KeyboardActions(
                 onNext = {
-                    keyboardController?.hide()
+                    validatingSwitch = true
+                    localFocusManager.moveFocus(FocusDirection.Down)
                 }
             ),
-            keyBoardType = KeyboardType.Password
+            keyBoardType = KeyboardType.Password,
+            imeAction = ImeAction.Next,
         )
 
         PasswordStrengthMeter(
@@ -128,10 +136,17 @@ fun ResetPassword2(
         )
 
         Text(
-            text = stringResource(id = R.string.password_restrictions),
+            if (validatingSwitch && !CheckInputValidation.isPasswordValid(recreateUiState.newPassword)){
+                stringResource(R.string.invalid_pass_message)
+                }
+            else{
+                stringResource(id = R.string.password_restrictions)
+
+            },
             style = MaterialTheme.typography.labelSmall,
-            color = if (isSystemInDarkTheme()) darkHint else lightHint
+            color = if (validatingSwitch && !CheckInputValidation.isPasswordValid(recreateUiState.newPassword)) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
         )
+
         Spacer(modifier = Modifier.height(32.dp))
 
         MyTextField(

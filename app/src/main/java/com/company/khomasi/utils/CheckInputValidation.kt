@@ -7,7 +7,6 @@ object CheckInputValidation {
     fun isLastNameValid(lastName: String) = lastName.length >= 2 && !lastName.any { it.isDigit() }
     fun isPhoneNumberValid(phoneNumber: String) =
         phoneNumber.matches(Regex("^(010|011|012|015)\\d{8}\$"))
-
     fun isEmailValid(email: String) =
         email.matches(Regex("[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}"))
 

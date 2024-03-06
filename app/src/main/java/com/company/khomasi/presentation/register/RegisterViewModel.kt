@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.register
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -92,8 +93,7 @@ class RegisterViewModel @Inject constructor(
 
     fun isValidEmailAndPassword(email: String, password: String): Boolean {
         val isEmailValid = CheckInputValidation.isEmailValid(email)
-        val isPasswordValid =
-            CheckInputValidation.isPasswordValid(password)
+        val isPasswordValid = CheckInputValidation.isPasswordValid(password)
 
         return isEmailValid && isPasswordValid && _uiState.value.password == _uiState.value.confirmPassword
     }

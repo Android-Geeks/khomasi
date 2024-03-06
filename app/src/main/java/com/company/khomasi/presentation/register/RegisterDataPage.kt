@@ -14,6 +14,8 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -31,6 +33,10 @@ import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
+import com.company.khomasi.utils.CheckInputValidation
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
+import com.company.khomasi.presentation.components.PasswordStrengthMeter
 
 @Composable
 fun RegisterDataPage(
@@ -42,6 +48,19 @@ fun RegisterDataPage(
     isDark: Boolean = isSystemInDarkTheme(),
 ) {
     val userState = viewModel.uiState.value
+
+    var emailValidatingSwitch by remember {
+        mutableStateOf(false)
+    }
+    var passValidatingSwitch by remember {
+        mutableStateOf(false)
+    }
+    var phoneValidatingSwitch by remember {
+        mutableStateOf(false)
+    }
+    var lNameValidatingSwitch by remember {
+        mutableStateOf(false)
+    }
     BackHandler {
         if (userState.page == 2) {
             viewModel.onBack()
@@ -74,7 +93,13 @@ fun RegisterDataPage(
                     label = R.string.first_name,
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Text,
-                    keyboardActions = keyboardActions
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            localFocusManager.moveFocus(FocusDirection.Down)
+//                            fNameValidatingSwitch = true
+                        }
+
+                    )
                 )
                 MyTextField(
                     value = userState.lastName,
@@ -82,16 +107,49 @@ fun RegisterDataPage(
                     label = R.string.last_name,
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Text,
-                    keyboardActions = keyboardActions
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            localFocusManager.moveFocus(FocusDirection.Down)
+                            lNameValidatingSwitch = true
+                        }
+                    ),
+                    isError = (
+                            lNameValidatingSwitch
+                                    &&! (CheckInputValidation.isLastNameValid(userState.lastName))
+                            )
                 )
+                if (
+                    lNameValidatingSwitch
+                    && (!CheckInputValidation.isLastNameValid(userState.lastName))
+//                    && (!CheckInputValidation.isFirstNameValid(userState.firstName))
+                    ){
+                    Text(
+                        text = stringResource( R.string.invalid_name_message),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
                 MyTextField(
                     value = userState.phoneNumber,
                     onValueChange = viewModel::onPhoneNumberChange,
                     label = R.string.phone_number,
                     imeAction = ImeAction.Done,
                     keyBoardType = KeyboardType.Phone,
-                    keyboardActions = keyboardActions
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            keyboardController?.hide()
+                            phoneValidatingSwitch = true
+                        }
+                    ),
+                    isError = (phoneValidatingSwitch && !CheckInputValidation.isPhoneNumberValid(userState.phoneNumber))
                 )
+                if (phoneValidatingSwitch && !CheckInputValidation.isPhoneNumberValid(userState.phoneNumber)){
+                    Text(
+                        text = stringResource( R.string.invalid_phone_number_message),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
                 Spacer(modifier = Modifier.height(84.dp))
                 MyButton(
                     text = R.string.next,
@@ -121,15 +179,50 @@ fun RegisterDataPage(
                     label = R.string.email,
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Email,
-                    keyboardActions = keyboardActions
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            localFocusManager.moveFocus(FocusDirection.Down)
+                            emailValidatingSwitch = true
+                        },
+                    ),
+                    isError = (emailValidatingSwitch && !CheckInputValidation.isEmailValid(userState.email))
                 )
+                if (emailValidatingSwitch && !CheckInputValidation.isEmailValid(userState.email)){
+                    Text(
+                        text = stringResource(R.string.invalid_email_message),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = MaterialTheme.colorScheme.error
+                    )
+                }
                 MyTextField(
                     value = userState.password,
                     onValueChange = viewModel::onPasswordChange,
                     label = R.string.password,
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Password,
-                    keyboardActions = keyboardActions
+                    keyboardActions =  KeyboardActions(
+                        onNext = {
+                            localFocusManager.moveFocus(FocusDirection.Down)
+                            passValidatingSwitch = true
+                        },
+                    ),
+                    isError = (passValidatingSwitch && !CheckInputValidation.isPasswordValid(userState.password))
+                )
+                PasswordStrengthMeter(
+                    password = userState.password,
+                    enable = userState.password.isNotEmpty()
+                )
+
+                Text(
+                    if (passValidatingSwitch && !CheckInputValidation.isPasswordValid(userState.password)){
+                        stringResource(R.string.invalid_pass_message)
+                    }
+                    else{
+                        stringResource(id = R.string.password_restrictions)
+
+                    },
+                    style = MaterialTheme.typography.labelSmall,
+                    color = if (passValidatingSwitch && !CheckInputValidation.isPasswordValid(userState.password)) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
                 )
                 MyTextField(
                     value = userState.confirmPassword,
@@ -137,7 +230,9 @@ fun RegisterDataPage(
                     label = R.string.confirm_password,
                     imeAction = ImeAction.Done,
                     keyBoardType = KeyboardType.Password,
-                    keyboardActions = keyboardActions
+                    keyboardActions = keyboardActions,
+//                    isError = ! ((userState.password == userState.confirmPassword)
+//                            && CheckInputValidation.isPasswordValid(userState.confirmPassword))
                 )
                 Spacer(modifier = Modifier.height(84.dp))
                 MyButton(
