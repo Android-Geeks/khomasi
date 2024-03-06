@@ -142,14 +142,7 @@ fun ResetPassword(
                                 }
                             }
                         )
-//                         if (resetUiState.validating1 && !CheckInputValidation.isEmailValid(resetUiState.userEmail)){
-//                             Text(
-//                                 text = stringResource(R.string.invalid_email_message),
-//                                 style = MaterialTheme.typography.labelSmall,
-//                                 color = MaterialTheme.colorScheme.error,
-//                                 textAlign = TextAlign.Start
-//                             )
-//                         }
+
                         MyButton(
                             text = R.string.set_password,
                             onClick = {
@@ -197,7 +190,6 @@ fun ResetPassword(
                         text = stringResource(id = R.string.reset_password),
                         modifier = Modifier
                             .padding(bottom = 8.dp),
-                        //.clickable { resetViewModel.onClickButtonScreen1() },
                         style = MaterialTheme.typography.titleMedium
                     )
 
@@ -205,10 +197,7 @@ fun ResetPassword(
                         text = stringResource(id = R.string.create_new_password),
                         style = MaterialTheme.typography.bodyMedium
                     )
-                    /*        Text(
-                        text = code,
-                        style = MaterialTheme.typography.bodyMedium
-                    )*/
+
                     Spacer(modifier = Modifier.height(56.dp))
 
                     MyTextField(
@@ -262,19 +251,6 @@ fun ResetPassword(
                         }
                     )
 
-
-//                Text(
-//                    if (resetUiState.validating2 && !CheckInputValidation.isPasswordValid(resetUiState.newPassword)){
-//                        stringResource(R.string.invalid_pass_message)
-//                    }
-//                    else{
-//                        stringResource(id = R.string.password_restrictions)
-//
-//                    },
-//                    style = MaterialTheme.typography.labelSmall,
-//                    color = if (resetUiState.validating2 && !CheckInputValidation.isPasswordValid(resetUiState.newPassword)) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
-//                )
-
                     Spacer(modifier = Modifier.height(32.dp))
 
                     MyTextField(
@@ -298,14 +274,7 @@ fun ResetPassword(
                             }
                         }
                     )
-//                if (resetUiState.newPassword != resetUiState.rewritingNewPassword
-//                    && resetUiState.rewritingNewPassword.isNotEmpty()){
-//                    Text(
-//                        text = stringResource(R.string.not_matched_passwords),
-//                        style = MaterialTheme.typography.labelSmall,
-//                        color = MaterialTheme.colorScheme.error
-//                    )
-//                }
+
                     Spacer(modifier = Modifier.height(32.dp))
 
                     MyButton(
