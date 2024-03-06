@@ -18,6 +18,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,6 +31,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.presentation.components.connectionStates.Loading
@@ -40,28 +42,38 @@ import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightHint
 import com.company.khomasi.theme.lightSubText
 import com.company.khomasi.theme.lightText
+import kotlinx.coroutines.flow.StateFlow
+
 
 @Composable
 fun LoginDataPage(
     isDark: Boolean,
-    loginViewModel: LoginViewModel,
     modifier: Modifier = Modifier,
     onForgotPasswordClick: () -> Unit,
     onRegisterClick: () -> Unit,
-    onSuccessLogin: () -> Unit
+    loginUiState: State<LoginUiState>,
+    loginState: StateFlow<DataState<UserLoginResponse>>,
+    updatePassword: (String) -> Unit,
+    updateEmail: (String) -> Unit,
+    login: () -> Unit,
+    onLoginSuccess: () -> Unit,
+    loginWithGmail: () -> Unit,
+    privacyAndPolicy: () -> Unit,
+    helpAndSupport: () -> Unit,
+    isValidEmailAndPassword: (String, String) -> Boolean,
 ) {
-    val loginUiState = loginViewModel.uiState.value
-    when (loginViewModel.loginState.collectAsState().value) {
+    val uiState = loginUiState.value
+    when (loginState.collectAsState().value) {
         is DataState.Loading -> {
             Loading()
         }
 
         is DataState.Success -> {
-            onSuccessLogin()
+            onLoginSuccess()
         }
 
         is DataState.Error -> {
-            Log.d("LoginDataPage", "Error: ${loginViewModel.loginState.collectAsState().value}")
+            Log.d("LoginDataPage", "Error: ${loginState.collectAsState().value}")
         }
 
         is DataState.Empty -> {
@@ -82,16 +94,16 @@ fun LoginDataPage(
         Spacer(modifier = Modifier.height(24.dp))
 
         MyTextField(
-            value = loginUiState.email,
-            onValueChange = loginViewModel::updateEmail,
+            value = uiState.email,
+            onValueChange = updateEmail,
             label = R.string.email,
             keyBoardType = KeyboardType.Text
         )
         Spacer(modifier = Modifier.height(24.dp))
 
         MyTextField(
-            value = loginUiState.password,
-            onValueChange = loginViewModel::updatePassword,
+            value = uiState.password,
+            onValueChange = updatePassword,
             label = R.string.password,
             keyBoardType = KeyboardType.Password,
         )
@@ -108,12 +120,12 @@ fun LoginDataPage(
         MyButton(
             text = R.string.login,
             onClick = {
-                if (loginViewModel.isValidEmailAndPassword(
-                        loginUiState.email,
-                        loginUiState.password
+                if (isValidEmailAndPassword(
+                        uiState.email,
+                        uiState.password
                     )
                 ) {
-                    loginViewModel.login()
+                    login()
                 }
             },
             modifier = Modifier
@@ -184,7 +196,7 @@ fun LoginDataPage(
                     shape = Shapes.extraLarge
                 )
                 .align(Alignment.CenterHorizontally)
-                .clickable { loginViewModel.loginWithGmail() },
+                .clickable { loginWithGmail() },
             contentAlignment = Alignment.Center,
         ) {
             Image(
@@ -216,7 +228,7 @@ fun LoginDataPage(
                 textDecoration = TextDecoration.Underline,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier
-                    .clickable { loginViewModel.privacyAndPolicy() }
+                    .clickable { privacyAndPolicy() }
             )
 
             Text(
@@ -232,7 +244,7 @@ fun LoginDataPage(
                 textDecoration = TextDecoration.Underline,
                 style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier
-                    .clickable { loginViewModel.helpAndSupport() }
+                    .clickable { helpAndSupport() }
 
             )
         }

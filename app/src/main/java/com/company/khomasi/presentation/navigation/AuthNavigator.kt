@@ -10,6 +10,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.navigation.Screens
 import com.company.khomasi.presentation.login.LoginScreen
+import com.company.khomasi.presentation.login.LoginViewModel
 import com.company.khomasi.presentation.loginOrSignup.LoginOrRegisterScreen
 import com.company.khomasi.presentation.otpScreen.OtpScreen
 import com.company.khomasi.presentation.register.RegisterScreen
@@ -31,9 +32,20 @@ fun AuthNavigator() {
                 )
             }
             composable(route = Screens.Login.name) {
+                val loginViewModel: LoginViewModel = hiltViewModel()
                 LoginScreen(
                     onRegisterClick = { navController.navigate(Screens.Register.name) },
                     onForgotPasswordClick = { navController.navigate(Screens.ResetPassword.name) },
+                    uiState = loginViewModel.uiState,
+                    loginState = loginViewModel.loginState,
+                    updatePassword = loginViewModel::updatePassword,
+                    updateEmail = loginViewModel::updateEmail,
+                    login = loginViewModel::login,
+                    onLoginSuccess = loginViewModel::onLoginSuccess,
+                    loginWithGmail = loginViewModel::loginWithGmail,
+                    privacyAndPolicy = loginViewModel::privacyAndPolicy,
+                    helpAndSupport = loginViewModel::helpAndSupport,
+                    isValidEmailAndPassword = loginViewModel::isValidEmailAndPassword
                 )
             }
             composable(route = Screens.Register.name) {
@@ -49,7 +61,8 @@ fun AuthNavigator() {
                 )
             }
             composable(route = Screens.ResetPassword.name) {
-                ResetPassword(
+
+            ResetPassword(
                     resetViewModel = hiltViewModel(),
                     onCancelClick = { navController.popBackStack() },
                     onBackToLogin = { navController.navigate(Screens.Login.name) }

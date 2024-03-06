@@ -6,21 +6,33 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.R
+import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.theme.KhomasiTheme
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun LoginScreen(
     onRegisterClick: () -> Unit,
     onForgotPasswordClick: () -> Unit,
+    uiState: State<LoginUiState>,
+    loginState: StateFlow<DataState<UserLoginResponse>>,
+    updatePassword: (String) -> Unit,
+    updateEmail: (String) -> Unit,
+    login: () -> Unit,
+    onLoginSuccess: () -> Unit,
+    loginWithGmail: () -> Unit,
+    privacyAndPolicy: () -> Unit,
+    helpAndSupport: () -> Unit,
+    isValidEmailAndPassword: (String, String) -> Boolean,
     modifier: Modifier = Modifier,
     isDark: Boolean = isSystemInDarkTheme(),
-    loginViewModel: LoginViewModel = hiltViewModel()
 ) {
     AuthSheet(
         screenContent = {
@@ -38,11 +50,18 @@ fun LoginScreen(
     ) {
         LoginDataPage(
             isDark = isDark,
-            loginViewModel = loginViewModel,
             onRegisterClick = onRegisterClick,
             onForgotPasswordClick = onForgotPasswordClick,
-            onSuccessLogin = loginViewModel::onLoginSuccess,
-            modifier = modifier
+            loginUiState = uiState,
+            loginState = loginState,
+            updatePassword = updatePassword,
+            updateEmail = updateEmail,
+            login = login,
+            onLoginSuccess = onLoginSuccess,
+            loginWithGmail = loginWithGmail,
+            privacyAndPolicy = privacyAndPolicy,
+            helpAndSupport = helpAndSupport,
+            isValidEmailAndPassword = isValidEmailAndPassword
         )
     }
 }
@@ -53,6 +72,20 @@ fun LoginScreen(
 @Composable
 fun LoginPreview() {
     KhomasiTheme {
-        LoginScreen({}, {})
+        val mockViewModel = MockLoginViewModel()
+        LoginScreen(
+            updatePassword = mockViewModel::updatePassword,
+            updateEmail = mockViewModel::updateEmail,
+            login = mockViewModel::login,
+            onLoginSuccess = mockViewModel::onLoginSuccess,
+            loginWithGmail = mockViewModel::loginWithGmail,
+            privacyAndPolicy = mockViewModel::privacyAndPolicy,
+            helpAndSupport = mockViewModel::helpAndSupport,
+            isValidEmailAndPassword = mockViewModel::isValidEmailAndPassword,
+            uiState = mockViewModel.uiState,
+            loginState = mockViewModel.loginState,
+            onRegisterClick = {},
+            onForgotPasswordClick = {}
+        )
     }
 }
