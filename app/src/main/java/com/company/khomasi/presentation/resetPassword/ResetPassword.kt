@@ -23,6 +23,7 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -43,14 +44,21 @@ import com.company.khomasi.utils.CheckInputValidation
 fun ResetPassword(
     resetViewModel: ResetPasswordViewModel,
     onCancelClick: () -> Unit,
-    onBackToLogin: () -> Unit
+    onBackToLogin: () -> Unit,
+    modifier: Modifier = Modifier,
+    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
+    localFocusManager: FocusManager = LocalFocusManager.current
 ) {
-
     val resetUiState = resetViewModel.resetUiState.collectAsState().value
     val verificationRes = resetViewModel.verificationRes.collectAsState().value
     val recoverRes = resetViewModel.recoverResponse.collectAsState().value
-    val keyboardController = LocalSoftwareKeyboardController.current
-    val localFocusManager: FocusManager = LocalFocusManager.current
+
+    val isEmailError =
+        resetUiState.validating1 && !CheckInputValidation.isEmailValid(resetUiState.userEmail)
+    val isPasswordError =
+        resetUiState.validating2 && !CheckInputValidation.isPasswordValid(resetUiState.newPassword)
+    val isPasswordMatchError = resetUiState.newPassword != resetUiState.rewritingNewPassword
+            && resetUiState.rewritingNewPassword.isNotEmpty()
 
     BackHandler {
         if (resetUiState.page == 2) {
@@ -82,7 +90,7 @@ fun ResetPassword(
         is DataState.Empty -> {}
     }
 
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(modifier = modifier.fillMaxSize()) {
 
         when (resetUiState.page) {
             1 ->
@@ -122,14 +130,9 @@ fun ResetPassword(
                             keyboardActions = KeyboardActions(
                                 onDone = { keyboardController?.hide() }
                             ),
-                            isError = (resetUiState.validating1 && !CheckInputValidation.isEmailValid(
-                                resetUiState.userEmail
-                            )),
+                            isError = isEmailError,
                             supportingText = {
-                                if (resetUiState.validating1 && !CheckInputValidation.isEmailValid(
-                                        resetUiState.userEmail
-                                    )
-                                ) {
+                                if (isEmailError) {
                                     Text(
                                         text = stringResource(R.string.invalid_email_message),
                                         style = MaterialTheme.typography.labelSmall,
@@ -235,9 +238,7 @@ fun ResetPassword(
                         ),
                         keyBoardType = KeyboardType.Password,
                         imeAction = ImeAction.Next,
-                        isError = (resetUiState.validating2 && !CheckInputValidation.isPasswordValid(
-                            resetUiState.newPassword
-                        )),
+                        isError = isPasswordError,
                         supportingText = {
                             Column {
                                 PasswordStrengthMeter(
@@ -245,19 +246,16 @@ fun ResetPassword(
                                     enable = resetUiState.newPassword.isNotEmpty()
                                 )
                                 Text(
-                                    text = if (resetUiState.validating2 && !CheckInputValidation.isPasswordValid(
-                                            resetUiState.newPassword
-                                        )
-                                    ) {
+                                    text = if (isPasswordError) {
                                         stringResource(id = R.string.invalid_pass_message)
                                     } else {
                                         stringResource(id = R.string.password_restrictions)
                                     },
                                     style = MaterialTheme.typography.labelSmall,
-                                    color = if (resetUiState.validating2 && !CheckInputValidation.isPasswordValid(
-                                            resetUiState.newPassword
-                                        )
-                                    ) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
+                                    color = if (isPasswordError)
+                                        MaterialTheme.colorScheme.error
+                                    else
+                                        MaterialTheme.colorScheme.outline
                                 )
                             }
 
@@ -289,14 +287,15 @@ fun ResetPassword(
                             }
                         ),
                         keyBoardType = KeyboardType.Password,
-                        isError = (resetUiState.newPassword != resetUiState.rewritingNewPassword
-                                && resetUiState.rewritingNewPassword.isNotEmpty()),
+                        isError = isPasswordMatchError,
                         supportingText = {
-                            Text(
-                                text = stringResource(R.string.not_matched_passwords),
-                                style = MaterialTheme.typography.labelSmall,
-                                color = MaterialTheme.colorScheme.error
-                            )
+                            if (isPasswordMatchError) {
+                                Text(
+                                    text = stringResource(R.string.not_matched_passwords),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.error
+                                )
+                            }
                         }
                     )
 //                if (resetUiState.newPassword != resetUiState.rewritingNewPassword
@@ -325,7 +324,6 @@ fun ResetPassword(
                         onClick = onBackToLogin,
                     )
                 }
-
         }
     }
 }
