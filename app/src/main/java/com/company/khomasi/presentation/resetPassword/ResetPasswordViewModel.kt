@@ -82,22 +82,11 @@ class ResetPasswordViewModel @Inject constructor(
             )
         }
     }
-
-    fun checkPasswordMatching() {
-        _recreateUiState.let {
-            it.update { currentState ->
-                currentState.copy(
-                    isTwoPassEquals = currentState.newPassword == currentState.rewritingNewPassword
-                            && currentState.rewritingNewPassword.isNotEmpty()
-                )
-            }
-        }
-    }
-
-    fun checkValidation(): Boolean {
+    private fun checkValidation(): Boolean {
         _recreateUiState.update {
             it.copy(
-                buttonEnable2 = _recreateUiState.value.isTwoPassEquals
+                buttonEnable2 = _recreateUiState.value.newPassword == _recreateUiState.value.rewritingNewPassword
+                        && _recreateUiState.value.rewritingNewPassword.isNotEmpty()
             )
         }
         return _recreateUiState.value.newPassword == _recreateUiState.value.rewritingNewPassword
@@ -105,7 +94,7 @@ class ResetPasswordViewModel @Inject constructor(
     }
 
     fun onButtonClickedScreen2() {
-        if (_recreateUiState.value.buttonEnable2 && _recreateUiState.value.isCodeTrue) {
+        if (checkValidation() && _recreateUiState.value.isCodeTrue) {
             viewModelScope.launch {
                 authUseCases.recoverAccountUseCase(
                     _recreateUiState.value.userEmail,

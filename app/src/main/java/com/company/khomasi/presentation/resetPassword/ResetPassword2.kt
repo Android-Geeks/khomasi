@@ -40,7 +40,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
 @Composable
 fun ResetPassword2(
-    recreateViewModel: ResetPasswordViewModel = hiltViewModel(),
+    recreateViewModel: ResetPasswordViewModel ,
     onBackToLogin: () -> Unit
 ) {
 
@@ -49,6 +49,7 @@ fun ResetPassword2(
     val recoverRes = recreateViewModel.recoverResponse.collectAsState().value
     val keyboardController = LocalSoftwareKeyboardController.current
     val localFocusManager: FocusManager = LocalFocusManager.current
+
     var validatingSwitch by remember {
         mutableStateOf(false)
     }
@@ -122,7 +123,6 @@ fun ResetPassword2(
             label = R.string.new_password,
             keyboardActions = KeyboardActions(
                 onNext = {
-                    validatingSwitch = true
                     localFocusManager.moveFocus(FocusDirection.Down)
                 }
             ),
@@ -155,26 +155,33 @@ fun ResetPassword2(
             label = R.string.retype_password,
             keyboardActions = KeyboardActions(
                 onDone = {
-                    recreateViewModel.checkPasswordMatching()
                     keyboardController?.hide()
                 }
             ),
             keyBoardType = KeyboardType.Password,
-            isError = !(recreateUiState.isTwoPassEquals)
+            isError = (recreateUiState.newPassword != recreateUiState.rewritingNewPassword
+                    && recreateUiState.rewritingNewPassword.isNotEmpty())
         )
-
+        if (recreateUiState.newPassword != recreateUiState.rewritingNewPassword
+            && recreateUiState.rewritingNewPassword.isNotEmpty()){
+            Text(
+                text = stringResource(R.string.not_matched_passwords),
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
         Spacer(modifier = Modifier.height(32.dp))
 
         MyButton(
             text = R.string.set_password,
             onClick = {
+                validatingSwitch = true
                 recreateViewModel.onButtonClickedScreen2()
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 8.dp, end = 8.dp),
             shape = MaterialTheme.shapes.medium,
-            buttonEnable = recreateViewModel.checkValidation()
         )
 
         MyTextButton(
@@ -184,16 +191,16 @@ fun ResetPassword2(
     }
 }
 
-@Preview(name = "Night", showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Preview(
-    name = "Light",
-    uiMode = Configuration.UI_MODE_NIGHT_NO,
-    locale = "ar",
-    showSystemUi = true
-)
-@Composable
-fun RecreateNewPasswordPreview() {
-    KhomasiTheme {
-        ResetPassword2 { }
-    }
-}
+//@Preview(name = "Night", showSystemUi = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+//@Preview(
+//    name = "Light",
+//    uiMode = Configuration.UI_MODE_NIGHT_NO,
+//    locale = "ar",
+//    showSystemUi = true
+//)
+////@Composable
+////fun RecreateNewPasswordPreview() {
+////    KhomasiTheme {
+////        ResetPassword2 { }
+////    }
+////}

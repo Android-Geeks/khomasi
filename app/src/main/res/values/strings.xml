@@ -177,6 +177,7 @@
     <string name="invalid_email_message">Invalid email format</string>
     <string name="invalid_phone_number_message">Invalid phone number</string>
     <string name="invalid_name_message"> A name should contain at least a minimum length of two characters and not contain digits.</string>
+    <string name="not_matched_passwords">New password does not match. Enter new password again here.</string>
 
 
 </resources>

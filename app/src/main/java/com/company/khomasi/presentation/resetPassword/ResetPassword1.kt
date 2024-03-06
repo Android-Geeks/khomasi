@@ -39,7 +39,7 @@ import com.company.khomasi.utils.CheckInputValidation
 fun ResetPassword1(
     onCancelClick: () -> Unit,
     onSetPasswordClick: () -> Unit,
-    resetPasswordViewModel: ResetPasswordViewModel = hiltViewModel(),
+    resetPasswordViewModel: ResetPasswordViewModel ,
 ) {
     val recreateNewPassUiState = resetPasswordViewModel.recreateUiState.collectAsState().value
     val verificationRes = resetPasswordViewModel.verificationRes.collectAsState().value
@@ -124,10 +124,10 @@ fun ResetPassword1(
 }
 
 
-@Preview(showSystemUi = true)
-@Composable
-fun ResetPasswordScreenPreview() {
-    KhomasiTheme {
-        ResetPassword1(onCancelClick = {}, onSetPasswordClick = {})
-    }
-}
+//@Preview(showSystemUi = true)
+//@Composable
+//fun ResetPasswordScreenPreview() {
+//    KhomasiTheme {
+//        ResetPassword1(onCancelClick = {}, onSetPasswordClick = {})
+//    }
+//}

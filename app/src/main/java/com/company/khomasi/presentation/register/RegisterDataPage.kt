@@ -49,18 +49,15 @@ fun RegisterDataPage(
 ) {
     val userState = viewModel.uiState.value
 
-    var emailValidatingSwitch by remember {
+    var validate1  by remember {
         mutableStateOf(false)
     }
-    var passValidatingSwitch by remember {
+    var validate2  by remember {
         mutableStateOf(false)
     }
-    var phoneValidatingSwitch by remember {
-        mutableStateOf(false)
-    }
-    var lNameValidatingSwitch by remember {
-        mutableStateOf(false)
-    }
+
+
+
     BackHandler {
         if (userState.page == 2) {
             viewModel.onBack()
@@ -93,13 +90,11 @@ fun RegisterDataPage(
                     label = R.string.first_name,
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Text,
-                    keyboardActions = KeyboardActions(
-                        onNext = {
-                            localFocusManager.moveFocus(FocusDirection.Down)
-//                            fNameValidatingSwitch = true
-                        }
-
-                    )
+                    keyboardActions = keyboardActions,
+                    isError = (
+                            validate1
+                            &&! (CheckInputValidation.isLastNameValid(userState.firstName))
+                            )
                 )
                 MyTextField(
                     value = userState.lastName,
@@ -107,21 +102,17 @@ fun RegisterDataPage(
                     label = R.string.last_name,
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Text,
-                    keyboardActions = KeyboardActions(
-                        onNext = {
-                            localFocusManager.moveFocus(FocusDirection.Down)
-                            lNameValidatingSwitch = true
-                        }
-                    ),
+                    keyboardActions = keyboardActions,
                     isError = (
-                            lNameValidatingSwitch
+//                            lNameValidatingSwitch
+                            validate1
                                     &&! (CheckInputValidation.isLastNameValid(userState.lastName))
                             )
                 )
                 if (
-                    lNameValidatingSwitch
-                    && (!CheckInputValidation.isLastNameValid(userState.lastName))
-//                    && (!CheckInputValidation.isFirstNameValid(userState.firstName))
+                        validate1
+                    && ((!CheckInputValidation.isLastNameValid(userState.lastName)) ||
+                          (!CheckInputValidation.isFirstNameValid(userState.firstName)))
                     ){
                     Text(
                         text = stringResource( R.string.invalid_name_message),
@@ -135,15 +126,14 @@ fun RegisterDataPage(
                     label = R.string.phone_number,
                     imeAction = ImeAction.Done,
                     keyBoardType = KeyboardType.Phone,
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            keyboardController?.hide()
-                            phoneValidatingSwitch = true
-                        }
-                    ),
-                    isError = (phoneValidatingSwitch && !CheckInputValidation.isPhoneNumberValid(userState.phoneNumber))
+                    keyboardActions = keyboardActions,
+                    isError = (
+                            validate1
+                                    && !CheckInputValidation.isPhoneNumberValid(userState.phoneNumber))
                 )
-                if (phoneValidatingSwitch && !CheckInputValidation.isPhoneNumberValid(userState.phoneNumber)){
+                if (
+                    validate1
+                    && !CheckInputValidation.isPhoneNumberValid(userState.phoneNumber)){
                     Text(
                         text = stringResource( R.string.invalid_phone_number_message),
                         style = MaterialTheme.typography.labelSmall,
@@ -154,6 +144,7 @@ fun RegisterDataPage(
                 MyButton(
                     text = R.string.next,
                     onClick = {
+                        validate1 = true
                         if (viewModel.isValidNameAndPhoneNumber(
                                 userState.firstName,
                                 userState.lastName,
@@ -179,15 +170,10 @@ fun RegisterDataPage(
                     label = R.string.email,
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Email,
-                    keyboardActions = KeyboardActions(
-                        onNext = {
-                            localFocusManager.moveFocus(FocusDirection.Down)
-                            emailValidatingSwitch = true
-                        },
-                    ),
-                    isError = (emailValidatingSwitch && !CheckInputValidation.isEmailValid(userState.email))
+                    keyboardActions = keyboardActions,
+                    isError = (validate2 && !CheckInputValidation.isEmailValid(userState.email))
                 )
-                if (emailValidatingSwitch && !CheckInputValidation.isEmailValid(userState.email)){
+                if (validate2 && !CheckInputValidation.isEmailValid(userState.email)){
                     Text(
                         text = stringResource(R.string.invalid_email_message),
                         style = MaterialTheme.typography.labelSmall,
@@ -200,13 +186,8 @@ fun RegisterDataPage(
                     label = R.string.password,
                     imeAction = ImeAction.Next,
                     keyBoardType = KeyboardType.Password,
-                    keyboardActions =  KeyboardActions(
-                        onNext = {
-                            localFocusManager.moveFocus(FocusDirection.Down)
-                            passValidatingSwitch = true
-                        },
-                    ),
-                    isError = (passValidatingSwitch && !CheckInputValidation.isPasswordValid(userState.password))
+                    keyboardActions = keyboardActions,
+                    isError = (validate2 && !CheckInputValidation.isPasswordValid(userState.password))
                 )
                 PasswordStrengthMeter(
                     password = userState.password,
@@ -214,7 +195,7 @@ fun RegisterDataPage(
                 )
 
                 Text(
-                    if (passValidatingSwitch && !CheckInputValidation.isPasswordValid(userState.password)){
+                    if (validate2 && !CheckInputValidation.isPasswordValid(userState.password)){
                         stringResource(R.string.invalid_pass_message)
                     }
                     else{
@@ -222,7 +203,7 @@ fun RegisterDataPage(
 
                     },
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (passValidatingSwitch && !CheckInputValidation.isPasswordValid(userState.password)) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
+                    color = if (validate2 && !CheckInputValidation.isPasswordValid(userState.password)) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.outline
                 )
                 MyTextField(
                     value = userState.confirmPassword,
@@ -231,13 +212,14 @@ fun RegisterDataPage(
                     imeAction = ImeAction.Done,
                     keyBoardType = KeyboardType.Password,
                     keyboardActions = keyboardActions,
-//                    isError = ! ((userState.password == userState.confirmPassword)
-//                            && CheckInputValidation.isPasswordValid(userState.confirmPassword))
+                    isError =  (userState.password != userState.confirmPassword
+                            && userState.confirmPassword.isNotEmpty())
                 )
                 Spacer(modifier = Modifier.height(84.dp))
                 MyButton(
                     text = R.string.create_account,
                     onClick = {
+                        validate2 = true
                         if (viewModel.isValidEmailAndPassword(
                                 userState.email,
                                 userState.password
