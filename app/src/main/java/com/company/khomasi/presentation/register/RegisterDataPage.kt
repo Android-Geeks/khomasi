@@ -140,7 +140,13 @@ fun RegisterDataPage(
                 MyButton(
                     text = R.string.next,
                     onClick = {
-                        if (!(isErrorFirstName || isErrorLastName || isErrorPhoneNumber)) {
+                        if (
+                            viewModel.isValidNameAndPhoneNumber(
+                                firstName = userState.firstName,
+                                lastName = userState.lastName,
+                                phoneNumber = userState.phoneNumber
+                            )
+                        ) {
                             viewModel.onNextClick()
                         }
                     },
