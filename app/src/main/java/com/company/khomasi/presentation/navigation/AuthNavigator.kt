@@ -52,7 +52,7 @@ fun AuthNavigator() {
                 RegisterScreen(
                     onLoginClick = { navController.navigate(Screens.Login.name) },
                     onDoneClick = { navController.navigate(Screens.OTP.name) },
-                    backToLoginOrRegister = { navController.navigate(Screens.LoginOrRegister.name) }
+                    onBack = { navController.popBackStack() }
                 )
             }
             composable(route = Screens.OTP.name) {

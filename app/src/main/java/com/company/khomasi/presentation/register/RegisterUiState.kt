@@ -7,7 +7,9 @@ data class RegisterUiState(
     val password: String = "",
     val confirmPassword: String = "",
     val phoneNumber: String = "",
+    val longitude: Double? = null,
+    val latitude: Double? = null,
     val page: Int = 1,
-    val validating1 : Boolean = false,
-    val validating2 : Boolean = false
+    val validating1: Boolean = false,
+    val validating2: Boolean = false
 )

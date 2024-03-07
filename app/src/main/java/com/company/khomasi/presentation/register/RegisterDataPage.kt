@@ -38,7 +38,7 @@ import com.company.khomasi.utils.CheckInputValidation
 fun RegisterDataPage(
     viewModel: RegisterViewModel,
     onLoginClick: () -> Unit,
-    backToLoginOrRegister: () -> Unit,
+    onBack: () -> Unit,
     localFocusManager: FocusManager = LocalFocusManager.current,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
     isDark: Boolean = isSystemInDarkTheme(),
@@ -61,7 +61,7 @@ fun RegisterDataPage(
         if (userState.page == 2) {
             viewModel.onBack()
         } else {
-            backToLoginOrRegister()
+            onBack()
         }
     }
 

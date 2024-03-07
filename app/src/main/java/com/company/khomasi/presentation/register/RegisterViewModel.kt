@@ -1,13 +1,12 @@
 package com.company.khomasi.presentation.register
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.UserDetails
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
+import com.company.khomasi.domain.use_case.location.LocationUseCases
 import com.company.khomasi.utils.CheckInputValidation
 import com.company.khomasi.utils.ExchangeData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,11 +17,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val authUseCases: AuthUseCases
+    private val authUseCases: AuthUseCases,
+    private val locationUseCases: LocationUseCases
 ) : ViewModel() {
 
-    private val _uiState = mutableStateOf(RegisterUiState())
-    val uiState: State<RegisterUiState> = _uiState
+    private val _uiState = MutableStateFlow(RegisterUiState())
+    val uiState: StateFlow<RegisterUiState> = _uiState
 
     private val _registerState: MutableStateFlow<DataState<UserRegisterResponse>> =
         MutableStateFlow(DataState.Empty)
@@ -39,8 +39,8 @@ class RegisterViewModel @Inject constructor(
                     phoneNumber = _uiState.value.phoneNumber,
                     country = "Egypt",
                     city = "Tanta",
-                    longitude = 0.0f,
-                    latitude = 0.0f,
+                    longitude = _uiState.value.longitude ?: 31.000376,  // Tanta Coordinates
+                    latitude = _uiState.value.latitude ?: 30.786509,
                 )
             ).collect {
                 _registerState.value = it
@@ -49,6 +49,34 @@ class RegisterViewModel @Inject constructor(
                     ExchangeData.otp.set(it.data.code)
                 }
             }
+        }
+    }
+
+    fun getCurrentLocation(
+        onGetCurrentLocationSuccess: (Pair<Double, Double>) -> Unit,
+        onGetCurrentLocationFailed: (Exception) -> Unit,
+        priority: Boolean
+    ) {
+        viewModelScope.launch {
+            locationUseCases.getCurrentLocation(
+                onGetCurrentLocationSuccess = onGetCurrentLocationSuccess,
+                onGetCurrentLocationFailed = onGetCurrentLocationFailed,
+                priority = priority
+            )
+        }
+    }
+
+    fun getLastUserLocation(
+        onGetLastLocationSuccess: (Pair<Double, Double>) -> Unit,
+        onGetLastLocationFailed: (Exception) -> Unit,
+        onGetLastLocationIsNull: () -> Unit
+    ) {
+        viewModelScope.launch {
+            locationUseCases.getLastUserLocation(
+                onGetLastLocationSuccess = onGetLastLocationSuccess,
+                onGetLastLocationFailed = onGetLastLocationFailed,
+                onGetLastLocationIsNull = onGetLastLocationIsNull
+            )
         }
     }
 
@@ -76,6 +104,13 @@ class RegisterViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(phoneNumber = phoneNumber)
     }
 
+    fun updateLocation(locationCoordinates: Pair<Double, Double>) {
+        _uiState.value = _uiState.value.copy(
+            latitude = locationCoordinates.first,
+            longitude = locationCoordinates.second
+        )
+    }
+
     fun isValidNameAndPhoneNumber(
         firstName: String,
         lastName: String,
@@ -86,7 +121,7 @@ class RegisterViewModel @Inject constructor(
         val isLastNameValid = CheckInputValidation.isLastNameValid(lastName)
 
         val isPhoneNumberValid = CheckInputValidation.isPhoneNumberValid(phoneNumber)
-         _uiState.value = _uiState.value.copy(validating1 = true)
+        _uiState.value = _uiState.value.copy(validating1 = true)
 
         return isFirstNameValid && isLastNameValid && isPhoneNumberValid
     }
