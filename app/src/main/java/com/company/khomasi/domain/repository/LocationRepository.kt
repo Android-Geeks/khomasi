@@ -6,7 +6,6 @@ interface LocationRepository {
         onGetCurrentLocationFailed: (Exception) -> Unit,
         priority: Boolean
     )
-
     fun getLastUserLocation(
         onGetLastLocationSuccess: (Pair<Double, Double>) -> Unit,
         onGetLastLocationFailed: (java.lang.Exception) -> Unit,

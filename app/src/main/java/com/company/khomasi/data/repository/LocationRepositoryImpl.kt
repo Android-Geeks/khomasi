@@ -63,7 +63,7 @@ class LocationRepositoryImpl(
     @SuppressLint("MissingPermission")
     override fun getLastUserLocation(
         onGetLastLocationSuccess: (Pair<Double, Double>) -> Unit,
-        onGetLastLocationFailed: (java.lang.Exception) -> Unit,
+        onGetLastLocationFailed: (Exception) -> Unit,
         onGetLastLocationIsNull: () -> Unit
     ) {
         // Check if location permissions are granted
