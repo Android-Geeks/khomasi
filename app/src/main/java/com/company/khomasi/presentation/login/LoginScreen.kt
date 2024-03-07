@@ -39,7 +39,7 @@ fun LoginScreen(
     isDark: Boolean = isSystemInDarkTheme(),
 ) {
     Box {
-        when (loginState.value) {
+        when (loginState.collectAsState().value) {
             is DataState.Loading -> {
                 Loading()
             }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -20,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -30,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextField
-import com.company.khomasi.theme.Shapes
 import com.company.khomasi.theme.darkHint
 import com.company.khomasi.theme.darkSubText
 import com.company.khomasi.theme.darkText
@@ -119,7 +120,6 @@ fun LoginDataPage(
             horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-
             Text(
                 text = stringResource(id = R.string.do_not_have_an_account),
                 style = MaterialTheme.typography.bodySmall,
@@ -134,7 +134,6 @@ fun LoginDataPage(
                 style = MaterialTheme.typography.bodySmall
 
             )
-
         }
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -166,10 +165,8 @@ fun LoginDataPage(
         Box(
             modifier = Modifier
                 .size(56.dp)
-                .background(
-                    color = Color.White,
-                    shape = Shapes.extraLarge
-                )
+                .clip(CircleShape)
+                .background(Color.White)
                 .align(Alignment.CenterHorizontally)
                 .clickable { loginWithGmail() },
             contentAlignment = Alignment.Center,
