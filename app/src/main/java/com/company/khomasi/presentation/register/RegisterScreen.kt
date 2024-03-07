@@ -103,13 +103,11 @@ fun RegisterScreen(
             onPermissionDenied = {
                 Toast.makeText(
                     context,
-                    "Please Accept Location Permission...",
+                    "Please Accept Location Permission, To Enjoy All Features",
                     Toast.LENGTH_LONG
                 ).show()
             },
-            onPermissionsRevoked = {
-
-            }
+            onPermissionsRevoked = {}
         )
     Log.d(
         "RegisterScreen",

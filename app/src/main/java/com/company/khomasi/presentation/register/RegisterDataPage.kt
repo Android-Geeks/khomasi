@@ -150,6 +150,7 @@ fun RegisterDataPage(
                             viewModel.onNextClick()
                         }
                     },
+                    buttonEnable = userState.locationPermission,
                     modifier = Modifier.fillMaxWidth()
                 )
             }

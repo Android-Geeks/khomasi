@@ -107,9 +107,11 @@ class RegisterViewModel @Inject constructor(
     fun updateLocation(locationCoordinates: Pair<Double, Double>) {
         _uiState.value = _uiState.value.copy(
             latitude = locationCoordinates.first,
-            longitude = locationCoordinates.second
+            longitude = locationCoordinates.second,
+            locationPermission = true
         )
     }
+
 
     fun isValidNameAndPhoneNumber(
         firstName: String,

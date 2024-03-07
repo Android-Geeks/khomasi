@@ -11,5 +11,6 @@ data class RegisterUiState(
     val latitude: Double? = null,
     val page: Int = 1,
     val validating1: Boolean = false,
-    val validating2: Boolean = false
+    val validating2: Boolean = false,
+    val locationPermission: Boolean = false
 )
