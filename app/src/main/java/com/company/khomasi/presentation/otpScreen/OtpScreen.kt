@@ -24,11 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -96,15 +94,15 @@ fun OtpScreen(
                     )
                 }
                 Spacer(modifier = Modifier.padding(2.dp))
-                SmsCodeView(
-                    smsCodeLength = 5,
-                    textStyle = TextStyle(
-                        fontSize = 24.sp,
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.SemiBold,
-                        textDirection = TextDirection.Ltr
-                    ),
-                    smsFulled = otpViewModel::updateSmsCode,
+
+                CodeTextField(
+                    value = otpUiState.code,
+                    length = 5,
+                    onValueChange = otpViewModel::updateSmsCode,
+                    textStyle = MaterialTheme.typography.displayLarge.copy(
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))

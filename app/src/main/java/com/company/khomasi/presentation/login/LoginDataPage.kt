@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.login
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -19,7 +18,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,11 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
-import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextField
-import com.company.khomasi.presentation.components.connectionStates.Loading
 import com.company.khomasi.theme.Shapes
 import com.company.khomasi.theme.darkHint
 import com.company.khomasi.theme.darkSubText
@@ -42,7 +37,6 @@ import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightHint
 import com.company.khomasi.theme.lightSubText
 import com.company.khomasi.theme.lightText
-import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
@@ -52,34 +46,15 @@ fun LoginDataPage(
     onForgotPasswordClick: () -> Unit,
     onRegisterClick: () -> Unit,
     loginUiState: State<LoginUiState>,
-    loginState: StateFlow<DataState<UserLoginResponse>>,
     updatePassword: (String) -> Unit,
     updateEmail: (String) -> Unit,
     login: () -> Unit,
-    onLoginSuccess: () -> Unit,
     loginWithGmail: () -> Unit,
     privacyAndPolicy: () -> Unit,
     helpAndSupport: () -> Unit,
     isValidEmailAndPassword: (String, String) -> Boolean,
 ) {
     val uiState = loginUiState.value
-    when (loginState.collectAsState().value) {
-        is DataState.Loading -> {
-            Loading()
-        }
-
-        is DataState.Success -> {
-            onLoginSuccess()
-        }
-
-        is DataState.Error -> {
-            Log.d("LoginDataPage", "Error: ${loginState.collectAsState().value}")
-        }
-
-        is DataState.Empty -> {
-            Log.d("LoginDataPage", "Empty")
-        }
-    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
