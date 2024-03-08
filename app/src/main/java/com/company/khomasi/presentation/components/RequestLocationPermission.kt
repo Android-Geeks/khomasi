@@ -1,11 +1,10 @@
 package com.company.khomasi.presentation.components
 
-import android.Manifest
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.MultiplePermissionsState
 import com.google.accompanist.permissions.isGranted
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 /**
  * Composable function to request location permissions and handle different scenarios.
@@ -19,21 +18,15 @@ import com.google.accompanist.permissions.rememberMultiplePermissionsState
 fun RequestLocationPermission(
     onPermissionGranted: () -> Unit,
     onPermissionDenied: () -> Unit,
-    onPermissionsRevoked: () -> Unit
+    onPermissionsRevoked: () -> Unit,
+    permissionState: MultiplePermissionsState
 ) {
-    // Initialize the state for managing multiple location permissions.
-    val permissionState = rememberMultiplePermissionsState(
-        listOf(
-            Manifest.permission.ACCESS_COARSE_LOCATION,
-            Manifest.permission.ACCESS_FINE_LOCATION,
-        )
-    )
-
+    var isFirstLaunch = true
     // Use LaunchedEffect to handle permissions logic when the composition is launched.
     LaunchedEffect(key1 = permissionState) {
         // Check if all previously granted permissions are revoked.
         val allPermissionsRevoked =
-            permissionState.permissions.size == permissionState.revokedPermissions.size
+            !isFirstLaunch && permissionState.permissions.size == permissionState.revokedPermissions.size
 
         // Filter permissions that need to be requested.
         val permissionsToRequest = permissionState.permissions.filter {
@@ -53,5 +46,6 @@ fun RequestLocationPermission(
                 onPermissionDenied()
             }
         }
+        isFirstLaunch = false
     }
 }

@@ -18,8 +18,11 @@ import com.company.khomasi.domain.DataState
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.RequestLocationPermission
 import com.company.khomasi.presentation.components.connectionStates.Loading
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 
 
+@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun RegisterScreen(
     onLoginClick: () -> Unit,
@@ -107,7 +110,10 @@ fun RegisterScreen(
                     Toast.LENGTH_LONG
                 ).show()
             },
-            onPermissionsRevoked = {}
+            onPermissionsRevoked = {},
+            permissionState = rememberMultiplePermissionsState(
+                permissions = listOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
+            )
         )
     Log.d(
         "RegisterScreen",
