@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.resetPassword
 
+import android.content.res.Configuration
 import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -16,6 +17,7 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,29 +31,47 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.MessageResponse
+import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.presentation.components.PasswordStrengthMeter
 import com.company.khomasi.presentation.components.connectionStates.Loading
+import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.lightText
 import com.company.khomasi.utils.CheckInputValidation
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun ResetPassword(
-    resetViewModel: ResetPasswordViewModel,
     onCancelClick: () -> Unit,
     onBackToLogin: () -> Unit,
+    uiState: State<ResetPasswordUiState>,
+    verificationRes: StateFlow<DataState<VerificationResponse>>,
+    recoverResponse: StateFlow<DataState<MessageResponse>>,
+    onUserEmailChange: (String) -> Unit,
+    onClickButtonScreen1: () -> Unit,
+    onEnteringVerificationCode: (String) -> Unit,
+    verifyVerificationCode: (String) -> Unit,
+    onEnteringPassword: (String) -> Unit,
+    onReTypingPassword: (String) -> Unit,
+    onButtonClickedScreen2: () -> Unit,
+    onBack: () -> Unit,
+    onNextClick: () -> Unit,
+
     modifier: Modifier = Modifier,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
     localFocusManager: FocusManager = LocalFocusManager.current
 ) {
-    val resetUiState = resetViewModel.resetUiState.collectAsState().value
-    val verificationRes = resetViewModel.verificationRes.collectAsState().value
-    val recoverRes = resetViewModel.recoverResponse.collectAsState().value
+    val resetUiState = uiState.value
+    val verificationRes = verificationRes.collectAsState().value
+    val recoverRes = recoverResponse.collectAsState().value
 
     val isEmailError =
         resetUiState.validating1 && !CheckInputValidation.isEmailValid(resetUiState.userEmail)
@@ -62,7 +82,7 @@ fun ResetPassword(
 
     BackHandler {
         if (resetUiState.page == 2) {
-            resetViewModel.onBack()
+            onBack()
         } else {
             onBackToLogin()
         }
@@ -124,7 +144,7 @@ fun ResetPassword(
 
                         MyTextField(
                             value = resetUiState.userEmail,
-                            onValueChange = { resetViewModel.onUserEmailChange(it) },
+                            onValueChange = { onUserEmailChange(it) },
                             label = R.string.email,
                             keyBoardType = KeyboardType.Email,
                             keyboardActions = KeyboardActions(
@@ -146,7 +166,7 @@ fun ResetPassword(
                         MyButton(
                             text = R.string.set_password,
                             onClick = {
-                                resetViewModel.onClickButtonScreen1()
+                                onClickButtonScreen1()
                             },
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -164,7 +184,7 @@ fun ResetPassword(
                         }
 
                         is DataState.Success -> {
-                            resetViewModel.onNextClick()
+                            onNextClick()
                             Log.d("ResetPassword1", "${verificationRes.data.code}")
                         }
 
@@ -202,11 +222,11 @@ fun ResetPassword(
 
                     MyTextField(
                         value = resetUiState.enteredVerificationCode.take(5),
-                        onValueChange = { resetViewModel.onEnteringVerificationCode(it) },
+                        onValueChange = { onEnteringVerificationCode(it) },
                         label = R.string.verification_code,
                         keyboardActions = KeyboardActions(
                             onNext = {
-                                resetViewModel.verifyVerificationCode(code)
+                                verifyVerificationCode(code)
                                 localFocusManager.moveFocus(FocusDirection.Down)
                             }
                         ),
@@ -218,7 +238,7 @@ fun ResetPassword(
                     Spacer(modifier = Modifier.height(32.dp))
                     MyTextField(
                         value = resetUiState.newPassword,
-                        onValueChange = { resetViewModel.onEnteringPassword(it) },
+                        onValueChange = { onEnteringPassword(it) },
                         label = R.string.new_password,
                         keyboardActions = KeyboardActions(
                             onNext = {
@@ -255,7 +275,7 @@ fun ResetPassword(
 
                     MyTextField(
                         value = resetUiState.rewritingNewPassword,
-                        onValueChange = { resetViewModel.onReTypingPassword(it) },
+                        onValueChange = { onReTypingPassword(it) },
                         label = R.string.retype_password,
                         keyboardActions = KeyboardActions(
                             onDone = {
@@ -280,7 +300,7 @@ fun ResetPassword(
                     MyButton(
                         text = R.string.set_password,
                         onClick = {
-                            resetViewModel.onButtonClickedScreen2()
+                            onButtonClickedScreen2()
                         },
                         modifier = Modifier
                             .fillMaxWidth()
@@ -295,4 +315,29 @@ fun ResetPassword(
                 }
         }
     }
+}
+
+@Preview(name = "light", uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "dark", uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun ResetPassWordPreview() {
+    KhomasiTheme {
+        val mockResetPasswordViewModel: MockResetPasswordViewModel = viewModel()
+        ResetPassword(
+            onCancelClick = { },
+            onBackToLogin = { },
+            uiState = mockResetPasswordViewModel.resetUiState.collectAsState(),
+            verificationRes = mockResetPasswordViewModel.verificationRes,
+            recoverResponse = mockResetPasswordViewModel.recoverResponse,
+            onUserEmailChange = mockResetPasswordViewModel::onUserEmailChange,
+            onClickButtonScreen1 = {  },
+            onEnteringVerificationCode = mockResetPasswordViewModel::onEnteringVerificationCode,
+            verifyVerificationCode = mockResetPasswordViewModel::verifyVerificationCode,
+            onEnteringPassword = mockResetPasswordViewModel::onEnteringPassword,
+            onReTypingPassword = mockResetPasswordViewModel::onReTypingPassword,
+            onButtonClickedScreen2 = { },
+            onBack = { },
+            onNextClick = { })
+    }
+
 }

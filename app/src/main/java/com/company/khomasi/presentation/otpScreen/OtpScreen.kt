@@ -1,6 +1,8 @@
 package com.company.khomasi.presentation.otpScreen
 
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -18,8 +20,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -29,25 +31,35 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextDirection
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.MessageResponse
+import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.connectionStates.Loading
+import com.company.khomasi.theme.KhomasiTheme
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun OtpScreen(
     onEmailConfirmed: () -> Unit,
     modifier: Modifier = Modifier,
-    otpViewModel: OtpViewModel = hiltViewModel()
-) {
-    val otpUiState by otpViewModel.uiState.collectAsState()
-    val otpState by otpViewModel.otpState.collectAsState()
-    val confirmEmailState by otpViewModel.confirmEmailState.collectAsState()
+    uiState: State<OtpUiState>,
+    confirmEmailState: StateFlow<DataState<MessageResponse>>,
+    otpState: StateFlow<DataState<VerificationResponse>>,
+    updateSmsCode :(String) -> Unit,
+    resendCode: () -> Unit ,
+    confirmEmail: () -> Unit ,
+    startTimer : (Int) -> Unit,
+    resetTimer : (Int) -> Unit,
 
+) {
+    val otpUiState = uiState.value
     Box {
         AuthSheet(
             screenContent = {
@@ -102,9 +114,10 @@ fun OtpScreen(
                         fontSize = 24.sp,
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.SemiBold,
-                        textDirection = TextDirection.Ltr
+                        textDirection = TextDirection.Ltr,
                     ),
-                    smsFulled = otpViewModel::updateSmsCode,
+                    uiState  = uiState,
+                    smsFulled = updateSmsCode,
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -113,7 +126,7 @@ fun OtpScreen(
                     text = R.string.confirm,
                     onClick = {
                         if (otpUiState.code.length == 5)
-                            otpViewModel.confirmEmail()
+                            confirmEmail()
                     },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -126,8 +139,8 @@ fun OtpScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                LaunchedEffect(key1 = otpViewModel) {
-                    otpViewModel.startTimer(otpUiState.timer)
+                LaunchedEffect(key1 = MockOtpViewModel) {
+                    startTimer(otpUiState.timer)
                 }
 
                 val minutes = String.format("%02d", otpUiState.timer / 60)
@@ -148,8 +161,8 @@ fun OtpScreen(
                             text = stringResource(id = R.string.resend_code),
                             modifier = Modifier
                                 .clickable {
-                                    otpViewModel.resetTimer(59)
-                                    otpViewModel.resendCode()
+                                    resetTimer(59)
+                                    resendCode()
                                 },
                             color = MaterialTheme.colorScheme.primary,
                             style = MaterialTheme.typography.bodySmall
@@ -180,7 +193,7 @@ fun OtpScreen(
             }
         }
         Log.d("OtpScreen", "otpState: $otpState")
-        when (otpState) {
+        when (otpState.collectAsState().value) {
             is DataState.Loading -> {
                 Loading()
             }
@@ -198,7 +211,7 @@ fun OtpScreen(
             }
         }
         Log.d("OtpScreen", "confirmEmailState: $confirmEmailState")
-        when (confirmEmailState) {
+        when (confirmEmailState.collectAsState().value) {
             is DataState.Loading -> {
                 Loading()
             }
@@ -218,11 +231,24 @@ fun OtpScreen(
     }
 }
 
-//@Preview(name = "light", uiMode = UI_MODE_NIGHT_NO, showBackground = true)
-//@Preview(name = "dark", uiMode = UI_MODE_NIGHT_YES)
-//@Composable
-//fun OtpPreview() {
-//    KhomasiTheme {
-//        OtpScreen()
-//    }
-//}
+@Preview(name = "light", uiMode = UI_MODE_NIGHT_NO, showBackground = true)
+@Preview(name = "dark", uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun OtpPreview() {
+    KhomasiTheme {
+        val mockOtpViewModel :MockOtpViewModel = viewModel()
+        OtpScreen(
+            onEmailConfirmed= {},
+        uiState=mockOtpViewModel.uiState.collectAsState(),
+        confirmEmailState = mockOtpViewModel.confirmEmailState,
+        otpState= mockOtpViewModel.otpState,
+        updateSmsCode =mockOtpViewModel::updateSmsCode,
+        resendCode = mockOtpViewModel::resendCode,
+        confirmEmail=mockOtpViewModel::confirmEmail,
+        startTimer = mockOtpViewModel::startTimer,
+        resetTimer =mockOtpViewModel::resetTimer,
+
+
+        )
+    }
+}

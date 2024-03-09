@@ -10,8 +10,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -26,7 +25,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.text.isDigitsOnly
-import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun SmsCodeView(
@@ -34,7 +32,8 @@ fun SmsCodeView(
     textStyle: TextStyle,
     smsFulled: (String) -> Unit,
     modifier: Modifier = Modifier,
-    otpViewModel: OtpViewModel = hiltViewModel()
+    uiState: State<OtpUiState>,
+
 ) {
     val focusRequesters: List<FocusRequester> = remember {
         (0 until smsCodeLength).map { FocusRequester() }
@@ -44,7 +43,7 @@ fun SmsCodeView(
             *((0 until smsCodeLength).map { "" }.toTypedArray())
         )
     }
-    val otpUiState by otpViewModel.uiState.collectAsState()
+    val otpUiState =uiState.value
 
     Row(
         modifier = modifier
