@@ -12,6 +12,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import java.net.ConnectException
 
 class RemoteUserRepositoryImpl(
     private val retrofitService: RetrofitService
@@ -22,6 +23,8 @@ class RemoteUserRepositoryImpl(
             try {
                 val response = retrofitService.registerUser(userDetails)
                 emit(DataState.Success(response))
+            }catch (e: ConnectException) {
+                emit(DataState.Error("Network error"))
             } catch (e: Exception) {
                 emit(DataState.Error(e.toString()))
             }
@@ -37,8 +40,19 @@ class RemoteUserRepositoryImpl(
             try {
                 val response = retrofitService.loginUser(email, password)
                 emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
+            } catch (e: ConnectException) {
+                emit(DataState.Error("Network error"))
+            }catch (e: Exception) {
+
+                if (e.toString().contains("400")) {
+                    emit(DataState.Error("Invalid password"))
+                }
+                else if(e.toString().contains("404")) {
+                    emit(DataState.Error("Invalid user email"))
+                }
+                else{
+                    emit(DataState.Error(e.toString()))
+                }
             }
         }.flowOn(Dispatchers.IO)
     }
@@ -49,6 +63,8 @@ class RemoteUserRepositoryImpl(
             try {
                 val response = retrofitService.getVerificationCode(email)
                 emit(DataState.Success(response))
+            }catch (e: ConnectException) {
+                emit(DataState.Error("Network error"))
             } catch (e: Exception) {
                 emit(DataState.Error(e.toString()))
             }
@@ -64,7 +80,9 @@ class RemoteUserRepositoryImpl(
             try {
                 val response = retrofitService.confirmEmail(email, code)
                 emit(DataState.Success(response))
-            } catch (e: Exception) {
+            } catch (e: ConnectException) {
+                emit(DataState.Error("Network error"))
+            }catch (e: Exception) {
                 emit(DataState.Error(e.toString()))
             }
         }.flowOn(Dispatchers.IO)
@@ -80,7 +98,9 @@ class RemoteUserRepositoryImpl(
             try {
                 val response = retrofitService.recoverAccount(email, code, newPassword)
                 emit(DataState.Success(response))
-            } catch (e: Exception) {
+            }  catch (e: ConnectException) {
+                emit(DataState.Error("Network error"))
+            }catch (e: Exception) {
                 emit(DataState.Error(e.toString()))
             }
         }.flowOn(Dispatchers.IO)

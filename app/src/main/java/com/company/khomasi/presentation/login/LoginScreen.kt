@@ -1,8 +1,10 @@
 package com.company.khomasi.presentation.login
 
+import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -11,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.company.khomasi.R
@@ -39,6 +42,8 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     isDark: Boolean = isSystemInDarkTheme(),
 ) {
+    val loginStateValue = loginState.collectAsState().value
+    val context : Context = LocalContext.current
     Box {
         AuthSheet(
             modifier = modifier,
@@ -69,7 +74,7 @@ fun LoginScreen(
                 isValidEmailAndPassword = isValidEmailAndPassword
             )
         }
-        when (loginState.collectAsState().value) {
+        when (loginStateValue) {
             is DataState.Loading -> {
                 Loading()
             }
@@ -79,9 +84,20 @@ fun LoginScreen(
             }
 
             is DataState.Error -> {
-                Log.d("LoginDataPage", "Error: ${loginState.collectAsState().value}")
-                LossConnection {
-                    login()
+                Log.d("LoginDataPage", "Error: ${loginStateValue.message}")
+                when (loginStateValue.message) {
+                    "Invalid password" -> {
+                        Toast.makeText(context, "Invalid password", Toast.LENGTH_SHORT).show()
+                    }
+                    "Invalid user email" -> {
+                        Toast.makeText(context, "Invalid user email", Toast.LENGTH_SHORT).show()
+                    }
+                    "Network error" -> {
+                        LossConnection {
+                            login()
+                        }
+                    }
+                    else -> {}
                 }
             }
 

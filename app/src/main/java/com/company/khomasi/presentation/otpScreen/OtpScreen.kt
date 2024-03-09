@@ -189,8 +189,10 @@ fun OtpScreen(
             }
 
             is DataState.Error -> {
-                LossConnection {
-                    otpViewModel.resendCode()
+                if ((otpState as DataState.Error).message == "Network error") {
+                    LossConnection {
+                        otpViewModel.resendCode()
+                    }
                 }
             }
 
@@ -209,8 +211,10 @@ fun OtpScreen(
             }
 
             is DataState.Error -> {
-                LossConnection {
-                    otpViewModel.confirmEmail()
+                if ((confirmEmailState as DataState.Error).message == "Network error"){
+                    LossConnection {
+                        otpViewModel.confirmEmail()
+                    }
                 }
             }
 

@@ -60,8 +60,11 @@ fun RegisterScreen(
 
             is DataState.Error -> {
                 Log.d("RegisterDataPage", "Error: $registerState")
-                LossConnection {
-                    viewModel.onRegister()
+
+                if (registerState.message == "Network error") {
+                    LossConnection {
+                        viewModel.onRegister()
+                    }
                 }
             }
 

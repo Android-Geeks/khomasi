@@ -85,9 +85,12 @@ fun ResetPasswordScreen(
         }
 
         is DataState.Error -> {
-            LossConnection {
-                resetViewModel.onClickButtonScreen2()
+            if (recoverRes.message == "Network error") {
+                LossConnection {
+                    resetViewModel.onClickButtonScreen2()
+                }
             }
+
         }
 
         is DataState.Empty -> {}
@@ -173,8 +176,10 @@ fun ResetPasswordScreen(
 
                         is DataState.Error -> {
                             Log.d("ResetPassword1", verificationRes.message)
-                            LossConnection {
-                                resetViewModel.onClickButtonScreen1()
+                            if (verificationRes.message == "Network error"){
+                                LossConnection {
+                                    resetViewModel.onClickButtonScreen1()
+                                }
                             }
                         }
 
