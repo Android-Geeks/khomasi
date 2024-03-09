@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.login
 
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -46,6 +47,7 @@ class LoginViewModel @Inject constructor(
                 _loginState.value = it
             }
         }
+                Log.d("LoginViewModel", "login: ${_loginState.value}.")
     }
 
     fun onLoginSuccess() {

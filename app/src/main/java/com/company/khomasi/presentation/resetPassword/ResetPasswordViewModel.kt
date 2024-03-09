@@ -97,7 +97,7 @@ class ResetPasswordViewModel @Inject constructor(
                 && CheckInputValidation.isPasswordValid(_resetUiState.value.newPassword)
     }
 
-    fun onButtonClickedScreen2() {
+    fun onClickButtonScreen2() {
         _resetUiState.value = _resetUiState.value.copy(validating2 = true)
         if (checkValidation() && _resetUiState.value.isCodeTrue) {
             viewModelScope.launch {

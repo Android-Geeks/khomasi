@@ -35,6 +35,7 @@ import com.company.khomasi.domain.DataState
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.connectionStates.Loading
+import com.company.khomasi.presentation.components.connectionStates.LossConnection
 
 @Composable
 fun OtpScreen(
@@ -188,7 +189,9 @@ fun OtpScreen(
             }
 
             is DataState.Error -> {
-                // Error
+                LossConnection {
+                    otpViewModel.resendCode()
+                }
             }
 
             is DataState.Empty -> {
@@ -206,7 +209,9 @@ fun OtpScreen(
             }
 
             is DataState.Error -> {
-                // Error
+                LossConnection {
+                    otpViewModel.confirmEmail()
+                }
             }
 
             is DataState.Empty -> {

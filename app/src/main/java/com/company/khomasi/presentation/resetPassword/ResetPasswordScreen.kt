@@ -37,11 +37,12 @@ import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.presentation.components.PasswordStrengthMeter
 import com.company.khomasi.presentation.components.connectionStates.Loading
+import com.company.khomasi.presentation.components.connectionStates.LossConnection
 import com.company.khomasi.theme.lightText
 import com.company.khomasi.utils.CheckInputValidation
 
 @Composable
-fun ResetPassword(
+fun ResetPasswordScreen(
     resetViewModel: ResetPasswordViewModel,
     onCancelClick: () -> Unit,
     onBackToLogin: () -> Unit,
@@ -84,7 +85,9 @@ fun ResetPassword(
         }
 
         is DataState.Error -> {
-
+            LossConnection {
+                resetViewModel.onClickButtonScreen2()
+            }
         }
 
         is DataState.Empty -> {}
@@ -170,6 +173,9 @@ fun ResetPassword(
 
                         is DataState.Error -> {
                             Log.d("ResetPassword1", verificationRes.message)
+                            LossConnection {
+                                resetViewModel.onClickButtonScreen1()
+                            }
                         }
 
                         is DataState.Empty -> {
@@ -280,7 +286,7 @@ fun ResetPassword(
                     MyButton(
                         text = R.string.set_password,
                         onClick = {
-                            resetViewModel.onButtonClickedScreen2()
+                            resetViewModel.onClickButtonScreen2()
                         },
                         modifier = Modifier
                             .fillMaxWidth()

@@ -14,7 +14,7 @@ import com.company.khomasi.presentation.login.LoginViewModel
 import com.company.khomasi.presentation.loginOrSignup.LoginOrRegisterScreen
 import com.company.khomasi.presentation.otpScreen.OtpScreen
 import com.company.khomasi.presentation.register.RegisterScreen
-import com.company.khomasi.presentation.resetPassword.ResetPassword
+import com.company.khomasi.presentation.resetPassword.ResetPasswordScreen
 
 @Composable
 fun AuthNavigator() {
@@ -62,7 +62,7 @@ fun AuthNavigator() {
             }
             composable(route = Screens.ResetPassword.name) {
 
-            ResetPassword(
+            ResetPasswordScreen(
                     resetViewModel = hiltViewModel(),
                     onCancelClick = { navController.popBackStack() },
                     onBackToLogin = { navController.navigate(Screens.Login.name) }

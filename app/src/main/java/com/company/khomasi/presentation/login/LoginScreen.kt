@@ -18,6 +18,7 @@ import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.connectionStates.Loading
+import com.company.khomasi.presentation.components.connectionStates.LossConnection
 import com.company.khomasi.theme.KhomasiTheme
 import kotlinx.coroutines.flow.StateFlow
 
@@ -39,23 +40,6 @@ fun LoginScreen(
     isDark: Boolean = isSystemInDarkTheme(),
 ) {
     Box {
-        when (loginState.collectAsState().value) {
-            is DataState.Loading -> {
-                Loading()
-            }
-
-            is DataState.Success -> {
-                onLoginSuccess()
-            }
-
-            is DataState.Error -> {
-                Log.d("LoginDataPage", "Error: ${loginState.collectAsState().value}")
-            }
-
-            is DataState.Empty -> {
-                Log.d("LoginDataPage", "Empty")
-            }
-        }
         AuthSheet(
             modifier = modifier,
             screenContent = {
@@ -84,6 +68,26 @@ fun LoginScreen(
                 helpAndSupport = helpAndSupport,
                 isValidEmailAndPassword = isValidEmailAndPassword
             )
+        }
+        when (loginState.collectAsState().value) {
+            is DataState.Loading -> {
+                Loading()
+            }
+
+            is DataState.Success -> {
+                onLoginSuccess()
+            }
+
+            is DataState.Error -> {
+                Log.d("LoginDataPage", "Error: ${loginState.collectAsState().value}")
+                LossConnection {
+                    login()
+                }
+            }
+
+            is DataState.Empty -> {
+                Log.d("LoginDataPage", "Empty")
+            }
         }
     }
 

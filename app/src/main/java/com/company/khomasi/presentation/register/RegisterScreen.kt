@@ -14,6 +14,7 @@ import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.connectionStates.Loading
+import com.company.khomasi.presentation.components.connectionStates.LossConnection
 
 
 @Composable
@@ -23,6 +24,7 @@ fun RegisterScreen(
     backToLoginOrRegister: () -> Unit,
     viewModel: RegisterViewModel = hiltViewModel(),
 ) {
+    val registerState = viewModel.registerState.collectAsState().value
     Box {
         AuthSheet(
             screenContent = {
@@ -45,7 +47,7 @@ fun RegisterScreen(
                 )
             }
         )
-        when (val registerState = viewModel.registerState.collectAsState().value) {
+        when (registerState) {
             is DataState.Loading -> {
                 Loading()
                 Log.d("RegisterDataPage", "Loading: ")
@@ -58,6 +60,9 @@ fun RegisterScreen(
 
             is DataState.Error -> {
                 Log.d("RegisterDataPage", "Error: $registerState")
+                LossConnection {
+                    viewModel.onRegister()
+                }
             }
 
             is DataState.Empty -> {
