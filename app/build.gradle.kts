@@ -84,7 +84,7 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
 
     //Coil
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
     //Datastore
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
