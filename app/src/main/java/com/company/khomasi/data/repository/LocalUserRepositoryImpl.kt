@@ -1,4 +1,4 @@
-package com.company.khomasi.data.data_source.local.local_user
+package com.company.khomasi.data.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore

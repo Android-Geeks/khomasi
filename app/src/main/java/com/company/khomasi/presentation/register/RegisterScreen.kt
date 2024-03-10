@@ -2,7 +2,6 @@ package com.company.khomasi.presentation.register
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -16,13 +15,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.presentation.components.AuthSheet
-import com.company.khomasi.presentation.components.RequestLocationPermission
 import com.company.khomasi.presentation.components.connectionStates.Loading
-import com.google.accompanist.permissions.ExperimentalPermissionsApi
-import com.google.accompanist.permissions.rememberMultiplePermissionsState
+import com.company.khomasi.presentation.components.getUserLocation
 
-
-@OptIn(ExperimentalPermissionsApi::class)
 @Composable
 fun RegisterScreen(
     onLoginClick: () -> Unit,
@@ -32,6 +27,9 @@ fun RegisterScreen(
     context: Context = LocalContext.current
 ) {
     val uiState = viewModel.uiState.collectAsState().value
+    if (uiState.longitude == 0.0) {
+        viewModel.updateLocation(getUserLocation(context = context))
+    }
     Box {
         AuthSheet(
             screenContent = {
@@ -74,51 +72,12 @@ fun RegisterScreen(
             }
         }
     }
-    if (viewModel.uiState.value.longitude == null)
-        RequestLocationPermission(
-            onPermissionGranted = {
-                // Attempt to get the last known user location
-                viewModel.getLastUserLocation(
-                    onGetLastLocationSuccess = viewModel::updateLocation,
-                    onGetLastLocationFailed = {
-                        Toast.makeText(
-                            context,
-                            it.localizedMessage ?: "Error Getting Last Location",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    },
-                    onGetLastLocationIsNull = {
-                        // Attempt to get the current user location
-                        viewModel.getCurrentLocation(
-                            onGetCurrentLocationSuccess = viewModel::updateLocation,
-                            onGetCurrentLocationFailed = {
-                                Toast.makeText(
-                                    context,
-                                    it.localizedMessage ?: "Error Getting Last Location",
-                                    Toast.LENGTH_LONG
-                                ).show()
-                            },
-                            priority = true
-                        )
-                    }
-                )
-            },
-            onPermissionDenied = {
-                Toast.makeText(
-                    context,
-                    "Please Accept Location Permission, To Enjoy All Features",
-                    Toast.LENGTH_LONG
-                ).show()
-            },
-            onPermissionsRevoked = {},
-            permissionState = rememberMultiplePermissionsState(
-                permissions = listOf(android.Manifest.permission.ACCESS_FINE_LOCATION)
-            )
+    if (uiState.longitude != 0.0 && uiState.latitude != 0.0) {
+        Log.d(
+            "RegisterScreen",
+            "Longitude: ${uiState.longitude}, Latitude: ${uiState.latitude}"
         )
-    Log.d(
-        "RegisterScreen",
-        "Longitude: ${uiState.longitude}, Latitude: ${uiState.latitude}"
-    )
+    }
 }
 
 //@Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO, locale = "en")

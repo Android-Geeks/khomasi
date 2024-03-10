@@ -1,6 +1,7 @@
-package com.company.khomasi.data.data_source.remote
+package com.company.khomasi.data.repository
 
 
+import com.company.khomasi.data.data_source.remote.RetrofitService
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.UserDetails
