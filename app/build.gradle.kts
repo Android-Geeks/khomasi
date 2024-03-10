@@ -152,9 +152,6 @@ dependencies {
     //Password meter
     implementation("com.nulab-inc:zxcvbn:1.5.2")
 
-    // Loading
-    implementation ("com.github.commandiron:ComposeLoading:1.0.4")
-
     // Local unit tests
     testImplementation("androidx.test:core:1.5.0")
     testImplementation("junit:junit:4.13.2")
