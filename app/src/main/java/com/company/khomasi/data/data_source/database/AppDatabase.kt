@@ -1,4 +1,4 @@
-package com.company.khomasi.data.data_source.local.database
+package com.company.khomasi.data.data_source.database
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
