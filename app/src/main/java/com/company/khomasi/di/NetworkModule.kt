@@ -1,8 +1,8 @@
 package com.company.khomasi.di
 
 
-import com.company.khomasi.data.data_source.remote.RemoteUserRepositoryImpl
 import com.company.khomasi.data.data_source.remote.RetrofitService
+import com.company.khomasi.data.repository.RemoteUserRepositoryImpl
 import com.company.khomasi.domain.repository.RemoteUserRepository
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
 import com.company.khomasi.domain.use_case.auth.ConfirmEmailUseCase

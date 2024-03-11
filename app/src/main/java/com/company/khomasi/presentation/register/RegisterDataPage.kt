@@ -38,7 +38,7 @@ import com.company.khomasi.utils.CheckInputValidation
 @Composable
 fun RegisterDataPage(
     onLoginClick: () -> Unit,
-    backToLoginOrRegister: () -> Unit,
+    onBack: () -> Unit,
     localFocusManager: FocusManager = LocalFocusManager.current,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
     isDark: Boolean = isSystemInDarkTheme(),
@@ -75,7 +75,7 @@ fun RegisterDataPage(
         if (userState.page == 2) {
             onBack()
         } else {
-            backToLoginOrRegister()
+            onBack()
         }
     }
 
@@ -163,6 +163,7 @@ fun RegisterDataPage(
                             onNextClick()
                         }
                     },
+                    buttonEnable = userState.locationPermission,
                     modifier = Modifier.fillMaxWidth()
                 )
             }

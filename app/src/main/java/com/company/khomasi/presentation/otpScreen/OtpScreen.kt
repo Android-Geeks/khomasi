@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -108,16 +109,15 @@ fun OtpScreen(
                     )
                 }
                 Spacer(modifier = Modifier.padding(2.dp))
-                SmsCodeView(
-                    smsCodeLength = 5,
-                    textStyle = TextStyle(
-                        fontSize = 24.sp,
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.SemiBold,
-                        textDirection = TextDirection.Ltr,
-                    ),
-                    uiState  = uiState,
-                    smsFulled = updateSmsCode,
+
+                CodeTextField(
+                    value = otpUiState.code,
+                    length = 5,
+                    onValueChange = otpViewModel::updateSmsCode,
+                    textStyle = MaterialTheme.typography.displayLarge.copy(
+                        fontSize = 28.sp,
+                        fontWeight = FontWeight.Bold
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -139,7 +139,7 @@ fun OtpScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                LaunchedEffect(key1 = MockOtpViewModel) {
+                LaunchedEffect(key1 = otpUiState) {
                     startTimer(otpUiState.timer)
                 }
 

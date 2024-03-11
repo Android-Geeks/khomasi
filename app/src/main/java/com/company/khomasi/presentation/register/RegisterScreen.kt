@@ -2,6 +2,7 @@ package com.company.khomasi.presentation.register
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -11,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -19,6 +21,7 @@ import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.connectionStates.Loading
+import com.company.khomasi.presentation.components.getUserLocation
 import com.company.khomasi.theme.KhomasiTheme
 import kotlinx.coroutines.flow.StateFlow
 
@@ -27,7 +30,6 @@ import kotlinx.coroutines.flow.StateFlow
 fun RegisterScreen(
     onLoginClick: () -> Unit,
     onDoneClick: () -> Unit,
-    backToLoginOrRegister: () -> Unit,
     uiState: State<RegisterUiState>,
     registerState: StateFlow<DataState<UserRegisterResponse>>,
     onRegister: () -> Unit,
@@ -41,7 +43,12 @@ fun RegisterScreen(
     onConfirmPasswordChange: (String) -> Unit,
     onPhoneNumberChange: (String) -> Unit,
     onBack : ()-> Unit,
+    context: Context = LocalContext.current
 ) {
+    val uiState = viewModel.uiState.collectAsState().value
+    if (uiState.longitude == 0.0) {
+        viewModel.updateLocation(getUserLocation(context = context))
+    }
     Box {
         AuthSheet(
             screenContent = {
@@ -59,7 +66,6 @@ fun RegisterScreen(
             sheetContent = {
                 RegisterDataPage(
                     onLoginClick = onLoginClick,
-                    backToLoginOrRegister = backToLoginOrRegister,
                     uiState = uiState,
                     onRegister = onRegister,
                     onFirstNameChange = onFirstNameChange,
@@ -71,7 +77,7 @@ fun RegisterScreen(
                     onPasswordChange = onPasswordChange,
                     onConfirmPasswordChange = onConfirmPasswordChange,
                     onPhoneNumberChange = onPhoneNumberChange,
-                    onBack =onBack
+                    onBack = onBack
                 )
             }
         )
@@ -95,6 +101,12 @@ fun RegisterScreen(
             }
         }
     }
+    if (uiState.longitude != 0.0 && uiState.latitude != 0.0) {
+        Log.d(
+            "RegisterScreen",
+            "Longitude: ${uiState.longitude}, Latitude: ${uiState.latitude}"
+        )
+    }
 }
 
 @Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO, locale = "en")
@@ -106,7 +118,6 @@ fun RegisterScreenPreview() {
         RegisterScreen(
             onLoginClick = {},
             onDoneClick = {},
-            backToLoginOrRegister = {},
             uiState = mockViewModel.uiState,
             registerState = mockViewModel.registerState,
             onRegister = mockViewModel::onRegister,

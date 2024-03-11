@@ -84,7 +84,7 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
 
     //Coil
-    implementation("io.coil-kt:coil-compose:2.5.0")
+    implementation("io.coil-kt:coil-compose:2.6.0")
 
     //Datastore
     implementation ("androidx.datastore:datastore-preferences:1.0.0")
@@ -117,6 +117,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 
+    // Location
+    implementation("com.google.android.gms:play-services-location:21.2.0")
+    implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
+
     //Dagger - Hilt
     implementation("com.google.dagger:hilt-android:2.50")
     ksp("com.google.dagger:hilt-android-compiler:2.50")
@@ -147,9 +151,6 @@ dependencies {
 
     //Password meter
     implementation("com.nulab-inc:zxcvbn:1.5.2")
-
-    // Loading
-    implementation ("com.github.commandiron:ComposeLoading:1.0.4")
 
     // Local unit tests
     testImplementation("androidx.test:core:1.5.0")

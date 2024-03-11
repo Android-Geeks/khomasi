@@ -1,13 +1,12 @@
 package com.company.khomasi.presentation.register
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.UserDetails
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
+import com.company.khomasi.presentation.components.LatandLong
 import com.company.khomasi.utils.CheckInputValidation
 import com.company.khomasi.utils.ExchangeData
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,11 +17,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val authUseCases: AuthUseCases
+    private val authUseCases: AuthUseCases,
 ) : ViewModel() {
 
-    private val _uiState = mutableStateOf(RegisterUiState())
-    val uiState: State<RegisterUiState> = _uiState
+    private val _uiState = MutableStateFlow(RegisterUiState())
+    val uiState: StateFlow<RegisterUiState> = _uiState
 
     private val _registerState: MutableStateFlow<DataState<UserRegisterResponse>> =
         MutableStateFlow(DataState.Empty)
@@ -39,8 +38,8 @@ class RegisterViewModel @Inject constructor(
                     phoneNumber = _uiState.value.phoneNumber,
                     country = "Egypt",
                     city = "Tanta",
-                    longitude = 0.0f,
-                    latitude = 0.0f,
+                    longitude = if (_uiState.value.longitude == 0.0) 31.000376 else _uiState.value.longitude,  // Tanta Coordinates
+                    latitude = if (_uiState.value.latitude == 0.0) 30.786509 else _uiState.value.latitude,
                 )
             ).collect {
                 _registerState.value = it
@@ -51,6 +50,7 @@ class RegisterViewModel @Inject constructor(
             }
         }
     }
+
 
     fun onFirstNameChange(firstName: String) {
         _uiState.value = _uiState.value.copy(firstName = firstName)
@@ -76,6 +76,15 @@ class RegisterViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(phoneNumber = phoneNumber)
     }
 
+    fun updateLocation(locationCoordinates: LatandLong) {
+        _uiState.value = _uiState.value.copy(
+            latitude = locationCoordinates.latitude,
+            longitude = locationCoordinates.longitude,
+            locationPermission = true
+        )
+    }
+
+
     fun isValidNameAndPhoneNumber(
         firstName: String,
         lastName: String,
@@ -86,7 +95,7 @@ class RegisterViewModel @Inject constructor(
         val isLastNameValid = CheckInputValidation.isLastNameValid(lastName)
 
         val isPhoneNumberValid = CheckInputValidation.isPhoneNumberValid(phoneNumber)
-         _uiState.value = _uiState.value.copy(validating1 = true)
+        _uiState.value = _uiState.value.copy(validating1 = true)
 
         return isFirstNameValid && isLastNameValid && isPhoneNumberValid
     }

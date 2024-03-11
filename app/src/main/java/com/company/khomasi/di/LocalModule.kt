@@ -2,11 +2,8 @@ package com.company.khomasi.di
 
 import android.app.Application
 import androidx.room.Room
-import com.company.khomasi.data.data_source.local.database.AppDatabase
-import com.company.khomasi.data.data_source.local.local_user.LocalUserRepositoryImpl
-import com.company.khomasi.data.data_source.remote.RetrofitService
-import com.company.khomasi.data.repository.AppRepositoryImpl
-import com.company.khomasi.domain.repository.AppRepository
+import com.company.khomasi.data.data_source.database.AppDatabase
+import com.company.khomasi.data.repository.LocalUserRepositoryImpl
 import com.company.khomasi.domain.repository.LocalUserRepository
 import com.company.khomasi.domain.use_case.app_entry.AppEntryUseCases
 import com.company.khomasi.domain.use_case.app_entry.ReadAppEntry
@@ -34,15 +31,6 @@ object LocalModule {
 
     @Provides
     @Singleton
-    fun provideEntityRepository(
-        db: AppDatabase,
-        retrofitService: RetrofitService,
-    ): AppRepository {
-        return AppRepositoryImpl(db.appDao, retrofitService)
-    }
-
-    @Provides
-    @Singleton
     fun provideLocalUserRepository(
         application: Application
     ): LocalUserRepository = LocalUserRepositoryImpl(context = application)
@@ -56,5 +44,4 @@ object LocalModule {
         saveAppEntry = SaveAppEntry(localUserManger),
         saveIsLogin = SaveIsLogin(localUserManger)
     )
-
 }
