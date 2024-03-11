@@ -147,7 +147,7 @@ fun RegisterDataPage(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(84.dp))
+                Spacer(modifier = Modifier.height(52.dp))
                 MyButton(
                     text = R.string.next,
                     onClick = {
@@ -240,7 +240,7 @@ fun RegisterDataPage(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(84.dp))
+                Spacer(modifier = Modifier.height(52.dp))
                 MyButton(
                     text = R.string.create_account,
                     onClick = {
