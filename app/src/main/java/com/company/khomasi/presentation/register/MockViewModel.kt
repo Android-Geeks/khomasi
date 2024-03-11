@@ -7,12 +7,13 @@ import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.UserDetails
 import com.company.khomasi.domain.model.UserRegisterResponse
+import com.company.khomasi.presentation.components.LatandLong
 import com.company.khomasi.utils.ExchangeData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class MockRegisterViewModel() : ViewModel() {
+class MockRegisterViewModel : ViewModel() {
 
     private val _uiState = mutableStateOf(RegisterUiState())
     val uiState: State<RegisterUiState> = _uiState
@@ -31,8 +32,8 @@ class MockRegisterViewModel() : ViewModel() {
                 phoneNumber = _uiState.value.phoneNumber,
                 country = "Egypt",
                 city = "Tanta",
-                longitude = 0.0f,
-                latitude = 0.0f
+                longitude = 0.0,
+                latitude = 0.0
             )
             val userRegisterResponse = UserRegisterResponse(
                 email = userDetails.email,
@@ -44,6 +45,14 @@ class MockRegisterViewModel() : ViewModel() {
             ExchangeData.email.set(userRegisterResponse.email)
             ExchangeData.otp.set(userRegisterResponse.code)
         }
+    }
+
+    fun updateLocation(locationCoordinates: LatandLong) {
+        _uiState.value = _uiState.value.copy(
+            latitude = locationCoordinates.latitude,
+            longitude = locationCoordinates.longitude,
+            locationPermission = true
+        )
     }
 
     fun onFirstNameChange(firstName: String) {

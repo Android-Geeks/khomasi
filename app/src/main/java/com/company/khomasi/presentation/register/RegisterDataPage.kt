@@ -52,10 +52,7 @@ fun RegisterDataPage(
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
-    onPhoneNumberChange: (String) -> Unit,
-    onBack: () -> Unit,
-
-
+    onPhoneNumberChange: (String) -> Unit
 ) {
     val userState = uiState.value
 

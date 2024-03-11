@@ -59,7 +59,7 @@ fun AuthNavigator() {
                     onDoneClick = { navController.navigate(Screens.OTP.name) },
                     onBack = { navController.popBackStack() },
                     onRegister = registerViewModel::onRegister,
-                    uiState = registerViewModel.uiState,
+                    uiState = registerViewModel.uiState.collectAsState(),
                     registerState = registerViewModel.registerState,
                     onFirstNameChange = registerViewModel::onFirstNameChange,
                     isValidNameAndPhoneNumber = registerViewModel::isValidNameAndPhoneNumber,
@@ -70,7 +70,7 @@ fun AuthNavigator() {
                     onPasswordChange = registerViewModel::onPasswordChange,
                     onConfirmPasswordChange = registerViewModel::onConfirmPasswordChange,
                     onPhoneNumberChange = registerViewModel::onPhoneNumberChange,
-                    onBack = registerViewModel::onBack
+                    updateLocation = registerViewModel::updateLocation
                 )
             }
             composable(route = Screens.OTP.name) {

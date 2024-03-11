@@ -1,8 +1,8 @@
 package com.company.khomasi.presentation.register
 
+import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -20,6 +20,7 @@ import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.presentation.components.AuthSheet
+import com.company.khomasi.presentation.components.LatandLong
 import com.company.khomasi.presentation.components.connectionStates.Loading
 import com.company.khomasi.presentation.components.getUserLocation
 import com.company.khomasi.theme.KhomasiTheme
@@ -36,18 +37,18 @@ fun RegisterScreen(
     onFirstNameChange: (String) -> Unit,
     isValidNameAndPhoneNumber: (String, String, String) -> Boolean,
     isValidEmailAndPassword: (String, String) -> Boolean,
+    updateLocation: (LatandLong) -> Unit,
     onNextClick: () -> Unit,
     onLastNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
     onPhoneNumberChange: (String) -> Unit,
-    onBack : ()-> Unit,
+    onBack: () -> Unit,
     context: Context = LocalContext.current
 ) {
-    val uiState = viewModel.uiState.collectAsState().value
-    if (uiState.longitude == 0.0) {
-        viewModel.updateLocation(getUserLocation(context = context))
+    if (uiState.value.longitude == 0.0) {
+        updateLocation(getUserLocation(context = context))
     }
     Box {
         AuthSheet(
@@ -101,10 +102,10 @@ fun RegisterScreen(
             }
         }
     }
-    if (uiState.longitude != 0.0 && uiState.latitude != 0.0) {
+    if (uiState.value.longitude != 0.0 && uiState.value.latitude != 0.0) {
         Log.d(
             "RegisterScreen",
-            "Longitude: ${uiState.longitude}, Latitude: ${uiState.latitude}"
+            "Longitude: ${uiState.value.longitude}, Latitude: ${uiState.value.latitude}"
         )
     }
 }
@@ -130,7 +131,8 @@ fun RegisterScreenPreview() {
             onPasswordChange = mockViewModel::onPasswordChange,
             onConfirmPasswordChange = mockViewModel::onConfirmPasswordChange,
             onPhoneNumberChange = mockViewModel::onPhoneNumberChange,
-            onBack = mockViewModel::onBack
+            onBack = mockViewModel::onBack,
+            updateLocation = mockViewModel::updateLocation
         )
     }
 }
