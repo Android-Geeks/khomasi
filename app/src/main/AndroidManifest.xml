@@ -18,6 +18,7 @@
         android:screenOrientation="portrait"
         android:usesCleartextTraffic="true">
         <activity
+            android:windowSoftInputMode="adjustResize"
             android:name="com.company.khomasi.presentation.mainActivity.MainActivity"
             android:exported="true"
             android:theme="@style/App.Starting.Theme">
