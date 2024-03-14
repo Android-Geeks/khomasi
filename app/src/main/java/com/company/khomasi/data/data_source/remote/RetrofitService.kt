@@ -36,4 +36,10 @@ interface RetrofitService {
         @Query("code") code: String,
         @Query("newPassword") newPassword: String
     ): MessageResponse
+
+    @GET("User/GetClosePlaygrounds")
+    suspend fun getPlaygrounds(
+        @Query("userId") userId: String
+    ): MessageResponse
+
 }

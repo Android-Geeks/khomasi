@@ -15,6 +15,4 @@ data class LocalUser(
     val coins: Int? = null,
     val rating: Int? = null,
     val token: String? = null,
-    val isLogin: Boolean = false,
-    val isOnBoarding: Boolean = false
 )

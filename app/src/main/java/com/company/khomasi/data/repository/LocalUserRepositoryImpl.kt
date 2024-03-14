@@ -52,8 +52,6 @@ class LocalUserRepositoryImpl(
                 coins = preferences[COINS] ?: 0,
                 rating = preferences[RATING] ?: 0,
                 token = preferences[TOKEN] ?: "",
-                isLogin = preferences[IS_LOGIN] ?: false,
-                isOnBoarding = preferences[IS_ONBOARDING] ?: false,
                 otpCode = preferences[OTP_CODE] ?: 0
             )
         }
@@ -74,8 +72,6 @@ class LocalUserRepositoryImpl(
             settings[COINS] = localUser.coins ?: 0
             settings[RATING] = localUser.rating ?: 0
             settings[TOKEN] = localUser.token ?: ""
-            settings[IS_LOGIN] = localUser.isLogin
-            settings[IS_ONBOARDING] = localUser.isOnBoarding
             settings[OTP_CODE] = localUser.otpCode ?: 0
         }
     }
