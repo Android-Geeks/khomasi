@@ -3,6 +3,7 @@ package com.company.khomasi.presentation.components.connectionStates
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -29,7 +30,8 @@ fun Loading(modifier : Modifier = Modifier){
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Color(0x80000000)),
+            .background(Color(0x80000000))
+            .clickable(enabled = false) { },
         contentAlignment = Alignment.Center
     ) {
         ThreeBounce(
