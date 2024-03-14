@@ -17,8 +17,13 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -70,8 +75,10 @@ fun ResetPassword(
     localFocusManager: FocusManager = LocalFocusManager.current
 ) {
     val resetUiState = uiState.value
-    val verificationRes = verificationRes.collectAsState().value
-    val recoverRes = recoverResponse.collectAsState().value
+    val verificationStatus = verificationRes.collectAsState().value
+    val recoverStatus = recoverResponse.collectAsState().value
+    var showLoading by remember { mutableStateOf(false) }
+    var code by remember { mutableStateOf("") }
 
     val isEmailError =
         resetUiState.validating1 && !CheckInputValidation.isEmailValid(resetUiState.userEmail)
@@ -87,115 +94,115 @@ fun ResetPassword(
             onBackToLogin()
         }
     }
-    val code = when (verificationRes) {
-        is DataState.Loading -> "Loading..."
-        is DataState.Success -> verificationRes.data.code.toString()
-        is DataState.Error -> verificationRes.message
-        is DataState.Empty -> "Empty"
+
+    LaunchedEffect(key1 = verificationStatus) {
+        Log.d("VerificationStatus", "VerificationStatus: $verificationStatus")
+        when (verificationStatus) {
+            is DataState.Loading -> {
+                showLoading = true
+            }
+
+            is DataState.Success -> {
+                showLoading = false
+                code = verificationStatus.data.code.toString()
+                onNextClick()
+            }
+
+            is DataState.Error -> {
+                showLoading = false
+                code = verificationStatus.message
+            }
+
+            is DataState.Empty -> {}
+        }
     }
 
-    when (recoverRes) {
-        is DataState.Loading -> {
-            Loading()
+    LaunchedEffect(key1 = recoverStatus) {
+        Log.d("RecoverStatus", "RecoverStatus: $recoverStatus")
+        when (recoverStatus) {
+            is DataState.Loading -> {
+                showLoading = true
+            }
+
+            is DataState.Success -> {
+                onBackToLogin()
+                showLoading = false
+            }
+
+            is DataState.Error -> {
+                showLoading = false
+            }
+
+            is DataState.Empty -> {}
         }
-
-        is DataState.Success -> {
-            onBackToLogin()
-        }
-
-        is DataState.Error -> {
-
-        }
-
-        is DataState.Empty -> {}
     }
 
-    Column(modifier = modifier.fillMaxSize()) {
+    Box(modifier = modifier.fillMaxSize()) {
 
         when (resetUiState.page) {
             1 ->
-                Box {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(top = 50.dp, start = 16.dp, end = 16.dp),
-                        verticalArrangement = Arrangement.Top,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.protect_key),
-                            contentDescription = null,
-                            modifier = Modifier.size(width = (93.8).dp, (123.2).dp)
-                        )
-                        Text(
-                            text = stringResource(id = R.string.forgot_your_password),
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.padding(top = 40.dp),
-                            color = lightText
-                        )
-                        Text(
-                            text = stringResource(id = R.string.enter_email_to_reset_password),
-                            style = MaterialTheme.typography.bodyMedium,
-                            modifier = Modifier.padding(top = 8.dp),
-                            color = MaterialTheme.colorScheme.onSurface
-                        )
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 50.dp, start = 16.dp, end = 16.dp),
+                    verticalArrangement = Arrangement.Top,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.protect_key),
+                        contentDescription = null,
+                        modifier = Modifier.size(width = (93.8).dp, (123.2).dp)
+                    )
+                    Text(
+                        text = stringResource(id = R.string.forgot_your_password),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(top = 40.dp),
+                        color = lightText
+                    )
+                    Text(
+                        text = stringResource(id = R.string.enter_email_to_reset_password),
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(top = 8.dp),
+                        color = MaterialTheme.colorScheme.onSurface
+                    )
 
-                        Spacer(modifier = Modifier.height(54.dp))
+                    Spacer(modifier = Modifier.height(54.dp))
 
-                        MyTextField(
-                            value = resetUiState.userEmail,
-                            onValueChange = { onUserEmailChange(it) },
-                            label = R.string.email,
-                            keyBoardType = KeyboardType.Email,
-                            keyboardActions = KeyboardActions(
-                                onDone = { keyboardController?.hide() }
-                            ),
-                            isError = isEmailError,
-                            supportingText = {
-                                if (isEmailError) {
-                                    Text(
-                                        text = stringResource(R.string.invalid_email_message),
-                                        style = MaterialTheme.typography.labelSmall,
-                                        color = MaterialTheme.colorScheme.error,
-                                        textAlign = TextAlign.Start
-                                    )
-                                }
+                    MyTextField(
+                        value = resetUiState.userEmail,
+                        onValueChange = { onUserEmailChange(it) },
+                        label = R.string.email,
+                        keyBoardType = KeyboardType.Email,
+                        keyboardActions = KeyboardActions(
+                            onDone = { keyboardController?.hide() }
+                        ),
+                        isError = isEmailError,
+                        supportingText = {
+                            if (isEmailError) {
+                                Text(
+                                    text = stringResource(R.string.invalid_email_message),
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = MaterialTheme.colorScheme.error,
+                                    textAlign = TextAlign.Start
+                                )
                             }
-                        )
-
-                        MyButton(
-                            text = R.string.set_password,
-                            onClick = {
-                                onClickButtonScreen1()
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(start = 8.dp, end = 8.dp, top = 32.dp)
-                        )
-
-                        MyTextButton(
-                            text = R.string.cancel,
-                            onClick = onCancelClick,
-                        )
-                    }
-                    when (verificationRes) {
-                        is DataState.Loading -> {
-                            Loading()
                         }
+                    )
 
-                        is DataState.Success -> {
-                            onNextClick()
-                            Log.d("ResetPassword1", "${verificationRes.data.code}")
-                        }
+                    MyButton(
+                        text = R.string.set_password,
+                        onClick = {
+                            onClickButtonScreen1()
+                        },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 8.dp, end = 8.dp, top = 32.dp)
+                    )
 
-                        is DataState.Error -> {
-                            Log.d("ResetPassword1", verificationRes.message)
-                        }
-
-                        is DataState.Empty -> {
-                            Log.d("ResetPassword1", "Empty")
-                        }
-                    }
+                    MyTextButton(
+                        text = R.string.cancel,
+                        onClick = onCancelClick,
+                    )
                 }
 
             2 ->
@@ -314,6 +321,9 @@ fun ResetPassword(
                     )
                 }
         }
+        if (showLoading) {
+            Loading()
+        }
     }
 }
 
@@ -330,7 +340,7 @@ private fun ResetPassWordPreview() {
             verificationRes = mockResetPasswordViewModel.verificationRes,
             recoverResponse = mockResetPasswordViewModel.recoverResponse,
             onUserEmailChange = mockResetPasswordViewModel::onUserEmailChange,
-            onClickButtonScreen1 = {  },
+            onClickButtonScreen1 = { },
             onEnteringVerificationCode = mockResetPasswordViewModel::onEnteringVerificationCode,
             verifyVerificationCode = mockResetPasswordViewModel::verifyVerificationCode,
             onEnteringPassword = mockResetPasswordViewModel::onEnteringPassword,

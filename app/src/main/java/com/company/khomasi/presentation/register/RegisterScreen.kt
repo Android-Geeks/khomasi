@@ -9,8 +9,13 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -48,9 +53,33 @@ fun RegisterScreen(
     onBackFromStack: () -> Unit,
     context: Context = LocalContext.current
 ) {
+    val registerStatus = registerState.collectAsState().value
+    var showLoading by remember { mutableStateOf(false) }
+
     if (uiState.value.longitude == 0.0) {
         updateLocation(getUserLocation(context = context))
     }
+
+    LaunchedEffect(key1 = registerStatus) {
+        Log.d("RegisterStatus", "$registerStatus")
+        when (registerStatus) {
+            is DataState.Loading -> {
+                showLoading = true
+            }
+
+            is DataState.Success -> {
+                showLoading = false
+                onDoneClick()
+            }
+
+            is DataState.Error -> {
+                showLoading = false
+            }
+
+            is DataState.Empty -> {}
+        }
+    }
+
     Box {
         AuthSheet(
             screenContent = {
@@ -84,31 +113,9 @@ fun RegisterScreen(
                 )
             }
         )
-        when (registerState.collectAsState().value) {
-            is DataState.Loading -> {
-                Loading()
-                Log.d("RegisterDataPage", "Loading: ")
-            }
-
-            is DataState.Success -> {
-                onDoneClick()
-                Log.d("RegisterDataPage", "Success")
-            }
-
-            is DataState.Error -> {
-                Log.d("RegisterDataPage", "Error: $registerState")
-            }
-
-            is DataState.Empty -> {
-                Log.d("RegisterDataPage", "Empty")
-            }
+        if (showLoading) {
+            Loading()
         }
-    }
-    if (uiState.value.longitude != 0.0 && uiState.value.latitude != 0.0) {
-        Log.d(
-            "RegisterScreen",
-            "Longitude: ${uiState.value.longitude}, Latitude: ${uiState.value.latitude}"
-        )
     }
 }
 

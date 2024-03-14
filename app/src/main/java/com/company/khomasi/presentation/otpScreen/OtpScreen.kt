@@ -22,6 +22,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -57,6 +61,52 @@ fun OtpScreen(
     resetTimer: (Int) -> Unit,
 ) {
     val otpUiState = uiState.value
+    val otpStatus = otpState.collectAsState().value
+    val confirmEmailStatus = confirmEmailState.collectAsState().value
+    var showLoading by remember { mutableStateOf(false) }
+
+    LaunchedEffect(key1 = otpStatus) {
+        Log.d("OtpScreen", "otpStatus: $otpStatus")
+        when (otpStatus) {
+            is DataState.Loading -> {
+                showLoading = true
+            }
+
+            is DataState.Success -> {
+                showLoading = false
+            }
+
+            is DataState.Error -> {
+                showLoading = false
+            }
+
+            is DataState.Empty -> {
+                // Empty
+            }
+        }
+    }
+    LaunchedEffect(key1 = confirmEmailStatus) {
+        Log.d("OtpScreen", "confirmEmailStatus: $confirmEmailStatus")
+        when (confirmEmailStatus) {
+            is DataState.Loading -> {
+                showLoading = true
+            }
+
+            is DataState.Success -> {
+                showLoading = false
+                onEmailConfirmed()
+            }
+
+            is DataState.Error -> {
+                showLoading = false
+            }
+
+            is DataState.Empty -> {
+                // Empty
+            }
+        }
+    }
+
     Box {
         AuthSheet(
             screenContent = {
@@ -188,41 +238,8 @@ fun OtpScreen(
                 }
             }
         }
-        Log.d("OtpScreen", "otpState: ${otpState.value}")
-        when (otpState.collectAsState().value) {
-            is DataState.Loading -> {
-                Loading()
-            }
-
-            is DataState.Success -> {
-                // Success
-            }
-
-            is DataState.Error -> {
-                // Error
-            }
-
-            is DataState.Empty -> {
-                // Empty
-            }
-        }
-        Log.d("OtpScreen", "confirmEmailState: ${confirmEmailState.value}")
-        when (confirmEmailState.collectAsState().value) {
-            is DataState.Loading -> {
-                Loading()
-            }
-
-            is DataState.Success -> {
-                onEmailConfirmed()
-            }
-
-            is DataState.Error -> {
-                // Error
-            }
-
-            is DataState.Empty -> {
-                // Empty
-            }
+        if (showLoading) {
+            Loading()
         }
     }
 }

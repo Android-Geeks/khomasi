@@ -44,12 +44,12 @@ class ResetPasswordViewModel @Inject constructor(
 
         if (CheckInputValidation.isEmailValid(resetUiState.value.userEmail)) {
             viewModelScope.launch {
-            authUseCases.getVerificationCodeUseCase(_resetUiState.value.userEmail)
-                .collect {
-                    _verificationRes.value = it
-                }
+                authUseCases.getVerificationCodeUseCase(_resetUiState.value.userEmail)
+                    .collect {
+                        _verificationRes.value = it
+                    }
+            }
         }
-    }
     }
 
     //------------------------------------------------------------------------------------------------//
@@ -86,6 +86,7 @@ class ResetPasswordViewModel @Inject constructor(
             )
         }
     }
+
     private fun checkValidation(): Boolean {
         _resetUiState.update {
             it.copy(
@@ -109,12 +110,13 @@ class ResetPasswordViewModel @Inject constructor(
                     _recoverResponse.value = it
                 }
             }
-            onNextClick()
         }
     }
+
     fun onBack() {
         _resetUiState.value = _resetUiState.value.copy(page = _resetUiState.value.page - 1)
     }
+
     fun onNextClick() {
         _resetUiState.value = _resetUiState.value.copy(page = _resetUiState.value.page + 1)
     }

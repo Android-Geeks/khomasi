@@ -8,8 +8,13 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,7 +35,6 @@ fun LoginScreen(
     updatePassword: (String) -> Unit,
     updateEmail: (String) -> Unit,
     login: () -> Unit,
-    onLoginSuccess: () -> Unit,
     loginWithGmail: () -> Unit,
     privacyAndPolicy: () -> Unit,
     helpAndSupport: () -> Unit,
@@ -38,23 +42,32 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     isDark: Boolean = isSystemInDarkTheme(),
 ) {
-    Box {
-        when (loginState.collectAsState().value) {
+    val loginStatus = loginState.collectAsState().value
+    var showLoading by remember { mutableStateOf(false) }
+    LaunchedEffect(key1 = loginStatus) {
+        when (loginStatus) {
             is DataState.Loading -> {
-                Loading()
+                showLoading = true
             }
 
             is DataState.Success -> {
-
+                showLoading = false
+                Log.d("LoginScreen", "LoginScreen: ${loginStatus.data}")
             }
 
             is DataState.Error -> {
-                Log.d("LoginDataPage", "Error: ${loginState.collectAsState().value}")
+                showLoading = false
+                Log.d("LoginScreen", "LoginScreen: ${loginStatus.message}")
             }
 
             is DataState.Empty -> {
-                Log.d("LoginDataPage", "Empty")
+                Log.d("LoginScreen", "LoginScreen: Empty")
             }
+        }
+    }
+    Box {
+        if (showLoading) {
+            Loading()
         }
         AuthSheet(
             modifier = modifier,
@@ -100,7 +113,6 @@ fun LoginPreview() {
             updatePassword = mockViewModel::updatePassword,
             updateEmail = mockViewModel::updateEmail,
             login = mockViewModel::login,
-            onLoginSuccess = mockViewModel::onLoginSuccess,
             loginWithGmail = mockViewModel::loginWithGmail,
             privacyAndPolicy = mockViewModel::privacyAndPolicy,
             helpAndSupport = mockViewModel::helpAndSupport,

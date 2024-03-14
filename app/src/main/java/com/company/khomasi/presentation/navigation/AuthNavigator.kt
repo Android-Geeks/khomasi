@@ -45,7 +45,6 @@ fun AuthNavigator() {
                     updatePassword = loginViewModel::updatePassword,
                     updateEmail = loginViewModel::updateEmail,
                     login = loginViewModel::login,
-                    onLoginSuccess = loginViewModel::onLoginSuccess,
                     loginWithGmail = loginViewModel::loginWithGmail,
                     privacyAndPolicy = loginViewModel::privacyAndPolicy,
                     helpAndSupport = loginViewModel::helpAndSupport,
