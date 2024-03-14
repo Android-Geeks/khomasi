@@ -1,8 +1,8 @@
 package com.company.khomasi.data.data_source.remote
 
 import com.company.khomasi.domain.model.MessageResponse
-import com.company.khomasi.domain.model.UserDetails
 import com.company.khomasi.domain.model.UserLoginResponse
+import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.domain.model.VerificationResponse
 import retrofit2.http.Body
@@ -13,7 +13,7 @@ import retrofit2.http.Query
 
 interface RetrofitService {
     @POST("Account/UserRegister")
-    suspend fun registerUser(@Body user: UserDetails): UserRegisterResponse
+    suspend fun registerUser(@Body user: UserRegisterData): UserRegisterResponse
 
     @POST("Account/Login")
     suspend fun loginUser(

@@ -11,11 +11,11 @@ data class UserLoginResponse(
     @SerialName("token")
     val token: String,
     @SerialName("user")
-    val user: User
+    val userLoginData: UserLoginData
 )
 
 @Serializable
-data class User(
+data class UserLoginData(
     @SerialName("city")
     val city: String,
     @SerialName("coins")

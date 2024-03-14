@@ -4,8 +4,8 @@ package com.company.khomasi.data.repository
 import com.company.khomasi.data.data_source.remote.RetrofitService
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.MessageResponse
-import com.company.khomasi.domain.model.UserDetails
 import com.company.khomasi.domain.model.UserLoginResponse
+import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.domain.repository.RemoteUserRepository
@@ -17,11 +17,11 @@ import kotlinx.coroutines.flow.flowOn
 class RemoteUserRepositoryImpl(
     private val retrofitService: RetrofitService
 ) : RemoteUserRepository {
-    override suspend fun registerUser(userDetails: UserDetails): Flow<DataState<UserRegisterResponse>> {
+    override suspend fun registerUser(userRegisterData: UserRegisterData): Flow<DataState<UserRegisterResponse>> {
         return flow {
             emit(DataState.Loading)
             try {
-                val response = retrofitService.registerUser(userDetails)
+                val response = retrofitService.registerUser(userRegisterData)
                 emit(DataState.Success(response))
             } catch (e: Exception) {
                 emit(DataState.Error(e.toString()))

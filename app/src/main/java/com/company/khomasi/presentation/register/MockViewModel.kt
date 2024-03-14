@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.UserDetails
+import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.presentation.components.LatandLong
 import com.company.khomasi.utils.ExchangeData
@@ -24,7 +24,7 @@ class MockRegisterViewModel : ViewModel() {
 
     fun onRegister() {
         viewModelScope.launch {
-            val userDetails = UserDetails(
+            val userRegisterData = UserRegisterData(
                 firstName = _uiState.value.firstName,
                 lastName = _uiState.value.lastName,
                 email = _uiState.value.email,
@@ -36,7 +36,7 @@ class MockRegisterViewModel : ViewModel() {
                 latitude = 0.0
             )
             val userRegisterResponse = UserRegisterResponse(
-                email = userDetails.email,
+                email = userRegisterData.email,
                 code = 1234,
                 message = " "
             )

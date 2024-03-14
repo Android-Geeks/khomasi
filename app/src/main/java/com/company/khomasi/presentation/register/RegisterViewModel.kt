@@ -3,7 +3,7 @@ package com.company.khomasi.presentation.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.UserDetails
+import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
 import com.company.khomasi.presentation.components.LatandLong
@@ -30,7 +30,7 @@ class RegisterViewModel @Inject constructor(
     fun onRegister() {
         viewModelScope.launch {
             authUseCases.registerUseCase(
-                UserDetails(
+                UserRegisterData(
                     firstName = _uiState.value.firstName,
                     lastName = _uiState.value.lastName,
                     email = _uiState.value.email,

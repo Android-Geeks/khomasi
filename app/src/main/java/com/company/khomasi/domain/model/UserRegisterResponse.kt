@@ -15,7 +15,7 @@ data class UserRegisterResponse(
 )
 
 @Serializable
-data class UserDetails(
+data class UserRegisterData(
     @SerialName("city")
     val city: String,
     @SerialName("country")

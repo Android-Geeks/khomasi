@@ -45,6 +45,7 @@ fun RegisterScreen(
     onConfirmPasswordChange: (String) -> Unit,
     onPhoneNumberChange: (String) -> Unit,
     onBack: () -> Unit,
+    onBackFromStack: () -> Unit,
     context: Context = LocalContext.current
 ) {
     if (uiState.value.longitude == 0.0) {
@@ -78,7 +79,8 @@ fun RegisterScreen(
                     onPasswordChange = onPasswordChange,
                     onConfirmPasswordChange = onConfirmPasswordChange,
                     onPhoneNumberChange = onPhoneNumberChange,
-                    onBack = onBack
+                    onBack = onBack,
+                    onBackFromStack = onBackFromStack
                 )
             }
         )
@@ -132,7 +134,8 @@ fun RegisterScreenPreview() {
             onConfirmPasswordChange = mockViewModel::onConfirmPasswordChange,
             onPhoneNumberChange = mockViewModel::onPhoneNumberChange,
             onBack = mockViewModel::onBack,
-            updateLocation = mockViewModel::updateLocation
+            updateLocation = mockViewModel::updateLocation,
+            onBackFromStack = {}
         )
     }
 }
