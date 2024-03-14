@@ -1,19 +1,20 @@
 package com.company.khomasi.domain.model
 
 data class LocalUser(
-    val firstName: String,
-    val lastName: String,
-    val email: String,
-    val phoneNumber: String,
-    val city: String,
-    val country: String,
-    val latitude: Float,
-    val longitude: Float,
-    val profilePicture: String?,
-    val coins: Int,
-    val rating: Int,
-    val userID: String,
-    val token: String,
+    val userID: String? = null,
+    val firstName: String? = null,
+    val lastName: String? = null,
+    val email: String? = null,
+    val otpCode: Int? = null,
+    val phoneNumber: String? = null,
+    val city: String? = null,
+    val country: String? = null,
+    val latitude: Double? = null,
+    val longitude: Double? = null,
+    val profilePicture: String? = null,
+    val coins: Int? = null,
+    val rating: Int? = null,
+    val token: String? = null,
     val isLogin: Boolean = false,
     val isOnBoarding: Boolean = false
 )

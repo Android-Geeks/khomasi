@@ -29,9 +29,9 @@ data class UserLoginData(
     @SerialName("lastName")
     val lastName: String,
     @SerialName("latitude")
-    val latitude: Float,
+    val latitude: Double,
     @SerialName("longitude")
-    val longitude: Float,
+    val longitude: Double,
     @SerialName("phoneNumber")
     val phoneNumber: String,
     @SerialName("profilePicture")

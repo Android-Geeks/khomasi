@@ -9,6 +9,9 @@ import com.company.khomasi.domain.use_case.app_entry.AppEntryUseCases
 import com.company.khomasi.domain.use_case.app_entry.ReadAppEntry
 import com.company.khomasi.domain.use_case.app_entry.SaveAppEntry
 import com.company.khomasi.domain.use_case.app_entry.SaveIsLogin
+import com.company.khomasi.domain.use_case.local_user.GetLocalUser
+import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
+import com.company.khomasi.domain.use_case.local_user.SaveLocalUser
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -43,5 +46,14 @@ object LocalModule {
         readAppEntry = ReadAppEntry(localUserManger),
         saveAppEntry = SaveAppEntry(localUserManger),
         saveIsLogin = SaveIsLogin(localUserManger)
+    )
+
+    @Provides
+    @Singleton
+    fun provideLocalUserUseCases(
+        localUserManger: LocalUserRepository
+    ): LocalUserUseCases = LocalUserUseCases(
+        getLocalUser = GetLocalUser(localUserManger),
+        saveLocalUser = SaveLocalUser(localUserManger)
     )
 }

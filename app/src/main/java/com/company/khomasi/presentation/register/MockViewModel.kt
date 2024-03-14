@@ -8,7 +8,6 @@ import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.presentation.components.LatandLong
-import com.company.khomasi.utils.ExchangeData
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -42,8 +41,6 @@ class MockRegisterViewModel : ViewModel() {
             )
             _registerState.value = DataState.Success(userRegisterResponse)
 
-            ExchangeData.email.set(userRegisterResponse.email)
-            ExchangeData.otp.set(userRegisterResponse.code)
         }
     }
 

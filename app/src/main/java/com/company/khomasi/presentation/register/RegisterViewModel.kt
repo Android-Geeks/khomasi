@@ -3,12 +3,13 @@ package com.company.khomasi.presentation.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
+import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.presentation.components.LatandLong
 import com.company.khomasi.utils.CheckInputValidation
-import com.company.khomasi.utils.ExchangeData
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -18,6 +19,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
     private val authUseCases: AuthUseCases,
+    private val localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterUiState())
@@ -44,8 +46,12 @@ class RegisterViewModel @Inject constructor(
             ).collect {
                 _registerState.value = it
                 if (it is DataState.Success) {
-                    ExchangeData.email.set(it.data.email)
-                    ExchangeData.otp.set(it.data.code)
+                    localUserUseCases.saveLocalUser(
+                        LocalUser(
+                            email = it.data.email,
+                            otpCode = it.data.code
+                        )
+                    )
                 }
             }
         }

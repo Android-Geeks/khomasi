@@ -45,7 +45,7 @@ fun LoginScreen(
             }
 
             is DataState.Success -> {
-                onLoginSuccess()
+
             }
 
             is DataState.Error -> {

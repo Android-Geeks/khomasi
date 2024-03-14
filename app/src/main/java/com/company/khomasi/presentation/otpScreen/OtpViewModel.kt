@@ -4,10 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
-import com.company.khomasi.utils.ExchangeData
+import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -19,12 +20,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OtpViewModel @Inject constructor(
-    private val authUseCases: AuthUseCases
+    private val authUseCases: AuthUseCases,
+    private val localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
+
+    private lateinit var userData: LocalUser
+
+    init {
+        viewModelScope.launch {
+            localUserUseCases.getLocalUser().collect {
+                userData = it
+            }
+        }
+    }
 
     private val _uiState = MutableStateFlow(
         OtpUiState(
-            email = ExchangeData.email.get(),
+            email = userData.email ?: "",
             code = "",
             timer = 0
         )
@@ -35,12 +47,13 @@ class OtpViewModel @Inject constructor(
         MutableStateFlow(
             DataState.Success(
                 VerificationResponse(
-                    code = ExchangeData.otp.get(),
-                    email = ExchangeData.email.get(),
+                    code = userData.otpCode ?: 0,
+                    email = userData.email ?: "",
                     message = "Confirmation Code Has Been Sent"
                 )
             )
         )
+
     val otpState: StateFlow<DataState<VerificationResponse>> = _otpState
 
     private val _confirmEmailState: MutableStateFlow<DataState<MessageResponse>> =
@@ -90,12 +103,5 @@ class OtpViewModel @Inject constructor(
     fun resetTimer(time: Int) {
         _uiState.value = _uiState.value.copy(timer = time)
         startTimer(time)
-    }
-
-
-    override fun onCleared() {
-        super.onCleared()
-        ExchangeData.email.set("")
-        ExchangeData.otp.set(0)
     }
 }
