@@ -341,10 +341,10 @@ fun ResetPassword(
                     )
                 }
         }
+    }
         if (showLoading) {
             Loading()
         }
-    }
 }
 
 @Preview(name = "light", uiMode = Configuration.UI_MODE_NIGHT_NO)

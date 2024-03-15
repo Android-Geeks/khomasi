@@ -25,6 +25,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -43,6 +45,7 @@ fun CodeTextField(
     enabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
     keyboardActions: KeyboardActions = KeyboardActions(onDone = {}),
+    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
     onValueChange: (String) -> Unit,
     textStyle: TextStyle,
 ) {
@@ -50,7 +53,7 @@ fun CodeTextField(
 
     DisposableEffect(Unit) {
         focusRequester.requestFocus()
-        onDispose { }
+        onDispose { keyboardController?.hide()}
     }
 
     BasicTextField(

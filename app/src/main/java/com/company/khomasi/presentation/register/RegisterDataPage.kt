@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
@@ -22,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -41,10 +39,10 @@ import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.presentation.components.PasswordStrengthMeter
+import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
 import com.company.khomasi.utils.CheckInputValidation
-import kotlinx.coroutines.launch
 
 @Composable
 fun RegisterDataPage(
@@ -95,20 +93,17 @@ fun RegisterDataPage(
         }
     )
     val scrollState = rememberScrollState()
-    val coroutineScope = rememberCoroutineScope()
     val keyboardHeight = WindowInsets.ime.getBottom(LocalDensity.current)
 
     LaunchedEffect(key1 = keyboardHeight) {
-        coroutineScope.launch {
-            scrollState.scrollBy(keyboardHeight.toFloat())
-        }
+        scrollState.scrollBy(keyboardHeight.toFloat())
     }
     Column(
         modifier = Modifier
             .wrapContentHeight()
             .imePadding()
             .verticalScroll(scrollState),
-        verticalArrangement = Arrangement.spacedBy(16.dp) // Adjust the spacing between items
+        verticalArrangement = Arrangement.spacedBy(8.dp) // Adjust the spacing between items
     ) {
         when (userState.page) {
             1 -> {
@@ -171,7 +166,7 @@ fun RegisterDataPage(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(52.dp))
+                Spacer(modifier = Modifier.weight(1f))
                 MyButton(
                     text = R.string.next,
                     onClick = {
@@ -184,7 +179,6 @@ fun RegisterDataPage(
                             onNextClick()
                         }
                     },
-                    buttonEnable = userState.locationPermission,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -264,7 +258,7 @@ fun RegisterDataPage(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(52.dp))
+                Spacer(modifier = Modifier.weight(1f))
                 MyButton(
                     text = R.string.create_account,
                     onClick = {
@@ -303,20 +297,22 @@ fun RegisterDataPage(
 @Composable
 fun RegisterDataPagePreview() {
     val viewModel = MockRegisterViewModel()
-    RegisterDataPage(
-        onLoginClick = {},
-        onBack = {},
-        uiState = viewModel.uiState,
-        onRegister = {},
-        onFirstNameChange = {},
-        isValidNameAndPhoneNumber = { _, _, _ -> true },
-        isValidEmailAndPassword = { _, _ -> true },
-        onNextClick = {},
-        onLastNameChange = {},
-        onEmailChange = {},
-        onPasswordChange = {},
-        onConfirmPasswordChange = {},
-        onPhoneNumberChange = {},
-        onBackFromStack = {}
-    )
+    KhomasiTheme {
+        RegisterDataPage(
+            onLoginClick = {},
+            onBack = {},
+            uiState = viewModel.uiState,
+            onRegister = {},
+            onFirstNameChange = {},
+            isValidNameAndPhoneNumber = { _, _, _ -> true },
+            isValidEmailAndPassword = { _, _ -> true },
+            onNextClick = {},
+            onLastNameChange = {},
+            onEmailChange = {},
+            onPasswordChange = {},
+            onConfirmPasswordChange = {},
+            onPhoneNumberChange = {},
+            onBackFromStack = {}
+        )
+    }
 }
