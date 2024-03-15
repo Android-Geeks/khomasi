@@ -15,13 +15,18 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -39,12 +44,20 @@ fun CodeTextField(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     keyboardOptions: KeyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-    keyboardActions: KeyboardActions = KeyboardActions(),
+    keyboardActions: KeyboardActions = KeyboardActions(onDone = {}),
+    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
     onValueChange: (String) -> Unit,
     textStyle: TextStyle,
 ) {
+    val focusRequester = remember { FocusRequester() }
+
+    DisposableEffect(Unit) {
+        focusRequester.requestFocus()
+        onDispose { keyboardController?.hide()}
+    }
+
     BasicTextField(
-        modifier = modifier,
+        modifier = modifier.focusRequester(focusRequester),
         value = value,
         singleLine = true,
         onValueChange = {

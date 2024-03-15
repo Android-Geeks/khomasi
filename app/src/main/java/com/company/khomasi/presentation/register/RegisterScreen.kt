@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.UserRegisterResponse
@@ -80,7 +80,7 @@ fun RegisterScreen(
         }
     }
 
-    Box {
+    Box (Modifier.fillMaxSize()){
         AuthSheet(
             screenContent = {
                 Image(
@@ -111,7 +111,7 @@ fun RegisterScreen(
                     onBack = onBack,
                     onBackFromStack = onBackFromStack
                 )
-            }
+            },
         )
         if (showLoading) {
             Loading()
@@ -124,7 +124,7 @@ fun RegisterScreen(
 @Composable
 fun RegisterScreenPreview() {
     KhomasiTheme {
-        val mockViewModel: MockRegisterViewModel = viewModel()
+        val mockViewModel = MockRegisterViewModel()
         RegisterScreen(
             onLoginClick = {},
             onDoneClick = {},

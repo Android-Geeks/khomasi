@@ -38,7 +38,7 @@ fun AuthSheet(
                 .align(Alignment.BottomCenter)
                 .clip(RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
                 .background(if (isDarkTheme) darkOverlay else lightOverlay)
-                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .padding(top = 12.dp, bottom = 8.dp ,start = 16.dp, end = 16.dp)
         ) {
             sheetContent()
         }

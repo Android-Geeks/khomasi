@@ -4,6 +4,7 @@ package com.company.khomasi.data.repository
 import com.company.khomasi.data.data_source.remote.RetrofitService
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.MessageResponse
+import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
@@ -80,6 +81,21 @@ class RemoteUserRepositoryImpl(
             emit(DataState.Loading)
             try {
                 val response = retrofitService.recoverAccount(email, code, newPassword)
+                emit(DataState.Success(response))
+            } catch (e: Exception) {
+                emit(DataState.Error(e.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun getPlaygrounds(
+        token: String,
+        userId: String
+    ): Flow<DataState<PlaygroundsResponse>> {
+        return flow {
+            emit(DataState.Loading)
+            try {
+                val response = retrofitService.getPlaygrounds(token, userId)
                 emit(DataState.Success(response))
             } catch (e: Exception) {
                 emit(DataState.Error(e.toString()))

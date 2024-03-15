@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -22,9 +23,15 @@ import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -54,7 +61,16 @@ fun LoginDataPage(
     privacyAndPolicy: () -> Unit,
     helpAndSupport: () -> Unit,
     isValidEmailAndPassword: (String, String) -> Boolean,
+    localFocusManager: FocusManager = LocalFocusManager.current,
+    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
 ) {
+    val keyboardActions = KeyboardActions(
+        onNext = { localFocusManager.moveFocus(FocusDirection.Down) },
+        onDone = {
+            keyboardController?.hide()
+        }
+    )
+
     val uiState = loginUiState.value
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -73,7 +89,9 @@ fun LoginDataPage(
             value = uiState.email,
             onValueChange = updateEmail,
             label = R.string.email,
-            keyBoardType = KeyboardType.Text
+            keyBoardType = KeyboardType.Text,
+            imeAction = ImeAction.Next,
+            keyboardActions = keyboardActions,
         )
         Spacer(modifier = Modifier.height(24.dp))
 
@@ -82,6 +100,8 @@ fun LoginDataPage(
             onValueChange = updatePassword,
             label = R.string.password,
             keyBoardType = KeyboardType.Password,
+            keyboardActions = keyboardActions,
+            imeAction = ImeAction.Done,
         )
         Text(
             text = stringResource(id = R.string.forgot_your_password),

@@ -1,36 +1,45 @@
 package com.company.khomasi.presentation.register
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusManager
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.presentation.components.PasswordStrengthMeter
+import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
 import com.company.khomasi.utils.CheckInputValidation
@@ -53,7 +62,7 @@ fun RegisterDataPage(
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
     onPhoneNumberChange: (String) -> Unit,
-    onBackFromStack: () -> Unit
+    onBackFromStack: () -> Unit,
 ) {
     val userState = uiState.value
 
@@ -83,9 +92,18 @@ fun RegisterDataPage(
             keyboardController?.hide()
         }
     )
+    val scrollState = rememberScrollState()
+    val keyboardHeight = WindowInsets.ime.getBottom(LocalDensity.current)
+
+    LaunchedEffect(key1 = keyboardHeight) {
+        scrollState.scrollBy(keyboardHeight.toFloat())
+    }
     Column(
-        modifier = Modifier.wrapContentHeight(),
-        verticalArrangement = Arrangement.spacedBy(16.dp) // Adjust the spacing between items
+        modifier = Modifier
+            .wrapContentHeight()
+            .imePadding()
+            .verticalScroll(scrollState),
+        verticalArrangement = Arrangement.spacedBy(8.dp) // Adjust the spacing between items
     ) {
         when (userState.page) {
             1 -> {
@@ -148,7 +166,7 @@ fun RegisterDataPage(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(52.dp))
+                Spacer(modifier = Modifier.weight(1f))
                 MyButton(
                     text = R.string.next,
                     onClick = {
@@ -161,7 +179,6 @@ fun RegisterDataPage(
                             onNextClick()
                         }
                     },
-                    buttonEnable = userState.locationPermission,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
@@ -241,7 +258,7 @@ fun RegisterDataPage(
                     }
                 )
 
-                Spacer(modifier = Modifier.height(52.dp))
+                Spacer(modifier = Modifier.weight(1f))
                 MyButton(
                     text = R.string.create_account,
                     onClick = {
@@ -276,3 +293,26 @@ fun RegisterDataPage(
     }
 }
 
+@Preview(showSystemUi = true)
+@Composable
+fun RegisterDataPagePreview() {
+    val viewModel = MockRegisterViewModel()
+    KhomasiTheme {
+        RegisterDataPage(
+            onLoginClick = {},
+            onBack = {},
+            uiState = viewModel.uiState,
+            onRegister = {},
+            onFirstNameChange = {},
+            isValidNameAndPhoneNumber = { _, _, _ -> true },
+            isValidEmailAndPassword = { _, _ -> true },
+            onNextClick = {},
+            onLastNameChange = {},
+            onEmailChange = {},
+            onPasswordChange = {},
+            onConfirmPasswordChange = {},
+            onPhoneNumberChange = {},
+            onBackFromStack = {}
+        )
+    }
+}
