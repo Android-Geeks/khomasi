@@ -301,7 +301,7 @@ fun RegisterDataPage(
 
 @Preview(showSystemUi = true)
 @Composable
-fun ko() {
+fun RegisterDataPagePreview() {
     val viewModel = MockRegisterViewModel()
     RegisterDataPage(
         onLoginClick = {},

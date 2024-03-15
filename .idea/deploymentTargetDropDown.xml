@@ -2,56 +2,14 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="CommentCardPreview">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\sata\.android\avd\Pixel_4_API_33.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-02-19T01:29:55.228781500Z" />
-        </State>
-      </entry>
-      <entry key="LoadingPreview">
+      <entry key="OtpPreview - light">
         <State />
       </entry>
-      <entry key="LossConnectionPreview">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\sata\.android\avd\Pixel_4_API_33.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-04T02:14:18.927482500Z" />
-        </State>
+      <entry key="PreviewMyScreen">
+        <State />
       </entry>
-      <entry key="RecreateNewPasswordPreview - Light">
-        <State>
-          <targetSelectedWithDropDown>
-            <Target>
-              <type value="QUICK_BOOT_TARGET" />
-              <deviceKey>
-                <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\sata\.android\avd\Pixel_4_API_33.avd" />
-                </Key>
-              </deviceKey>
-            </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-02T01:34:14.807363100Z" />
-        </State>
+      <entry key="ResetPassWordPreview - light">
+        <State />
       </entry>
       <entry key="app">
         <State>
@@ -68,6 +26,9 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-02-15T01:53:29.992637700Z" />
         </State>
+      </entry>
+      <entry key="ll">
+        <State />
       </entry>
     </value>
   </component>
