@@ -50,7 +50,7 @@ fun CodeTextField(
 
     DisposableEffect(Unit) {
         focusRequester.requestFocus()
-        onDispose { focusRequester.freeFocus()}
+        onDispose { }
     }
 
     BasicTextField(
