@@ -1,10 +1,11 @@
-package com.company.khomasi.presentation.components.cards
+package com.company.khomasi.presentation.favorite
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,7 +39,8 @@ import com.company.khomasi.theme.KhomasiTheme
 
 @Composable
 fun PlaygroundCard(
-    playground: Playground,
+    contentPadding : PaddingValues,
+    playground: FavUiState,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -49,6 +51,7 @@ fun PlaygroundCard(
                 shape = MaterialTheme.shapes.large
             )
             .padding(8.dp)
+
     ) {
         Column(
             modifier = Modifier
@@ -196,7 +199,7 @@ fun PlaygroundCard(
 fun PreviewCard() {
     KhomasiTheme {
         PlaygroundCard(
-            playground = Playground(
+            playground = FavUiState(
                 name = "playground",
                 address = "location",
                 imageUrl = "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg",
@@ -205,7 +208,8 @@ fun PreviewCard() {
                 openingHours = "hour",
                 isFavorite = false,
                 isBookable = false
-            )
+            ),
+            contentPadding = PaddingValues(16.dp)
 
         )
     }
