@@ -40,7 +40,7 @@ import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun HomeScreen(){
+fun HomeScreen1(){
 
     /*Box(
         modifier = Modifier.fillMaxSize(),
@@ -97,7 +97,7 @@ fun HomeScreen(){
 @Composable
 fun HomeScreenPreview(){
     KhomasiTheme {
-        HomeScreen()
+        HomeScreen1()
     }
 }
 

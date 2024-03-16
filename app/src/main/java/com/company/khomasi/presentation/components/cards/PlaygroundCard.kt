@@ -35,6 +35,7 @@ import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.iconButtons.FavoriteIcon
 import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.utils.convertToBitmap
 
 @Composable
 fun PlaygroundCard(
@@ -58,7 +59,7 @@ fun PlaygroundCard(
                 AsyncImage(
                     model = ImageRequest
                         .Builder(context = LocalContext.current)
-                        .data(playground.imageUrl)
+                        .data(playground.imageUrl?.convertToBitmap())
                         .crossfade(true)
                         .build(),
                     contentDescription = null,

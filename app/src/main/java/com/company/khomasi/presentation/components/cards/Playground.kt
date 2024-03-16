@@ -3,7 +3,7 @@ package com.company.khomasi.presentation.components.cards
 data class Playground(
     val name: String,
     val address: String,
-    val imageUrl: String,
+    val imageUrl: String?,
     val rating: Float,
     val price: String,
     val openingHours: String,
