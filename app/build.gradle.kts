@@ -156,6 +156,10 @@ dependencies {
     //Password meter
     implementation("com.nulab-inc:zxcvbn:1.5.2")
 
+    //Pager
+    implementation ("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0")
+
     // Local unit tests
     testImplementation("androidx.test:core:1.5.0")
     testImplementation("junit:junit:4.13.2")

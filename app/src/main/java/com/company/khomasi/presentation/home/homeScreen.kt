@@ -1,11 +1,9 @@
 package com.company.khomasi.presentation.home
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import android.annotation.SuppressLint
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -29,54 +27,77 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.LocalUser
+import com.company.khomasi.domain.model.PlaygroundsResponse
+import com.company.khomasi.presentation.components.AdsContent
+import com.company.khomasi.presentation.components.AdsSlider
 import com.company.khomasi.presentation.components.cards.Playground
 import com.company.khomasi.presentation.components.cards.PlaygroundCard
 import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.utils.convertToBitmap
 
+@SuppressLint("ResourceType")
 @Composable
 fun HomeScreen(
-    homeViewModel: HomeViewModel,
-    onSearchBarClicked: () -> Unit = {}
+    playgroundState: DataState<PlaygroundsResponse>,
+    homeUiState: HomeUiState ,
+    userData: LocalUser,
+    onClickBell: () -> Unit = {},
+    onSearchBarClicked: () -> Unit = {},
+    onClickViewAll : () -> Unit = {}
 ) {
-    val homeState = homeViewModel.homeState.collectAsState().value
+    val profileImg = userData.profilePicture
+
+    //        -----------------Temporary-----------------           //
+    val adsList = listOf(
+        AdsContent(
+            imageSlider = painterResource(id = R.drawable.playground),
+            contentText = " احجز اى ملعب بخصم 10 %",
+        ),
+        AdsContent(
+            imageSlider = painterResource(id = R.drawable.playground_image),
+            contentText = "احصل على خصم 20% عند دعوة 5 أصدقاء",
+        ),
+        AdsContent(
+            imageSlider = painterResource(id = R.drawable.playground),
+            contentText = " احجز اى ملعب صباحًا بخصم 30 %",
+        ),
+    )
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, top = 12.dp)
     ) {
-
         Row {
-/*            AsyncImage(
+            AsyncImage(
                 modifier = Modifier
                     .size(50.dp)
                     .clip(CircleShape)
                     .padding(end = 4.dp),
                 model = ImageRequest.Builder(context = LocalContext.current)
-                    .data(homeState.userImg?.convertToBitmap()).crossfade(true).build(),
+                    .data(if (profileImg.isNullOrEmpty() ){
+                        stringResource(id = R.drawable.userpic1)
+                    } else{profileImg.convertToBitmap()})
+                    .crossfade(true).build(),
                 contentDescription = null,
                 contentScale = ContentScale.FillWidth,
-                placeholder = painterResource(id = R.drawable.user_img)
-            )*/
-            Image(
-                painter = painterResource(id = R.drawable.user_img),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(50.dp)
-                    .clip(CircleShape)
-                    .padding(end = 4.dp),
+                placeholder = painterResource(id = R.drawable.userpic1)
             )
+
             Column {
                 Text(
-                    text = "${stringResource(id = R.string.hello)} ${stringResource(id = R.string.user_name)}",
+                    text = "${stringResource(id = R.string.hello)} ${userData.firstName}",
                     style = MaterialTheme.typography.bodyMedium,
 
                     )
@@ -88,7 +109,7 @@ fun HomeScreen(
             }
             Spacer(modifier = Modifier.weight(1f))
 
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = { onClickBell()}) {
                 Icon(
                     painter = painterResource(id = R.drawable.bell), contentDescription = null
                 )
@@ -97,7 +118,8 @@ fun HomeScreen(
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Card(colors = CardDefaults.cardColors(Color.Transparent),
+        Card(
+            colors = CardDefaults.cardColors(Color.Transparent),
             modifier = Modifier
                 .clickable { onSearchBarClicked() }
                 .fillMaxWidth()
@@ -137,9 +159,9 @@ fun HomeScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
-            item {       //////// Ads SLIDER here
-                AdsItem()
-            }
+
+            item { AdsSlider(adsContent = adsList) }
+
             item {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
@@ -149,14 +171,15 @@ fun HomeScreen(
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
                         text = stringResource(id = R.string.view_all),
-                        style = MaterialTheme.typography.displayMedium,
-                        color = MaterialTheme.colorScheme.primary
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.clickable { onClickViewAll() }
                     )
                 }
             }
 
-            if (homeState is DataState.Success) {
-                items(homeState.data.playgrounds.sortedBy { it.id }) {
+            if (playgroundState is DataState.Success) {
+                items(playgroundState.data.playgrounds.sortedBy { it.id }.take(homeUiState.playgroundCount)) {
                     PlaygroundCard(
                         playground = Playground(
                             name = it.name,
@@ -174,63 +197,18 @@ fun HomeScreen(
 
         }
     }
-
-}
-
-
-@Composable
-fun AdsItem(
-    image: Painter = painterResource(id = R.drawable.playground),
-    content: String = " احجز اى ملعب بخصم 10 %",
-    adsNum: Int = 3
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(180.dp),
-        colors = CardDefaults.cardColors(Color.Transparent),
-        shape = MaterialTheme.shapes.medium
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Image(
-                painter = image,
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillBounds
-            )
-            Column {
-                Spacer(modifier = Modifier.weight(1f))
-
-                Text(
-                    text = content,
-                    style = MaterialTheme.typography.displayLarge,
-                    color = Color.White,
-                    modifier = Modifier.padding(8.dp)
-                )
-                Row{
-                    repeat(3) { iteration ->
-
-//                    val color = if (pagerState.currentPage == iteration) Color.DarkGray else Color.LightGray
-                        Box(
-                            modifier = Modifier
-                                .padding(2.dp)
-                                .clip(CircleShape)
-                                .background(Color.LightGray)
-                                .size(16.dp)
-                        )
-                    }
-                }
-
-            }
-        }
-    }
 }
 
 @Preview(showSystemUi = true, locale = "ar")
 @Composable
 fun HomeScreenPreview() {
     KhomasiTheme {
-        HomeScreen(hiltViewModel()) {}
+        val mockViewMode: MockHomeViewModel = hiltViewModel()
+        HomeScreen(
+            playgroundState = mockViewMode.playgroundState.collectAsState().value,
+            homeUiState = mockViewMode.homeUiState.collectAsState().value,
+            userData = mockViewMode.userData
+        )
 
     }
 

@@ -2,13 +2,13 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="OtpPreview - light">
+      <entry key="AdsSlider">
         <State />
       </entry>
-      <entry key="PreviewMyScreen">
+      <entry key="AdsSliderPreview">
         <State />
       </entry>
-      <entry key="ResetPassWordPreview - light">
+      <entry key="PlaygroundScreen">
         <State />
       </entry>
       <entry key="app">
@@ -26,9 +26,6 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-02-15T01:53:29.992637700Z" />
         </State>
-      </entry>
-      <entry key="ll">
-        <State />
       </entry>
     </value>
   </component>

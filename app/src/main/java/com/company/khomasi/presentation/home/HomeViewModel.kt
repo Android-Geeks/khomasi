@@ -18,11 +18,14 @@ class HomeViewModel  @Inject constructor(
     private val localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
 
-    private val _homeState: MutableStateFlow<DataState<PlaygroundsResponse>> =
+    private val _playgroundState: MutableStateFlow<DataState<PlaygroundsResponse>> =
         MutableStateFlow(DataState.Empty)
-    val homeState: StateFlow<DataState<PlaygroundsResponse>> = _homeState
+    val playgroundState: StateFlow<DataState<PlaygroundsResponse>> = _playgroundState
 
-    private lateinit var userData: LocalUser
+    private val _homeUiState : MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
+    val homeUiState : StateFlow<HomeUiState> = _homeUiState
+
+     lateinit var userData: LocalUser
 
     init {
         viewModelScope.launch {
@@ -36,8 +39,12 @@ class HomeViewModel  @Inject constructor(
                 "Bearer ${userData.token}",
                 "7c6fa4dc-a314-4cbc-a4cc-5e6110020491"
             ).collect {
-                _homeState.value = it
+                _playgroundState.value = it
             }
         }
+    }
+
+    fun onClickViewAll(playgroundCount : Int) {
+        _homeUiState.value = homeUiState.value.copy(playgroundCount = playgroundCount)
     }
 }
