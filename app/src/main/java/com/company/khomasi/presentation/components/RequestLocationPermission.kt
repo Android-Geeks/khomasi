@@ -5,12 +5,19 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Looper
 import android.util.Log
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
+import com.company.khomasi.R
+import com.company.khomasi.utils.navigateToSettings
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -58,7 +65,22 @@ fun getUserLocation(context: Context): LatandLong {
     )
 
     if (showAlertDialog && !permissionsState.allPermissionsGranted) {
-        MyAlertDialog(context = context)
+        MyAlertDialog(
+            title = R.string.location_permission_required,
+            text = R.string.location_permission_message,
+            onDismissRequest = {},
+            confirmButton = {
+                TextButton(
+                    onClick = { navigateToSettings(context) },
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MaterialTheme.colorScheme.primary
+                    )
+                ) {
+                    Text(stringResource(id = R.string.go_to_settings))
+                }
+            },
+            dismissButton = null
+        )
     }
 
     DisposableEffect(key1 = locationProvider) {

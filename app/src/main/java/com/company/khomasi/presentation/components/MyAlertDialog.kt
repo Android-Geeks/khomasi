@@ -1,30 +1,28 @@
 package com.company.khomasi.presentation.components
 
-import android.content.Context
+import androidx.annotation.StringRes
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import com.company.khomasi.utils.navigateToSettings
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 
 @Composable
-fun MyAlertDialog(context: Context) {
+fun MyAlertDialog(
+    @StringRes title: Int,
+    @StringRes text: Int,
+    onDismissRequest: () -> Unit,
+    confirmButton: @Composable () -> Unit,
+    dismissButton: @Composable (() -> Unit)?,
+    modifier: Modifier = Modifier,
+) {
     AlertDialog(
-        onDismissRequest = {},
-        title = { Text("Location Permission Required") },
-        text = { Text("This app needs location permissions to work properly. Please enable the location permission in settings.") },
-        confirmButton = {
-            TextButton(
-                onClick = { navigateToSettings(context) },
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary
-                )
-            ) {
-                Text("Go to Settings")
-            }
-        }
+        onDismissRequest = onDismissRequest,
+        title = { Text(stringResource(title)) },
+        text = { Text(stringResource(text)) },
+        confirmButton = confirmButton,
+        dismissButton = dismissButton,
+        modifier = modifier
     )
 }
 

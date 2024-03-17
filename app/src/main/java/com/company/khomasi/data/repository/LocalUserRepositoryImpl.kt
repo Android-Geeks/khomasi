@@ -119,6 +119,12 @@ class LocalUserRepositoryImpl(
             settings[SEARCH_HISTORY] = newSearchHistory
         }
     }
+
+    override suspend fun removeSearchHistory() {
+        context.dataStore.edit { settings ->
+            settings[SEARCH_HISTORY] = setOf()
+        }
+    }
 }
 
 private val readOnlyProperty = preferencesDataStore(name = Constants.USER_SETTINGS)
