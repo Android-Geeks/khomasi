@@ -39,7 +39,6 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.presentation.components.AdsContent
@@ -53,13 +52,12 @@ import com.company.khomasi.utils.convertToBitmap
 fun HomeScreen(
     playgroundState: DataState<PlaygroundsResponse>,
     homeUiState: HomeUiState,
-    userData: LocalUser,
+    onClickUserImage: () -> Unit,
     onClickBell: () -> Unit,
     onSearchBarClicked: () -> Unit,
     onClickViewAll: () -> Unit,
+    onAdClicked: () -> Unit
 ) {
-
-
     //        -----------------Temporary-----------------           //
     val adsList = listOf(
         AdsContent(
@@ -82,7 +80,8 @@ fun HomeScreen(
     ) {
 
         UserProfileSection(
-            userData = userData,
+            userData = homeUiState,
+            onClickUserImage = onClickUserImage,
             onClickBell = onClickBell
         )
 
@@ -101,7 +100,7 @@ fun HomeScreen(
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
 
-            item { AdsSlider(adsContent = adsList) }
+            item { AdsSlider(adsContent = adsList, onAdClicked = { onAdClicked() }) }
 
             item {
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -118,7 +117,7 @@ fun HomeScreen(
                     )
                 }
             }
-Log.d("HomeScreen", "HomeScreen: $playgroundState")
+            Log.d("HomeScreen", "HomeScreen: $playgroundState")
             if (playgroundState is DataState.Success) {
                 items(playgroundState.data.playgrounds.sortedBy { it.id }
                     .take(if (homeUiState.viewAllSwitch) playgroundState.data.playgrounds.size else 3)) {
@@ -144,23 +143,23 @@ Log.d("HomeScreen", "HomeScreen: $playgroundState")
 
 @Composable
 fun UserProfileSection(
-    userData: LocalUser,
+    userData: HomeUiState,
+    onClickUserImage: () -> Unit,
     onClickBell: () -> Unit
 ) {
-    val profileImg = userData.profilePicture
-
     Row {
         AsyncImage(
             modifier = Modifier
                 .size(50.dp)
                 .clip(CircleShape)
-                .padding(end = 4.dp),
+                .padding(end = 4.dp)
+                .clickable { onClickUserImage() },
             model = ImageRequest.Builder(context = LocalContext.current)
                 .data(
-                    if (profileImg.isNullOrEmpty())
+                    if (userData.userImg.isNullOrEmpty())
                         R.drawable.user_img
                     else {
-                        profileImg.convertToBitmap()
+                        userData.userImg.convertToBitmap()
                     }
                 )
                 .crossfade(true).build(),
@@ -172,8 +171,7 @@ fun UserProfileSection(
         Column {
             Text(
                 text = "${stringResource(id = R.string.hello)} ${
-                    userData.firstName ?: stringResource(id = R.string.user_name)
-                }",
+                    userData.name }",
                 style = MaterialTheme.typography.bodyMedium,
 
                 )
@@ -220,7 +218,7 @@ fun HomeSearchBar(onSearchBarClicked: () -> Unit) {
 
             Spacer(modifier = Modifier.weight(1f))
 
-            IconButton(onClick = {  }) {
+            IconButton(onClick = { }) {
                 Icon(
                     painter = painterResource(id = R.drawable.magnifyingglass),
                     contentDescription = null,
@@ -240,7 +238,11 @@ fun HomeScreenPreview() {
         HomeScreen(
             playgroundState = mockViewMode.playgroundState.collectAsState().value,
             homeUiState = mockViewMode.homeUiState.collectAsState().value,
-            userData = mockViewMode.userData, {}, {}, { }
+            onClickUserImage = { },
+            onClickViewAll = { mockViewMode.onClickViewAll() },
+            onSearchBarClicked = {},
+            onClickBell = { },
+            onAdClicked = { }
         )
     }
 }

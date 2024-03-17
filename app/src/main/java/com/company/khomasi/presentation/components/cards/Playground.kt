@@ -3,7 +3,7 @@ package com.company.khomasi.presentation.components.cards
 import com.company.khomasi.domain.model.Playground
 
 //data class Playground(
-//    val firstName: String,
+//    val name: String,
 //    val address: String,
 //    val imageUrl: String?,
 //    val rating: Float,

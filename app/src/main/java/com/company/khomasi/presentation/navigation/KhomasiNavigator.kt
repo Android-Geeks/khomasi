@@ -35,10 +35,11 @@ fun KhomasiNavigator() {
                 HomeScreen(
                     playgroundState = homeViewModel.playgroundState.collectAsState().value,
                     homeUiState = homeViewModel.homeUiState.collectAsState().value,
-                    userData = homeViewModel.userData,
-                    onClickBell = {},
-                    onClickViewAll = {homeViewModel.onClickViewAll()},
+                    onClickUserImage = {/* will nav to user account */ },
+                    onClickBell = { /* will nav to notification page */ },
+                    onClickViewAll = { homeViewModel.onClickViewAll() },
                     onSearchBarClicked = {},
+                    onAdClicked = {}
                 )
             }
             composable(route = Screens.Favorite.name) {

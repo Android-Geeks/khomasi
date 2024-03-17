@@ -3,7 +3,6 @@ package com.company.khomasi.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
@@ -27,21 +26,20 @@ class HomeViewModel @Inject constructor(
     private val _homeUiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
     val homeUiState: StateFlow<HomeUiState> = _homeUiState
 
-    lateinit var userData: LocalUser
-
     init {
         viewModelScope.launch {
-            localUserUseCases.getLocalUser().collect {
-                userData = it
-            }
-        }
+            localUserUseCases.getLocalUser().collect { userData ->
 
-        viewModelScope.launch {
-            remoteUserUseCase.getPlaygroundsUseCase(
-                token = "Bearer ${userData.token}",
-                userId = userData.userID ?: ""
-            ).collect {
-                _playgroundState.value = it
+                remoteUserUseCase.getPlaygroundsUseCase(
+                    token = "Bearer ${userData.token}",
+                    userId = userData.userID ?: ""
+                ).collect { playgroundsRes ->
+                    _playgroundState.value = playgroundsRes
+                }
+                _homeUiState.value = HomeUiState(
+                    name = userData.firstName ?: "",
+                    userImg = userData.profilePicture
+                )
             }
         }
     }

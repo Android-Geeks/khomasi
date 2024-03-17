@@ -1,6 +1,7 @@
 package com.company.khomasi.presentation.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -45,7 +46,8 @@ data class AdsContent(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AdsSlider(
-    adsContent: List<AdsContent>
+    adsContent: List<AdsContent>,
+    onAdClicked: () -> Unit = {}
 ) {
     val pagerState = rememberPagerState(initialPage = 0)
     val imageSlider = adsContent.map { it.imageSlider }
@@ -65,21 +67,22 @@ fun AdsSlider(
         modifier = Modifier
             .height(180.dp)
             .fillMaxWidth()
+            .clickable { onAdClicked() }
     ) { page ->
         Card(shape = MaterialTheme.shapes.large, modifier = Modifier.graphicsLayer {
-                val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+            val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
 
-                lerp(
-                    start = 0.85f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                ).also { scale ->
-                    scaleX = scale
-                    scaleY = scale
-                }
+            lerp(
+                start = 0.85f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
+            ).also { scale ->
+                scaleX = scale
+                scaleY = scale
+            }
 
-                alpha = lerp(
-                    start = 0.5f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                )
-            }) {
+            alpha = lerp(
+                start = 0.5f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
+            )
+        }) {
             Box(modifier = Modifier.fillMaxSize()) {
                 Image(
                     painter = imageSlider[page],
