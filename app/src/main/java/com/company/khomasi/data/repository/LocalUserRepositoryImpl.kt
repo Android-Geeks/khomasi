@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.doublePreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
+import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.company.khomasi.data.repository.PreferenceKeys.CITY
 import com.company.khomasi.data.repository.PreferenceKeys.COINS
@@ -23,6 +24,7 @@ import com.company.khomasi.data.repository.PreferenceKeys.OTP_CODE
 import com.company.khomasi.data.repository.PreferenceKeys.PHONE_NUMBER
 import com.company.khomasi.data.repository.PreferenceKeys.PROFILE_PICTURE
 import com.company.khomasi.data.repository.PreferenceKeys.RATING
+import com.company.khomasi.data.repository.PreferenceKeys.SEARCH_HISTORY
 import com.company.khomasi.data.repository.PreferenceKeys.TOKEN
 import com.company.khomasi.data.repository.PreferenceKeys.USER_ID
 import com.company.khomasi.domain.model.LocalUser
@@ -101,6 +103,22 @@ class LocalUserRepositoryImpl(
             }
         }
     }
+
+    override fun getSearchHistory(): Flow<List<String>> {
+        return context.dataStore.data.map { preferences ->
+            val searchHistory = preferences[SEARCH_HISTORY] ?: setOf()
+            searchHistory.toList()
+        }
+    }
+
+    override suspend fun saveSearchHistory(searchQuery: String) {
+        context.dataStore.edit { settings ->
+            val searchHistory = settings[SEARCH_HISTORY] ?: setOf()
+            val newSearchHistory = searchHistory.toMutableSet()
+            newSearchHistory.add(searchQuery)
+            settings[SEARCH_HISTORY] = newSearchHistory
+        }
+    }
 }
 
 private val readOnlyProperty = preferencesDataStore(name = Constants.USER_SETTINGS)
@@ -124,4 +142,6 @@ private object PreferenceKeys {
     val TOKEN = stringPreferencesKey(Constants.TOKEN)
     val IS_ONBOARDING = booleanPreferencesKey(Constants.IS_ONBOARDING)
     val IS_LOGIN = booleanPreferencesKey(Constants.IS_LOGIN)
+
+    val SEARCH_HISTORY = stringSetPreferencesKey(Constants.SEARCH_HISTORY)
 }

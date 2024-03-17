@@ -11,4 +11,6 @@ interface LocalUserRepository {
     suspend fun saveAppEntry()
     suspend fun saveIsLogin()
     fun readAppEntry(): Flow<Routes>
+    fun getSearchHistory(): Flow<List<String>>
+    suspend fun saveSearchHistory(searchQuery: String)
 }
