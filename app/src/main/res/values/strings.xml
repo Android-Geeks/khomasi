@@ -182,7 +182,7 @@
     <string name="hello">hello</string>
     <string name="welcome_message">Good day</string>
     <string name="search_for_playgrounds">Find playgrounds</string>
-
+    <string name="fees_per_hour">%1$d EGP/hour</string>
 
 
 </resources>

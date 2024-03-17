@@ -2,7 +2,7 @@ package com.company.khomasi.presentation.home
 
 
 data class HomeUiState(
-    val name: String = "",
-    val userImg : String? = "",
-    val playgroundCount : Int = 2,
+//    val firstName: String = "",
+//    val userImg : String? = "",
+    val viewAllSwitch : Boolean = false,
 )

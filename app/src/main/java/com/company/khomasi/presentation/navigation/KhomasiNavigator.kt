@@ -36,7 +36,9 @@ fun KhomasiNavigator() {
                     playgroundState = homeViewModel.playgroundState.collectAsState().value,
                     homeUiState = homeViewModel.homeUiState.collectAsState().value,
                     userData = homeViewModel.userData,
-                    onClickBell = {homeViewModel.onClickViewAll(homeViewModel.homeUiState.value.playgroundCount)},
+                    onClickBell = {},
+                    onClickViewAll = {homeViewModel.onClickViewAll()},
+                    onSearchBarClicked = {},
                 )
             }
             composable(route = Screens.Favorite.name) {

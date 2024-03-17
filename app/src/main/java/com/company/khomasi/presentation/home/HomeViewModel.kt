@@ -10,10 +10,12 @@ import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 @HiltViewModel
-class HomeViewModel  @Inject constructor(
+class HomeViewModel @Inject constructor(
     private val remoteUserUseCase: RemoteUserUseCase,
     private val localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
@@ -22,10 +24,10 @@ class HomeViewModel  @Inject constructor(
         MutableStateFlow(DataState.Empty)
     val playgroundState: StateFlow<DataState<PlaygroundsResponse>> = _playgroundState
 
-    private val _homeUiState : MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
-    val homeUiState : StateFlow<HomeUiState> = _homeUiState
+    private val _homeUiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
+    val homeUiState: StateFlow<HomeUiState> = _homeUiState
 
-     lateinit var userData: LocalUser
+    lateinit var userData: LocalUser
 
     init {
         viewModelScope.launch {
@@ -36,15 +38,21 @@ class HomeViewModel  @Inject constructor(
 
         viewModelScope.launch {
             remoteUserUseCase.getPlaygroundsUseCase(
-                "Bearer ${userData.token}",
-                "7c6fa4dc-a314-4cbc-a4cc-5e6110020491"
+                token = "Bearer ${userData.token}",
+                userId = userData.userID ?: ""
             ).collect {
                 _playgroundState.value = it
             }
         }
     }
 
-    fun onClickViewAll(playgroundCount : Int) {
-        _homeUiState.value = homeUiState.value.copy(playgroundCount = playgroundCount)
+//userId : "7c6fa4dc-a314-4cbc-a4cc-5e6110020491"
+
+    fun onClickViewAll() {
+        _homeUiState.update {
+            it.copy(
+                viewAllSwitch = true
+            )
+        }
     }
 }

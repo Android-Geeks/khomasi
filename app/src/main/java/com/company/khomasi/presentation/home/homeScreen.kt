@@ -1,6 +1,7 @@
 package com.company.khomasi.presentation.home
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -39,10 +40,10 @@ import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.LocalUser
+import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.presentation.components.AdsContent
 import com.company.khomasi.presentation.components.AdsSlider
-import com.company.khomasi.presentation.components.cards.Playground
 import com.company.khomasi.presentation.components.cards.PlaygroundCard
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.utils.convertToBitmap
@@ -51,13 +52,13 @@ import com.company.khomasi.utils.convertToBitmap
 @Composable
 fun HomeScreen(
     playgroundState: DataState<PlaygroundsResponse>,
-    homeUiState: HomeUiState ,
+    homeUiState: HomeUiState,
     userData: LocalUser,
-    onClickBell: () -> Unit = {},
-    onSearchBarClicked: () -> Unit = {},
-    onClickViewAll : () -> Unit = {}
+    onClickBell: () -> Unit,
+    onSearchBarClicked: () -> Unit,
+    onClickViewAll: () -> Unit,
 ) {
-    val profileImg = userData.profilePicture
+
 
     //        -----------------Temporary-----------------           //
     val adsList = listOf(
@@ -79,81 +80,21 @@ fun HomeScreen(
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, top = 12.dp)
     ) {
-        Row {
-            AsyncImage(
-                modifier = Modifier
-                    .size(50.dp)
-                    .clip(CircleShape)
-                    .padding(end = 4.dp),
-                model = ImageRequest.Builder(context = LocalContext.current)
-                    .data(if (profileImg.isNullOrEmpty() ){
-                        stringResource(id = R.drawable.userpic1)
-                    } else{profileImg.convertToBitmap()})
-                    .crossfade(true).build(),
-                contentDescription = null,
-                contentScale = ContentScale.FillWidth,
-                placeholder = painterResource(id = R.drawable.userpic1)
-            )
 
-            Column {
-                Text(
-                    text = "${stringResource(id = R.string.hello)} ${userData.firstName}",
-                    style = MaterialTheme.typography.bodyMedium,
-
-                    )
-
-                Text(
-                    text = stringResource(id = R.string.welcome_message),
-                    style = MaterialTheme.typography.bodyMedium
-                )
-            }
-            Spacer(modifier = Modifier.weight(1f))
-
-            IconButton(onClick = { onClickBell()}) {
-                Icon(
-                    painter = painterResource(id = R.drawable.bell), contentDescription = null
-                )
-            }
-        }
+        UserProfileSection(
+            userData = userData,
+            onClickBell = onClickBell
+        )
 
         Spacer(modifier = Modifier.height(10.dp))
 
-        Card(
-            colors = CardDefaults.cardColors(Color.Transparent),
-            modifier = Modifier
-                .clickable { onSearchBarClicked() }
-                .fillMaxWidth()
-                .height(38.dp)
-                .border(
-                    width = 1.dp,
-                    color = MaterialTheme.colorScheme.outline,
-                    shape = MaterialTheme.shapes.medium
-                )) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(id = R.string.search_for_playgrounds),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.tertiary
-                )
 
-                Spacer(modifier = Modifier.weight(1f))
-
-                IconButton(onClick = { /*TODO*/ }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.magnifyingglass),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.size(19.dp)
-                    )
-                }
-            }
-        }
+        HomeSearchBar(
+            onSearchBarClicked = onSearchBarClicked
+        )
         Spacer(modifier = Modifier.height(8.dp))
+
+//        -----------------Home content-----------------           //
 
         LazyColumn(
             modifier = Modifier.fillMaxWidth(),
@@ -177,24 +118,116 @@ fun HomeScreen(
                     )
                 }
             }
-
+Log.d("HomeScreen", "HomeScreen: $playgroundState")
             if (playgroundState is DataState.Success) {
-                items(playgroundState.data.playgrounds.sortedBy { it.id }.take(homeUiState.playgroundCount)) {
+                items(playgroundState.data.playgrounds.sortedBy { it.id }
+                    .take(if (homeUiState.viewAllSwitch) playgroundState.data.playgrounds.size else 3)) {
                     PlaygroundCard(
                         playground = Playground(
+                            id = it.id,
                             name = it.name,
                             address = it.address,
-                            imageUrl = it.playgroundPicture, /* -------------NULL------------*/
-                            rating = it.rating.toFloat(),
-                            price = it.feesForHour.toString(),
-                            openingHours = "",
-                            isFavorite = false, /* -------------NOT FOUND------------*/
-                            isBookable = it.isBookable
-                        )
+                            rating = it.rating,
+                            isBookable = it.isBookable,
+                            feesForHour = it.feesForHour,
+                            distance = it.distance,
+                            playgroundPicture = it.playgroundPicture
+                        ),
+                        onFavouriteClick = {},
+                        onViewPlaygroundClick = {}
                     )
                 }
             }
+        }
+    }
+}
 
+@Composable
+fun UserProfileSection(
+    userData: LocalUser,
+    onClickBell: () -> Unit
+) {
+    val profileImg = userData.profilePicture
+
+    Row {
+        AsyncImage(
+            modifier = Modifier
+                .size(50.dp)
+                .clip(CircleShape)
+                .padding(end = 4.dp),
+            model = ImageRequest.Builder(context = LocalContext.current)
+                .data(
+                    if (profileImg.isNullOrEmpty())
+                        R.drawable.user_img
+                    else {
+                        profileImg.convertToBitmap()
+                    }
+                )
+                .crossfade(true).build(),
+            contentDescription = null,
+            contentScale = ContentScale.FillBounds,
+            placeholder = painterResource(id = R.drawable.user_img)
+        )
+
+        Column {
+            Text(
+                text = "${stringResource(id = R.string.hello)} ${
+                    userData.firstName ?: stringResource(id = R.string.user_name)
+                }",
+                style = MaterialTheme.typography.bodyMedium,
+
+                )
+
+            Text(
+                text = stringResource(id = R.string.welcome_message),
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+        Spacer(modifier = Modifier.weight(1f))
+
+        IconButton(onClick = { onClickBell() }) {
+            Icon(
+                painter = painterResource(id = R.drawable.bell), contentDescription = null
+            )
+        }
+    }
+}
+
+@Composable
+fun HomeSearchBar(onSearchBarClicked: () -> Unit) {
+    Card(
+        colors = CardDefaults.cardColors(Color.Transparent),
+        modifier = Modifier
+            .clickable { onSearchBarClicked() }
+            .fillMaxWidth()
+            .height(38.dp)
+            .border(
+                width = 1.dp,
+                color = MaterialTheme.colorScheme.outline,
+                shape = MaterialTheme.shapes.medium
+            )) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Text(
+                text = stringResource(id = R.string.search_for_playgrounds),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.tertiary
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            IconButton(onClick = {  }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.magnifyingglass),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.tertiary,
+                    modifier = Modifier.size(19.dp)
+                )
+            }
         }
     }
 }
@@ -207,9 +240,7 @@ fun HomeScreenPreview() {
         HomeScreen(
             playgroundState = mockViewMode.playgroundState.collectAsState().value,
             homeUiState = mockViewMode.homeUiState.collectAsState().value,
-            userData = mockViewMode.userData
+            userData = mockViewMode.userData, {}, {}, { }
         )
-
     }
-
 }

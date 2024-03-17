@@ -18,7 +18,7 @@ class MockHomeViewModel : ViewModel() {
     private val _homeUiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
     val homeUiState: StateFlow<HomeUiState> = _homeUiState
 
-    lateinit var userData: LocalUser
+     var userData: LocalUser = LocalUser()
 
 //    init {
 //        viewModelScope.launch {

@@ -182,4 +182,5 @@
     <string name="hello">مرحبا</string>
     <string name="welcome_message">طاب يومك</string>
     <string name="search_for_playgrounds">ابحث عن ملاعب</string>
+    <string name="fees_per_hour">%1$d جنيه/ساعة</string>
 </resources>
