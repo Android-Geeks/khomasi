@@ -1,13 +1,16 @@
 package com.company.khomasi.presentation.search
 
 import androidx.lifecycle.ViewModel
+import com.company.khomasi.domain.model.Playground
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class MockSearchViewModel : ViewModel() {
 
     val uiState = MutableStateFlow(SearchUiState())
+    val searchResults = MutableStateFlow(emptyList<Playground>())
+    val searchQuery = MutableStateFlow("")
     fun onSearchQueryChanged(query: String) {
-        uiState.value = uiState.value.copy(searchQuery = query)
+        searchQuery.value = query
     }
 
     fun onSearchFilterChanged(filter: SearchFilter) {

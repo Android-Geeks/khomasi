@@ -1,6 +1,7 @@
 package com.company.khomasi.presentation.search.components
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -38,26 +39,10 @@ fun SearchTopAppBar(
     layoutDirection: LayoutDirection = LocalLayoutDirection.current,
 ) {
     Column {
-        TopAppBar(title = {
-            Text(
-                text = stringResource(id = R.string.search_for_field),
-                color = if (isDark) darkText else lightText,
-                style = MaterialTheme.typography.displayMedium
-            )
-        }, navigationIcon = {
-            IconButton(onClick = onBackClick) {
-                Icon(
-                    painter = painterResource(id = R.drawable.back),
-                    contentDescription = stringResource(id = R.string.back),
-                    modifier = if (layoutDirection == LayoutDirection.Ltr)
-                        Modifier.rotate(180f)
-                    else Modifier,
-                    tint = if (isDark) darkIcon else lightIcon
-                )
-            }
-        }, colors = TopAppBarDefaults.topAppBarColors(
-            containerColor = MaterialTheme.colorScheme.background
-        )
+        MyTopAppBar(
+            onBackClick = onBackClick,
+            isDark = isDark,
+            layoutDirection = layoutDirection
         )
 
         CustomSearchBar(
@@ -74,4 +59,36 @@ fun SearchTopAppBar(
             color = if (isDark) darkHint else lightHint
         )
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun MyTopAppBar(
+    onBackClick: () -> Unit,
+    isDark: Boolean,
+    layoutDirection: LayoutDirection = LocalLayoutDirection.current,
+    actions: @Composable RowScope.() -> Unit = {}
+) {
+    TopAppBar(title = {
+        Text(
+            text = stringResource(id = R.string.search_for_field),
+            color = if (isDark) darkText else lightText,
+            style = MaterialTheme.typography.displayMedium
+        )
+    }, navigationIcon = {
+        IconButton(onClick = onBackClick) {
+            Icon(
+                painter = painterResource(id = R.drawable.back),
+                contentDescription = stringResource(id = R.string.back),
+                modifier = if (layoutDirection == LayoutDirection.Ltr)
+                    Modifier.rotate(180f)
+                else Modifier,
+                tint = if (isDark) darkIcon else lightIcon
+            )
+        }
+    }, colors = TopAppBarDefaults.topAppBarColors(
+        containerColor = MaterialTheme.colorScheme.background
+    ),
+        actions = actions
+    )
 }

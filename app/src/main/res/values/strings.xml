@@ -185,6 +185,7 @@
     <string name="location_permission_message">This app needs location permissions to work properly. Please enable the location permission in settings.</string>
     <string name="go_to_settings">Go to Settings</string>
     <string name="clear">Clear</string>
+    <string name="distance_away">%s Km Away</string>
 
 
 </resources>

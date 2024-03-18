@@ -3,7 +3,6 @@ package com.company.khomasi.presentation.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -32,7 +31,9 @@ fun KhomasiNavigator() {
         NavHost(
             navController = navController,
             startDestination = Screens.Search.name,
-            modifier = Modifier.padding(paddingValues)
+            modifier = if (navController.currentDestination?.route in listOfNavItems.map { it.route }) Modifier.padding(
+                paddingValues
+            ) else Modifier
         ) {
             composable(route = Screens.Home.name) {
                 HomeScreen()
@@ -50,11 +51,16 @@ fun KhomasiNavigator() {
                 val searchViewModel: SearchViewModel = hiltViewModel()
                 SearchScreen(
                     onBackClick = { navController.popBackStack() },
-                    uiState = searchViewModel.uiState.collectAsState().value,
+                    searchQuery = searchViewModel.searchQuery,
+                    searchUiState = searchViewModel.uiState,
+                    playgroundsState = searchViewModel.searchResults,
                     onQueryChange = searchViewModel::onSearchQueryChanged,
                     onSearchQuerySubmitted = searchViewModel::onSearchQuerySubmitted,
                     onSearchFilterChanged = searchViewModel::onSearchFilterChanged,
-                    onClearHistory = searchViewModel::onClickRemoveSearchHistory
+                    onClearHistory = searchViewModel::onClickRemoveSearchHistory,
+                    navigateToPlaygroundDetails = {},
+                    onBackPage = searchViewModel::onBackPage,
+                    onNextPage = searchViewModel::onNextPage,
                 )
             }
         }

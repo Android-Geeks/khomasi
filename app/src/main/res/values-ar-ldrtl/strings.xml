@@ -185,5 +185,6 @@
     <string name="location_permission_message">هذا التطبيق يحتاج إلى إذن الموقع للعمل بشكل صحيح. يرجى تمكين إذن الموقع في الإعدادات.</string>
     <string name="go_to_settings">اذهب إلى الإعدادات</string>
     <string name="clear">مسح</string>
+    <string name="distance_away">يبعد %1$s كم</string>
 
 </resources>

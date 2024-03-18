@@ -1,10 +1,11 @@
 package com.company.khomasi.presentation.search
 
 
+
 data class SearchUiState(
-    val searchQuery: String = "",
     val searchFilter: SearchFilter = SearchFilter.LowestPrice,
-    val searchHistory: List<String> = listOf()
+    val searchHistory: List<String> = listOf(),
+    val page: Int = 1
 )
 
 enum class SearchFilter {

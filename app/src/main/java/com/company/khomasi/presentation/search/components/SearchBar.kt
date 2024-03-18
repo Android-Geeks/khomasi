@@ -14,18 +14,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
-import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.onClick
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -44,9 +36,7 @@ fun CustomSearchBar(
     enabled: Boolean = true,
     isDark: Boolean = isSystemInDarkTheme(),
 ) {
-    val focusRequester = remember { FocusRequester() }
-    val focusManager = LocalFocusManager.current
-    val active = remember { mutableStateOf(false) }
+    val keyboardController = LocalSoftwareKeyboardController.current
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
@@ -56,11 +46,12 @@ fun CustomSearchBar(
             cursorColor = MaterialTheme.colorScheme.primary,
             focusedContainerColor = MaterialTheme.colorScheme.background,
             unfocusedContainerColor = MaterialTheme.colorScheme.background,
-            focusedIndicatorColor = MaterialTheme.colorScheme.outline,
-            unfocusedIndicatorColor = MaterialTheme.colorScheme.outline
         ),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
-        keyboardActions = KeyboardActions(onSearch = { onSearch(query) }),
+        keyboardActions = KeyboardActions(onSearch = {
+            keyboardController?.hide()
+            onSearch(query)
+        }),
         singleLine = true,
         leadingIcon = {
             Icon(
@@ -95,21 +86,7 @@ fun CustomSearchBar(
             .fillMaxWidth()
             .padding(horizontal = 16.dp)
             .height(56.dp)
-            .focusRequester(focusRequester)
-            .onFocusChanged { active.value = it.isFocused }
-            .semantics {
-                onClick {
-                    focusRequester.requestFocus()
-                    true
-                }
-            },
     )
-    LaunchedEffect(active.value) {
-        if (!active.value) {
-            focusManager.clearFocus()
-        }
-    }
-
 }
 
 @Preview
