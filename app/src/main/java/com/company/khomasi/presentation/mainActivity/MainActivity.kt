@@ -10,6 +10,7 @@ import androidx.compose.material3.Surface
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import com.company.khomasi.presentation.navigation.NavGraph
+import com.company.khomasi.presentation.playground.PlaygroundScreen
 import com.company.khomasi.theme.KhomasiTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -27,8 +28,10 @@ class MainActivity : ComponentActivity() {
                 Surface(
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Log.d("TAG", mainViewModel.startDestination.value)
-                    NavGraph(mainViewModel.startDestination.value)
+//                    Log.d("TAG", mainViewModel.startDestination.value)
+//                    NavGraph(mainViewModel.startDestination.value)
+
+                    PlaygroundScreen()
                 }
             }
         }

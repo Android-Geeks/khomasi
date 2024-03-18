@@ -1,6 +1,7 @@
 package com.company.khomasi.data.data_source.remote
 
 import com.company.khomasi.domain.model.MessageResponse
+import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
@@ -44,5 +45,11 @@ interface RetrofitService {
         @Header("Authorization") token: String,
         @Query("userId") userId: String
     ): PlaygroundsResponse
+
+    @GET("Playground/playground")
+    suspend fun getSpecificPlayground(
+        @Header("Authorization") token: String,
+        @Query("id") id: Int
+    ): PlaygroundScreenResponse
 
 }
