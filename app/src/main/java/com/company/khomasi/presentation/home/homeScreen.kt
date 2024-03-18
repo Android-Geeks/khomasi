@@ -44,6 +44,7 @@ import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.presentation.components.AdsContent
 import com.company.khomasi.presentation.components.AdsSlider
 import com.company.khomasi.presentation.components.cards.PlaygroundCard
+import com.company.khomasi.presentation.components.cards.RatingCard
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.utils.convertToBitmap
 
@@ -99,6 +100,19 @@ fun HomeScreen(
             modifier = Modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(16.dp),
         ) {
+
+//      ------------ Temporary until the booking page is completed   -----//
+            if(false){
+                item {
+                    RatingCard(
+                        buttonText = R.string.rating,
+                        mainText = "كانت مباراه حماسيه",
+                        subText = "قيم ملعب الشهداء",
+                        timeIcon = R.drawable.clock
+                    )
+                }
+            }
+//  -------------------------------------------------------------------//
 
             item { AdsSlider(adsContent = adsList, onAdClicked = { onAdClicked() }) }
 
@@ -171,7 +185,8 @@ fun UserProfileSection(
         Column {
             Text(
                 text = "${stringResource(id = R.string.hello)} ${
-                    userData.name }",
+                    userData.name
+                }",
                 style = MaterialTheme.typography.bodyMedium,
 
                 )
