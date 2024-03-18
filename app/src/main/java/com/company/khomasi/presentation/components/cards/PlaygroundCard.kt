@@ -1,11 +1,12 @@
-package com.company.khomasi.presentation.favorite
+package com.company.khomasi.presentation.components.cards
 
+import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -33,37 +34,46 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
+import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.iconButtons.FavoriteIcon
 import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.utils.convertToBitmap
 
 @Composable
 fun PlaygroundCard(
-    contentPadding : PaddingValues,
-    playground: FavUiState,
-    modifier: Modifier = Modifier
+    playground: Playground,
+    onFavouriteClick: () -> Unit,
+    onViewPlaygroundClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    context: Context = LocalContext.current
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = MaterialTheme.colorScheme.background,
+                color = MaterialTheme.colorScheme.surface,
                 shape = MaterialTheme.shapes.large
             )
             .padding(8.dp)
-
+            .clickable {
+                onViewPlaygroundClick()
+            }
     ) {
         Column(
             modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
+                .background(color = MaterialTheme.colorScheme.surface)
         ) {
             Box {
                 AsyncImage(
-                    model = ImageRequest
-                        .Builder(context = LocalContext.current)
-                        .data(playground.imageUrl)
-                        .crossfade(true)
-                        .build(),
+                    model = if (playground.playgroundPicture != null)
+                        ImageRequest
+                            .Builder(context = LocalContext.current)
+                            .data(playground.playgroundPicture.convertToBitmap())
+                            .crossfade(true)
+                            .build()
+                    else
+                        null,
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
                     placeholder = painterResource(id = R.drawable.playground),
@@ -77,8 +87,8 @@ fun PlaygroundCard(
                         .height(62.dp)
                 ) {
                     FavoriteIcon(
-                        onFavoriteClick = { },
-                        isFavorite = false,
+                        onFavoriteClick = onFavouriteClick,
+                        isFavorite = playground.isBookable,
                         modifier = Modifier.padding(top = 12.dp, start = 6.dp)
                     )
                     Spacer(modifier = Modifier.weight(1f))
@@ -93,14 +103,14 @@ fun PlaygroundCard(
                             .padding(top = 12.dp)
                             .clip(RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp))
                             .background(
-                                color = MaterialTheme.colorScheme.background
+                                color = MaterialTheme.colorScheme.surface
                             )
                             .padding(start = 5.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
                     )
-
                 }
             }
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth()
+            ) {
                 Text(
                     text = playground.name,
                     textAlign = TextAlign.Start,
@@ -108,15 +118,13 @@ fun PlaygroundCard(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f)
-                )
-                Spacer(modifier = Modifier.weight(2f))
 
+                )
                 Text(
                     text = playground.rating.toString(),
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier
-                        .weight(0.2f)
                         .padding(top = 8.dp)
                 )
                 Icon(
@@ -164,20 +172,14 @@ fun PlaygroundCard(
                     )
                 )
                 Text(
-                    text = playground.price + " / ",
-                    textAlign = TextAlign.End,
-                    style = MaterialTheme.typography.bodyLarge,
-                )
-
-                Text(
-                    text = playground.openingHours,
+                    text = context.getString(R.string.fees_per_hour, playground.feesForHour),
                     textAlign = TextAlign.End,
                     style = MaterialTheme.typography.bodyLarge,
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 MyButton(
                     text = R.string.view_playground,
-                    onClick = { },
+                    onClick = onViewPlaygroundClick,
                     modifier = Modifier
                         .background(
                             color = MaterialTheme.colorScheme.primary,
@@ -193,24 +195,24 @@ fun PlaygroundCard(
 }
 
 
-@Preview(name = "light", showBackground = true, uiMode = UI_MODE_NIGHT_NO)
-@Preview(name = "dark", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "light", uiMode = UI_MODE_NIGHT_NO)
+@Preview(name = "dark", locale = "ar", uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewCard() {
     KhomasiTheme {
         PlaygroundCard(
-            playground = FavUiState(
-                name = "playground",
-                address = "location",
-                imageUrl = "https://www.simplilearn.com/ice9/free_resources_article_thumb/what_is_image_Processing.jpg",
-                rating = 4.9f,
-                price = "price",
-                openingHours = "hour",
-                isFavorite = false,
-                isBookable = false
+            playground = Playground(
+                id = 1,
+                name = "Playground Name",
+                address = "Address",
+                rating = 4.5,
+                feesForHour = 100,
+                isBookable = true,
+                distance = 5.0,
+                playgroundPicture = null
             ),
-            contentPadding = PaddingValues(16.dp)
-
+            onFavouriteClick = { },
+            onViewPlaygroundClick = { },
         )
     }
 }

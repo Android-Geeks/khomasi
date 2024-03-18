@@ -18,7 +18,7 @@ private val lightThemeColors = lightColorScheme(
     background = lightBackground,
     surface = lightCard,
     tertiary = lightSubText,
-    outline = lightHint
+    outline = lightHint,
 )
 
 private val darkThemeColors = darkColorScheme(

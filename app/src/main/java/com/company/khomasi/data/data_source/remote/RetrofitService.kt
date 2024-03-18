@@ -1,7 +1,10 @@
 package com.company.khomasi.data.data_source.remote
 
+import androidx.room.Delete
+import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
+import com.company.khomasi.domain.model.UserBookingsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
@@ -45,4 +48,26 @@ interface RetrofitService {
         @Query("userId") userId: String
     ): PlaygroundsResponse
 
+    @GET("User/bookings")
+    suspend fun getUserBookings(
+        @Query("id") id:String
+    ):UserBookingsResponse
+
+    @POST("User/favorite")
+    suspend fun userFavourite(
+        @Query("userId") userId: String,
+        @Query("playgroundId") playgroundId: String
+
+    ):MessageResponse
+
+    @Delete()
+    suspend fun deleteUserFavourite(
+        @Query("userId") userId: String,
+        @Query("playgroundId") playgroundId: String
+    ):MessageResponse
+
+    @GET("User/favorite-playgrounds")
+    suspend fun  getUserFavouritePlaygrounds(
+        @Query("userId") userId: String,
+    ):FavouritePlaygroundResponse
 }

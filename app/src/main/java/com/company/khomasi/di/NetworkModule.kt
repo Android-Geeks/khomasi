@@ -10,8 +10,12 @@ import com.company.khomasi.domain.use_case.auth.GetVerificationCodeUseCase
 import com.company.khomasi.domain.use_case.auth.LoginUseCase
 import com.company.khomasi.domain.use_case.auth.RecoverAccountUseCase
 import com.company.khomasi.domain.use_case.auth.RegisterUseCase
+import com.company.khomasi.domain.use_case.remote_user.DeleteUserFavouriteUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetPlaygroundsUseCase
+import com.company.khomasi.domain.use_case.remote_user.GetUserBookingsUseCase
+import com.company.khomasi.domain.use_case.remote_user.GetUserFavoritePlaygroundsUseCase
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
+import com.company.khomasi.domain.use_case.remote_user.UserFavouriteUseCase
 import com.company.khomasi.utils.Constants.BASE_URL
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -77,6 +81,10 @@ object NetworkModule {
     fun provideRemoteUserUseCase(
         remoteUserRepository: RemoteUserRepository
     ): RemoteUserUseCase = RemoteUserUseCase(
-        getPlaygroundsUseCase = GetPlaygroundsUseCase(remoteUserRepository)
+        getPlaygroundsUseCase = GetPlaygroundsUseCase(remoteUserRepository),
+        getUserFavoritePlaygroundsUseCase = GetUserFavoritePlaygroundsUseCase(remoteUserRepository),
+        deleteUserFavoriteUseCase = DeleteUserFavouriteUseCase(remoteUserRepository),
+        getUserBookingsUseCase = GetUserBookingsUseCase(remoteUserRepository),
+        userFavouriteUseCase = UserFavouriteUseCase(remoteUserRepository)
     )
 }

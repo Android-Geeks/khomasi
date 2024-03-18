@@ -3,8 +3,10 @@ package com.company.khomasi.data.repository
 
 import com.company.khomasi.data.data_source.remote.RetrofitService
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
+import com.company.khomasi.domain.model.UserBookingsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
@@ -96,6 +98,63 @@ class RemoteUserRepositoryImpl(
             emit(DataState.Loading)
             try {
                 val response = retrofitService.getPlaygrounds(token, userId)
+                emit(DataState.Success(response))
+            } catch (e: Exception) {
+                emit(DataState.Error(e.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun getUserBookings(id: String): Flow<DataState<UserBookingsResponse>> {
+        return flow {
+            emit(DataState.Loading)
+            try {
+                val response = retrofitService.getUserBookings(id)
+                emit(DataState.Success(response))
+            } catch (e: Exception) {
+                emit(DataState.Error(e.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun deleteUserFavourite(
+        userId: String,
+        playgroundId: String
+    ): Flow<DataState<MessageResponse>> {
+        return flow {
+            emit(DataState.Loading)
+            try {
+                val response = retrofitService.deleteUserFavourite(userId, playgroundId)
+                emit(DataState.Success(response))
+            } catch (e: Exception) {
+                emit(DataState.Error(e.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+
+    }
+
+    override suspend fun getUserFavouritePlaygrounds(
+        userId: String,
+    ): Flow<DataState<FavouritePlaygroundResponse>> {
+        return flow {
+            emit(DataState.Loading)
+            try {
+                val response = retrofitService.getUserFavouritePlaygrounds(userId)
+                emit(DataState.Success(response))
+            } catch (e: Exception) {
+                emit(DataState.Error(e.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun userFavourite(
+        userId: String,
+        playgroundId: String
+    ): Flow<DataState<MessageResponse>> {
+        return flow {
+            emit(DataState.Loading)
+            try {
+                val response = retrofitService.userFavourite(userId, playgroundId)
                 emit(DataState.Success(response))
             } catch (e: Exception) {
                 emit(DataState.Error(e.toString()))
