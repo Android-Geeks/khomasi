@@ -39,12 +39,12 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.presentation.components.AdsContent
 import com.company.khomasi.presentation.components.AdsSlider
 import com.company.khomasi.presentation.components.cards.PlaygroundCard
 import com.company.khomasi.presentation.components.cards.RatingCard
+import com.company.khomasi.presentation.components.connectionStates.Loading
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.utils.convertToBitmap
 
@@ -74,6 +74,9 @@ fun HomeScreen(
             contentText = " احجز اى ملعب صباحًا بخصم 30 %",
         ),
     )
+
+    Log.d("HomeScreen", "HomeScreen: $playgroundState")
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -131,24 +134,21 @@ fun HomeScreen(
                     )
                 }
             }
-            Log.d("HomeScreen", "HomeScreen: $playgroundState")
             if (playgroundState is DataState.Success) {
-                items(playgroundState.data.playgrounds.sortedBy { it.id }
-                    .take(if (homeUiState.viewAllSwitch) playgroundState.data.playgrounds.size else 3)) {
+                val playgrounds = playgroundState.data.playgrounds.sortedBy { it.id }
+                val visiblePlaygrounds = if (homeUiState.viewAllSwitch) playgrounds else playgrounds.take(3)
+
+                items(visiblePlaygrounds) { playground ->
                     PlaygroundCard(
-                        playground = Playground(
-                            id = it.id,
-                            name = it.name,
-                            address = it.address,
-                            rating = it.rating,
-                            isBookable = it.isBookable,
-                            feesForHour = it.feesForHour,
-                            distance = it.distance,
-                            playgroundPicture = it.playgroundPicture
-                        ),
+                        playground = playground,
                         onFavouriteClick = {},
                         onViewPlaygroundClick = {}
                     )
+                }
+            }
+            if (playgroundState is DataState.Loading) {
+                item {
+                    Loading()
                 }
             }
         }
