@@ -10,8 +10,11 @@ import com.company.khomasi.domain.use_case.app_entry.ReadAppEntry
 import com.company.khomasi.domain.use_case.app_entry.SaveAppEntry
 import com.company.khomasi.domain.use_case.app_entry.SaveIsLogin
 import com.company.khomasi.domain.use_case.local_user.GetLocalUser
+import com.company.khomasi.domain.use_case.local_user.GetSearchHistory
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
+import com.company.khomasi.domain.use_case.local_user.RemoveSearchHistory
 import com.company.khomasi.domain.use_case.local_user.SaveLocalUser
+import com.company.khomasi.domain.use_case.local_user.SaveSearchHistory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -54,6 +57,9 @@ object LocalModule {
         localUserManger: LocalUserRepository
     ): LocalUserUseCases = LocalUserUseCases(
         getLocalUser = GetLocalUser(localUserManger),
-        saveLocalUser = SaveLocalUser(localUserManger)
+        saveLocalUser = SaveLocalUser(localUserManger),
+        getSearchHistory = GetSearchHistory(localUserManger),
+        saveSearchHistory = SaveSearchHistory(localUserManger),
+        removeSearchHistory = RemoveSearchHistory(localUserManger)
     )
 }
