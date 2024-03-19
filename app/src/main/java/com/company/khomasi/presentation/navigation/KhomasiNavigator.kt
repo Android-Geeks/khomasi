@@ -30,7 +30,7 @@ fun KhomasiNavigator() {
     ) { paddingValues ->
         NavHost(
             navController = navController,
-            startDestination = Screens.Search.name,
+            startDestination = Screens.Home.name,
             modifier = if (navController.currentDestination?.route in listOfNavItems.map { it.route }) Modifier.padding(
                 paddingValues
             ) else Modifier
