@@ -15,6 +15,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,10 +34,14 @@ fun CustomSearchBar(
     query: String,
     onQueryChange: (String) -> Unit,
     onSearch: (String) -> Unit,
+    onFocusClear: () -> Unit,
     enabled: Boolean = true,
     isDark: Boolean = isSystemInDarkTheme(),
+    hideKeyboard: Boolean,
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
+
     OutlinedTextField(
         value = query,
         onValueChange = onQueryChange,
@@ -49,8 +54,11 @@ fun CustomSearchBar(
         ),
         keyboardOptions = KeyboardOptions(imeAction = ImeAction.Search),
         keyboardActions = KeyboardActions(onSearch = {
-            keyboardController?.hide()
-            onSearch(query)
+            if (query.isNotEmpty()) {
+                keyboardController?.hide()
+                focusManager.clearFocus()
+                onSearch(query)
+            }
         }),
         singleLine = true,
         leadingIcon = {
@@ -87,6 +95,11 @@ fun CustomSearchBar(
             .padding(horizontal = 16.dp)
             .height(56.dp)
     )
+    if (hideKeyboard) {
+        focusManager.clearFocus()
+        // Call onFocusClear to reset hideKeyboard state to false
+        onFocusClear()
+    }
 }
 
 @Preview
@@ -97,6 +110,8 @@ fun CustomSearchBarPreview() {
             query = "Search",
             onQueryChange = {},
             onSearch = {},
+            hideKeyboard = false,
+            onFocusClear = {},
         )
     }
 }

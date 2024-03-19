@@ -28,12 +28,13 @@ import com.company.khomasi.theme.lightHint
 import com.company.khomasi.theme.lightIcon
 import com.company.khomasi.theme.lightText
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchTopAppBar(
     query: String,
     onQueryChange: (String) -> Unit,
     onSearch: (String) -> Unit,
+    onClearFocus: () -> Unit,
+    hideKeyboard: Boolean,
     onBackClick: () -> Unit,
     isDark: Boolean,
     layoutDirection: LayoutDirection = LocalLayoutDirection.current,
@@ -49,6 +50,8 @@ fun SearchTopAppBar(
             query = query,
             onQueryChange = onQueryChange,
             onSearch = onSearch,
+            hideKeyboard = hideKeyboard,
+            onFocusClear = onClearFocus,
         )
 
         HorizontalDivider(

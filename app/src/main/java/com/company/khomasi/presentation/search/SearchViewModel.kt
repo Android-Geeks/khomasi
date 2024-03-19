@@ -52,8 +52,13 @@ class SearchViewModel @Inject constructor(
                 is DataState.Success -> {
                     val playgrounds = playgroundsResponse.data.playgrounds
                     when {
-                        searchQuery.isNotEmpty() -> playgrounds.filter { playground ->
-                            playground.name.contains(searchQuery, ignoreCase = true)
+                        searchQuery.isNotEmpty() -> {
+                            val fields = playgrounds.filter { playground ->
+                                playground.name.contains(searchQuery, ignoreCase = true)
+                            }
+                            _uiState.value =
+                                _uiState.value.copy(playgroundResults = fields.sortedBy { it.feesForHour })
+                            fields
                         }
 
                         else -> playgrounds
@@ -74,7 +79,15 @@ class SearchViewModel @Inject constructor(
     }
 
     fun onSearchFilterChanged(filter: SearchFilter) {
-        _uiState.value = _uiState.value.copy(searchFilter = filter)
+        _uiState.value = _uiState.value.copy(
+            searchFilter = filter,
+            playgroundResults = when (filter) {
+                SearchFilter.LowestPrice -> _uiState.value.playgroundResults.sortedBy { it.feesForHour }
+                SearchFilter.Rating -> _uiState.value.playgroundResults.sortedByDescending { it.rating }
+                SearchFilter.Nearest -> _uiState.value.playgroundResults.sortedBy { it.distance }
+                SearchFilter.Bookable -> _uiState.value.playgroundResults.filter { it.isBookable }
+            }
+        )
     }
 
     fun onSearchQuerySubmitted(query: String) {
@@ -84,7 +97,6 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             localUserUseCases.saveSearchHistory(query)
         }
-        onNextPage()
     }
 
     fun onClickRemoveSearchHistory() {
