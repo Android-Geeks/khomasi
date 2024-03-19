@@ -157,11 +157,11 @@
     <string name="send_verification_email">Send Verification Email</string>
     <string name="save_changes">Save Changes</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="bookable">bookable</string>
+    <string name="bookable">Bookable</string>
     <string name="un_bookable">Unbookable</string>
     <string name="unbookable">Unbookable</string>
-    <string name="view_playground">view playground</string>
-    <string name="fees_per_hour">%1$d EGP/hour</string>
+    <string name="view_playground">View Playground</string>
+    <string name="fees_per_hour">%1$d EGP / hour</string>
     <string name="forgot_your_password">Forgot your password ?</string>
     <string name="enter_email_to_reset_password">Enter your email to reset your password.</string>
     <string name="set_password">Set password</string>

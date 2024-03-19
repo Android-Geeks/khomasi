@@ -88,7 +88,7 @@
     <string name="action_will_cancel_booking">باتخاذك لهذا الإجراء سيتم إلغاء الحجز الخاص بملعب الشهداء</string>
     <string name="reset_filter">إعادة تعيين الفلتر</string>
     <string name="booking_confirmed">تم تأكيد الحجز</string>
-    <string name="fees_per_hour">%1$d جنيه/ساعة</string>
+    <string name="fees_per_hour">%1$d جنيه / ساعة</string>
     <string name="contact">اتصال</string>
     <string name="verification_code">رمز التحقق</string>
     <string name="search_for">ابحث عن…</string>
