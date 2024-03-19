@@ -20,6 +20,8 @@ data class Playground(
     val feesForHour: Int,
     @SerialName("distance")
     val distance: Double,
+    @SerialName("isFav")
+    val isFavourite: Boolean,
     @SerialName("playgroundPicture")
     val playgroundPicture: String?
 )
