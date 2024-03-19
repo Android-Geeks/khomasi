@@ -61,6 +61,7 @@ fun PlaygroundCard(
         shape = MaterialTheme.shapes.large,
         modifier = modifier
             .fillMaxWidth()
+            .clip(MaterialTheme.shapes.large)
             .clickable {
                 onViewPlaygroundClick()
             }
