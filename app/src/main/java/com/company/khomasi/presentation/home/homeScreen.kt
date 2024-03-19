@@ -225,7 +225,7 @@ fun UserProfileSection(
                 )
                 .crossfade(true).build(),
             contentDescription = null,
-            contentScale = ContentScale.Inside,
+            contentScale = ContentScale.FillBounds,
             placeholder = painterResource(id = R.drawable.user_img)
         )
 
