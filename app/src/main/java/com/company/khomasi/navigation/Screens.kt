@@ -12,7 +12,8 @@ enum class Screens {
     Register,
     LoginOrRegister,
     OTP,
-    ResetPassword
+    ResetPassword,
+    Search,
 }
 
 enum class Routes {

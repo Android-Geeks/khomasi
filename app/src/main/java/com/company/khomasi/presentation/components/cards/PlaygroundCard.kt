@@ -1,11 +1,12 @@
 package com.company.khomasi.presentation.components.cards
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,9 +14,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults.cardColors
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -35,53 +36,53 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
-import com.company.khomasi.presentation.components.MyButton
+import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.presentation.components.iconButtons.FavoriteIcon
 import com.company.khomasi.theme.KhomasiTheme
-import com.company.khomasi.domain.model.Playground
+import com.company.khomasi.theme.darkCard
+import com.company.khomasi.theme.darkText
+import com.company.khomasi.theme.lightCard
+import com.company.khomasi.theme.lightText
 import com.company.khomasi.utils.convertToBitmap
 
-@SuppressLint("StringFormatInvalid")
 @Composable
 fun PlaygroundCard(
     playground: Playground,
     onFavouriteClick: () -> Unit,
     onViewPlaygroundClick: () -> Unit,
     modifier: Modifier = Modifier,
-    context: Context = LocalContext.current
+    context: Context = LocalContext.current,
+    isDark: Boolean = isSystemInDarkTheme()
 ) {
     Card(
+        colors = cardColors(
+            containerColor = if (isDark) darkCard else lightCard,
+        ),
+        shape = MaterialTheme.shapes.large,
         modifier = modifier
             .fillMaxWidth()
-            .background(
-                color = MaterialTheme.colorScheme.background,
-                shape = MaterialTheme.shapes.large
-            )
-            .padding(8.dp)
+            .clip(MaterialTheme.shapes.large)
             .clickable {
                 onViewPlaygroundClick()
             }
     ) {
         Column(
-            modifier = Modifier
-                .background(color = MaterialTheme.colorScheme.background)
+            Modifier.padding(8.dp)
         ) {
             Box {
                 AsyncImage(
-                    model = if (playground.playgroundPicture != null)
-                        ImageRequest
-                            .Builder(context = LocalContext.current)
-                            .data(playground.playgroundPicture.convertToBitmap())
-                            .crossfade(true)
-                            .build()
-                    else
-                        null,
+                    model = ImageRequest
+                        .Builder(context = LocalContext.current)
+                        .data(playground.playgroundPicture?.convertToBitmap())
+                        .crossfade(true)
+                        .build(),
                     contentDescription = null,
                     contentScale = ContentScale.FillWidth,
-                    placeholder = painterResource(id = R.drawable.playground),
+                    error = painterResource(id = R.drawable.playground),
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(131.dp)
+                        .clip(MaterialTheme.shapes.medium)
                 )
                 Row(
                     modifier = Modifier
@@ -90,41 +91,46 @@ fun PlaygroundCard(
                 ) {
                     FavoriteIcon(
                         onFavoriteClick = onFavouriteClick,
-                        isFavorite = playground.isBookable,
+                        isFavorite = playground.isFavourite,
                         modifier = Modifier.padding(top = 12.dp, start = 6.dp)
                     )
                     Spacer(modifier = Modifier.weight(1f))
-                    val bookingText =
-                        if (playground.isBookable) stringResource(id = R.string.bookable)
-                        else stringResource(id = R.string.un_bookable)
                     Text(
-                        text = bookingText,
+                        text = stringResource(
+                            if (playground.isBookable)
+                                R.string.bookable
+                            else
+                                R.string.un_bookable
+                        ),
                         textAlign = TextAlign.Start,
-                        style = MaterialTheme.typography.bodyLarge,
+                        style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier
                             .padding(top = 12.dp)
                             .clip(RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp))
                             .background(
-                                color = MaterialTheme.colorScheme.background
+                                color = if (isDark) darkCard else lightCard
                             )
                             .padding(start = 5.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
                     )
 
                 }
             }
+
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = playground.name,
                     textAlign = TextAlign.Start,
-                    style = MaterialTheme.typography.titleSmall,
+                    color = if (isDark) darkText else lightText,
+                    style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     modifier = Modifier.weight(1f)
                 )
 
                 Text(
-                    text = playground.rating.toString(),
+                    text = String.format("%.1f", playground.rating),
                     textAlign = TextAlign.End,
+                    color = if (isDark) darkText else lightText,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier
                         .padding(top = 8.dp)
@@ -140,19 +146,22 @@ fun PlaygroundCard(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 8.dp)
+                    .padding(bottom = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.mappin),
                     contentDescription = null,
-                    modifier = Modifier.padding(top = 7.dp, end = 4.dp)
-
                 )
                 Text(
-                    text = playground.address,
+                    text = context.getString(
+                        R.string.distance_away,
+                        String.format("%.1f", playground.distance)
+                    ),
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier
+                    color = MaterialTheme.colorScheme.tertiary,
                 )
             }
             HorizontalDivider(
@@ -163,37 +172,43 @@ fun PlaygroundCard(
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(2.dp)
             ) {
                 Icon(
                     painter = painterResource(id = R.drawable.currencycircledollar),
                     contentDescription = null,
-                    modifier = Modifier.padding(
-                        end = 4.dp,
-                        top = 3.dp
-                    )
                 )
                 Text(
                     text = context.getString(R.string.fees_per_hour, playground.feesForHour),
                     textAlign = TextAlign.End,
+                    color = if (isDark) darkText else lightText,
                     style = MaterialTheme.typography.bodyLarge,
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                MyButton(
-                    text = R.string.view_playground,
-                    onClick = onViewPlaygroundClick,
+                Box(
                     modifier = Modifier
+                        .weight(3f)
+                        .height(48.dp)
                         .background(
                             color = MaterialTheme.colorScheme.primary,
                             shape = MaterialTheme.shapes.medium
                         )
-                        .width(171.dp)
-                        .height(48.dp)
-                )
+                        .clickable {
+                            onViewPlaygroundClick()
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.view_playground),
+                        textAlign = TextAlign.Center,
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.background
+                    )
+                }
             }
         }
     }
-
 }
 
 
@@ -211,7 +226,8 @@ fun PreviewCard() {
                 feesForHour = 100,
                 isBookable = true,
                 distance = 5.0,
-                playgroundPicture = null
+                playgroundPicture = null,
+                isFavourite = false
             ),
             onFavouriteClick = { },
             onViewPlaygroundClick = { },
