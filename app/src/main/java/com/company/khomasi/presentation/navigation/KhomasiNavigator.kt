@@ -22,7 +22,9 @@ import com.company.khomasi.presentation.ui.screens.PlaygroundsScreen
 fun KhomasiNavigator() {
     val navController = rememberNavController()
     Scaffold(
-        bottomBar = if (navController.currentDestination?.route in listOfNavItems.map { it.route }) {
+        bottomBar = if (navController.currentDestination?.route
+            in listOfNavItems.map { it.route } || navController.currentDestination == null
+        ) {
             { BottomNavigationBar(navController) }
         } else {
             {}
@@ -31,7 +33,8 @@ fun KhomasiNavigator() {
         NavHost(
             navController = navController,
             startDestination = Screens.Home.name,
-            modifier = if (navController.currentDestination?.route in listOfNavItems.map { it.route }) Modifier.padding(
+            modifier = if (navController.currentDestination?.route in listOfNavItems.map { it.route }
+                || navController.currentDestination == null) Modifier.padding(
                 paddingValues
             ) else Modifier
         ) {

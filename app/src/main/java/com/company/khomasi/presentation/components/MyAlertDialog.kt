@@ -27,6 +27,7 @@ fun MyAlertDialog(
     onConfirmButtonClick: () -> Unit,
     confirmButtonColor: Color,
     modifier: Modifier = Modifier,
+    @StringRes confirmButtonText: Int = 0,
     dismissButton: @Composable (() -> Unit)? = null,
     isDark: Boolean = isSystemInDarkTheme()
 ) {
@@ -54,7 +55,7 @@ fun MyAlertDialog(
                 )
             ) {
                 Text(
-                    text = stringResource(id = R.string.clear),
+                    text = stringResource(id = if (confirmButtonText == 0) R.string.clear else confirmButtonText),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.background
                 )
