@@ -1,6 +1,6 @@
 package com.company.khomasi.presentation.navigation
 
-import FavouritePlaygroundsViewModel
+import com.company.khomasi.presentation.favorite.FavouritePlaygroundsViewModel
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable

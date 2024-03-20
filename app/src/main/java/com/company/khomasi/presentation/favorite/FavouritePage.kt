@@ -53,10 +53,7 @@ fun FavouritePage(
     val favouritePlaygroundState by favouritePlayground.collectAsState()
     val favUiState = uiState.collectAsState().value
 
-    DisposableEffect(Unit) {
-        fetchUserFavoritePlaygrounds(favUiState.userId)
-        onDispose {}
-    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { TopBar() },

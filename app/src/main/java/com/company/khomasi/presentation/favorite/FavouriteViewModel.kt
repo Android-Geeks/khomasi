@@ -1,9 +1,10 @@
+package com.company.khomasi.presentation.favorite
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
-import com.company.khomasi.presentation.favorite.FavouriteUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
