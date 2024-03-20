@@ -121,10 +121,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.2.0")
     implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
 
-    // Paging
-    implementation("androidx.paging:paging-runtime:$3.1.1")
-    implementation("androidx.paging:paging-compose:3.2.1")
-
     //Dagger - Hilt
     implementation("com.google.dagger:hilt-android:2.50")
     ksp("com.google.dagger:hilt-android-compiler:2.50")
