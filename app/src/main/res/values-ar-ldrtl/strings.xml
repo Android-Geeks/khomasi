@@ -180,15 +180,14 @@
     <string name="invalid_phone_number_message">رقم الهاتف غير صحيح</string>
     <string name="invalid_name_message">يجب أن يحتوي الاسم على حرفين على الأقل ولا يحتوي على أرقام.</string>
     <string name="not_matched_passwords">كلمة المرور الجديدة غير متطابقة. أدخل كلمة المرور الجديدة مرة أخرى هنا.</string>
-    <string name="user_name">كابتن</string>
-    <string name="hello">مرحبا</string>
-    <string name="welcome_message">طاب يومك</string>
-    <string name="search_for_playgrounds">ابحث عن ملاعب</string>
     <string name="remove">حذف</string>
     <string name="location_permission_required">الإذن بالموقع مطلوب</string>
     <string name="location_permission_message">هذا التطبيق يحتاج إلى إذن الموقع للعمل بشكل صحيح. يرجى تمكين إذن الموقع في الإعدادات.</string>
     <string name="go_to_settings">اذهب إلى الإعدادات</string>
     <string name="clear">مسح</string>
     <string name="distance_away">يبعد %1$s كم</string>
-
+    <string name="user_name">كابتن</string>
+    <string name="hello">مرحبا</string>
+    <string name="welcome_message">طاب يومك</string>
+    <string name="search_for_playgrounds">ابحث عن ملاعب</string>
 </resources>

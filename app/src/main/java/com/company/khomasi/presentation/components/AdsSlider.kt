@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-//noinspection UsingMaterialAndMaterial3Libraries
-import androidx.compose.material.LocalContentColor
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -61,63 +59,67 @@ fun AdsSlider(
             )
         }
     }
-    HorizontalPager(
-        count = adsContent.size,
-        state = pagerState,
-        modifier = Modifier
-            .height(180.dp)
-            .fillMaxWidth()
-            .clickable { onAdClicked() }
-    ) { page ->
-        Card(shape = MaterialTheme.shapes.large, modifier = Modifier.graphicsLayer {
-            val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
 
-            lerp(
-                start = 0.85f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
-            ).also { scale ->
-                scaleX = scale
-                scaleY = scale
-            }
+    Column{
+        HorizontalPager(
+            count = adsContent.size,
+            state = pagerState,
+            modifier = Modifier
+                .height(180.dp)
+                .fillMaxWidth()
+                .clickable { onAdClicked() }
+        ) { page ->
+            Card(shape = MaterialTheme.shapes.large, modifier = Modifier.graphicsLayer {
+                val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
 
-            alpha = lerp(
-                start = 0.5f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
-            )
-        }) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                Image(
-                    painter = imageSlider[page],
-                    contentDescription = "image slider",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                lerp(
+                    start = 0.85f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                ).also { scale ->
+                    scaleX = scale
+                    scaleY = scale
+                }
+
+                alpha = lerp(
+                    start = 0.5f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
                 )
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    Spacer(modifier = Modifier.weight(1f))
+            }) {
+                Box(modifier = Modifier.fillMaxSize()) {
+                    Image(
+                        painter = imageSlider[page],
+                        contentDescription = "image slider",
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                    ) {
+                        Spacer(modifier = Modifier.weight(1f))
 
-                    Text(
-                        text = contentSlider[page],
-                        color = Color.White,
-                        fontSize = 18.sp,
-                        modifier = Modifier.padding(8.dp),
-                        textAlign = TextAlign.Start,
-                        maxLines = 2
-                    )
-                    HorizontalPagerIndicator(
-                        pagerState = pagerState,
-                        activeColor = Color.White,
-                        inactiveColor = LocalContentColor.current.copy(alpha = 0.5f),
-                        modifier = Modifier
-                            .align(Alignment.CenterHorizontally)
-                            .padding(vertical = 8.dp)
-                    )
+                        Text(
+                            text = contentSlider[page],
+                            color = Color.White,
+                            fontSize = 18.sp,
+                            modifier = Modifier.padding(8.dp),
+                            textAlign = TextAlign.Start,
+                            maxLines = 2
+                        )
+                    }
                 }
             }
         }
+
+        HorizontalPagerIndicator(
+            pagerState = pagerState,
+            activeColor = Color.LightGray,
+            inactiveColor = Color.DarkGray,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .padding(vertical = 8.dp)
+        )
     }
 }
 
-@Preview(showSystemUi = true, locale = "ar")
+@Preview(locale = "ar")
 @Composable
 fun AdsSliderPreview() {
     AdsSlider(

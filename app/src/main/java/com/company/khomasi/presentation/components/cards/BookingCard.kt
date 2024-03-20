@@ -297,6 +297,7 @@ private fun BookingCardPreview() {
                     true,
                     50,
                     5.0,
+                    false,
                     "https://www.google.com"
                 ),
                 statusOfBooking = BookingStatus.CONFIRMED

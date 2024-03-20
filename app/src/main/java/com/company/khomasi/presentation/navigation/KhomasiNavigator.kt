@@ -3,18 +3,20 @@ package com.company.khomasi.presentation.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.navigation.Screens
+import com.company.khomasi.presentation.home.HomeScreen
+import com.company.khomasi.presentation.home.HomeViewModel
 import com.company.khomasi.navigation.listOfNavItems
 import com.company.khomasi.presentation.navigation.components.BottomNavigationBar
 import com.company.khomasi.presentation.search.SearchScreen
 import com.company.khomasi.presentation.search.SearchViewModel
 import com.company.khomasi.presentation.ui.screens.FavoriteScreen
-import com.company.khomasi.presentation.ui.screens.HomeScreen
 import com.company.khomasi.presentation.ui.screens.MyBookingsScreen
 import com.company.khomasi.presentation.ui.screens.PlaygroundsScreen
 
@@ -39,7 +41,16 @@ fun KhomasiNavigator() {
             ) else Modifier
         ) {
             composable(route = Screens.Home.name) {
-                HomeScreen()
+                val homeViewModel: HomeViewModel = hiltViewModel()
+                HomeScreen(
+                    playgroundState = homeViewModel.playgroundState.collectAsState().value,
+                    homeUiState = homeViewModel.homeUiState.collectAsState().value,
+                    onClickUserImage = {/* will nav to user account */ },
+                    onClickBell = { /* will nav to notification page */ },
+                    onClickViewAll = { homeViewModel.onClickViewAll() },
+                    onSearchBarClicked = {},
+                    onAdClicked = {}
+                )
             }
             composable(route = Screens.Favorite.name) {
                 FavoriteScreen()
