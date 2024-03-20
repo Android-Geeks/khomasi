@@ -24,8 +24,8 @@ class MockViewModel(
            
                 val mockResponse = FavouritePlaygroundResponse(
                     playgrounds = listOf(
-                        Playground(1, "Playground 1", "Address 1", 4.5, true, 5, 10.0, "image_url"),
-                        Playground(2, "Playground 2", "Address 2", 4.0, true, 7, 8.0, "image_url")
+                        Playground(1, "Playground 1", "Address 1", 4.5, true, 5, 10.0, true,null),
+                        Playground(2, "Playground 2", "Address 2", 4.0, true, 7, 8.0, true,null)
                     ),
                     playgroundCount = 2
                 )

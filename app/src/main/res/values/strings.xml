@@ -190,6 +190,7 @@
     <string name="go_to_settings">Go to Settings</string>
     <string name="clear">Clear</string>
     <string name="distance_away">%s Km Away</string>
+    <string name="my_favorite_stadiums">My favorite stadiums</string>
 
 
 </resources>

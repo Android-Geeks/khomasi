@@ -181,7 +181,8 @@ fun FavouritePagePreview() {
                 feesForHour = 100,
                 isBookable = true,
                 distance = 5.0,
-                playgroundPicture = null
+                playgroundPicture = null,
+                isFavourite = true
             )
         }
         val mockFavouritePlaygroundResponse = FavouritePlaygroundResponse(mockData, 10)

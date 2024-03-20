@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.navigation.Screens
 import com.company.khomasi.navigation.listOfNavItems
+import com.company.khomasi.presentation.favorite.FavouritePage
 import com.company.khomasi.presentation.home.HomeScreen
 import com.company.khomasi.presentation.home.HomeViewModel
 import com.company.khomasi.presentation.navigation.components.BottomNavigationBar
