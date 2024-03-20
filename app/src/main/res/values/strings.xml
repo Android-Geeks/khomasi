@@ -181,6 +181,10 @@
     <string name="invalid_phone_number_message">Invalid phone number</string>
     <string name="invalid_name_message"> A name should contain at least a minimum length of two characters and not contain digits.</string>
     <string name="not_matched_passwords">New password does not match. Enter new password again here.</string>
+    <string name="user_name">Captain</string>
+    <string name="hello">hello</string>
+    <string name="welcome_message">Good day</string>
+    <string name="search_for_playgrounds">Find playgrounds</string>
     <string name="location_permission_required">Location Permission Required</string>
     <string name="location_permission_message">This app needs location permissions to work properly. Please enable the location permission in settings.</string>
     <string name="go_to_settings">Go to Settings</string>

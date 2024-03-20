@@ -1,5 +1,4 @@
-package com.company.khomasi.presentation.ui.screens
-
+package com.company.khomasi.presentation.playground
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -20,37 +19,32 @@ import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.utils.convertToBitmap
 
 @Composable
-fun FavoriteScreen(
-    viewModel: VM = hiltViewModel()
-) {
-    val state = viewModel.registerState.collectAsState().value
-    LaunchedEffect(key1 = viewModel.registerState.value) {
-        Log.d("FavoriteScreen", "FavoriteScreen: ${viewModel.registerState.value}")
+fun PlaygroundScreen() {
+    val playgroundViewModel: PlaygroundViewModel = hiltViewModel()
+    val state = playgroundViewModel.playgroundState.collectAsState().value
+    LaunchedEffect(key1 = playgroundViewModel.playgroundState.value) {
+        Log.d("FavoriteScreen", "FavoriteScreen: ${playgroundViewModel.playgroundState.value}")
     }
     if (state is DataState.Success) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.SpaceAround,
         ) {
-            Text(text = state.data.playgrounds[0].name)
+            Text(text = state.data.playground.holidays)
             AsyncImage(
                 model = ImageRequest.Builder(context = LocalContext.current)
-                    .data(state.data.playgrounds[1].playgroundPicture?.convertToBitmap())
-                    .crossfade(true)
-                    .build(),
-                contentDescription = null
+                    .data(state.data.playgroundPictures[0].picture.convertToBitmap())
+                    .crossfade(true).build(), contentDescription = null
             )
         }
-
     }
+
 }
 
-
-@Preview(showSystemUi = true)
+@Preview
 @Composable
-fun FavoritePreview() {
-
+fun kkk() {
     KhomasiTheme {
-        FavoriteScreen()
+        PlaygroundScreen()
     }
 }

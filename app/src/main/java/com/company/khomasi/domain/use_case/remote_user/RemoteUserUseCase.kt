@@ -6,5 +6,5 @@ data class RemoteUserUseCase(
     val deleteUserFavoriteUseCase : DeleteUserFavouriteUseCase,
     val getUserFavoritePlaygroundsUseCase : GetUserFavoritePlaygroundsUseCase,
     val userFavouriteUseCase: UserFavouriteUseCase
+    val getSpecificPlaygroundUseCase: GetSpecificPlaygroundUseCase
 )
-

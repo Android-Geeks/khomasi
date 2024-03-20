@@ -5,6 +5,7 @@ import com.company.khomasi.data.data_source.remote.RetrofitService
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
+import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.model.UserBookingsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
@@ -98,6 +99,21 @@ class RemoteUserRepositoryImpl(
             emit(DataState.Loading)
             try {
                 val response = retrofitService.getPlaygrounds(token, userId)
+                emit(DataState.Success(response))
+            } catch (e: Exception) {
+                emit(DataState.Error(e.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun getSpecificPlayground(
+        token: String,
+        id: Int
+    ): Flow<DataState<PlaygroundScreenResponse>> {
+        return flow {
+            emit(DataState.Loading)
+            try {
+                val response = retrofitService.getSpecificPlayground(token, id)
                 emit(DataState.Success(response))
             } catch (e: Exception) {
                 emit(DataState.Error(e.toString()))

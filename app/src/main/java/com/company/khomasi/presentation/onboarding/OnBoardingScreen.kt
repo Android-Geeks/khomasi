@@ -88,6 +88,6 @@ fun OnBoardingScreen(
 @Composable
 fun OnBoardingScreenPreview() {
     KhomasiTheme {
-
+        OnBoardingScreen({})
     }
 }

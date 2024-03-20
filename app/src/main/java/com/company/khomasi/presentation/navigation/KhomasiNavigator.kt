@@ -18,6 +18,7 @@ import com.company.khomasi.presentation.navigation.components.BottomNavigationBa
 import com.company.khomasi.presentation.search.SearchScreen
 import com.company.khomasi.presentation.search.SearchViewModel
 
+
 @Composable
 fun KhomasiNavigator() {
     val navController = rememberNavController()
@@ -83,7 +84,6 @@ fun KhomasiNavigator() {
                     onBackPage = searchViewModel::onBackPage,
                     onNextPage = searchViewModel::onNextPage,
                 )
-
             }
         }
     }

@@ -3,6 +3,7 @@ package com.company.khomasi.domain.repository
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
+import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.model.UserBookingsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
@@ -27,4 +28,7 @@ interface RemoteUserRepository {
     suspend fun deleteUserFavourite(userId: String,playgroundId:String): Flow<DataState<MessageResponse>>
     suspend fun  getUserFavouritePlaygrounds(userId: String):Flow<DataState<FavouritePlaygroundResponse>>
     suspend fun userFavourite(userId: String,playgroundId:String):Flow<DataState<MessageResponse>>
+
+    suspend fun getSpecificPlayground(token: String, id: Int): Flow<DataState<PlaygroundScreenResponse>>
+
 }

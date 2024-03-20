@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
+import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
 import com.company.khomasi.theme.KhomasiTheme
@@ -154,8 +155,10 @@ fun BookingCard(
                                 modifier = Modifier
                                     .padding(start = 92.dp, end = 92.dp)
                                     .weight(1f),
-                                color = if (isDark) ButtonDefaults.buttonColors(darkWarningColor) else ButtonDefaults.buttonColors(lightWarningColor),
-                                )
+                                color = if (isDark) ButtonDefaults.buttonColors(darkWarningColor) else ButtonDefaults.buttonColors(
+                                    lightWarningColor
+                                ),
+                            )
                         }
 
                         BookingStatus.EXPIRED -> {
@@ -167,7 +170,7 @@ fun BookingCard(
                                 modifier = Modifier
                                     .weight(1f)
                                     .height(46.dp),
-                                )
+                            )
 
                             Spacer(modifier = Modifier.width(8.dp))
 
@@ -176,8 +179,8 @@ fun BookingCard(
                                 onClick = { },
                                 icon = R.drawable.chatcircledots,
                                 modifier = Modifier
-                                    .weight(1f) ,
-                                )
+                                    .weight(1f),
+                            )
                         }
                     }
 
@@ -204,7 +207,7 @@ fun BookingCardDetails(
                 .fillMaxWidth()
                 .height(120.dp),
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(bookingDetails.playground.imageUrl)
+                .data(bookingDetails.playground.playgroundPicture)
                 .crossfade(true)
                 .build(),
             contentDescription = null,
@@ -237,7 +240,7 @@ fun BookingCardDetails(
                 iconId = R.drawable.clock
             )
             TextWithIcon(
-                text = bookingDetails.playground.price,
+                text = "bookingDetails.playground.price",
                 iconId = R.drawable.currencycircledollar
             )
         }
@@ -248,7 +251,7 @@ fun BookingCardDetails(
 fun TextWithIcon(
     text: String,
     @DrawableRes iconId: Int,
-    isDark : Boolean = isSystemInDarkTheme()
+    isDark: Boolean = isSystemInDarkTheme()
 ) {
     Row(
         modifier = Modifier
@@ -287,14 +290,15 @@ private fun BookingCardPreview() {
                 "50 $ per hour ",
                 "2425",
                 Playground(
-                    "Zsc",
-                    "Tanta",
-                    "https://2u.pw/KqnLykO",
-                    3.8f,
-                    "50 $ per hour",
-                    "from 12 PM to 12 AM",
-                    isFavorite = true,
-                    isBookable = false
+                    1,
+                    "Al Zamalek Club",
+                    "Nasr City",
+                    4.5,
+                    true,
+                    50,
+                    5.0,
+                    false,
+                    "https://www.google.com"
                 ),
                 statusOfBooking = BookingStatus.CONFIRMED
             ),

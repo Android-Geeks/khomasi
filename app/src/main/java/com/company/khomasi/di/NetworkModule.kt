@@ -12,6 +12,7 @@ import com.company.khomasi.domain.use_case.auth.RecoverAccountUseCase
 import com.company.khomasi.domain.use_case.auth.RegisterUseCase
 import com.company.khomasi.domain.use_case.remote_user.DeleteUserFavouriteUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetPlaygroundsUseCase
+import com.company.khomasi.domain.use_case.remote_user.GetSpecificPlaygroundUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetUserBookingsUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetUserFavoritePlaygroundsUseCase
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
@@ -85,6 +86,8 @@ object NetworkModule {
         getUserFavoritePlaygroundsUseCase = GetUserFavoritePlaygroundsUseCase(remoteUserRepository),
         deleteUserFavoriteUseCase = DeleteUserFavouriteUseCase(remoteUserRepository),
         getUserBookingsUseCase = GetUserBookingsUseCase(remoteUserRepository),
-        userFavouriteUseCase = UserFavouriteUseCase(remoteUserRepository)
+        userFavouriteUseCase = UserFavouriteUseCase(remoteUserRepository),
+        getSpecificPlaygroundUseCase = GetSpecificPlaygroundUseCase(remoteUserRepository)
+
     )
 }

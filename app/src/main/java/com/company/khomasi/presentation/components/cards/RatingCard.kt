@@ -25,6 +25,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
@@ -34,6 +35,8 @@ import com.company.khomasi.theme.KhomasiTheme
 @Composable
 fun RatingCard(
     @StringRes buttonText: Int,
+    mainText: String,
+    subText: String,
     modifier: Modifier = Modifier,
     @DrawableRes timeIcon: Int = 0,
 ) {
@@ -51,6 +54,36 @@ fun RatingCard(
                 .fillMaxSize()
                 .background(color = MaterialTheme.colorScheme.background)
         ) {
+            Column(
+                verticalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxHeight()
+                    .padding(horizontal = 8.dp)
+            ) {
+                Text(
+                    text = mainText,
+                    style = MaterialTheme.typography.displayLarge,
+                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    if (timeIcon != 0) {
+                        Icon(
+                            painter = painterResource(timeIcon),
+                            contentDescription = " ",
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.padding(end = 4.dp)
+                        )
+                    }
+                    Text(
+                        text = subText,
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.primary,
+                        textAlign = TextAlign.Start
+                    )
+
+                }
+            }
+            Spacer(modifier = Modifier.weight(0.9f))
+
             Box(modifier = Modifier) {
                 Image(
                     painter = painterResource(id = R.drawable.group_lines),
@@ -67,44 +100,14 @@ fun RatingCard(
                     Spacer(modifier = Modifier.weight(0.5f))
                     MyButton(
                         text = buttonText,
-                        onClick = {  },
+                        onClick = { },
                         shape = MaterialTheme.shapes.small,
                         modifier = Modifier
-                        )
+                    )
                     Spacer(modifier = Modifier.weight(0.5f))
 
                 }
             }
-            Spacer(modifier = Modifier.weight(0.9f))
-            Column(
-                horizontalAlignment = Alignment.End,
-                verticalArrangement = Arrangement.SpaceEvenly,
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .padding(horizontal = 8.dp)
-            ) {
-                Text(
-                    text = "rating",
-                    style = MaterialTheme.typography.displayLarge,
-                )
-                Row {
-
-                    Text(
-                        text = "time",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.primary
-                    )
-                    if (timeIcon != 0) {
-                        Icon(
-                            painter = painterResource(timeIcon),
-                            contentDescription = " ",
-                            tint = MaterialTheme.colorScheme.primary,
-                            modifier = Modifier.padding(top = 6.dp, start = 4.dp)
-                        )
-                    }
-                }
-            }
-
         }
     }
 }
@@ -117,6 +120,8 @@ fun PreviewRatingCard() {
     KhomasiTheme {
         RatingCard(
             buttonText = R.string.ratings,
+            mainText = "Was a perfect match",
+            subText = "Rating the playgrounds",
             timeIcon = R.drawable.clock
         )
     }
