@@ -22,4 +22,6 @@ object Constants {
     const val USER_ID = "user_id"
     const val IS_LOGIN = "is_login"
     const val IS_ONBOARDING = "is_onboarding"
+
+    const val SEARCH_HISTORY = "search_history"
 }

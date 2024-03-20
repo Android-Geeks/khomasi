@@ -99,13 +99,15 @@
     <string name="rebook">Rebook</string>
     <string name="rate_field">Rate Field</string>
     <string name="waiting">Waiting</string>
-    <string name="clear_history">Clear History!</string>
+    <string name="clear_history_">Clear History!</string>
     <string name="confirm_clear_history">Are you sure you want to clear the search history?</string>
     <string name="delete">Delete</string>
     <string name="search_history">Search History</string>
     <string name="search_for_field">Search for Field</string>
+    <string name="search_for">Search for…</string>
     <string name="lowest_price">Lowest Price</string>
     <string name="rating">Rating</string>
+    <string name="remove">Remove</string>
     <string name="show_all_results">Show All Results</string>
     <string name="back_to_home">Back to Home</string>
     <string name="share_your_feedback">Share Your Feedback</string>
@@ -155,10 +157,11 @@
     <string name="send_verification_email">Send Verification Email</string>
     <string name="save_changes">Save Changes</string>
     <string name="privacy_policy">Privacy Policy</string>
-    <string name="bookable">bookable</string>
-    <string name="un_bookable">un bookable</string>
-    <string name="unbookable">unbookable</string>
-    <string name="view_playground">view playground</string>
+    <string name="bookable">Bookable</string>
+    <string name="un_bookable">Unbookable</string>
+    <string name="unbookable">Unbookable</string>
+    <string name="view_playground">View Playground</string>
+    <string name="fees_per_hour">%1$d EGP / hour</string>
     <string name="forgot_your_password">Forgot your password ?</string>
     <string name="enter_email_to_reset_password">Enter your email to reset your password.</string>
     <string name="set_password">Set password</string>
@@ -178,11 +181,15 @@
     <string name="invalid_phone_number_message">Invalid phone number</string>
     <string name="invalid_name_message"> A name should contain at least a minimum length of two characters and not contain digits.</string>
     <string name="not_matched_passwords">New password does not match. Enter new password again here.</string>
+    <string name="location_permission_required">Location Permission Required</string>
+    <string name="location_permission_message">This app needs location permissions to work properly. Please enable the location permission in settings.</string>
+    <string name="go_to_settings">Go to Settings</string>
+    <string name="clear">Clear</string>
+    <string name="distance_away">%s Km Away</string>
     <string name="user_name">Captain</string>
     <string name="hello">hello</string>
     <string name="welcome_message">Good day</string>
     <string name="search_for_playgrounds">Find playgrounds</string>
-    <string name="fees_per_hour">%1$d EGP/hour</string>
 
 
 </resources>

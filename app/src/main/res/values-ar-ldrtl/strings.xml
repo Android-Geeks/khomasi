@@ -88,8 +88,10 @@
     <string name="action_will_cancel_booking">باتخاذك لهذا الإجراء سيتم إلغاء الحجز الخاص بملعب الشهداء</string>
     <string name="reset_filter">إعادة تعيين الفلتر</string>
     <string name="booking_confirmed">تم تأكيد الحجز</string>
+    <string name="fees_per_hour">%1$d جنيه / ساعة</string>
     <string name="contact">اتصال</string>
     <string name="verification_code">رمز التحقق</string>
+    <string name="search_for">ابحث عن…</string>
     <string name="reset">إعادة التعيين</string>
     <string name="cancel_booking">الغاء الحجز</string>
     <string name="back">تراجع</string>
@@ -99,7 +101,7 @@
     <string name="rebook">اعادة الحجز</string>
     <string name="rate_field">تقييم الملعب</string>
     <string name="waiting">في الانتظار</string>
-    <string name="clear_history">مسح السجل!</string>
+    <string name="clear_history_">مسح السجل!</string>
     <string name="confirm_clear_history">هل تريد حقاً مسح سجل البحث؟</string>
     <string name="cancel">تراجع</string>
     <string name="delete">حذف</string>
@@ -182,5 +184,11 @@
     <string name="hello">مرحبا</string>
     <string name="welcome_message">طاب يومك</string>
     <string name="search_for_playgrounds">ابحث عن ملاعب</string>
-    <string name="fees_per_hour">%1$d جنيه/ساعة</string>
+    <string name="remove">حذف</string>
+    <string name="location_permission_required">الإذن بالموقع مطلوب</string>
+    <string name="location_permission_message">هذا التطبيق يحتاج إلى إذن الموقع للعمل بشكل صحيح. يرجى تمكين إذن الموقع في الإعدادات.</string>
+    <string name="go_to_settings">اذهب إلى الإعدادات</string>
+    <string name="clear">مسح</string>
+    <string name="distance_away">يبعد %1$s كم</string>
+
 </resources>
