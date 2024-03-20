@@ -24,7 +24,7 @@ data class UserLoginData(
     val country: String,
     @SerialName("email")
     val email: String,
-    @SerialName("name")
+    @SerialName("firstName")
     val firstName: String,
     @SerialName("lastName")
     val lastName: String,

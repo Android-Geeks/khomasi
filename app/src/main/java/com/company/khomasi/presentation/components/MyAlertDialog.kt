@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -62,7 +63,10 @@ fun MyAlertDialog(
             }
         },
         dismissButton = dismissButton,
-        modifier = modifier,
+        modifier = modifier.shadow(
+            elevation = 8.dp,
+            shape = MaterialTheme.shapes.medium
+        ),
         containerColor = if (isDark) darkOverlay else lightOverlay,
         shape = RoundedCornerShape(12.dp)
     )
