@@ -8,7 +8,6 @@ data class FavouriteUiState(
     val price: String=" ",
     val openingHours: String=" ",
     val isFavorite: Boolean=false,
-    val isBookable: Boolean=false,
     val userId:String=" ",
     val playgroundId:String=" ",
 )

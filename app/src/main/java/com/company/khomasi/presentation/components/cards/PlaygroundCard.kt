@@ -37,6 +37,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.domain.model.Playground
+import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.iconButtons.FavoriteIcon
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkCard
@@ -55,9 +56,7 @@ fun PlaygroundCard(
     isDark: Boolean = isSystemInDarkTheme()
 ) {
     Card(
-        colors = cardColors(
-            containerColor = if (isDark) darkCard else lightCard,
-        ),
+        colors = cardColors(containerColor = MaterialTheme.colorScheme.surface),
         shape = MaterialTheme.shapes.large,
         modifier = modifier
             .fillMaxWidth()
@@ -116,7 +115,8 @@ fun PlaygroundCard(
                 }
             }
 
-            Row(modifier = Modifier.fillMaxWidth()) {
+            Row(modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = playground.name,
                     textAlign = TextAlign.Start,
@@ -139,7 +139,7 @@ fun PlaygroundCard(
                     painter = painterResource(id = R.drawable.unfilled_star),
                     contentDescription = null,
                     modifier = Modifier
-                        .padding(top = 13.dp, start = 4.dp)
+                        .padding(top = 8.dp, start = 4.dp)
                 )
 
             }
@@ -186,26 +186,33 @@ fun PlaygroundCard(
                     style = MaterialTheme.typography.bodyLarge,
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                Box(
+//                Box(
+//                    modifier = Modifier
+//                        .weight(3f)
+//                        .height(48.dp)
+//                        .background(
+//                            color = MaterialTheme.colorScheme.primary,
+//                            shape = MaterialTheme.shapes.medium
+//                        )
+//                        .clickable {
+//                            onViewPlaygroundClick()
+//                        },
+//                    contentAlignment = Alignment.Center
+//                ) {
+//                    Text(
+//                        text = stringResource(id = R.string.view_playground),
+//                        textAlign = TextAlign.Center,
+//                        style = MaterialTheme.typography.titleLarge,
+//                        color = MaterialTheme.colorScheme.background
+//                    )
+//                }
+                MyButton(
+                    text = R.string.view_playground,
+                    onClick = { onViewPlaygroundClick() },
                     modifier = Modifier
                         .weight(3f)
                         .height(48.dp)
-                        .background(
-                            color = MaterialTheme.colorScheme.primary,
-                            shape = MaterialTheme.shapes.medium
-                        )
-                        .clickable {
-                            onViewPlaygroundClick()
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.view_playground),
-                        textAlign = TextAlign.Center,
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.background
-                    )
-                }
+                )
             }
         }
     }

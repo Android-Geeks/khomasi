@@ -1,9 +1,10 @@
+package com.company.khomasi.presentation.favorite
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.Playground
-import com.company.khomasi.presentation.favorite.FavouriteUiState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -24,8 +25,8 @@ class MockViewModel(
            
                 val mockResponse = FavouritePlaygroundResponse(
                     playgrounds = listOf(
-                        Playground(1, "Playground 1", "Address 1", 4.5, true, 5, 10.0, "image_url"),
-                        Playground(2, "Playground 2", "Address 2", 4.0, true, 7, 8.0, "image_url")
+                        Playground(1, "Playground 1", "Address 1", 4.5, true, 5, 10.0, true,"image_url"),
+                        Playground(2, "Playground 2", "Address 2", 4.0, true, 7, 8.0, true,"image_url")
                     ),
                     playgroundCount = 2
                 )

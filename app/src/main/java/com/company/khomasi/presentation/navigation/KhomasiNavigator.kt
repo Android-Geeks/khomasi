@@ -10,12 +10,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.navigation.Screens
 import com.company.khomasi.navigation.listOfNavItems
+import com.company.khomasi.presentation.myBookings.MyBookingPage
+import com.company.khomasi.presentation.myBookings.MyBookingViewModel
 import com.company.khomasi.presentation.navigation.components.BottomNavigationBar
 import com.company.khomasi.presentation.search.SearchScreen
 import com.company.khomasi.presentation.search.SearchViewModel
 import com.company.khomasi.presentation.ui.screens.FavoriteScreen
 import com.company.khomasi.presentation.ui.screens.HomeScreen
-import com.company.khomasi.presentation.ui.screens.MyBookingsScreen
 import com.company.khomasi.presentation.ui.screens.PlaygroundsScreen
 
 @Composable
@@ -42,7 +43,12 @@ fun KhomasiNavigator() {
                 FavoriteScreen()
             }
             composable(route = Screens.MyBookings.name) {
-                MyBookingsScreen()
+                val myBookingViewModel: MyBookingViewModel = hiltViewModel()
+                MyBookingPage(
+                    myBookingPlaygrounds = myBookingViewModel::myBookingPlaygrounds,
+                    uiState = myBookingViewModel.uiState,
+                    myBooking = myBookingViewModel.myBooking
+                )
             }
             composable(route = Screens.Playgrounds.name) {
                 PlaygroundsScreen()

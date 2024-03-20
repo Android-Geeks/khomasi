@@ -1,6 +1,6 @@
 package com.company.khomasi.presentation.favorite
 
-import MockViewModel
+import android.content.res.Configuration
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -101,19 +101,17 @@ fun FavouritePage(
                         EmptyScreen()
                     }
                 }
-
                 is DataState.Loading -> {
                 }
-
                 is DataState.Error -> {
                 }
-
                 else -> {
                 }
             }
         }
     }
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -166,7 +164,8 @@ fun EmptyScreen(
     }
 }
 
-@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "light", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "dark", locale = "ar", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun FavouritePagePreview() {
     KhomasiTheme {
@@ -179,9 +178,10 @@ fun FavouritePagePreview() {
                 address = "Address",
                 rating = 4.5,
                 feesForHour = 100,
-                isBookable = true,
+                isFavourite = true,
                 distance = 5.0,
-                playgroundPicture = null
+                playgroundPicture = null,
+                isBookable = false
             )
         }
         val mockFavouritePlaygroundResponse = FavouritePlaygroundResponse(mockData, 10)
@@ -197,7 +197,8 @@ fun FavouritePagePreview() {
     }
 }
 
-@Preview(uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "light", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_NO)
+@Preview(name = "dark", locale = "ar", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun FavouritePageEmptyPreview() {
     KhomasiTheme {
