@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.playground
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import com.company.khomasi.domain.DataState
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.utils.convertToBitmap
 
+@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun PlaygroundScreen() {
     val playgroundViewModel: PlaygroundViewModel = hiltViewModel()
