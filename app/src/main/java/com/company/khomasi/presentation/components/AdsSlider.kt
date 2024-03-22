@@ -38,7 +38,7 @@ import kotlin.math.absoluteValue
 
 data class AdsContent(
     val imageSlider: Painter,
-    val contentText: String,
+    val contentText: String = "",
 )
 
 @OptIn(ExperimentalPagerApi::class)

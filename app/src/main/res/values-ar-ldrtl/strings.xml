@@ -74,6 +74,7 @@
     <string name="time">الوقت</string>
     <string name="duration">المدة</string>
     <string name="field_size">مقاس الملعب</string>
+    <string name="field_features">مميزات الملعب</string>
     <string name="top_rating">الأعلى تقييماً</string>
     <string name="nearest_to_me">الأقرب لي</string>
     <string name="available_for_booking">القابل للحجز</string>
@@ -109,6 +110,7 @@
     <string name="search_for_field">ابحث عن ملعب</string>
     <string name="lowest_price">أقل سعر</string>
     <string name="rating">التقييم</string>
+    <string name="rate">تقييم</string>
     <string name="show_all_results">عرض كل النتائج</string>
     <string name="back_to_home">العودة للرئيسية</string>
     <string name="share_your_feedback">شاركنا رأيك</string>
@@ -170,6 +172,7 @@
     <string name="un_bookable">غير قابل للحجز</string>
     <string name="unbookable">غير قابل للحجز</string>
     <string name="view_playground">عرض الملعب</string>
+    <string name="view_ratings">عرض التقييمات</string>
     <string name="and">و</string>
     <string name="do_not_have_an_account">لا تملك حساب؟</string>
     <string name="create_an_account_now">إنشاء حساب الان</string>

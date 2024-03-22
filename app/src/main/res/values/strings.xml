@@ -74,6 +74,7 @@
     <string name="time">Time</string>
     <string name="duration">Duration</string>
     <string name="field_size">Field Size</string>
+    <string name="field_features">Field features</string>
     <string name="top_rating">Top Rating</string>
     <string name="nearest_to_me">Nearest to Me</string>
     <string name="available_for_booking">Available for Booking</string>
@@ -107,6 +108,8 @@
     <string name="search_for">Search for…</string>
     <string name="lowest_price">Lowest Price</string>
     <string name="rating">Rating</string>
+    <string name="rate">reviews</string>
+    <string name="view_ratings">View ratings</string>
     <string name="remove">Remove</string>
     <string name="show_all_results">Show All Results</string>
     <string name="back_to_home">Back to Home</string>
