@@ -20,7 +20,7 @@ fun FavoriteIcon(
     Icon(
         painter = painterResource(id = if (isFavorite) R.drawable.heart_fill else R.drawable.heart),
         contentDescription = null,
-        tint = if (isFavorite) MaterialTheme.colorScheme.primary else Color.White,
+        tint = if (isFavorite) MaterialTheme.colorScheme.primary else Color.Black,
         modifier = modifier.clickable {
             onFavoriteClick()
         }
