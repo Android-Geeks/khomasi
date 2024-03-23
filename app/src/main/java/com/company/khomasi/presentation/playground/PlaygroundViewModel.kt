@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
-import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +20,11 @@ class PlaygroundViewModel @Inject constructor(
         MutableStateFlow(DataState.Empty)
     val playgroundState: StateFlow<DataState<PlaygroundScreenResponse>> = _playgroundState
 
+    private val _uiState: MutableStateFlow<PlaygroundUiState> =
+        MutableStateFlow(PlaygroundUiState())
+    val uiState: StateFlow<PlaygroundUiState> = _uiState
+
+
     init {
         viewModelScope.launch {
             remoteUserUseCase.getSpecificPlaygroundUseCase(
@@ -30,5 +34,8 @@ class PlaygroundViewModel @Inject constructor(
                 _playgroundState.value = it
             }
         }
+    }
+    fun onClickFavourite() {
+        _uiState.value = _uiState.value.copy(isFavourite = !_uiState.value.isFavourite)
     }
 }
