@@ -194,6 +194,9 @@
     <string name="clear">Clear</string>
     <string name="distance_away">%s Km Away</string>
     <string name="my_favorite_stadiums">My favorite stadiums</string>
+    <string name="book_now">Book now</string>
+    <string name="field_size_5x5">5 X 5</string>
+    <string name="Show_on_map">Show on map</string>
 
 
 </resources>
