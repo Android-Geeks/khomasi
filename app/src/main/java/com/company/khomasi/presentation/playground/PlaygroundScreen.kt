@@ -74,7 +74,13 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 
+/*
+/////////////////////////////////////////////////////////////////////////////////////
+      Still want to solve the issue of favourite icon and location icon color
+      Add the logic of the PlaygroundId when navigate from home
+/////////////////////////////////////////////////////////////////////////////////////
 
+*/
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun PlaygroundScreen(
