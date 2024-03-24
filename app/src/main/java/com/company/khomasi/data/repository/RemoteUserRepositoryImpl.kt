@@ -177,4 +177,36 @@ class RemoteUserRepositoryImpl(
             }
         }.flowOn(Dispatchers.IO)
     }
+
+    override suspend fun uploadProfilePicture(
+        token: String,
+        userId: String,
+        picture: String
+    ): Flow<DataState<MessageResponse>> {
+        return flow {
+            emit(DataState.Loading)
+            try {
+                val response = retrofitService.uploadProfilePicture(token, userId, picture)
+                emit(DataState.Success(response))
+            } catch (e: Exception) {
+                emit(DataState.Error(e.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun updateUser(
+        token: String,
+        userId: String,
+        user: UserRegisterData
+    ): Flow<DataState<MessageResponse>> {
+        return flow {
+            emit(DataState.Loading)
+            try {
+                val response = retrofitService.updateUser(token, userId, user)
+                emit(DataState.Success(response))
+            } catch (e: Exception) {
+                emit(DataState.Error(e.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
 }

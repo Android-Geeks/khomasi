@@ -24,11 +24,33 @@ interface RemoteUserRepository {
     ): Flow<DataState<MessageResponse>>
 
     suspend fun getPlaygrounds(token: String, userId: String): Flow<DataState<PlaygroundsResponse>>
-    suspend fun getUserBookings(id:String):Flow<DataState<UserBookingsResponse>>
-    suspend fun deleteUserFavourite(userId: String,playgroundId:String): Flow<DataState<MessageResponse>>
-    suspend fun  getUserFavouritePlaygrounds(userId: String):Flow<DataState<FavouritePlaygroundResponse>>
-    suspend fun userFavourite(userId: String,playgroundId:String):Flow<DataState<MessageResponse>>
+    suspend fun getUserBookings(id: String): Flow<DataState<UserBookingsResponse>>
+    suspend fun deleteUserFavourite(
+        userId: String,
+        playgroundId: String
+    ): Flow<DataState<MessageResponse>>
 
-    suspend fun getSpecificPlayground(token: String, id: Int): Flow<DataState<PlaygroundScreenResponse>>
+    suspend fun getUserFavouritePlaygrounds(userId: String): Flow<DataState<FavouritePlaygroundResponse>>
+    suspend fun userFavourite(
+        userId: String,
+        playgroundId: String
+    ): Flow<DataState<MessageResponse>>
+
+    suspend fun getSpecificPlayground(
+        token: String,
+        id: Int
+    ): Flow<DataState<PlaygroundScreenResponse>>
+
+    suspend fun uploadProfilePicture(
+        token: String,
+        userId: String,
+        picture: String
+    ): Flow<DataState<MessageResponse>>
+
+    suspend fun updateUser(
+        token: String,
+        userId: String,
+        user: UserRegisterData
+    ): Flow<DataState<MessageResponse>>
 
 }
