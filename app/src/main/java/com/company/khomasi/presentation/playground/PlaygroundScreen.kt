@@ -13,6 +13,7 @@ import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -76,7 +77,7 @@ import com.google.accompanist.pager.rememberPagerState
 
 /*
 /////////////////////////////////////////////////////////////////////////////////////
-      Still want to solve the issue of favourite icon and location icon color
+      Still want to solve the issue of favourite icon
       Add the logic of the PlaygroundId when navigate from home
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -438,9 +439,10 @@ fun PlaygroundDefinition(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Icon(
+                        Image(
                             painterResource(id = R.drawable.logos_google_maps),
                             contentDescription = null,
+                            modifier = Modifier.size(width = 11.dp, height = 16.dp)
                         )
                         Spacer(modifier = Modifier.width(4.dp))
                         Text(
