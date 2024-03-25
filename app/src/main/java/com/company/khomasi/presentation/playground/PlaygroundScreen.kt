@@ -303,7 +303,8 @@ fun ImageSlider(
                         FavoriteIcon(
                             onFavoriteClick = { onClickFav() },
                             isFavorite = isFav,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(24.dp),
+                            inactiveColor = Color.Black
                         )
                     }
                 }
