@@ -197,7 +197,7 @@ fun HomeContent(
             items(visiblePlaygrounds) { playground ->
                 PlaygroundCard(
                     playground = playground,
-                    onFavouriteClick = {},
+                    onFavouriteClick = {},          // WILL BE IMPLEMENTED LATER
                     onViewPlaygroundClick = {}
                 )
             }
