@@ -9,8 +9,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class MockViewModel(
-) : ViewModel() {
+class MockFavViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(FavouriteUiState(userId = "")) // Initialize with an empty userId
     val uiState: StateFlow<FavouriteUiState> = _uiState
@@ -18,15 +17,18 @@ class MockViewModel(
     private val _favouritePlaygroundsState = MutableStateFlow<DataState<FavouritePlaygroundResponse>>(DataState.Empty)
     val favouritePlaygroundsState: StateFlow<DataState<FavouritePlaygroundResponse>> = _favouritePlaygroundsState
 
-    fun fetchUserFavoritePlaygrounds(userId: String) {
+    init {
+        fetchUserFavoritePlaygrounds()
+    }
+
+    fun fetchUserFavoritePlaygrounds() {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(userId = userId) // Update userId in the uiState
-            _favouritePlaygroundsState.value = DataState.Loading
+            _uiState.value = _uiState.value
            
                 val mockResponse = FavouritePlaygroundResponse(
                     playgrounds = listOf(
-                        Playground(1, "Playground 1", "Address 1", 4.5, true, 5, 10.0, true,"image_url"),
-                        Playground(2, "Playground 2", "Address 2", 4.0, true, 7, 8.0, true,"image_url")
+                        Playground(1, "Playground 1", "Address 1", 4.5, true, 5, 10.0, true,null),
+                        Playground(2, "Playground 2", "Address 2", 4.0, true, 7, 8.0, true,null)
                     ),
                     playgroundCount = 2
                 )
@@ -35,9 +37,7 @@ class MockViewModel(
         }
     }
 
-    fun addToFavorites(userId: String, playgroundId: String) {
-    }
 
-    fun removeFromFavorites(userId: String, playgroundId: String) {
+    fun removeFromFavorites(playgroundId: String) {
     }
 }

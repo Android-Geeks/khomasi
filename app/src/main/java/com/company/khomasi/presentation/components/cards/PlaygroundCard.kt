@@ -56,7 +56,9 @@ fun PlaygroundCard(
     isDark: Boolean = isSystemInDarkTheme()
 ) {
     Card(
-        colors = cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        colors = cardColors(
+            containerColor = MaterialTheme.colorScheme.surface,
+        ),
         shape = MaterialTheme.shapes.large,
         modifier = modifier
             .fillMaxWidth()
@@ -115,8 +117,7 @@ fun PlaygroundCard(
                 }
             }
 
-            Row(modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically) {
+            Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = playground.name,
                     textAlign = TextAlign.Start,
@@ -139,7 +140,7 @@ fun PlaygroundCard(
                     painter = painterResource(id = R.drawable.unfilled_star),
                     contentDescription = null,
                     modifier = Modifier
-                        .padding(top = 8.dp, start = 4.dp)
+                        .padding(top = 13.dp, start = 4.dp)
                 )
 
             }
@@ -206,9 +207,8 @@ fun PlaygroundCard(
 //                        color = MaterialTheme.colorScheme.background
 //                    )
 //                }
-                MyButton(
-                    text = R.string.view_playground,
-                    onClick = { onViewPlaygroundClick() },
+                MyButton(text =  R.string.view_playground,
+                    onClick = {   onViewPlaygroundClick()},
                     modifier = Modifier
                         .weight(3f)
                         .height(48.dp)

@@ -65,6 +65,7 @@ fun getUserLocation(context: Context): LatandLong {
             title = R.string.location_permission_required,
             text = R.string.location_permission_message,
             onDismissRequest = {},
+            confirmButtonText = R.string.go_to_settings,
             onConfirmButtonClick = {
                 navigateToSettings(context)
             },

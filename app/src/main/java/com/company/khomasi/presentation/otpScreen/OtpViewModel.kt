@@ -26,39 +26,33 @@ class OtpViewModel @Inject constructor(
 
     private lateinit var userData: LocalUser
 
-    init {
-        viewModelScope.launch {
-            localUserUseCases.getLocalUser().collect {
-                userData = it
-            }
-        }
-    }
-
-    private val _uiState = MutableStateFlow(
-        OtpUiState(
-            email = userData.email ?: "",
-            code = "",
-            timer = 0
-        )
-    )
+    private val _uiState = MutableStateFlow(OtpUiState())
     val uiState: StateFlow<OtpUiState> = _uiState
 
     private val _otpState: MutableStateFlow<DataState<VerificationResponse>> =
-        MutableStateFlow(
-            DataState.Success(
-                VerificationResponse(
-                    code = userData.otpCode ?: 0,
-                    email = userData.email ?: "",
-                    message = "Confirmation Code Has Been Sent"
-                )
-            )
-        )
+        MutableStateFlow(DataState.Empty)
 
     val otpState: StateFlow<DataState<VerificationResponse>> = _otpState
 
     private val _confirmEmailState: MutableStateFlow<DataState<MessageResponse>> =
         MutableStateFlow(DataState.Empty)
     val confirmEmailState: StateFlow<DataState<MessageResponse>> = _confirmEmailState
+
+    init {
+        viewModelScope.launch {
+            localUserUseCases.getLocalUser().collect {
+                userData = it
+                _uiState.value = _uiState.value.copy(email = it.email ?: "")
+                _otpState.value = DataState.Success(
+                    VerificationResponse(
+                        code = it.otpCode ?: 0,
+                        email = it.email ?: "",
+                        message = "Confirmation Code Has Been Sent"
+                    )
+                )
+            }
+        }
+    }
 
 
     fun updateSmsCode(newCode: String) {

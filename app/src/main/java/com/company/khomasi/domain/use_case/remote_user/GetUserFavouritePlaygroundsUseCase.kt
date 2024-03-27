@@ -6,6 +6,6 @@ class GetUserFavoritePlaygroundsUseCase(
     private val remoteUserRepository: RemoteUserRepository
 
 ) {
-    suspend operator fun invoke(userId: String) =
-        remoteUserRepository.getUserFavouritePlaygrounds(userId)
+    suspend operator fun invoke(token:String,userId: String) =
+        remoteUserRepository.getUserFavouritePlaygrounds(token,userId)
 }

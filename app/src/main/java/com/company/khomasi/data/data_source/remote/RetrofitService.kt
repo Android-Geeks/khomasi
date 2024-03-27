@@ -1,8 +1,8 @@
 package com.company.khomasi.data.data_source.remote
 
-import androidx.room.Delete
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
+import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.model.UserBookingsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
@@ -15,6 +15,8 @@ import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Query
+import retrofit2.http.DELETE
+
 
 interface RetrofitService {
     @POST("Account/register/user")
@@ -48,26 +50,36 @@ interface RetrofitService {
         @Query("userId") userId: String
     ): PlaygroundsResponse
 
+    @GET("Playground/playground")
+    suspend fun getSpecificPlayground(
+        @Header("Authorization") token: String,
+        @Query("id") id: Int
+    ): PlaygroundScreenResponse
+
     @GET("User/bookings")
     suspend fun getUserBookings(
+        @Header("Authorization") token: String,
         @Query("id") id:String
     ):UserBookingsResponse
 
     @POST("User/favorite")
     suspend fun userFavourite(
+        @Header("Authorization") token: String,
         @Query("userId") userId: String,
         @Query("playgroundId") playgroundId: String
 
     ):MessageResponse
 
-    @Delete()
+    @DELETE("User/favorite")
     suspend fun deleteUserFavourite(
+        @Header("Authorization") token: String,
         @Query("userId") userId: String,
         @Query("playgroundId") playgroundId: String
     ):MessageResponse
 
     @GET("User/favorite-playgrounds")
     suspend fun  getUserFavouritePlaygrounds(
+        @Header("Authorization") token: String,
         @Query("userId") userId: String,
     ):FavouritePlaygroundResponse
 }

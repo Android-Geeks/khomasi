@@ -77,6 +77,10 @@ dependencies {
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
 
+
+    implementation ("com.google.accompanist:accompanist-pager:0.13.0")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.13.0")
+
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
@@ -121,10 +125,6 @@ dependencies {
     implementation("com.google.android.gms:play-services-location:21.2.0")
     implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
 
-    // Paging
-    implementation("androidx.paging:paging-runtime:$3.1.1")
-    implementation("androidx.paging:paging-compose:3.2.1")
-
     //Dagger - Hilt
     implementation("com.google.dagger:hilt-android:2.50")
     ksp("com.google.dagger:hilt-android-compiler:2.50")
@@ -155,6 +155,10 @@ dependencies {
 
     //Password meter
     implementation("com.nulab-inc:zxcvbn:1.5.2")
+
+    //Pager
+    implementation ("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0")
 
     // Local unit tests
     testImplementation("androidx.test:core:1.5.0")

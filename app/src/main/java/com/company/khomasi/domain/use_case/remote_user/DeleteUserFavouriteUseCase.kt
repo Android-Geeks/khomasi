@@ -5,6 +5,6 @@ import com.company.khomasi.domain.repository.RemoteUserRepository
 class DeleteUserFavouriteUseCase(
     private val remoteUserRepository: RemoteUserRepository
 ) {
-    suspend operator fun invoke(userId: String,playgroundId:String)=
-        remoteUserRepository.deleteUserFavourite(userId,playgroundId)
+    suspend operator fun invoke(token: String, playgroundId: String, userId: String)=
+        remoteUserRepository.deleteUserFavourite(token,userId,playgroundId)
 }

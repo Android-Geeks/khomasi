@@ -16,14 +16,14 @@ data class UserRegisterResponse(
 
 @Serializable
 data class UserRegisterData(
+    @SerialName("firstName")
+    val firstName: String,
     @SerialName("city")
     val city: String,
     @SerialName("country")
     val country: String,
     @SerialName("email")
     val email: String,
-    @SerialName("firstName")
-    val firstName: String,
     @SerialName("lastName")
     val lastName: String,
     @SerialName("latitude")

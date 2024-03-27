@@ -5,6 +5,6 @@ import com.company.khomasi.domain.repository.RemoteUserRepository
 class UserFavouriteUseCase(
    private val remoteUserRepository: RemoteUserRepository
 ) {
-    suspend operator fun invoke(userId:String,playgroundId:String)=
-        remoteUserRepository.userFavourite(userId,playgroundId)
+    suspend operator fun invoke(token:String,userId:String,playgroundId:String)=
+        remoteUserRepository.userFavourite(token,userId,playgroundId)
 }
