@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
+import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,27 +24,35 @@ class FavouritePlaygroundsViewModel @Inject constructor(
         MutableStateFlow<DataState<FavouritePlaygroundResponse>>(DataState.Empty)
     val favouritePlaygroundsState: StateFlow<DataState<FavouritePlaygroundResponse>> =
         _favouritePlaygroundsState
+    private var localUser = LocalUser()
 
-    fun fetchUserFavoritePlaygrounds(userId: String) {
+    init {
+        fetchUserFavoritePlaygrounds()
+    }
+
+    fun fetchUserFavoritePlaygrounds() {
         viewModelScope.launch {
             _favouritePlaygroundsState.value = DataState.Loading
-            remoteUserUseCase.getUserFavoritePlaygroundsUseCase(_uiState.value.userId).collect {
-                _favouritePlaygroundsState.value = it
+            val token = localUser.token ?: ""
+            val userId = localUser.userID ?: ""
+            remoteUserUseCase.getUserFavoritePlaygroundsUseCase(
+                token = token,
+                userId = userId
+            ).collect { dataState ->
+                _favouritePlaygroundsState.value = dataState
             }
+            _uiState.value = _uiState.value
         }
     }
 
-    fun addToFavorites(userId: String, playgroundId: String) {
+    fun removeFromFavorites(playgroundId: String) {
         viewModelScope.launch {
-            remoteUserUseCase.userFavouriteUseCase(userId, playgroundId)
-            fetchUserFavoritePlaygrounds(userId)
-        }
-    }
+            val token = localUser.token ?: ""
+            val userId = localUser.userID ?: ""
+            // val playgroundId = localUser.userID ?: ""
+            remoteUserUseCase.deleteUserFavoriteUseCase("Bearer $token", userId, playgroundId)
+            _uiState.value = _uiState.value.copy(isFavorite = false)
 
-    fun removeFromFavorites(userId: String, playgroundId: String) {
-        viewModelScope.launch {
-            remoteUserUseCase.deleteUserFavoriteUseCase(userId, playgroundId)
-            fetchUserFavoritePlaygrounds(userId)
         }
     }
 }

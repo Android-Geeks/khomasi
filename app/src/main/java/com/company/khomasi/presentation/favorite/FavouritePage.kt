@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.favorite
 
-import MockViewModel
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -22,7 +21,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -44,20 +42,16 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun FavouritePage(
-    fetchUserFavoritePlaygrounds: (String) -> Unit,
-    addToFavorites: (String, String) -> Unit,
-    removeFromFavorites: (String, String) -> Unit,
+    fetchUserFavoritePlaygrounds: () -> Unit,
+    removeFromFavorites: (String) -> Unit,
     uiState: StateFlow<FavouriteUiState>,
     favouritePlayground: StateFlow<DataState<FavouritePlaygroundResponse>>,
 ) {
     val favouritePlaygroundState by favouritePlayground.collectAsState()
     val favUiState = uiState.collectAsState().value
-
-
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { TopBar() },
-
         ) {
         Surface(
             modifier = Modifier
@@ -65,49 +59,31 @@ fun FavouritePage(
                 .padding(all = 16.dp),
             color = MaterialTheme.colorScheme.background,
         ) {
-            when (favouritePlaygroundState) {
-                is DataState.Success -> {
-                    val response = (favouritePlaygroundState as DataState.Success).data
-                    if (response.playgrounds.isNotEmpty()) {
                         LazyColumn(
                             contentPadding = it,
+                            modifier = Modifier
+                                .fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            items(response.playgrounds) { playground ->
+                            val response = (favouritePlaygroundState as DataState.Success).data
+                            if (favUiState.favPlayground.isNotEmpty()) {
+                                items(favUiState.favPlayground) { playground ->
                                 PlaygroundCard(
                                     playground = playground,
                                     modifier = Modifier.fillMaxWidth(),
                                     onFavouriteClick = {
-                                        if (favUiState.isFavorite) {
-                                            removeFromFavorites(
-                                                favUiState.userId,
-                                                favUiState.playgroundId
-                                            )
-                                        } else {
-                                            addToFavorites(
-                                                favUiState.userId,
-                                                favUiState.playgroundId
-                                            )
-                                        }
+                                        //     removeFromFavorites()
                                     },
                                     onViewPlaygroundClick = {},
                                 )
                             }
+
+                            } else {
+                                item {
+                                    EmptyScreen()
+                                }
+                            }
                         }
-                    } else {
-                        EmptyScreen()
-                    }
-                }
-
-                is DataState.Loading -> {
-                }
-
-                is DataState.Error -> {
-                }
-
-                else -> {
-                }
-            }
         }
     }
 }
@@ -140,7 +116,9 @@ fun EmptyScreen(
     modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(vertical = 24.dp, horizontal = 24.dp),
+        modifier = modifier
+            .padding(start = 24.dp, end = 24.dp, top = 153.dp)
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -167,7 +145,7 @@ fun EmptyScreen(
 @Composable
 fun FavouritePagePreview() {
     KhomasiTheme {
-        val mockViewModel: MockViewModel = viewModel()
+        val mockViewModel: MockFavViewModel = viewModel()
         val mockData = List(10) {
 
             Playground(
@@ -186,29 +164,10 @@ fun FavouritePagePreview() {
         val mockDataState = DataState.Success(mockFavouritePlaygroundResponse)
         FavouritePage(
             fetchUserFavoritePlaygrounds = mockViewModel::fetchUserFavoritePlaygrounds,
-            addToFavorites = mockViewModel::addToFavorites,
             removeFromFavorites = mockViewModel::removeFromFavorites,
             uiState = mockViewModel.uiState,
             // favouritePlayground = mockViewModel.favouritePlaygroundsState,
             favouritePlayground = MutableStateFlow(mockDataState)
-        )
-    }
-}
-
-@Preview(uiMode = UI_MODE_NIGHT_YES)
-@Composable
-fun FavouritePageEmptyPreview() {
-    KhomasiTheme {
-        val mockViewModel: MockViewModel = viewModel()
-        val emptyResponse = FavouritePlaygroundResponse(emptyList(), 0)
-        val emptyDataState = DataState.Success(emptyResponse)
-
-        FavouritePage(
-            fetchUserFavoritePlaygrounds = mockViewModel::fetchUserFavoritePlaygrounds,
-            addToFavorites = mockViewModel::addToFavorites,
-            removeFromFavorites = mockViewModel::removeFromFavorites,
-            uiState = mockViewModel.uiState,
-            favouritePlayground = MutableStateFlow(emptyDataState)
         )
     }
 }

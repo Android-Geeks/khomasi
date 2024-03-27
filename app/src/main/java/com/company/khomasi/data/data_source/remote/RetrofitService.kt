@@ -58,11 +58,13 @@ interface RetrofitService {
 
     @GET("User/bookings")
     suspend fun getUserBookings(
+        @Header("Authorization") token: String,
         @Query("id") id:String
     ):UserBookingsResponse
 
     @POST("User/favorite")
     suspend fun userFavourite(
+        @Header("Authorization") token: String,
         @Query("userId") userId: String,
         @Query("playgroundId") playgroundId: String
 
@@ -70,12 +72,14 @@ interface RetrofitService {
 
     @DELETE("User/favorite")
     suspend fun deleteUserFavourite(
+        @Header("Authorization") token: String,
         @Query("userId") userId: String,
         @Query("playgroundId") playgroundId: String
     ):MessageResponse
 
     @GET("User/favorite-playgrounds")
     suspend fun  getUserFavouritePlaygrounds(
+        @Header("Authorization") token: String,
         @Query("userId") userId: String,
     ):FavouritePlaygroundResponse
 }
