@@ -17,9 +17,7 @@ class MockFavViewModel : ViewModel() {
     private val _favouritePlaygroundsState = MutableStateFlow<DataState<FavouritePlaygroundResponse>>(DataState.Empty)
     val favouritePlaygroundsState: StateFlow<DataState<FavouritePlaygroundResponse>> = _favouritePlaygroundsState
 
-    init {
-        fetchUserFavoritePlaygrounds()
-    }
+
 
     fun fetchUserFavoritePlaygrounds() {
         viewModelScope.launch {

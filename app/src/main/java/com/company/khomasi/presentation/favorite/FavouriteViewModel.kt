@@ -26,15 +26,14 @@ class FavouritePlaygroundsViewModel @Inject constructor(
         _favouritePlaygroundsState
     private var localUser = LocalUser()
 
-    init {
-        fetchUserFavoritePlaygrounds()
-    }
+
 
     fun fetchUserFavoritePlaygrounds() {
         viewModelScope.launch {
             _favouritePlaygroundsState.value = DataState.Loading
             val token = localUser.token ?: ""
             val userId = localUser.userID ?: ""
+
             remoteUserUseCase.getUserFavoritePlaygroundsUseCase(
                 token = token,
                 userId = userId

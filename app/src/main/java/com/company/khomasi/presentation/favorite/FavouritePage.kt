@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -47,6 +48,9 @@ fun FavouritePage(
     uiState: StateFlow<FavouriteUiState>,
     favouritePlayground: StateFlow<DataState<FavouritePlaygroundResponse>>,
 ) {
+    SideEffect {
+        fetchUserFavoritePlaygrounds() // Fetch favorite playgrounds when the composable is first displayed
+    }
     val favouritePlaygroundState by favouritePlayground.collectAsState()
     val favUiState = uiState.collectAsState().value
     Scaffold(
