@@ -37,11 +37,10 @@ import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.BookingDetails
 import com.company.khomasi.domain.model.MyBookingsResponse
+import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
-import com.company.khomasi.presentation.components.cards.Playground
-import com.company.khomasi.presentation.favorite.MockViewModel
 import com.company.khomasi.presentation.favorite.TopBar
 import com.google.accompanist.pager.ExperimentalPagerApi
 import kotlinx.coroutines.flow.StateFlow
@@ -95,8 +94,7 @@ fun PreviousPage(
                 .padding(all = 16.dp),
             color = MaterialTheme.colorScheme.background,
         ) {
-            when (myBookingState) {
-                is DataState.Success -> {
+
                     val response = (myBookingState as DataState.Success).data
                     if (response.results.isNotEmpty()) {
                         LazyColumn(
@@ -105,36 +103,28 @@ fun PreviousPage(
                         ) {
                             items(response.results) {
                                 BookingCard(
-                                    com.company.khomasi.presentation.components.cards.BookingDetails(
+                                    bookingDetails = BookingDetails(
+                                        1,
+                                        1,
+                                        "Al Zamalek Club",
+                                        "Nasr City",
                                         "1/10/2024",
-                                        "7 AM to 8 AM",
-                                        "50 $ per hour ",
+                                        7,
+                                        50,
                                         "2425",
-                                        Playground(
-                                            "Zsc",
-                                            "Tanta",
-                                            "https://2u.pw/KqnLykO",
-                                            3.8f,
-                                            "50 $ per hour",
-                                            "from 12 PM to 12 AM",
-                                            isFavorite = true,
-                                            isBookable = false
-                                        ),
-                                        statusOfBooking = BookingStatus.CONFIRMED
+                                        false
+                                    ) ,
+                                    playgroundPicture = PlaygroundPicture(
+                                        1,
+                                        1,
+                                        " ",
+                                        false
                                     ),
-                                )
+                                    bookingStatus = BookingStatus.CONFIRMED)
+
+
                             }
-                        }
-                    } else {
-                        com.company.khomasi.presentation.favorite.EmptyScreen()
-                    }
-                }
-                is DataState.Loading -> {
-                }
-                is DataState.Error -> {
-                }
-                else -> {
-                }
+
             }
         }
     }
@@ -169,8 +159,6 @@ fun CurrentPage(
                 .padding(all = 16.dp),
             color = MaterialTheme.colorScheme.background,
         ) {
-            when (myBookingState) {
-                is DataState.Success -> {
                     val response = (myBookingState as DataState.Success).data
                     if (response.results.isNotEmpty()) {
                         LazyColumn(
@@ -179,36 +167,27 @@ fun CurrentPage(
                         ) {
                             items(response.results) {
                                 BookingCard(
-                                    com.company.khomasi.presentation.components.cards.BookingDetails(
+                                    bookingDetails = BookingDetails(
+                                        1,
+                                        1,
+                                        "Al Zamalek Club",
+                                        "Nasr City",
                                         "1/10/2024",
-                                        "7 AM to 8 AM",
-                                        "50 $ per hour ",
+                                        7,
+                                        50,
                                         "2425",
-                                        Playground(
-                                            "Zsc",
-                                            "Tanta",
-                                            "https://2u.pw/KqnLykO",
-                                            3.8f,
-                                            "50 $ per hour",
-                                            "from 12 PM to 12 AM",
-                                            isFavorite = true,
-                                            isBookable = false
-                                        ),
-                                        statusOfBooking = BookingStatus.CONFIRMED
+                                        false
+                                    ) ,
+                                    playgroundPicture = PlaygroundPicture(
+                                        1,
+                                        1,
+                                        " ",
+                                        false
                                     ),
-                                )
+                                    bookingStatus = BookingStatus.CONFIRMED)
+
                             }
                         }
-                    } else {
-                        com.company.khomasi.presentation.favorite.EmptyScreen()
-                    }
-                }
-                is DataState.Loading -> {
-                }
-                is DataState.Error -> {
-                }
-                else -> {
-                }
             }
         }
     }
@@ -287,25 +266,26 @@ fun PlaygroundInfo(bookingDetails: BookingDetails) {
             modifier = Modifier.fillMaxWidth(), thickness = 1.dp
         )
         BookingCard(
-            com.company.khomasi.presentation.components.cards.BookingDetails(
+            bookingDetails = BookingDetails(
+                1,
+                1,
+                "Al Zamalek Club",
+                "Nasr City",
                 "1/10/2024",
-                "7 AM to 8 AM",
-                "50 $ per hour ",
+                7,
+                50,
                 "2425",
-                Playground(
-                    "Zsc",
-                    "Tanta",
-                    "https://2u.pw/KqnLykO",
-                    3.8f,
-                    "50 $ per hour",
-                    "from 12 PM to 12 AM",
-                    isFavorite = true,
-                    isBookable = false
-                ),
-                statusOfBooking = BookingStatus.CONFIRMED
+                false
+            ) ,
+            playgroundPicture = PlaygroundPicture(
+                1,
+                1,
+                " ",
+                false
             ),
-        )
+            bookingStatus = BookingStatus.CONFIRMED)
+
 
     }
 
-}
+}}

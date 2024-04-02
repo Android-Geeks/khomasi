@@ -2,9 +2,9 @@ package com.company.khomasi.data.data_source.remote
 
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
+import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
-import com.company.khomasi.domain.model.UserBookingsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
@@ -60,7 +60,7 @@ interface RetrofitService {
     suspend fun getUserBookings(
         @Header("Authorization") token: String,
         @Query("id") id:String
-    ):UserBookingsResponse
+    ): MyBookingsResponse
 
     @POST("User/favorite")
     suspend fun userFavourite(

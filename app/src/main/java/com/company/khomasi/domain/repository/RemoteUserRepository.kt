@@ -3,9 +3,9 @@ package com.company.khomasi.domain.repository
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
+import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
-import com.company.khomasi.domain.model.UserBookingsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
@@ -24,7 +24,7 @@ interface RemoteUserRepository {
     ): Flow<DataState<MessageResponse>>
 
     suspend fun getPlaygrounds(token: String, userId: String): Flow<DataState<PlaygroundsResponse>>
-    suspend fun getUserBookings(token: String,id:String):Flow<DataState<UserBookingsResponse>>
+    suspend fun getUserBookings(token: String,id:String):Flow<DataState<MyBookingsResponse>>
     suspend fun deleteUserFavourite(token: String,userId: String,playgroundId:String): Flow<DataState<MessageResponse>>
     suspend fun  getUserFavouritePlaygrounds(token: String,userId: String):Flow<DataState<FavouritePlaygroundResponse>>
     suspend fun userFavourite(token: String,userId: String,playgroundId:String):Flow<DataState<MessageResponse>>
