@@ -39,7 +39,8 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
-import com.company.khomasi.domain.model.Playground
+import com.company.khomasi.domain.model.BookingDetails
+import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
 import com.company.khomasi.theme.KhomasiTheme
@@ -52,13 +53,15 @@ import com.company.khomasi.theme.lightWarningColor
 @Composable
 fun BookingCard(
     bookingDetails: BookingDetails,
+    playgroundPicture: PlaygroundPicture,
     modifier: Modifier = Modifier,
-    isDark: Boolean = isSystemInDarkTheme()
+    isDark: Boolean = isSystemInDarkTheme(),
+    bookingStatus: BookingStatus
 ) {
     Card(
         modifier
             .height(
-                if (bookingDetails.statusOfBooking == BookingStatus.CONFIRMED) 482.dp else 432.dp
+                if (bookingStatus == BookingStatus.CONFIRMED) 482.dp else 432.dp
             )
             .fillMaxWidth(),
         shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
@@ -77,7 +80,7 @@ fun BookingCard(
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surface)
             )
             Column {
-                BookingCardDetails(bookingDetails)
+                BookingCardDetails(bookingDetails,playgroundPicture)
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -88,7 +91,7 @@ fun BookingCard(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
-                    when (bookingDetails.statusOfBooking) {
+                    when (bookingStatus) {
                         BookingStatus.CONFIRMED -> {
                             Column(
                                 modifier = Modifier
@@ -122,7 +125,7 @@ fun BookingCard(
                                     Spacer(modifier = Modifier.weight(1f))
 
                                     Text(
-                                        text = bookingDetails.verificationCode,
+                                        text = bookingDetails.confirmationCode,
                                         style = MaterialTheme.typography.displayLarge,
                                         color = MaterialTheme.colorScheme.secondary,
                                         textAlign = TextAlign.End,
@@ -194,6 +197,7 @@ fun BookingCard(
 @Composable
 fun BookingCardDetails(
     bookingDetails: BookingDetails,
+    playgroundPicture: PlaygroundPicture,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -207,7 +211,7 @@ fun BookingCardDetails(
                 .fillMaxWidth()
                 .height(120.dp),
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(bookingDetails.playground.playgroundPicture)
+                .data(playgroundPicture.picture)
                 .crossfade(true)
                 .build(),
             contentDescription = null,
@@ -224,19 +228,19 @@ fun BookingCardDetails(
         )
         {
             TextWithIcon(
-                text = bookingDetails.playground.name,
+                text = bookingDetails.name,
                 iconId = R.drawable.soccerball
             )
             TextWithIcon(
-                text = bookingDetails.playground.address,
+                text = bookingDetails.address,
                 iconId = R.drawable.mappin
             )
             TextWithIcon(
-                text = bookingDetails.date,
+                text = bookingDetails.bookingTime,
                 iconId = R.drawable.calendar
             )
             TextWithIcon(
-                text = bookingDetails.time,
+                text = bookingDetails.bookingTime,
                 iconId = R.drawable.clock
             )
             TextWithIcon(
@@ -284,24 +288,23 @@ fun TextWithIcon(
 private fun BookingCardPreview() {
     KhomasiTheme {
         BookingCard(
-            BookingDetails(
+            bookingDetails = BookingDetails(
+                1,
+                1,
+                "Al Zamalek Club",
+                "Nasr City",
                 "1/10/2024",
-                "7 AM to 8 AM",
-                "50 $ per hour ",
-                "2425",
-                Playground(
-                    1,
-                    "Al Zamalek Club",
-                    "Nasr City",
-                    4.5,
-                    true,
-                    50,
-                    5.0,
-                    false,
-                    "https://www.google.com"
-                ),
-                statusOfBooking = BookingStatus.CONFIRMED
+                7,
+               50,
+               "2425",
+                false
+            ) ,
+            playgroundPicture = PlaygroundPicture(
+                1,
+                1,
+                " ",
+                false
             ),
-        )
+            bookingStatus = BookingStatus.CONFIRMED)
     }
 }

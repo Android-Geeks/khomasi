@@ -5,9 +5,9 @@ import com.company.khomasi.data.data_source.remote.RetrofitService
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
+import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
-import com.company.khomasi.domain.model.UserBookingsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
@@ -121,7 +121,7 @@ class RemoteUserRepositoryImpl(
         }.flowOn(Dispatchers.IO)
     }
 
-    override suspend fun getUserBookings(token: String,id: String): Flow<DataState<UserBookingsResponse>> {
+    override suspend fun getUserBookings(token: String,id: String): Flow<DataState<MyBookingsResponse>> {
         return flow {
             emit(DataState.Loading)
             try {

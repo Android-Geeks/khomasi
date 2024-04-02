@@ -13,14 +13,14 @@ import com.company.khomasi.domain.model.Playground
 //    val isBookable: Boolean
 //)
 
-data class BookingDetails(
-    val date: String,
-    val time: String,
-    val price: String,
-    val verificationCode: String,
-    val playground: Playground,
-    val statusOfBooking: BookingStatus
-)
+//data class BookingDetails(
+//    val date: String,
+//    val time: String,
+//    val price: String,
+//    val verificationCode: String,
+//    val playground: Playground,
+//    val statusOfBooking: BookingStatus
+//)
 
 enum class BookingStatus{
     PENDING,
