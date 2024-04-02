@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import androidx.lifecycle.viewModelScope
+import com.company.khomasi.domain.model.LocalUser
 
 @HiltViewModel
 class MyBookingViewModel @Inject constructor(
@@ -27,11 +28,13 @@ class MyBookingViewModel @Inject constructor(
             )
         )
     val uiState:StateFlow<MyBookingUiState> =_uiState.asStateFlow()
+    private var localUser = LocalUser()
 
-    fun myBookingPlaygrounds(userId: String) {
+    fun myBookingPlaygrounds() {
         viewModelScope.launch {
-            _myBooking.value = DataState.Loading
-            remoteUserUseCase.getUserBookingsUseCase(_uiState.value.userId).collect {
+            val token = localUser.token ?: ""
+            val id = localUser.userID ?: ""
+            remoteUserUseCase.getUserBookingsUseCase(token = token, id = id).collect {
                 _myBooking.value = it
             }
         }

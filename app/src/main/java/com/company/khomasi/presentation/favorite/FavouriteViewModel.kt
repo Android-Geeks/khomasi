@@ -41,7 +41,9 @@ class FavouritePlaygroundsViewModel @Inject constructor(
             ).collect { dataState ->
                 _favouritePlaygroundsState.value = dataState
             }
-            _uiState.value = _uiState.value
+            _uiState.value = FavouriteUiState(
+             //   favPlayground =
+            )
         }
     }
 
