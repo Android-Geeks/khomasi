@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -33,6 +34,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
@@ -49,12 +51,14 @@ import com.company.khomasi.utils.convertToBitmap
 @Composable
 fun PlaygroundCard(
     playground: Playground,
-    onFavouriteClick: () -> Unit,
     onViewPlaygroundClick: () -> Unit,
+    viewModel: PlaygroundCardViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme()
 ) {
+    val playgroundCardState = viewModel.uiState.collectAsState()
+
     Card(
         colors = cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -91,7 +95,19 @@ fun PlaygroundCard(
                         .height(62.dp)
                 ) {
                     FavoriteIcon(
-                        onFavoriteClick = onFavouriteClick,
+                        onFavoriteClick = {
+                            val isFavorite = !playgroundCardState.value.isFavorite
+                            viewModel.updateFavorite(isFavorite)
+                            if (isFavorite) {
+                                viewModel.userFavourite(
+                                    playgroundId = playgroundCardState.value.playground.id.toString()
+                                )
+                            } else {
+                                viewModel.deleteUserFavourite(
+                                    playgroundId = playgroundCardState.value.playground.id.toString()
+                                )
+                            }
+                        },
                         isFavorite = playground.isFavourite,
                         modifier = Modifier.padding(top = 12.dp, start = 6.dp)
                     )
@@ -187,26 +203,6 @@ fun PlaygroundCard(
                     style = MaterialTheme.typography.bodyLarge,
                 )
                 Spacer(modifier = Modifier.weight(1f))
-//                Box(
-//                    modifier = Modifier
-//                        .weight(3f)
-//                        .height(48.dp)
-//                        .background(
-//                            color = MaterialTheme.colorScheme.primary,
-//                            shape = MaterialTheme.shapes.medium
-//                        )
-//                        .clickable {
-//                            onViewPlaygroundClick()
-//                        },
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Text(
-//                        text = stringResource(id = R.string.view_playground),
-//                        textAlign = TextAlign.Center,
-//                        style = MaterialTheme.typography.titleLarge,
-//                        color = MaterialTheme.colorScheme.background
-//                    )
-//                }
                 MyButton(text =  R.string.view_playground,
                     onClick = {   onViewPlaygroundClick()},
                     modifier = Modifier
@@ -219,25 +215,24 @@ fun PlaygroundCard(
 }
 
 
-@Preview(name = "light", showBackground = true, uiMode = UI_MODE_NIGHT_NO)
-@Preview(name = "dark", locale = "ar", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-@Composable
-fun PreviewCard() {
-    KhomasiTheme {
-        PlaygroundCard(
-            playground = Playground(
-                id = 1,
-                name = "Playground Name",
-                address = "Address",
-                rating = 4.5,
-                feesForHour = 100,
-                isBookable = true,
-                distance = 5.0,
-                playgroundPicture = null,
-                isFavourite = false
-            ),
-            onFavouriteClick = { },
-            onViewPlaygroundClick = { },
-        )
-    }
-}
+//@Preview(name = "light", showBackground = true, uiMode = UI_MODE_NIGHT_NO)
+//@Preview(name = "dark", locale = "ar", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+//@Composable
+//fun PreviewCard() {
+//    KhomasiTheme {
+//        PlaygroundCard(
+//            playground = Playground(
+//                id = 1,
+//                name = "Playground Name",
+//                address = "Address",
+//                rating = 4.5,
+//                feesForHour = 100,
+//                isBookable = true,
+//                distance = 5.0,
+//                playgroundPicture = null,
+//                isFavourite = false
+//            ),
+//            onViewPlaygroundClick = { },
+//        )
+//    }
+//}
