@@ -17,11 +17,8 @@ class MockFavViewModel : ViewModel() {
     private val _favouritePlaygroundsState = MutableStateFlow<DataState<FavouritePlaygroundResponse>>(DataState.Empty)
     val favouritePlaygroundsState: StateFlow<DataState<FavouritePlaygroundResponse>> = _favouritePlaygroundsState
 
-    init {
-        fetchUserFavoritePlaygrounds()
-    }
 
-    fun fetchUserFavoritePlaygrounds() {
+    fun fetchUserFavoritePlaygrounds(token: String,userId: String) {
         viewModelScope.launch {
             _uiState.value = _uiState.value
            
@@ -35,9 +32,5 @@ class MockFavViewModel : ViewModel() {
                 _favouritePlaygroundsState.value = DataState.Success(mockResponse)
 
         }
-    }
-
-
-    fun removeFromFavorites(playgroundId: String) {
     }
 }
