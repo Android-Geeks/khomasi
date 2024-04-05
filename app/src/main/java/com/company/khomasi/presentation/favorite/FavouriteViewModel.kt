@@ -1,5 +1,7 @@
 package com.company.khomasi.presentation.favorite
 
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
@@ -28,34 +30,26 @@ class FavouritePlaygroundsViewModel @Inject constructor(
     private var localUser = LocalUser()
 
     init {
-        fetchUserFavoritePlaygrounds()
+        fetchUserFavoritePlaygrounds(localUser.token!!,localUser.userID!!)
     }
 
-    fun fetchUserFavoritePlaygrounds() {
+    fun fetchUserFavoritePlaygrounds(token: String,userId: String) {
         viewModelScope.launch {
-            _favouritePlaygroundsState.value = DataState.Loading
-            val token = localUser.token ?: ""
-            val userId = localUser.userID ?: ""
             remoteUserUseCase.getUserFavoritePlaygroundsUseCase(
                 token = token,
                 userId = userId
             ).collect { dataState ->
                 _favouritePlaygroundsState.value = dataState
             }
-            _uiState.value = FavouriteUiState(
-             //   favPlayground =
-            )
-        }
-    }
-
-    fun removeFromFavorites(playgroundId: String) {
-        viewModelScope.launch {
-            val token = localUser.token ?: ""
-            val userId = localUser.userID ?: ""
-            // val playgroundId = localUser.userID ?: ""
-            remoteUserUseCase.deleteUserFavoriteUseCase("Bearer $token", userId, playgroundId)
-            _uiState.value = _uiState.value.copy(isFavorite = false)
 
         }
     }
+
+//    fun removeFromFavorites(playgroundId: String,token:String,userId:String) {
+//            _uiState.value = _uiState.value.copy(isFavorite = false)
+//        viewModelScope.launch {
+//            remoteUserUseCase.deleteUserFavoriteUseCase("Bearer $token", userId, playgroundId)
+//
+//        }
+//    }
 }

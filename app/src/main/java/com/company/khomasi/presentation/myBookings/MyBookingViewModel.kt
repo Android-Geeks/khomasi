@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.myBookings
 
-import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.MyBookingsResponse
@@ -29,11 +28,11 @@ class MyBookingViewModel @Inject constructor(
         )
     val uiState:StateFlow<MyBookingUiState> =_uiState.asStateFlow()
     private var localUser = LocalUser()
-
-    fun myBookingPlaygrounds() {
+init {
+    myBookingPlaygrounds(localUser.token!!,localUser.userID!!)
+}
+    fun myBookingPlaygrounds(token: String,id: String) {
         viewModelScope.launch {
-            val token = localUser.token ?: ""
-            val id = localUser.userID ?: ""
             remoteUserUseCase.getUserBookingsUseCase(token = token, id = id).collect {
                 _myBooking.value = it
             }

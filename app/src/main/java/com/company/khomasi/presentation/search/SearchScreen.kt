@@ -40,7 +40,7 @@ import com.company.khomasi.R
 import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.presentation.components.MyAlertDialog
 import com.company.khomasi.presentation.components.MyModalBottomSheet
-import com.company.khomasi.presentation.components.cards.PlaygroundCard
+import com.company.khomasi.presentation.components.cards.playgroundCardVM.PlaygroundCard
 import com.company.khomasi.presentation.search.components.EmptySearch
 import com.company.khomasi.presentation.search.components.MyTopAppBar
 import com.company.khomasi.presentation.search.components.SearchFilterSheetContent

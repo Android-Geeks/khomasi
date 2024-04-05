@@ -35,15 +35,14 @@ import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.presentation.components.MyButton
-import com.company.khomasi.presentation.components.cards.PlaygroundCard
+import com.company.khomasi.presentation.components.cards.playgroundCardVM.PlaygroundCard
 import com.company.khomasi.theme.KhomasiTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun FavouritePage(
-    fetchUserFavoritePlaygrounds: () -> Unit,
-    removeFromFavorites: (String) -> Unit,
+    fetchUserFavoritePlaygrounds: (String,String) -> Unit,
     uiState: StateFlow<FavouriteUiState>,
     favouritePlayground: StateFlow<DataState<FavouritePlaygroundResponse>>,
 ) {
@@ -67,7 +66,7 @@ fun FavouritePage(
                         ) {
                             val response = (favouritePlaygroundState as DataState.Success).data
                             if (favUiState.favPlayground.isNotEmpty()) {
-                                items(favUiState.favPlayground) { playground ->
+                                items(response.playgrounds) { playground ->
                                 PlaygroundCard(
                                     playground = playground,
                                     modifier = Modifier.fillMaxWidth(),
@@ -164,7 +163,6 @@ fun FavouritePagePreview() {
         val mockDataState = DataState.Success(mockFavouritePlaygroundResponse)
         FavouritePage(
             fetchUserFavoritePlaygrounds = mockViewModel::fetchUserFavoritePlaygrounds,
-            removeFromFavorites = mockViewModel::removeFromFavorites,
             uiState = mockViewModel.uiState,
             // favouritePlayground = mockViewModel.favouritePlaygroundsState,
             favouritePlayground = MutableStateFlow(mockDataState)
