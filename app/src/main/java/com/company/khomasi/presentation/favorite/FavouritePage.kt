@@ -21,9 +21,13 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -34,25 +38,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
-import com.company.khomasi.domain.model.Playground
+import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.cards.PlaygroundCard
 import com.company.khomasi.theme.KhomasiTheme
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun FavouritePage(
-    fetchUserFavoritePlaygrounds: () -> Unit,
-    removeFromFavorites: (String) -> Unit,
-    uiState: StateFlow<FavouriteUiState>,
     favouritePlayground: StateFlow<DataState<FavouritePlaygroundResponse>>,
 ) {
-    SideEffect {
-        fetchUserFavoritePlaygrounds() // Fetch favorite playgrounds when the composable is first displayed
-    }
+
     val favouritePlaygroundState by favouritePlayground.collectAsState()
-    val favUiState = uiState.collectAsState().value
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { TopBar() },
@@ -69,15 +66,12 @@ fun FavouritePage(
                                 .fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            val response = (favouritePlaygroundState as DataState.Success).data
-                            if (favUiState.favPlayground.isNotEmpty()) {
-                                items(favUiState.favPlayground) { playground ->
+                           val response = (favouritePlaygroundState as DataState.Success).data.playgrounds
+                            if (response.isNotEmpty()) {
+                                items(response) { playground ->
                                 PlaygroundCard(
                                     playground = playground,
                                     modifier = Modifier.fillMaxWidth(),
-                                    onFavouriteClick = {
-                                        //     removeFromFavorites()
-                                    },
                                     onViewPlaygroundClick = {},
                                 )
                             }
@@ -91,6 +85,8 @@ fun FavouritePage(
         }
     }
 }
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -150,28 +146,26 @@ fun EmptyScreen(
 fun FavouritePagePreview() {
     KhomasiTheme {
         val mockViewModel: MockFavViewModel = viewModel()
-        val mockData = List(10) {
-
-            Playground(
-                id = 1,
-                name = "Playground Name",
-                address = "Address",
-                rating = 4.5,
-                feesForHour = 100,
-                isBookable = true,
-                distance = 5.0,
-                playgroundPicture = null,
-                isFavourite = true
-            )
-        }
-        val mockFavouritePlaygroundResponse = FavouritePlaygroundResponse(mockData, 10)
-        val mockDataState = DataState.Success(mockFavouritePlaygroundResponse)
+//        val mockData = List(10) {
+//
+//            Playground(
+//                id = 1,
+//                name = "Playground Name",
+//                address = "Address",
+//                rating = 4.5,
+//                feesForHour = 100,
+//                isBookable = true,
+//                distance = 5.0,
+//                playgroundPicture = null,
+//                isFavourite = true
+//            )
+//        }
+       // val mockFavouritePlaygroundResponse = FavouritePlaygroundResponse(mockData, 10)
+        //val mockDataState = DataState.Success(mockFavouritePlaygroundResponse)
         FavouritePage(
-            fetchUserFavoritePlaygrounds = mockViewModel::fetchUserFavoritePlaygrounds,
-            removeFromFavorites = mockViewModel::removeFromFavorites,
-            uiState = mockViewModel.uiState,
-            // favouritePlayground = mockViewModel.favouritePlaygroundsState,
-            favouritePlayground = MutableStateFlow(mockDataState)
+            //getUserFavoritePlaygrounds = mockViewModel::getUserFavoritePlaygrounds,
+            //uiState = mockViewModel.uiState,
+             favouritePlayground = mockViewModel.favouritePlaygroundsState,
         )
     }
 }

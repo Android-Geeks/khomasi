@@ -13,48 +13,25 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
-class FavouritePlaygroundsViewModel @Inject constructor(
+class FavouriteViewModel @Inject constructor(
     private val remoteUserUseCase: RemoteUserUseCase
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(FavouriteUiState())
-    val uiState: StateFlow<FavouriteUiState> = _uiState.asStateFlow()
-
-    private val _favouritePlaygroundsState =
-        MutableStateFlow<DataState<FavouritePlaygroundResponse>>(DataState.Empty)
-    val favouritePlaygroundsState: StateFlow<DataState<FavouritePlaygroundResponse>> =
-        _favouritePlaygroundsState
+    private val _favState: MutableStateFlow<DataState<FavouritePlaygroundResponse>> =
+        MutableStateFlow(DataState.Empty)
+    val favState: StateFlow<DataState<FavouritePlaygroundResponse>> = _favState.asStateFlow()
     private var localUser = LocalUser()
 
-
-
-    fun fetchUserFavoritePlaygrounds() {
-        viewModelScope.launch {
-            _favouritePlaygroundsState.value = DataState.Loading
-            val token = localUser.token ?: ""
-            val userId = localUser.userID ?: ""
-
-            remoteUserUseCase.getUserFavoritePlaygroundsUseCase(
-                token = token,
-                userId = userId
-            ).collect { dataState ->
-                _favouritePlaygroundsState.value = dataState
-            }
-            _uiState.value = FavouriteUiState(
-             //   favPlayground =
-            )
-        }
+    init {
+        getFavoritePlaygrounds(localUser.token!!, localUser.userID!!)
     }
 
-    fun removeFromFavorites(playgroundId: String) {
-        viewModelScope.launch {
-            val token = localUser.token ?: ""
-            val userId = localUser.userID ?: ""
-            // val playgroundId = localUser.userID ?: ""
-            remoteUserUseCase.deleteUserFavoriteUseCase("Bearer $token", userId, playgroundId)
-            _uiState.value = _uiState.value.copy(isFavorite = false)
 
+    private fun getFavoritePlaygrounds(token: String, userId: String) {
+        viewModelScope.launch {
+            remoteUserUseCase.getUserFavoritePlaygroundsUseCase(token, userId).collect {dataState ->
+                _favState.value = dataState
+            }
         }
     }
 }

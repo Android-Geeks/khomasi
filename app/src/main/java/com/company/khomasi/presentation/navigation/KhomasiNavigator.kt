@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.navigation
 
-import com.company.khomasi.presentation.favorite.FavouritePlaygroundsViewModel
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -13,6 +12,7 @@ import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.navigation.Screens
 import com.company.khomasi.navigation.listOfNavItems
 import com.company.khomasi.presentation.favorite.FavouritePage
+import com.company.khomasi.presentation.favorite.FavouriteViewModel
 import com.company.khomasi.presentation.home.HomeScreen
 import com.company.khomasi.presentation.home.HomeViewModel
 import com.company.khomasi.presentation.navigation.components.BottomNavigationBar
@@ -53,12 +53,11 @@ fun KhomasiNavigator() {
                 )
             }
             composable(route = Screens.Favorite.name) {
-                val favouritePlaygroundsViewModel: FavouritePlaygroundsViewModel = hiltViewModel()
+                val favouriteViewModel: FavouriteViewModel = hiltViewModel()
                 FavouritePage(
-                    fetchUserFavoritePlaygrounds = favouritePlaygroundsViewModel::fetchUserFavoritePlaygrounds,
-                    removeFromFavorites = favouritePlaygroundsViewModel::removeFromFavorites,
-                    uiState = favouritePlaygroundsViewModel.uiState,
-                    favouritePlayground = favouritePlaygroundsViewModel.favouritePlaygroundsState,
+                   // getUserFavoritePlaygrounds = favouriteViewModel::getUserFavoritePlaygrounds,
+                   // uiState = favouriteViewModel.uiState,
+                    favouritePlayground = favouriteViewModel.favState,
                     )
 
             }

@@ -1,8 +1,6 @@
 package com.company.khomasi.presentation.components.cards
 
 import android.content.Context
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -32,7 +30,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -41,7 +38,6 @@ import com.company.khomasi.R
 import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.iconButtons.FavoriteIcon
-import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkCard
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightCard
@@ -52,8 +48,8 @@ import com.company.khomasi.utils.convertToBitmap
 fun PlaygroundCard(
     playground: Playground,
     onViewPlaygroundClick: () -> Unit,
-    viewModel: PlaygroundCardViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
+    viewModel: PlaygroundCardViewModel = hiltViewModel(),
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme()
 ) {
@@ -213,26 +209,3 @@ fun PlaygroundCard(
         }
     }
 }
-
-
-//@Preview(name = "light", showBackground = true, uiMode = UI_MODE_NIGHT_NO)
-//@Preview(name = "dark", locale = "ar", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-//@Composable
-//fun PreviewCard() {
-//    KhomasiTheme {
-//        PlaygroundCard(
-//            playground = Playground(
-//                id = 1,
-//                name = "Playground Name",
-//                address = "Address",
-//                rating = 4.5,
-//                feesForHour = 100,
-//                isBookable = true,
-//                distance = 5.0,
-//                playgroundPicture = null,
-//                isFavourite = false
-//            ),
-//            onViewPlaygroundClick = { },
-//        )
-//    }
-//}

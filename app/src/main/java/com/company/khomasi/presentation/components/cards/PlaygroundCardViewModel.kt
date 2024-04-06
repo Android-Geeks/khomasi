@@ -77,18 +77,4 @@ class PlaygroundCardViewModel @Inject constructor(
             it.copy(isFavorite = isFavorite)
         }
     }
-
-//    fun getUserFavouritePlaygrounds(token: String, userId: String) {
-//        viewModelScope.launch {
-//            remoteUserUseCase.getUserFavoritePlaygroundsUseCase(token, userId)
-//                .onSuccess { response ->
-//                    // Handle the success case
-//                    _playgrounds.value = response.playgrounds
-//                }
-//                .onFailure { error ->
-//                    // Handle the error case
-//                    // ...
-//                }
-//        }
-//    }
 }
