@@ -47,6 +47,7 @@ import com.company.khomasi.utils.convertToBitmap
 @Composable
 fun PlaygroundCard(
     playground: Playground,
+    onFavouriteClick: () -> Unit,
     onViewPlaygroundClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PlaygroundCardViewModel = hiltViewModel(),

@@ -55,9 +55,8 @@ fun KhomasiNavigator() {
             composable(route = Screens.Favorite.name) {
                 val favouriteViewModel: FavouriteViewModel = hiltViewModel()
                 FavouritePage(
-                   // getUserFavoritePlaygrounds = favouriteViewModel::getUserFavoritePlaygrounds,
-                   // uiState = favouriteViewModel.uiState,
                     favouritePlayground = favouriteViewModel.favState,
+                    uiState = favouriteViewModel.uiState
                     )
 
             }

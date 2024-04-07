@@ -1,6 +1,7 @@
 package com.company.khomasi.presentation.favorite
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,13 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -38,21 +33,23 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
-import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.cards.PlaygroundCard
 import com.company.khomasi.theme.KhomasiTheme
 import kotlinx.coroutines.flow.StateFlow
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FavouritePage(
     favouritePlayground: StateFlow<DataState<FavouritePlaygroundResponse>>,
+    uiState: StateFlow<FavouriteUiState>
 ) {
-
-    val favouritePlaygroundState by favouritePlayground.collectAsState()
+    val favouritePlaygroundState = favouritePlayground.collectAsState().value
+    val favUiState = uiState.collectAsState().value
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { TopBar() },
+
         ) {
         Surface(
             modifier = Modifier
@@ -60,32 +57,32 @@ fun FavouritePage(
                 .padding(all = 16.dp),
             color = MaterialTheme.colorScheme.background,
         ) {
+
+            // if (favouritePlaygroundState.data.playgrounds.isNotEmpty()) {
+            if (favUiState.playgrounds.isNotEmpty())
                         LazyColumn(
                             contentPadding = it,
-                            modifier = Modifier
-                                .fillMaxSize(),
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                           val response = (favouritePlaygroundState as DataState.Success).data.playgrounds
-                            if (response.isNotEmpty()) {
-                                items(response) { playground ->
+                            items(favUiState.playgrounds) { playground ->
                                 PlaygroundCard(
                                     playground = playground,
-                                    modifier = Modifier.fillMaxWidth(),
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .animateItemPlacement(),
                                     onViewPlaygroundClick = {},
+                                    onFavouriteClick = {}
                                 )
                             }
 
-                            } else {
-                                item {
-                                    EmptyScreen()
-                                }
-                            }
-                        }
+                        } else {
+                EmptyScreen()
+            }
         }
     }
-}
 
+
+}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -164,7 +161,7 @@ fun FavouritePagePreview() {
         //val mockDataState = DataState.Success(mockFavouritePlaygroundResponse)
         FavouritePage(
             //getUserFavoritePlaygrounds = mockViewModel::getUserFavoritePlaygrounds,
-            //uiState = mockViewModel.uiState,
+            uiState = mockViewModel.uiState,
              favouritePlayground = mockViewModel.favouritePlaygroundsState,
         )
     }

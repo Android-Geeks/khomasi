@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.Playground
+import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -14,7 +15,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlaygroundCardViewModel @Inject constructor(
-    private val remoteUserUseCase: RemoteUserUseCase
+    private val remoteUserUseCase: RemoteUserUseCase,
+    private val localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
     private val _playgrounds = MutableStateFlow<List<Playground>>(emptyList())
     val playgrounds = _playgrounds.asStateFlow()
@@ -39,11 +41,20 @@ class PlaygroundCardViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
     private var localUser = LocalUser()
 
+    init {
+        viewModelScope.launch {
+            localUserUseCases.getLocalUser().collect {
+                localUser = it
+            }
+        }
+    }
     fun userFavourite(playgroundId: String) {
         viewModelScope.launch {
             val token = localUser.token ?: ""
             val userId = localUser.userID ?: ""
-            remoteUserUseCase.userFavouriteUseCase(token, userId, playgroundId).collect() {
+            remoteUserUseCase.userFavouriteUseCase(
+                token, userId, playgroundId
+            ).collect() {
                 _playgrounds.value = _playgrounds.value.map { playground ->
                     if (playground.id.toString() == playgroundId) {
                         playground.copy(isFavourite = true)
@@ -52,6 +63,7 @@ class PlaygroundCardViewModel @Inject constructor(
                     }
                 }
             }
+
         }
     }
 
