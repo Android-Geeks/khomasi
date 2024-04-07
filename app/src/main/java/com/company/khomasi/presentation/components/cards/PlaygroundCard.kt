@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.components.cards.playgroundCardVM
+package com.company.khomasi.presentation.components.cards
 
 import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
