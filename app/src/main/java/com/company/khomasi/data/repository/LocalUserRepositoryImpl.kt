@@ -84,9 +84,9 @@ class LocalUserRepositoryImpl(
         }
     }
 
-    override suspend fun saveIsLogin() {
+    override suspend fun saveIsLogin(isLogin: Boolean) {
         context.dataStore.edit { settings ->
-            settings[IS_LOGIN] = true
+            settings[IS_LOGIN] = isLogin
         }
     }
 

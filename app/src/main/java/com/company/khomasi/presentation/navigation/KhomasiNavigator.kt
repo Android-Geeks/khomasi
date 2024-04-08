@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.navigation
 
-import com.company.khomasi.presentation.favorite.FavouritePlaygroundsViewModel
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -13,9 +12,12 @@ import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.navigation.Screens
 import com.company.khomasi.navigation.listOfNavItems
 import com.company.khomasi.presentation.favorite.FavouritePage
+import com.company.khomasi.presentation.favorite.FavouritePlaygroundsViewModel
 import com.company.khomasi.presentation.home.HomeScreen
 import com.company.khomasi.presentation.home.HomeViewModel
 import com.company.khomasi.presentation.navigation.components.BottomNavigationBar
+import com.company.khomasi.presentation.profile.ProfileScreen
+import com.company.khomasi.presentation.profile.ProfileViewModel
 import com.company.khomasi.presentation.search.SearchScreen
 import com.company.khomasi.presentation.search.SearchViewModel
 
@@ -84,6 +86,16 @@ fun KhomasiNavigator() {
                     navigateToPlaygroundDetails = {},
                     onBackPage = searchViewModel::onBackPage,
                     onNextPage = searchViewModel::onNextPage,
+                )
+            }
+            composable(route = Screens.Profile.name) {
+                val profileViewModel: ProfileViewModel = hiltViewModel()
+                ProfileScreen(
+                    profileUiState = profileViewModel.profileUiState,
+                    onEditProfile = profileViewModel::onEditProfile,
+                    onSaveProfile = profileViewModel::onSaveProfile,
+                    onLogout = profileViewModel::onLogout,
+                    onBackClick = { navController.popBackStack() },
                 )
             }
         }

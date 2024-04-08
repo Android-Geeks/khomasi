@@ -8,6 +8,7 @@ import com.company.khomasi.domain.model.UserBookingsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
+import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.model.VerificationResponse
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -90,6 +91,6 @@ interface RetrofitService {
     suspend fun updateUser(
         @Header("Authorization") token: String,
         @Query("userId") userId: String,
-        @Body user: UserRegisterData
+        @Body user: UserUpdateData
     ): MessageResponse
 }

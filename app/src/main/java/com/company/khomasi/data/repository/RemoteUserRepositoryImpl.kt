@@ -11,6 +11,7 @@ import com.company.khomasi.domain.model.UserBookingsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
+import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.domain.repository.RemoteUserRepository
 import kotlinx.coroutines.Dispatchers
@@ -197,7 +198,7 @@ class RemoteUserRepositoryImpl(
     override suspend fun updateUser(
         token: String,
         userId: String,
-        user: UserRegisterData
+        user: UserUpdateData
     ): Flow<DataState<MessageResponse>> {
         return flow {
             emit(DataState.Loading)

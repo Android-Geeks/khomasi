@@ -9,6 +9,7 @@ import com.company.khomasi.domain.model.UserBookingsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
+import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.model.VerificationResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -50,7 +51,7 @@ interface RemoteUserRepository {
     suspend fun updateUser(
         token: String,
         userId: String,
-        user: UserRegisterData
+        user: UserUpdateData
     ): Flow<DataState<MessageResponse>>
 
 }
