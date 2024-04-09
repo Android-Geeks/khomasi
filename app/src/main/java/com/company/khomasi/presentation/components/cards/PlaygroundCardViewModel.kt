@@ -40,20 +40,14 @@ class PlaygroundCardViewModel @Inject constructor(
     )
     val uiState = _uiState.asStateFlow()
     private var localUser = LocalUser()
-
-    init {
+    fun userFavourite(playgroundId: String) {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect {
                 localUser = it
-            }
-        }
-    }
-    fun userFavourite(playgroundId: String) {
-        viewModelScope.launch {
-            val token = localUser.token ?: ""
-            val userId = localUser.userID ?: ""
             remoteUserUseCase.userFavouriteUseCase(
-                token, userId, playgroundId
+                "Bearer ${localUser.token}",
+                localUser.userID ?: "",
+                playgroundId
             ).collect() {
                 _playgrounds.value = _playgrounds.value.map { playground ->
                     if (playground.id.toString() == playgroundId) {
@@ -65,14 +59,18 @@ class PlaygroundCardViewModel @Inject constructor(
             }
 
         }
+        }
     }
 
     fun deleteUserFavourite(playgroundId: String) {
         viewModelScope.launch {
-            val token = localUser.token ?: ""
-            val userId = localUser.userID ?: ""
-            remoteUserUseCase.deleteUserFavoriteUseCase(token, userId, playgroundId).collect() {
-
+            localUserUseCases.getLocalUser().collect {
+                localUser = it
+                remoteUserUseCase.deleteUserFavoriteUseCase(
+                    "Bearer ${localUser.token}",
+                    localUser.userID ?: "",
+                    playgroundId
+                ).collect() {
                 _playgrounds.value = _playgrounds.value.map { playground ->
                     if (playground.id.toString() == playgroundId) {
                         playground.copy(isFavourite = false)
@@ -81,12 +79,11 @@ class PlaygroundCardViewModel @Inject constructor(
                     }
                 }
             }
+            }
         }
     }
 
     fun updateFavorite(isFavorite: Boolean) {
-        _uiState.update {
-            it.copy(isFavorite = isFavorite)
-        }
+        _uiState.update { it.copy(isFavorite = isFavorite) }
     }
 }
