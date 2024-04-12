@@ -4,10 +4,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.navigation.Screens
 import com.company.khomasi.navigation.listOfNavItems
@@ -25,32 +27,32 @@ import com.company.khomasi.presentation.search.SearchViewModel
 @Composable
 fun KhomasiNavigator() {
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+
     Scaffold(
-        bottomBar = if (navController.currentDestination?.route
-            in listOfNavItems.map { it.route } || navController.currentDestination == null
-        ) {
-            { BottomNavigationBar(navController) }
-        } else {
-            {}
+        bottomBar =
+        {
+            BottomNavigationBar(
+                navController = navController,
+                bottomBarState = navBackStackEntry?.destination?.route
+                        in listOfNavItems.map { it.route }
+            )
         }
     ) { paddingValues ->
         NavHost(
             navController = navController,
             startDestination = Screens.Home.name,
-            modifier = if (navController.currentDestination?.route in listOfNavItems.map { it.route }
-                || navController.currentDestination == null) Modifier.padding(
-                paddingValues
-            ) else Modifier
+            modifier = Modifier.padding(paddingValues)
         ) {
             composable(route = Screens.Home.name) {
                 val homeViewModel: HomeViewModel = hiltViewModel()
                 HomeScreen(
                     playgroundState = homeViewModel.playgroundState.collectAsState().value,
                     homeUiState = homeViewModel.homeUiState.collectAsState().value,
-                    onClickUserImage = {/* will nav to user account */ },
+                    onClickUserImage = { navController.navigate(Screens.Profile.name) },
                     onClickBell = { /* will nav to notification page */ },
                     onClickViewAll = { homeViewModel.onClickViewAll() },
-                    onSearchBarClicked = {},
+                    onSearchBarClicked = { navController.navigate(Screens.Search.name) },
                     onAdClicked = {}
                 )
             }
@@ -92,6 +94,7 @@ fun KhomasiNavigator() {
                 val profileViewModel: ProfileViewModel = hiltViewModel()
                 ProfileScreen(
                     profileUiState = profileViewModel.profileUiState,
+                    localUserUiState = profileViewModel.localUser,
                     onEditProfile = profileViewModel::onEditProfile,
                     onSaveProfile = profileViewModel::onSaveProfile,
                     onLogout = profileViewModel::onLogout,
