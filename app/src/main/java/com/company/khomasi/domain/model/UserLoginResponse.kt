@@ -19,7 +19,7 @@ data class UserLoginData(
     @SerialName("city")
     val city: String,
     @SerialName("coins")
-    val coins: Int,
+    val coins: Double,
     @SerialName("country")
     val country: String,
     @SerialName("email")
@@ -37,7 +37,7 @@ data class UserLoginData(
     @SerialName("profilePicture")
     val profilePicture: String?,
     @SerialName("rating")
-    val rating: Int,
+    val rating: Double,
     @SerialName("userID")
     val userID: String
 )
