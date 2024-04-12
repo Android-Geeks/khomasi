@@ -12,6 +12,8 @@ class MockProfileViewModel : ViewModel() {
             user = LocalUser()
         )
     )
+    val localUser: StateFlow<LocalUser> = MutableStateFlow(LocalUser())
+
 
     fun onLogout() {}
     fun onEditProfile(isEdit: Boolean) {}
