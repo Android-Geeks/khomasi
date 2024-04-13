@@ -25,14 +25,13 @@ import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
-import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PlaygroundInfo(
     bookingDetails: BookingDetails,
     myBooking: DataState<MyBookingsResponse>,
-    playgroundPicture: StateFlow<DataState<PlaygroundPicture>>,
+    playgroundPicture: PlaygroundPicture,
 
     ) {
     Column {

@@ -23,7 +23,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
-import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.BookingDetails
 import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.MyButton
@@ -46,13 +44,13 @@ import com.company.khomasi.theme.darkSubText
 import com.company.khomasi.theme.darkWarningColor
 import com.company.khomasi.theme.lightSubText
 import com.company.khomasi.theme.lightWarningColor
-import kotlinx.coroutines.flow.StateFlow
+import com.company.khomasi.utils.convertToBitmap
 
 
 @Composable
 fun BookingCard(
     bookingDetails: BookingDetails,
-    playgroundPicture: StateFlow<DataState<PlaygroundPicture>>,
+    playgroundPicture: PlaygroundPicture,
     modifier: Modifier = Modifier,
     isDark: Boolean = isSystemInDarkTheme(),
     bookingStatus: BookingStatus
@@ -196,10 +194,9 @@ fun BookingCard(
 @Composable
 fun BookingCardDetails(
     bookingDetails: BookingDetails,
-    playgroundPicture: StateFlow<DataState<PlaygroundPicture>>,
+    playgroundPicture: PlaygroundPicture,
     modifier: Modifier = Modifier
 ) {
-    val playgroundPic = playgroundPicture.collectAsState()
 
     Column(
         modifier = modifier
@@ -212,7 +209,7 @@ fun BookingCardDetails(
                 .fillMaxWidth()
                 .height(120.dp),
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(playgroundPic.value)
+                .data(playgroundPicture.picture.convertToBitmap())
                 .crossfade(true)
                 .build(),
             contentDescription = null,
