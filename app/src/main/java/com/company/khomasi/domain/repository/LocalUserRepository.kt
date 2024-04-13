@@ -14,4 +14,6 @@ interface LocalUserRepository {
     fun getSearchHistory(): Flow<List<String>>
     suspend fun saveSearchHistory(searchQuery: String)
     suspend fun removeSearchHistory()
+    suspend fun savePlaygroundId(playgroundId: Int)
+    fun getPlaygroundId(): Flow<Int>
 }

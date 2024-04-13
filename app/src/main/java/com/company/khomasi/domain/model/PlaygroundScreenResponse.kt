@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PlaygroundScreenResponse(
-    @SerialName("busyTimes")
-    val busyTimes: List<BusyTime>,
+//    @SerialName("busyTimes")
+//    val busyTimes: List<BusyTime>,
     @SerialName("playground")
     val playground: PlaygroundX,
     @SerialName("playgroundPictures")

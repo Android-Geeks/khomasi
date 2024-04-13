@@ -1,6 +1,7 @@
 package com.company.khomasi.utils
 
 object Constants {
+    const val PLAYGROUND_ID: String = "playground_id"
     const val DATABASE_NAME = "app_db"
     const val BASE_URL = "http://10.0.2.2:5000/api/"
 

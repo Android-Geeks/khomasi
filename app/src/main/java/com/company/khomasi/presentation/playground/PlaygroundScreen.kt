@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import android.content.Context
+import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -36,6 +37,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -74,6 +76,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.flow.StateFlow
 
 /*
 /////////////////////////////////////////////////////////////////////////////////////
@@ -85,10 +88,11 @@ import com.google.accompanist.pager.rememberPagerState
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun PlaygroundScreen(
-    playgroundState: DataState<PlaygroundScreenResponse>,
-    uiState: PlaygroundUiState,
+    playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
+    playgroundUiState: StateFlow<PlaygroundUiState>,
     context: Context = LocalContext.current,
     onViewRatingClicked: () -> Unit,
+    getPlaygroundDetails: () -> Unit,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
     onClickFav: () -> Unit,
@@ -96,27 +100,29 @@ fun PlaygroundScreen(
     onClickDisplayOnMap: () -> Unit
 ) {
     var showLoading by remember { mutableStateOf(false) }
+    val uiState = playgroundUiState.collectAsState().value
+    val playgroundState = playgroundStateFlow.collectAsState().value
+
+    LaunchedEffect(Unit) {
+        getPlaygroundDetails()
+    }
 
     LaunchedEffect(playgroundState) {
         showLoading = playgroundState is DataState.Loading
+        Log.d("PlaygroundScreen", "PlaygroundScreen: $playgroundState")
     }
 
     if (playgroundState is DataState.Success) {
         val playgroundData = playgroundState.data
-        AuthSheet(
-            sheetModifier = Modifier.fillMaxWidth(),
-            screenContent = {
-                PlaygroundScreenContent(
-                    playgroundData = playgroundData,
-                    uiState = uiState,
-                    onViewRatingClicked = onViewRatingClicked,
-                    onClickBack = onClickBack,
-                    onClickShare = onClickShare,
-                    onClickFav = { onClickFav() },
-                    onClickDisplayOnMap = { onClickDisplayOnMap() }
-                )
-            }
-            ) {
+        AuthSheet(sheetModifier = Modifier.fillMaxWidth(), screenContent = {
+            PlaygroundScreenContent(playgroundData = playgroundData,
+                uiState = uiState,
+                onViewRatingClicked = onViewRatingClicked,
+                onClickBack = onClickBack,
+                onClickShare = onClickShare,
+                onClickFav = { onClickFav() },
+                onClickDisplayOnMap = { onClickDisplayOnMap() })
+        }) {
             Column(
                 Modifier
                     .fillMaxWidth()
@@ -169,8 +175,7 @@ fun PlaygroundScreenContent(
     ) {
 
         item {
-            ImageSlider(
-                imageList = playgroundData.playgroundPictures,
+            ImageSlider(imageList = playgroundData.playgroundPictures,
                 isFav = uiState.isFavourite,
                 onClickBack = { onClickBack() },
                 onClickShare = { onClickShare() },
@@ -178,12 +183,10 @@ fun PlaygroundScreenContent(
         }
 
         item {
-            PlaygroundDefinition(
-                name = "playgroundData.playground.name",
+            PlaygroundDefinition(name = "playgroundData.playground.name",
                 openingTime = playgroundData.playground.openingHours,
                 address = "playgroundData.playground.address",
-                onClickDisplayOnMap = { onClickDisplayOnMap() }
-            )
+                onClickDisplayOnMap = { onClickDisplayOnMap() })
         }
 
         item { LineSpacer() }
@@ -232,12 +235,14 @@ fun ImageSlider(
     onClickFav: () -> Unit
 ) {
     val pagerState = rememberPagerState(initialPage = 0)
+    val context = LocalContext.current
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .height(246.dp)
     ) {
+        Log.d("ImageSlider", "Re: ${imageList.size}")
         HorizontalPager(
             count = imageList.size,
             state = pagerState,
@@ -246,7 +251,7 @@ fun ImageSlider(
                 .height(226.dp)
         ) { page ->
             AsyncImage(
-                model = ImageRequest.Builder(context = LocalContext.current)
+                model = ImageRequest.Builder(context = context)
                     .data(imageList[page].picture.convertToBitmap()).crossfade(true).build(),
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
@@ -359,8 +364,7 @@ fun PlaygroundFeatures(
             ) {
                 items(featureList.take(6)) { feature ->
                     Card(
-                        modifier = Modifier
-                            .height(50.dp),
+                        modifier = Modifier.height(50.dp),
                         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
                         shape = MaterialTheme.shapes.medium,
                         colors = CardDefaults.cardColors(Color.Transparent)
@@ -384,14 +388,10 @@ fun PlaygroundFeatures(
 
 @Composable
 fun PlaygroundDefinition(
-    name: String,
-    openingTime: String,
-    address: String,
-    onClickDisplayOnMap: () -> Unit
+    name: String, openingTime: String, address: String, onClickDisplayOnMap: () -> Unit
 ) {
     Box(
-        modifier = Modifier
-            .fillMaxWidth()
+        modifier = Modifier.fillMaxWidth()
     ) {
         Box(
             Modifier
@@ -435,8 +435,7 @@ fun PlaygroundDefinition(
                     colors = CardDefaults.cardColors(if (isSystemInDarkTheme()) darkText else lightText)
                 ) {
                     Row(
-                        Modifier
-                            .fillMaxWidth(),
+                        Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -544,6 +543,7 @@ fun PlaygroundRules(
         Text(
             text = stringResource(id = R.string.field_instructions),
             style = MaterialTheme.typography.titleLarge,
+            color = if (isSystemInDarkTheme()) darkText else lightText
         )
 
         for (i in rulesList.indices.take(6)) {
@@ -668,15 +668,16 @@ fun PlaygroundScreenPreview() {
     val mockViewModel: MockPlaygroundViewModel = hiltViewModel()
 
     KhomasiTheme {
-        PlaygroundScreen(
-            playgroundState = mockViewModel.playgroundState.collectAsState().value,
-            uiState = mockViewModel.uiState.collectAsState().value,
+        PlaygroundScreen(playgroundStateFlow = mockViewModel.playgroundState,
+            playgroundUiState = mockViewModel.uiState,
             onViewRatingClicked = {},
             onClickShare = {},
             onClickBack = {},
             onClickFav = {},
             onBookNowClicked = {},
-            onClickDisplayOnMap = {})
+            onClickDisplayOnMap = {},
+            getPlaygroundDetails = {}
+        )
 
     }
 

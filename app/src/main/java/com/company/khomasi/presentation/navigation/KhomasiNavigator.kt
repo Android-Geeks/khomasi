@@ -16,6 +16,8 @@ import com.company.khomasi.presentation.favorite.FavouritePage
 import com.company.khomasi.presentation.home.HomeScreen
 import com.company.khomasi.presentation.home.HomeViewModel
 import com.company.khomasi.presentation.navigation.components.BottomNavigationBar
+import com.company.khomasi.presentation.playground.PlaygroundScreen
+import com.company.khomasi.presentation.playground.PlaygroundViewModel
 import com.company.khomasi.presentation.search.SearchScreen
 import com.company.khomasi.presentation.search.SearchViewModel
 
@@ -46,6 +48,10 @@ fun KhomasiNavigator() {
                     playgroundState = homeViewModel.playgroundState.collectAsState().value,
                     homeUiState = homeViewModel.homeUiState.collectAsState().value,
                     onClickUserImage = {/* will nav to user account */ },
+                    onClickPlaygroundCard = { playgroundId ->
+                        homeViewModel.onClickPlayground(playgroundId)
+                        navController.navigate(Screens.PlaygroundDetails.name)
+                    },
                     onClickBell = { /* will nav to notification page */ },
                     onClickViewAll = { homeViewModel.onClickViewAll() },
                     onSearchBarClicked = {},
@@ -69,6 +75,20 @@ fun KhomasiNavigator() {
             }
             composable(route = Screens.Playgrounds.name) {
 
+            }
+            composable(route = Screens.PlaygroundDetails.name) {
+                val viewModel: PlaygroundViewModel = hiltViewModel()
+                PlaygroundScreen(
+                    playgroundStateFlow = viewModel.playgroundState,
+                    playgroundUiState = viewModel.uiState,
+                    onViewRatingClicked = { },
+                    onClickBack = { navController.popBackStack() },
+                    onClickShare = {},
+                    onClickFav = { viewModel.onClickFavourite() },
+                    onBookNowClicked = { },
+                    onClickDisplayOnMap = {},
+                    getPlaygroundDetails = viewModel::getPlaygroundDetails
+                )
             }
             composable(route = Screens.Search.name) {
                 val searchViewModel: SearchViewModel = hiltViewModel()

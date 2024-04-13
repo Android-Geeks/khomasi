@@ -22,6 +22,7 @@ import com.company.khomasi.data.repository.PreferenceKeys.LATITUDE
 import com.company.khomasi.data.repository.PreferenceKeys.LONGITUDE
 import com.company.khomasi.data.repository.PreferenceKeys.OTP_CODE
 import com.company.khomasi.data.repository.PreferenceKeys.PHONE_NUMBER
+import com.company.khomasi.data.repository.PreferenceKeys.PLAYGROUND_ID
 import com.company.khomasi.data.repository.PreferenceKeys.PROFILE_PICTURE
 import com.company.khomasi.data.repository.PreferenceKeys.RATING
 import com.company.khomasi.data.repository.PreferenceKeys.SEARCH_HISTORY
@@ -125,6 +126,18 @@ class LocalUserRepositoryImpl(
             settings[SEARCH_HISTORY] = setOf()
         }
     }
+
+    override suspend fun savePlaygroundId(playgroundId: Int) {
+        context.dataStore.edit { settings ->
+            settings[PLAYGROUND_ID] = playgroundId
+        }
+    }
+
+    override fun getPlaygroundId(): Flow<Int> {
+        return context.dataStore.data.map { preferences ->
+            preferences[PLAYGROUND_ID] ?: 1
+        }
+    }
 }
 
 private val readOnlyProperty = preferencesDataStore(name = Constants.USER_SETTINGS)
@@ -148,6 +161,7 @@ private object PreferenceKeys {
     val TOKEN = stringPreferencesKey(Constants.TOKEN)
     val IS_ONBOARDING = booleanPreferencesKey(Constants.IS_ONBOARDING)
     val IS_LOGIN = booleanPreferencesKey(Constants.IS_LOGIN)
+    val PLAYGROUND_ID = intPreferencesKey(Constants.PLAYGROUND_ID)
 
     val SEARCH_HISTORY = stringSetPreferencesKey(Constants.SEARCH_HISTORY)
 }

@@ -63,7 +63,8 @@ fun HomeScreen(
     onClickBell: () -> Unit,
     onSearchBarClicked: () -> Unit,
     onClickViewAll: () -> Unit,
-    onAdClicked: () -> Unit
+    onAdClicked: () -> Unit,
+    onClickPlaygroundCard: (Int) -> Unit
 ) {
     var showLoading by remember { mutableStateOf(false) }
 
@@ -115,6 +116,7 @@ fun HomeScreen(
                     homeUiState = homeUiState,
                     onAdClicked = { onAdClicked() },
                     onClickViewAll = { onClickViewAll() },
+                    onClickPlaygroundCard = { playgroundId -> onClickPlaygroundCard(playgroundId) }
                 )
                 if (showLoading) {
                     ThreeBounce(
@@ -135,7 +137,8 @@ fun HomeContent(
     playgroundState: DataState<PlaygroundsResponse>,
     homeUiState: HomeUiState,
     onAdClicked: () -> Unit,
-    onClickViewAll: () -> Unit
+    onClickViewAll: () -> Unit,
+    onClickPlaygroundCard: (Int) -> Unit
 ) {
     //        -----------------Temporary-----------------           //
     val adsList = listOf(
@@ -198,7 +201,7 @@ fun HomeContent(
                 PlaygroundCard(
                     playground = playground,
                     onFavouriteClick = {},          // WILL BE IMPLEMENTED LATER
-                    onViewPlaygroundClick = {}
+                    onViewPlaygroundClick = { onClickPlaygroundCard(playground.id) }
                 )
             }
         }
@@ -305,10 +308,11 @@ fun HomeScreenPreview() {
             playgroundState = mockViewMode.playgroundState.collectAsState().value,
             homeUiState = mockViewMode.homeUiState.collectAsState().value,
             onClickUserImage = { },
-            onClickViewAll = { mockViewMode.onClickViewAll() },
-            onSearchBarClicked = {},
             onClickBell = { },
-            onAdClicked = { }
+            onSearchBarClicked = {},
+            onClickViewAll = { mockViewMode.onClickViewAll() },
+            onAdClicked = { },
+            onClickPlaygroundCard = { playgroundId -> mockViewMode.onClickPlayground(playgroundId) }
         )
     }
 }
