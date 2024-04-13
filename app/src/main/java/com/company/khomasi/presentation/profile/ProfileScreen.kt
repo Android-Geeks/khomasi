@@ -17,12 +17,15 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -37,6 +40,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
@@ -47,7 +51,9 @@ import com.company.khomasi.presentation.profile.components.ProfileContentItem
 import com.company.khomasi.presentation.profile.components.ProfileImage
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkIconMask
+import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightIconMask
+import com.company.khomasi.theme.lightText
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlin.reflect.KFunction0
@@ -141,6 +147,7 @@ fun ProfileScreen(
         }
         val bottomSheetState = rememberModalBottomSheetState()
         var showShareOpinionSheet by remember { mutableStateOf(false) }
+        var expandFeedbackCategory by remember { mutableStateOf(false) }
         val scope = rememberCoroutineScope()
 
         if (showShareOpinionSheet) {
@@ -151,7 +158,38 @@ fun ProfileScreen(
                         showShareOpinionSheet = false
                     }
                 }) {
-
+                val feedbackCategories = listOf<Int>(
+                    R.string.suggestion,
+                    R.string.issue,
+                    R.string.complaint,
+                    R.string.other
+                )
+                Column(
+                    modifier = Modifier.fillMaxSize(),
+                    verticalArrangement = Arrangement.SpaceEvenly,
+                    horizontalAlignment = Alignment.Start
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.share_your_feedback),
+                        style = MaterialTheme.typography.displayMedium,
+                        color = if (isDark) darkText else lightText
+                    )
+                    DropdownMenu(expanded = expandFeedbackCategory,
+                        onDismissRequest = { expandFeedbackCategory = false }) {
+                        repeat(feedbackCategories.size) {
+                            DropdownMenuItem(
+                                text = {
+                                    Text(
+                                        text = stringResource(id = it),
+                                        style = MaterialTheme.typography.titleMedium,
+                                        color = if (isDark) darkText else lightText
+                                    )
+                                },
+                                onClick = {}
+                            )
+                        }
+                    }
+                }
             }
         }
         ProfileContent(
