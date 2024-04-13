@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -54,6 +55,9 @@ fun PlaygroundCard(
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme()
 ) {
+    LaunchedEffect(Unit) {
+        viewModel.updateUiState(playground, playground.isFavourite)
+    }
     val playgroundCardState = viewModel.uiState.collectAsState()
 
     Card(
@@ -95,17 +99,22 @@ fun PlaygroundCard(
                         onFavoriteClick = {
                             val isFavorite = !playgroundCardState.value.isFavorite
                             viewModel.updateFavorite(isFavorite)
-                            if (isFavorite) {
-                                viewModel.userFavourite(
-                                    playgroundId = playgroundCardState.value.playground.id.toString()
-                                )
-                            } else {
-                                viewModel.deleteUserFavourite(
-                                    playgroundId = playgroundCardState.value.playground.id.toString()
-                                )
-                            }
+                            viewModel.updateUserFavourite(
+                                playground.id.toString(),
+                                playground.isFavourite
+                            )
+//
+//                           if (isFavorite) {
+//                               viewModel.userFavourite(
+//                                   playgroundId = playgroundCardState.value.playground.id.toString()
+//                               )
+//                           } else {
+//                               viewModel.deleteUserFavourite(
+//                                   playgroundId = playgroundCardState.value.playground.id.toString()
+//                               )
+//                           }
                         },
-                        isFavorite = playground.isFavourite,
+                        isFavorite = playgroundCardState.value.isFavorite,
                         modifier = Modifier.padding(top = 12.dp, start = 6.dp)
                     )
                     Spacer(modifier = Modifier.weight(1f))
