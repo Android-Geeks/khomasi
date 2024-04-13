@@ -11,6 +11,7 @@ import com.company.khomasi.domain.model.UserBookingsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
+import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.domain.repository.RemoteUserRepository
 import kotlinx.coroutines.Dispatchers
@@ -171,6 +172,38 @@ class RemoteUserRepositoryImpl(
             emit(DataState.Loading)
             try {
                 val response = retrofitService.userFavourite(userId, playgroundId)
+                emit(DataState.Success(response))
+            } catch (e: Exception) {
+                emit(DataState.Error(e.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun uploadProfilePicture(
+        token: String,
+        userId: String,
+        picture: String
+    ): Flow<DataState<MessageResponse>> {
+        return flow {
+            emit(DataState.Loading)
+            try {
+                val response = retrofitService.uploadProfilePicture(token, userId, picture)
+                emit(DataState.Success(response))
+            } catch (e: Exception) {
+                emit(DataState.Error(e.toString()))
+            }
+        }.flowOn(Dispatchers.IO)
+    }
+
+    override suspend fun updateUser(
+        token: String,
+        userId: String,
+        user: UserUpdateData
+    ): Flow<DataState<MessageResponse>> {
+        return flow {
+            emit(DataState.Loading)
+            try {
+                val response = retrofitService.updateUser(token, userId, user)
                 emit(DataState.Success(response))
             } catch (e: Exception) {
                 emit(DataState.Error(e.toString()))

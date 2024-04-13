@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
@@ -27,7 +26,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             KhomasiTheme {
                 Surface(
-                    color = MaterialTheme.colorScheme.background
+
                 ) {
                     Log.d("TAG", mainViewModel.startDestination.value)
                     NavGraph(mainViewModel.startDestination.value)

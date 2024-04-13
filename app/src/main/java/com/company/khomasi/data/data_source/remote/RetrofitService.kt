@@ -8,14 +8,15 @@ import com.company.khomasi.domain.model.UserBookingsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
+import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.model.VerificationResponse
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Query
-import retrofit2.http.DELETE
 
 
 interface RetrofitService {
@@ -72,10 +73,24 @@ interface RetrofitService {
     suspend fun deleteUserFavourite(
         @Query("userId") userId: String,
         @Query("playgroundId") playgroundId: String
-    ):MessageResponse
+    ): MessageResponse
 
     @GET("User/favorite-playgrounds")
-    suspend fun  getUserFavouritePlaygrounds(
+    suspend fun getUserFavouritePlaygrounds(
         @Query("userId") userId: String,
-    ):FavouritePlaygroundResponse
+    ): FavouritePlaygroundResponse
+
+    @POST("User/picture")
+    suspend fun uploadProfilePicture(
+        @Header("Authorization") token: String,
+        @Query("userId") userId: String,
+        @Body picture: String
+    ): MessageResponse
+
+    @PUT("User/user")
+    suspend fun updateUser(
+        @Header("Authorization") token: String,
+        @Query("userId") userId: String,
+        @Body user: UserUpdateData
+    ): MessageResponse
 }

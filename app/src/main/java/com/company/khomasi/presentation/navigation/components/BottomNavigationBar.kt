@@ -1,5 +1,8 @@
 package com.company.khomasi.presentation.navigation.components
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
@@ -16,34 +19,42 @@ import com.company.khomasi.navigation.listOfNavItems
 
 @Composable
 fun BottomNavigationBar(
-    navController: NavController
+    navController: NavController,
+    bottomBarState: Boolean
 ) {
-    NavigationBar {
-        val navBackStackEntry by navController.currentBackStackEntryAsState()
-        val currentDestination = navBackStackEntry?.destination
+    AnimatedVisibility(
+        visible = bottomBarState,
+        enter = slideInVertically(initialOffsetY = { it }),
+        exit = slideOutVertically(targetOffsetY = { it }),
+    )
+    {
+        NavigationBar {
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentDestination = navBackStackEntry?.destination
 
-        listOfNavItems.forEach { navItem ->
-            NavigationBarItem(
-                selected = currentDestination?.hierarchy?.any { it.route == navItem.route } == true,
-                onClick = {
-                    navController.navigate(navItem.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+            listOfNavItems.forEach { navItem ->
+                NavigationBarItem(
+                    selected = currentDestination?.hierarchy?.any { it.route == navItem.route } == true,
+                    onClick = {
+                        navController.navigate(navItem.route) {
+                            popUpTo(navController.graph.findStartDestination().id) {
+                                saveState = true
+                            }
+                            launchSingleTop = true
+                            restoreState = true
                         }
-                        launchSingleTop = true
-                        restoreState = true
+                    },
+                    icon = {
+                        Icon(
+                            painter = painterResource(id = navItem.icon),
+                            contentDescription = null
+                        )
+                    },
+                    label = {
+                        Text(text = stringResource(id = navItem.label))
                     }
-                },
-                icon = {
-                    Icon(
-                        painter = painterResource(id = navItem.icon),
-                        contentDescription = null
-                    )
-                },
-                label = {
-                    Text(text = stringResource(id = navItem.label))
-                }
-            )
+                )
+            }
         }
     }
 }
