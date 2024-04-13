@@ -10,22 +10,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TabRow
+import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -35,58 +30,73 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.BookingDetails
-import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
-import com.company.khomasi.presentation.favorite.TopBar
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun MyBookingPage(
+fun MyTabRow(pagerState: PagerState) {
+    val pagerState = rememberPagerState()
 
+    TabRow(
+        selectedTabIndex = pagerState.currentPage,
+        divider = { Spacer(modifier = Modifier.height(5.dp)) },
+        indicator = {
+            SecondaryIndicator(
+                // modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
+                height = 5.dp,
+                color = MaterialTheme.colorScheme.primary
+            )
+        },
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
+    ) {
+
+    }
+
+
+}
+@OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
+@Composable
+fun MyBookingPage(
+    uiState: StateFlow<MyBookingUiState>,
+    playgroundPicture: StateFlow<DataState<PlaygroundPicture>>,
 ) {
-    val pagerState: PagerState = PagerState { 0;" ";2 }
+    val playgroundPic by playgroundPicture.collectAsState()
+
+    val pagerState = PagerState { 0;" ";2 }
 
     HorizontalPager(state = pagerState) { index ->
         when (index) {
             0 -> {
-              // PreviousPage(myBookingPlaygrounds = , uiState = , myBooking = )
+                ExpiredPage(
+                    uiState,
+                    playgroundPicture = playgroundPicture
+                )
             }
 
             1 -> {
-                //CurrentPage()
+                CurrentPage(uiState, playgroundPicture = playgroundPicture)
             }
 
         }
     }
 }
 @Composable
-fun PreviousPage(
-    myBookingPlaygrounds: (String) -> Unit,
+fun ExpiredPage(
     uiState: StateFlow<MyBookingUiState>,
-    myBooking: StateFlow<DataState<MyBookingsResponse>>
+    playgroundPicture: StateFlow<DataState<PlaygroundPicture>>,
 ){
 
-//    val viewModel: MyBookingViewModel = viewModel()
-//    val uiState: StateFlow<MyBookingUiState> = viewModel.uiState
-//    val myBooking: StateFlow<DataState<MyBookingsResponse>> = viewModel.myBooking
-
     val currentState = uiState.collectAsState().value
-    val myBookingState by myBooking.collectAsState()
-
-    DisposableEffect(Unit) {
-        myBookingPlaygrounds(currentState.userId)
-        onDispose {}
-    }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar() },
-
         ) {
         Surface(
             modifier = Modifier
@@ -94,37 +104,18 @@ fun PreviousPage(
                 .padding(all = 16.dp),
             color = MaterialTheme.colorScheme.background,
         ) {
-
-                    val response = (myBookingState as DataState.Success).data
-                    if (response.results.isNotEmpty()) {
+            if (currentState.bookingPlayground.isNotEmpty()) {
                         LazyColumn(
                             contentPadding = it,
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            items(response.results) {
+                            items(currentState.bookingPlayground) {
                                 BookingCard(
-                                    bookingDetails = BookingDetails(
-                                        1,
-                                        1,
-                                        "Al Zamalek Club",
-                                        "Nasr City",
-                                        "1/10/2024",
-                                        7,
-                                        50,
-                                        "2425",
-                                        false
-                                    ) ,
-                                    playgroundPicture = PlaygroundPicture(
-                                        1,
-                                        1,
-                                        " ",
-                                        false
-                                    ),
+                                    bookingDetails = it,
+                                    playgroundPicture = playgroundPicture,
                                     bookingStatus = BookingStatus.CONFIRMED)
-
-
                             }
-
+                        }
             }
         }
     }
@@ -132,26 +123,18 @@ fun PreviousPage(
 
 @Composable
 fun CurrentPage(
-    myBookingPlaygrounds: (String) -> Unit,
     uiState: StateFlow<MyBookingUiState>,
-    myBooking: StateFlow<DataState<MyBookingsResponse>>
-){
+    //myBooking: StateFlow<DataState<MyBookingsResponse>>,
+    playgroundPicture: StateFlow<DataState<PlaygroundPicture>>,
 
-//    val viewModel: MyBookingViewModel = viewModel()
-//    val uiState: StateFlow<MyBookingUiState> = viewModel.uiState
-//    val myBooking: StateFlow<DataState<MyBookingsResponse>> = viewModel.myBooking
+    ) {
 
     val currentState = uiState.collectAsState().value
-    val myBookingState by myBooking.collectAsState()
+    // val myBookingState by myBooking.collectAsState()
 
-    DisposableEffect(Unit) {
-        myBookingPlaygrounds(currentState.userId)
-        onDispose {}
-    }
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
-        topBar = { TopBar() },
-
         ) {
         Surface(
             modifier = Modifier
@@ -159,31 +142,15 @@ fun CurrentPage(
                 .padding(all = 16.dp),
             color = MaterialTheme.colorScheme.background,
         ) {
-                    val response = (myBookingState as DataState.Success).data
-                    if (response.results.isNotEmpty()) {
+            if (currentState.bookingPlayground.isNotEmpty()) {
                         LazyColumn(
                             contentPadding = it,
                             verticalArrangement = Arrangement.spacedBy(16.dp)
                         ) {
-                            items(response.results) {
+                            items(currentState.bookingPlayground) {
                                 BookingCard(
-                                    bookingDetails = BookingDetails(
-                                        1,
-                                        1,
-                                        "Al Zamalek Club",
-                                        "Nasr City",
-                                        "1/10/2024",
-                                        7,
-                                        50,
-                                        "2425",
-                                        false
-                                    ) ,
-                                    playgroundPicture = PlaygroundPicture(
-                                        1,
-                                        1,
-                                        " ",
-                                        false
-                                    ),
+                                    bookingDetails = it,
+                                    playgroundPicture = playgroundPicture,
                                     bookingStatus = BookingStatus.CONFIRMED)
 
                             }
@@ -194,28 +161,7 @@ fun CurrentPage(
 }
 
 
-@OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
-@Composable
-fun tabRow(pagerState: PagerState) {
-    TabRow(
-        selectedTabIndex = pagerState.currentPage,
-        divider = {
-            Spacer(modifier = Modifier.height(5.dp))
-        },
-//        indicator = { tabPositions ->
-//            SecondaryIndicator(
-//                modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions),
-//                height = 5.dp,
-//                color = Color.White
-//            )
-//        },
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-    ) {
 
-    }
-}
 
 @Composable
 fun EmptyScreen(
@@ -245,47 +191,27 @@ fun EmptyScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun PlaygroundInfo(bookingDetails: BookingDetails) {
-    Column {
-        TopAppBar(
-            title = {
-                Text(
-                    text = bookingDetails.name,
-                    style = MaterialTheme.typography.displayMedium,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .wrapContentSize(Alignment.CenterStart)
-                        .padding(start = 16.dp)
-                )
-            },
-            colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background)
-        )
-        HorizontalDivider(
-            modifier = Modifier.fillMaxWidth(), thickness = 1.dp
-        )
-        BookingCard(
-            bookingDetails = BookingDetails(
-                1,
-                1,
-                "Al Zamalek Club",
-                "Nasr City",
-                "1/10/2024",
-                7,
-                50,
-                "2425",
-                false
-            ) ,
-            playgroundPicture = PlaygroundPicture(
-                1,
-                1,
-                " ",
-                false
-            ),
-            bookingStatus = BookingStatus.CONFIRMED)
 
-
-    }
-
-}}
+//@Preview
+//@Composable
+//private fun PlaygroundInfoPreview() {
+//    PlaygroundInfo( bookingDetails = BookingDetails(
+//        1,
+//        1,
+//        "Al Zamalek Club",
+//        "Nasr City",
+//        "1/10/2024",
+//        7,
+//        50,
+//        "2425",
+//        false
+//    ),
+//        playgroundPicture = PlaygroundPicture(
+//            1,
+//            1,
+//            " ",
+//            false
+//        ),
+//      //  myBooking =
+//
+//}

@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.navigation
 
-import com.company.khomasi.presentation.favorite.FavouritePlaygroundsViewModel
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -12,9 +11,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.navigation.Screens
 import com.company.khomasi.navigation.listOfNavItems
-import com.company.khomasi.presentation.favorite.FavouritePage
 import com.company.khomasi.presentation.home.HomeScreen
 import com.company.khomasi.presentation.home.HomeViewModel
+import com.company.khomasi.presentation.myBookings.MyBookingPage
+import com.company.khomasi.presentation.myBookings.MyBookingViewModel
 import com.company.khomasi.presentation.navigation.components.BottomNavigationBar
 import com.company.khomasi.presentation.search.SearchScreen
 import com.company.khomasi.presentation.search.SearchViewModel
@@ -53,15 +53,15 @@ fun KhomasiNavigator() {
                 )
             }
             composable(route = Screens.Favorite.name) {
-                val favouritePlaygroundsViewModel: FavouritePlaygroundsViewModel = hiltViewModel()
-                FavouritePage(
-                    fetchUserFavoritePlaygrounds = favouritePlaygroundsViewModel::fetchUserFavoritePlaygrounds,
-                    uiState = favouritePlaygroundsViewModel.uiState,
-                    favouritePlayground = favouritePlaygroundsViewModel.favouritePlaygroundsState,
-                    )
+
 
             }
             composable(route = Screens.MyBookings.name) {
+                val bookingViewModel: MyBookingViewModel = hiltViewModel()
+                MyBookingPage(
+                    uiState = bookingViewModel.uiState,
+                    playgroundPicture = bookingViewModel.myPic
+                )
 
             }
             composable(route = Screens.Playgrounds.name) {

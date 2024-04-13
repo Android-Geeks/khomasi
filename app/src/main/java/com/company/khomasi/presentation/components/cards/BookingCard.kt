@@ -1,7 +1,5 @@
 package com.company.khomasi.presentation.components.cards
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -25,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,26 +33,26 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
+import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.BookingDetails
 import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
-import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkSubText
 import com.company.khomasi.theme.darkWarningColor
 import com.company.khomasi.theme.lightSubText
 import com.company.khomasi.theme.lightWarningColor
+import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
 fun BookingCard(
     bookingDetails: BookingDetails,
-    playgroundPicture: PlaygroundPicture,
+    playgroundPicture: StateFlow<DataState<PlaygroundPicture>>,
     modifier: Modifier = Modifier,
     isDark: Boolean = isSystemInDarkTheme(),
     bookingStatus: BookingStatus
@@ -197,9 +196,11 @@ fun BookingCard(
 @Composable
 fun BookingCardDetails(
     bookingDetails: BookingDetails,
-    playgroundPicture: PlaygroundPicture,
+    playgroundPicture: StateFlow<DataState<PlaygroundPicture>>,
     modifier: Modifier = Modifier
 ) {
+    val playgroundPic = playgroundPicture.collectAsState()
+
     Column(
         modifier = modifier
             .fillMaxWidth(),
@@ -211,7 +212,7 @@ fun BookingCardDetails(
                 .fillMaxWidth()
                 .height(120.dp),
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(playgroundPicture.picture)
+                .data(playgroundPic.value)
                 .crossfade(true)
                 .build(),
             contentDescription = null,
@@ -282,29 +283,29 @@ fun TextWithIcon(
     }
 }
 
-@Preview(name = "Night", uiMode = UI_MODE_NIGHT_YES)
-@Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO, locale = "ar")
-@Composable
-private fun BookingCardPreview() {
-    KhomasiTheme {
-        BookingCard(
-            bookingDetails = BookingDetails(
-                1,
-                1,
-                "Al Zamalek Club",
-                "Nasr City",
-                "1/10/2024",
-                7,
-               50,
-               "2425",
-                false
-            ) ,
-            playgroundPicture = PlaygroundPicture(
-                1,
-                1,
-                " ",
-                false
-            ),
-            bookingStatus = BookingStatus.CONFIRMED)
-    }
-}
+//@Preview(name = "Night", uiMode = UI_MODE_NIGHT_YES)
+//@Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO, locale = "ar")
+//@Composable
+//private fun BookingCardPreview() {
+//    KhomasiTheme {
+//        BookingCard(
+//            bookingDetails = BookingDetails(
+//                1,
+//                1,
+//                "Al Zamalek Club",
+//                "Nasr City",
+//                "1/10/2024",
+//                7,
+//               50,
+//               "2425",
+//                false
+//            ) ,
+//            playgroundPicture = PlaygroundPicture(
+//                1,
+//                1,
+//                " ",
+//                false
+//            ),
+//            bookingStatus = BookingStatus.CONFIRMED)
+//    }
+//}
