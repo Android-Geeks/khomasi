@@ -10,10 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.presentation.navigation.NavGraph
-import com.company.khomasi.presentation.playground.PlaygroundScreen
-import com.company.khomasi.presentation.playground.PlaygroundViewModel
 import com.company.khomasi.theme.KhomasiTheme
 import dagger.hilt.android.AndroidEntryPoint
 
