@@ -136,7 +136,6 @@ fun SearchScreen(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-
                     .padding(it)
                     .padding(horizontal = 16.dp, vertical = 8.dp)
                     .imePadding(),
@@ -178,12 +177,6 @@ fun SearchScreen(
         var showFilterSheet by remember { mutableStateOf(false) }
         val scope = rememberCoroutineScope()
         var choice by remember { mutableStateOf(0) }
-        val choices = listOf(
-            stringResource(id = R.string.lowest_price),
-            stringResource(id = R.string.rating),
-            stringResource(id = R.string.nearest_to_me),
-            stringResource(id = R.string.bookable)
-        )
 
         if (showFilterSheet) {
             MyModalBottomSheet(
@@ -197,7 +190,6 @@ fun SearchScreen(
                     choice = choice,
                     onChoiceChange = { choice = it },
                     onSearchFilterChanged = onSearchFilterChanged,
-                    choices = choices,
                     isDark = isDark,
                     hideBottomSheet = {
                         scope.launch {

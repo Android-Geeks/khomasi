@@ -14,6 +14,8 @@ enum class Screens {
     OTP,
     ResetPassword,
     Search,
+    Profile,
+    PlaygroundDetails
 }
 
 enum class Routes {

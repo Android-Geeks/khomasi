@@ -28,11 +28,16 @@ fun SearchFilterSheetContent(
     choice: Int,
     onChoiceChange: (Int) -> Unit,
     onSearchFilterChanged: (SearchFilter) -> Unit,
-    choices: List<String>,
     hideBottomSheet: () -> Unit,
     isDark: Boolean
 ) {
     val interactionSource = remember { MutableInteractionSource() }
+    val choices = listOf(
+        stringResource(id = R.string.lowest_price),
+        stringResource(id = R.string.rating),
+        stringResource(id = R.string.nearest_to_me),
+        stringResource(id = R.string.bookable)
+    )
     Column(
         modifier = Modifier
             .fillMaxWidth()

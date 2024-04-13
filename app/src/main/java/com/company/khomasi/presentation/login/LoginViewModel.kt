@@ -72,7 +72,7 @@ class LoginViewModel @Inject constructor(
 
     private fun onLoginSuccess() {
         viewModelScope.launch {
-            appEntryUseCases.saveIsLogin()
+            appEntryUseCases.saveIsLogin(true)
         }
     }
 

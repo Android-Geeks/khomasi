@@ -53,4 +53,10 @@ class HomeViewModel @Inject constructor(
             )
         }
     }
+
+    fun onClickPlayground(playgroundId: Int) {
+        viewModelScope.launch {
+            localUserUseCases.savePlaygroundId(playgroundId)
+        }
+    }
 }

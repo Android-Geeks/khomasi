@@ -5,8 +5,8 @@ import com.company.khomasi.domain.repository.LocalUserRepository
 class SaveIsLogin(
     private val localUserRepository: LocalUserRepository
 ) {
-    suspend operator fun invoke() {
-        localUserRepository.saveIsLogin()
+    suspend operator fun invoke(isLogin: Boolean) {
+        localUserRepository.saveIsLogin(isLogin)
     }
 
 }
