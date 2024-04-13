@@ -31,8 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
-import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.cards.PlaygroundCard
 import com.company.khomasi.theme.KhomasiTheme
@@ -41,10 +39,8 @@ import kotlinx.coroutines.flow.StateFlow
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FavouritePage(
-    favouritePlayground: StateFlow<DataState<FavouritePlaygroundResponse>>,
     uiState: StateFlow<FavouriteUiState>
 ) {
-    val favouritePlaygroundState = favouritePlayground.collectAsState().value
     val favUiState = uiState.collectAsState().value
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -58,7 +54,6 @@ fun FavouritePage(
             color = MaterialTheme.colorScheme.background,
         ) {
 
-            // if (favouritePlaygroundState.data.playgrounds.isNotEmpty()) {
             if (favUiState.playgrounds.isNotEmpty())
                         LazyColumn(
                             contentPadding = it,
@@ -143,26 +138,8 @@ fun EmptyScreen(
 fun FavouritePagePreview() {
     KhomasiTheme {
         val mockViewModel: MockFavViewModel = viewModel()
-//        val mockData = List(10) {
-//
-//            Playground(
-//                id = 1,
-//                name = "Playground Name",
-//                address = "Address",
-//                rating = 4.5,
-//                feesForHour = 100,
-//                isBookable = true,
-//                distance = 5.0,
-//                playgroundPicture = null,
-//                isFavourite = true
-//            )
-//        }
-       // val mockFavouritePlaygroundResponse = FavouritePlaygroundResponse(mockData, 10)
-        //val mockDataState = DataState.Success(mockFavouritePlaygroundResponse)
         FavouritePage(
-            //getUserFavoritePlaygrounds = mockViewModel::getUserFavoritePlaygrounds,
             uiState = mockViewModel.uiState,
-             favouritePlayground = mockViewModel.favouritePlaygroundsState,
         )
     }
 }

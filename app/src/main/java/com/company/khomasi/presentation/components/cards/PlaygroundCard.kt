@@ -129,7 +129,6 @@ fun PlaygroundCard(
 
                 }
             }
-
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = playground.name,

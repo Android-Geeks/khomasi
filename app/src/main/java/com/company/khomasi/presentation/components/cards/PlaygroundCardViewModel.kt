@@ -82,7 +82,6 @@ class PlaygroundCardViewModel @Inject constructor(
             }
         }
     }
-
     fun updateFavorite(isFavorite: Boolean) {
         _uiState.update { it.copy(isFavorite = isFavorite) }
     }
