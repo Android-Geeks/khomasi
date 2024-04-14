@@ -59,7 +59,8 @@ fun KhomasiNavigator() {
                     onClickBell = { /* will nav to notification page */ },
                     onClickViewAll = { homeViewModel.onClickViewAll() },
                     onSearchBarClicked = { navController.navigate(Screens.Search.name) },
-                    onAdClicked = {}
+                    onAdClicked = {},
+                    onFavouriteClick = homeViewModel::onFavouriteClicked,
                 )
             }
             composable(route = Screens.Favorite.name) {

@@ -76,6 +76,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.flow.StateFlow
+import kotlin.reflect.KSuspendFunction0
 
 /*
 /////////////////////////////////////////////////////////////////////////////////////
@@ -91,7 +92,7 @@ fun PlaygroundScreen(
     playgroundUiState: StateFlow<PlaygroundUiState>,
     context: Context = LocalContext.current,
     onViewRatingClicked: () -> Unit,
-    getPlaygroundDetails: () -> Unit,
+    getPlaygroundDetails: KSuspendFunction0<Unit>,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
     onClickFav: () -> Unit,
@@ -667,7 +668,8 @@ fun PlaygroundScreenPreview() {
     val mockViewModel: MockPlaygroundViewModel = hiltViewModel()
 
     KhomasiTheme {
-        PlaygroundScreen(playgroundStateFlow = mockViewModel.playgroundState,
+        PlaygroundScreen(
+            playgroundStateFlow = mockViewModel.playgroundState,
             playgroundUiState = mockViewModel.uiState,
             onViewRatingClicked = {},
             onClickShare = {},
@@ -675,7 +677,7 @@ fun PlaygroundScreenPreview() {
             onClickFav = {},
             onBookNowClicked = {},
             onClickDisplayOnMap = {},
-            getPlaygroundDetails = {}
+            getPlaygroundDetails = mockViewModel::getPlaygroundDetails
         )
 
     }

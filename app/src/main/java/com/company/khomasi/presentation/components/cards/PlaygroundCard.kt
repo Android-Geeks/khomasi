@@ -20,8 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,11 +53,6 @@ fun PlaygroundCard(
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme()
 ) {
-    LaunchedEffect(Unit) {
-        viewModel.updateUiState(playground, playground.isFavourite)
-    }
-    val playgroundCardState = viewModel.uiState.collectAsState()
-
     Card(
         colors = cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -97,24 +90,13 @@ fun PlaygroundCard(
                 ) {
                     FavoriteIcon(
                         onFavoriteClick = {
-                            val isFavorite = !playgroundCardState.value.isFavorite
-                            viewModel.updateFavorite(isFavorite)
+                            onFavouriteClick()
                             viewModel.updateUserFavourite(
                                 playground.id.toString(),
                                 playground.isFavourite
                             )
-//
-//                           if (isFavorite) {
-//                               viewModel.userFavourite(
-//                                   playgroundId = playgroundCardState.value.playground.id.toString()
-//                               )
-//                           } else {
-//                               viewModel.deleteUserFavourite(
-//                                   playgroundId = playgroundCardState.value.playground.id.toString()
-//                               )
-//                           }
                         },
-                        isFavorite = playgroundCardState.value.isFavorite,
+                        isFavorite = playground.isFavourite,
                         modifier = Modifier.padding(top = 12.dp, start = 6.dp)
                     )
                     Spacer(modifier = Modifier.weight(1f))

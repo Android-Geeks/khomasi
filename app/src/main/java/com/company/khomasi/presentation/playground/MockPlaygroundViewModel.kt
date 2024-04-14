@@ -24,4 +24,17 @@ class MockPlaygroundViewModel : ViewModel() {
 //            }
 //        }
 //    }
+
+    suspend fun getPlaygroundDetails() {
+        // localUserUseCases.getLocalUser().collect { localUser ->
+        //     localUserUseCases.getPlaygroundId().collect { id ->
+        //         remoteUserUseCase.getSpecificPlaygroundUseCase(
+        //             token = "Bearer ${localUser.token}",
+        //             id = id
+        //         ).collect {
+        //             _playgroundState.value = it
+        //         }
+        //     }
+        // }
+    }
 }

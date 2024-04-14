@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.home
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -54,7 +53,7 @@ import com.company.khomasi.presentation.components.connectionStates.ThreeBounce
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.utils.convertToBitmap
 
-@SuppressLint("ResourceType")
+
 @Composable
 fun HomeScreen(
     playgroundState: DataState<PlaygroundsResponse>,
@@ -64,7 +63,8 @@ fun HomeScreen(
     onSearchBarClicked: () -> Unit,
     onClickViewAll: () -> Unit,
     onAdClicked: () -> Unit,
-    onClickPlaygroundCard: (Int) -> Unit
+    onClickPlaygroundCard: (Int) -> Unit,
+    onFavouriteClick: (Int) -> Unit
 ) {
     var showLoading by remember { mutableStateOf(false) }
 
@@ -116,7 +116,8 @@ fun HomeScreen(
                     homeUiState = homeUiState,
                     onAdClicked = { onAdClicked() },
                     onClickViewAll = { onClickViewAll() },
-                    onClickPlaygroundCard = { playgroundId -> onClickPlaygroundCard(playgroundId) }
+                    onClickPlaygroundCard = { playgroundId -> onClickPlaygroundCard(playgroundId) },
+                    onFavouriteClick = { playgroundId -> onFavouriteClick(playgroundId) }
                 )
                 if (showLoading) {
                     ThreeBounce(
@@ -138,7 +139,8 @@ fun HomeContent(
     homeUiState: HomeUiState,
     onAdClicked: () -> Unit,
     onClickViewAll: () -> Unit,
-    onClickPlaygroundCard: (Int) -> Unit
+    onClickPlaygroundCard: (Int) -> Unit,
+    onFavouriteClick: (Int) -> Unit
 ) {
     //        -----------------Temporary-----------------           //
     val adsList = listOf(
@@ -200,7 +202,7 @@ fun HomeContent(
             items(visiblePlaygrounds) { playground ->
                 PlaygroundCard(
                     playground = playground,
-                    onFavouriteClick = {},          // WILL BE IMPLEMENTED LATER
+                    onFavouriteClick = { onFavouriteClick(playground.id) },          // WILL BE IMPLEMENTED LATER
                     onViewPlaygroundClick = { onClickPlaygroundCard(playground.id) }
                 )
             }
@@ -303,16 +305,17 @@ fun HomeSearchBar(onSearchBarClicked: () -> Unit) {
 @Composable
 fun HomeScreenPreview() {
     KhomasiTheme {
-        val mockViewMode: MockHomeViewModel = hiltViewModel()
+        val mockViewModel: MockHomeViewModel = hiltViewModel()
         HomeScreen(
-            playgroundState = mockViewMode.playgroundState.collectAsState().value,
-            homeUiState = mockViewMode.homeUiState.collectAsState().value,
+            playgroundState = mockViewModel.playgroundState.collectAsState().value,
+            homeUiState = mockViewModel.homeUiState.collectAsState().value,
             onClickUserImage = { },
             onClickBell = { },
             onSearchBarClicked = {},
-            onClickViewAll = { mockViewMode.onClickViewAll() },
+            onClickViewAll = { mockViewModel.onClickViewAll() },
             onAdClicked = { },
-            onClickPlaygroundCard = { playgroundId -> mockViewMode.onClickPlayground(playgroundId) }
+            onClickPlaygroundCard = { playgroundId -> mockViewModel.onClickPlayground(playgroundId) },
+            onFavouriteClick = {}
         )
     }
 }

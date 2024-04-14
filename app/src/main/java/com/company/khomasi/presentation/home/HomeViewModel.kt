@@ -59,4 +59,25 @@ class HomeViewModel @Inject constructor(
             localUserUseCases.savePlaygroundId(playgroundId)
         }
     }
+
+    fun onFavouriteClicked(playgroundId: Int) {
+        if (_playgroundState.value is DataState.Success) {
+            val playgrounds = (_playgroundState.value as DataState.Success).data.playgrounds
+            val playground = playgrounds.find { it.id == playgroundId }
+            if (playground != null) {
+                _playgroundState.value = DataState.Success(
+                    (_playgroundState.value as DataState.Success).data.copy(
+                        playgrounds = playgrounds.map {
+                            if (it.id == playgroundId) {
+                                it.copy(isFavourite = !it.isFavourite)
+                            } else {
+                                it
+                            }
+                        }
+                    )
+                )
+            }
+        }
+
+    }
 }
