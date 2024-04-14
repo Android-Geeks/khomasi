@@ -26,11 +26,8 @@ class FavouriteViewModel @Inject constructor(
     val uiState: StateFlow<FavouriteUiState> = _uiState
     private var localUser = LocalUser()
 
-    init {
-        getFavoritePlaygrounds()
-    }
 
-    private fun getFavoritePlaygrounds() {
+    fun getFavoritePlaygrounds() {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect {
                 localUser = it
@@ -44,9 +41,21 @@ class FavouriteViewModel @Inject constructor(
                         )
 
                     }
-            }
+                }
             }
         }
+    }
+
+    fun onClickPlayground(playgroundId: Int) {
+        viewModelScope.launch {
+            localUserUseCases.savePlaygroundId(playgroundId)
+        }
+    }
+
+    fun onFavouriteClicked(playgroundId: Int) {
+        _uiState.value = _uiState.value.copy(
+            playgrounds = _uiState.value.playgrounds.filterNot { it.id == playgroundId }
+        )
     }
 }
 

@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(
     private val _homeUiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
     val homeUiState: StateFlow<HomeUiState> = _homeUiState
 
-    init {
+    fun getPlaygrounds() {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect { userData ->
 
@@ -44,7 +44,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-//userId : "7c6fa4dc-a314-4cbc-a4cc-5e6110020491"
 
     fun onClickViewAll() {
         _homeUiState.update {

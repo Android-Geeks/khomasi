@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,8 +40,14 @@ import kotlinx.coroutines.flow.StateFlow
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FavouritePage(
-    uiState: StateFlow<FavouriteUiState>
+    uiState: StateFlow<FavouriteUiState>,
+    onFavouriteClick: (Int) -> Unit,
+    onPlaygroundClick: (Int) -> Unit,
+    getFavoritePlaygrounds: () -> Unit
 ) {
+    LaunchedEffect(Unit) {
+        getFavoritePlaygrounds()
+    }
     val favUiState = uiState.collectAsState().value
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -55,22 +62,22 @@ fun FavouritePage(
         ) {
 
             if (favUiState.playgrounds.isNotEmpty())
-                        LazyColumn(
-                            contentPadding = it,
-                            verticalArrangement = Arrangement.spacedBy(16.dp)
-                        ) {
-                            items(favUiState.playgrounds) { playground ->
-                                PlaygroundCard(
-                                    playground = playground,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .animateItemPlacement(),
-                                    onViewPlaygroundClick = {},
-                                    onFavouriteClick = {}
-                                )
-                            }
+                LazyColumn(
+                    contentPadding = it,
+                    verticalArrangement = Arrangement.spacedBy(16.dp)
+                ) {
+                    items(favUiState.playgrounds) { playground ->
+                        PlaygroundCard(
+                            playground = playground,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .animateItemPlacement(),
+                            onViewPlaygroundClick = { onPlaygroundClick(playground.id) },
+                            onFavouriteClick = { onFavouriteClick(playground.id) },
+                        )
+                    }
 
-                        } else {
+                } else {
                 EmptyScreen()
             }
         }
@@ -140,6 +147,9 @@ fun FavouritePagePreview() {
         val mockViewModel: MockFavViewModel = viewModel()
         FavouritePage(
             uiState = mockViewModel.uiState,
+            onFavouriteClick = { },
+            onPlaygroundClick = {},
+            getFavoritePlaygrounds = {},
         )
     }
 }

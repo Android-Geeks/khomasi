@@ -20,7 +20,7 @@ class MainViewModel @Inject constructor(
     private val _splashCondition = mutableStateOf(true)
     val splashCondition: State<Boolean> = _splashCondition
 
-    private val _startDestination = mutableStateOf(Routes.KhomasiNavigation.name)
+    private val _startDestination = mutableStateOf(Routes.AppStartNavigation.name)
     val startDestination: State<String> = _startDestination
 
     init {

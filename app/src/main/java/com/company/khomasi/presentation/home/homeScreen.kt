@@ -64,9 +64,14 @@ fun HomeScreen(
     onClickViewAll: () -> Unit,
     onAdClicked: () -> Unit,
     onClickPlaygroundCard: (Int) -> Unit,
-    onFavouriteClick: (Int) -> Unit
+    onFavouriteClick: (Int) -> Unit,
+    getPlaygrounds: () -> Unit
 ) {
     var showLoading by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        getPlaygrounds()
+    }
 
     LaunchedEffect(playgroundState) {
         when (playgroundState) {
@@ -315,7 +320,8 @@ fun HomeScreenPreview() {
             onClickViewAll = { mockViewModel.onClickViewAll() },
             onAdClicked = { },
             onClickPlaygroundCard = { playgroundId -> mockViewModel.onClickPlayground(playgroundId) },
-            onFavouriteClick = {}
+            onFavouriteClick = {},
+            getPlaygrounds = {}
         )
     }
 }

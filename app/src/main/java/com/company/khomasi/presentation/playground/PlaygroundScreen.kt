@@ -76,7 +76,6 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.flow.StateFlow
-import kotlin.reflect.KSuspendFunction0
 
 /*
 /////////////////////////////////////////////////////////////////////////////////////
@@ -92,7 +91,7 @@ fun PlaygroundScreen(
     playgroundUiState: StateFlow<PlaygroundUiState>,
     context: Context = LocalContext.current,
     onViewRatingClicked: () -> Unit,
-    getPlaygroundDetails: KSuspendFunction0<Unit>,
+    getPlaygroundDetails: () -> Unit,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
     onClickFav: () -> Unit,
@@ -256,8 +255,7 @@ fun ImageSlider(
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier.fillMaxSize(),
-                placeholder = painterResource(R.drawable.playground)
-
+//                error = painterResource(id = R.drawable.)
             )
 
             Column(
@@ -666,7 +664,6 @@ fun LineSpacer() {
 @Composable
 fun PlaygroundScreenPreview() {
     val mockViewModel: MockPlaygroundViewModel = hiltViewModel()
-
     KhomasiTheme {
         PlaygroundScreen(
             playgroundStateFlow = mockViewModel.playgroundState,
@@ -677,37 +674,9 @@ fun PlaygroundScreenPreview() {
             onClickFav = {},
             onBookNowClicked = {},
             onClickDisplayOnMap = {},
-            getPlaygroundDetails = mockViewModel::getPlaygroundDetails
+            getPlaygroundDetails = {}
         )
 
     }
 
 }
-
-
-/*
-
-@SuppressLint("StateFlowValueCalledInComposition")
-@Composable
-fun PlaygroundScreen() {
-    val playgroundViewModel: PlaygroundViewModel = hiltViewModel()
-    val state = playgroundViewModel.playgroundState.collectAsState().value
-    LaunchedEffect(key1 = playgroundViewModel.playgroundState.value) {
-        Log.d("FavoriteScreen", "FavoriteScreen: ${playgroundViewModel.playgroundState.value}")
-    }
-    if (state is DataState.Success) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.SpaceAround,
-        ) {
-            Text(text = state.data.playground.holidays)
-            AsyncImage(
-                model = ImageRequest.Builder(context = LocalContext.current)
-                    .data(state.data.playgroundPictures[0].picture.convertToBitmap())
-                    .crossfade(true).build(), contentDescription = null
-            )
-        }
-    }
-
-}
-*/

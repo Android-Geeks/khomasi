@@ -56,6 +56,7 @@ fun KhomasiNavigator() {
                         homeViewModel.onClickPlayground(playgroundId)
                         navController.navigate(Screens.PlaygroundDetails.name)
                     },
+                    getPlaygrounds = homeViewModel::getPlaygrounds,
                     onClickBell = { /* will nav to notification page */ },
                     onClickViewAll = { homeViewModel.onClickViewAll() },
                     onSearchBarClicked = { navController.navigate(Screens.Search.name) },
@@ -66,8 +67,14 @@ fun KhomasiNavigator() {
             composable(route = Screens.Favorite.name) {
                 val favouriteViewModel: FavouriteViewModel = hiltViewModel()
                 FavouritePage(
-                    uiState = favouriteViewModel.uiState
-                    )
+                    uiState = favouriteViewModel.uiState,
+                    getFavoritePlaygrounds = favouriteViewModel::getFavoritePlaygrounds,
+                    onFavouriteClick = favouriteViewModel::onFavouriteClicked,
+                    onPlaygroundClick = { playgroundId ->
+                        favouriteViewModel.onClickPlayground(playgroundId)
+                        navController.navigate(Screens.PlaygroundDetails.name)
+                    }
+                )
 
             }
             composable(route = Screens.MyBookings.name) {
