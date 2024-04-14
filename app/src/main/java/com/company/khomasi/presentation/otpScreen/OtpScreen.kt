@@ -60,11 +60,16 @@ fun OtpScreen(
     confirmEmail: () -> Unit,
     startTimer: (Int) -> Unit,
     resetTimer: (Int) -> Unit,
+    getRegisterOtp: () -> Unit,
 ) {
     val otpUiState = uiState.value
     val otpStatus = otpState.collectAsState().value
     val confirmEmailStatus = confirmEmailState.collectAsState().value
     var showLoading by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        getRegisterOtp()
+    }
 
     LaunchedEffect(key1 = otpStatus) {
         Log.d("OtpScreen", "otpStatus: $otpStatus")
@@ -262,7 +267,8 @@ fun OtpPreview() {
             resendCode = mockOtpViewModel::resendCode,
             confirmEmail = mockOtpViewModel::confirmEmail,
             startTimer = mockOtpViewModel::startTimer,
-            resetTimer = mockOtpViewModel::resetTimer
+            resetTimer = mockOtpViewModel::resetTimer,
+            getRegisterOtp = {}
         )
     }
 }
