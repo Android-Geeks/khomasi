@@ -10,6 +10,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import retrofit2.HttpException
+import retrofit2.Response
 
 class RemoteUserRepositoryImpl(
     private val retrofitService: RetrofitService
@@ -55,15 +57,21 @@ class RemoteUserRepositoryImpl(
 }
 
 suspend fun <T : Any> handleApi(
-    execute: suspend () -> T
+    execute: suspend () -> Response<T>
 ): Flow<DataState<T>> {
     return flow {
-        emit(DataState.Loading)
         try {
             val response = execute()
-            emit(DataState.Success(response))
-        } catch (e: Exception) {
-            emit(DataState.Error(e.toString()))
+            val body = response.body()
+            if (response.isSuccessful && body != null) {
+                emit(DataState.Success(body))
+            } else {
+                emit(DataState.Error(response.code(), response.message()))
+            }
+        } catch (e: HttpException) {
+            emit(DataState.Error(e.code(), e.message()))
+        } catch (e: Throwable) {
+            emit(DataState.Error(0, e.message ?: "Unknown Error"))
         }
     }.flowOn(Dispatchers.IO)
 }
