@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 val MyBookingUiState =
     staticCompositionLocalOf<StateFlow<MyBookingUiState>> {
-        error("No MyBookingUiState provided")
+        error(" ")
     }
 
 @Composable
@@ -51,6 +51,8 @@ fun ExpiredPage(
                         )
                     }
                 }
+            } else {
+                EmptyScreen()
             }
         }
     }

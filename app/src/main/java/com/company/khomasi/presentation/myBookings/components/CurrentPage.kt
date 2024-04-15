@@ -56,6 +56,8 @@ fun CurrentPage(
 
                     }
                 }
+            } else {
+                EmptyScreen()
             }
         }
     }
