@@ -3,7 +3,6 @@ package com.company.khomasi.presentation.myBookings
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.LeadingIconTab
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -39,7 +38,7 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
 
     TabRow(
         selectedTabIndex = pagerState.currentPage,
-        backgroundColor = MaterialTheme.colors.background,
+        backgroundColor = androidx.compose.material3.MaterialTheme.colorScheme.background,
         indicator = { tabPositions ->
             Modifier.pagerTabIndicatorOffset(pagerState = pagerState, tabPositions = tabPositions)
         }) {

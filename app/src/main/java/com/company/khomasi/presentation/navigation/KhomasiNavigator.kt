@@ -80,7 +80,8 @@ fun KhomasiNavigator() {
 
             }
             composable(route = Screens.MyBookings.name) {
-                val bookingViewModel: MyBookingViewModel = hiltViewModel()
+
+            val bookingViewModel: MyBookingViewModel = hiltViewModel()
 
                 MyBookingPage(
                     //uiState = bookingViewModel.uiState,

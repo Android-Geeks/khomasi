@@ -23,6 +23,7 @@ val MyBookingUiState =
     staticCompositionLocalOf<StateFlow<MyBookingUiState>> {
         error("No MyBookingUiState provided")
     }
+
 @Composable
 fun ExpiredPage(
     //uiState: StateFlow<MyBookingUiState>,
@@ -46,7 +47,7 @@ fun ExpiredPage(
                     items(currentState.bookingPlayground) {
                         BookingCard(
                             bookingDetails = it,
-                            bookingStatus = BookingStatus.CONFIRMED
+                            bookingStatus = BookingStatus.EXPIRED
                         )
                     }
                 }
