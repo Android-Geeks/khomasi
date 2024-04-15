@@ -3,16 +3,8 @@ package com.company.khomasi.data.repository
 
 import com.company.khomasi.data.data_source.remote.RetrofitService
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.FavouritePlaygroundResponse
-import com.company.khomasi.domain.model.MessageResponse
-import com.company.khomasi.domain.model.MyBookingsResponse
-import com.company.khomasi.domain.model.PlaygroundScreenResponse
-import com.company.khomasi.domain.model.PlaygroundsResponse
-import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
-import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.domain.model.UserUpdateData
-import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.domain.repository.RemoteUserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -22,195 +14,56 @@ import kotlinx.coroutines.flow.flowOn
 class RemoteUserRepositoryImpl(
     private val retrofitService: RetrofitService
 ) : RemoteUserRepository {
-    override suspend fun registerUser(userRegisterData: UserRegisterData): Flow<DataState<UserRegisterResponse>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val response = retrofitService.registerUser(userRegisterData)
-                emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+    override suspend fun registerUser(userRegisterData: UserRegisterData) =
+        handleApi { retrofitService.registerUser(userRegisterData) }
 
-    override suspend fun loginUser(
-        email: String,
-        password: String
-    ): Flow<DataState<UserLoginResponse>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val response = retrofitService.loginUser(email, password)
-                emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+    override suspend fun loginUser(email: String, password: String) =
+        handleApi { retrofitService.loginUser(email, password) }
 
-    override suspend fun getVerificationCode(email: String): Flow<DataState<VerificationResponse>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val response = retrofitService.getVerificationCode(email)
-                emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+    override suspend fun getVerificationCode(email: String) =
+        handleApi { retrofitService.getVerificationCode(email) }
 
-    override suspend fun confirmEmail(
-        email: String,
-        code: String
-    ): Flow<DataState<MessageResponse>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val response = retrofitService.confirmEmail(email, code)
-                emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+    override suspend fun confirmEmail(email: String, code: String) =
+        handleApi { retrofitService.confirmEmail(email, code) }
 
-    override suspend fun recoverAccount(
-        email: String,
-        code: String,
-        newPassword: String
-    ): Flow<DataState<MessageResponse>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val response = retrofitService.recoverAccount(email, code, newPassword)
-                emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+    override suspend fun recoverAccount(email: String, code: String, newPassword: String) =
+        handleApi { retrofitService.recoverAccount(email, code, newPassword) }
 
-    override suspend fun getPlaygrounds(
-        token: String,
-        userId: String
-    ): Flow<DataState<PlaygroundsResponse>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val response = retrofitService.getPlaygrounds(token, userId)
-                emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+    override suspend fun getPlaygrounds(token: String, userId: String) =
+        handleApi { retrofitService.getPlaygrounds(token, userId) }
 
-    override suspend fun getSpecificPlayground(
-        token: String,
-        id: Int
-    ): Flow<DataState<PlaygroundScreenResponse>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val response = retrofitService.getSpecificPlayground(token, id)
-                emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+    override suspend fun getSpecificPlayground(token: String, id: Int) =
+        handleApi { retrofitService.getSpecificPlayground(token, id) }
 
-    override suspend fun getUserBookings(token: String,id: String): Flow<DataState<MyBookingsResponse>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val response = retrofitService.getUserBookings(token ,id)
-                emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+    override suspend fun getUserBookings(token: String, id: String) =
+        handleApi { retrofitService.getUserBookings(token, id) }
 
-    override suspend fun deleteUserFavourite(
-        token: String,
-        userId: String,
-        playgroundId: String
-    ): Flow<DataState<MessageResponse>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val response = retrofitService.deleteUserFavourite(token,userId, playgroundId)
-                emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
+    override suspend fun deleteUserFavourite(token: String, userId: String, playgroundId: String) =
+        handleApi { retrofitService.deleteUserFavourite(token, userId, playgroundId) }
 
-    }
+    override suspend fun getUserFavouritePlaygrounds(token: String, userId: String) =
+        handleApi { retrofitService.getUserFavouritePlaygrounds(token, userId) }
 
-    override suspend fun getUserFavouritePlaygrounds(
-        token: String,
-        userId: String,
-    ): Flow<DataState<FavouritePlaygroundResponse>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val response = retrofitService.getUserFavouritePlaygrounds(token,userId)
-                emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+    override suspend fun userFavourite(token: String, userId: String, playgroundId: String) =
+        handleApi { retrofitService.userFavourite(token, userId, playgroundId) }
 
-    override suspend fun userFavourite(
-        token: String,
-        userId: String,
-        playgroundId: String
-    ): Flow<DataState<MessageResponse>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val response = retrofitService.userFavourite(token,userId, playgroundId)
-                emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+    override suspend fun uploadProfilePicture(token: String, userId: String, picture: String) =
+        handleApi { retrofitService.uploadProfilePicture(token, userId, picture) }
 
-    override suspend fun uploadProfilePicture(
-        token: String,
-        userId: String,
-        picture: String
-    ): Flow<DataState<MessageResponse>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val response = retrofitService.uploadProfilePicture(token, userId, picture)
-                emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+    override suspend fun updateUser(token: String, userId: String, user: UserUpdateData) =
+        handleApi { retrofitService.updateUser(token, userId, user) }
+}
 
-    override suspend fun updateUser(
-        token: String,
-        userId: String,
-        user: UserUpdateData
-    ): Flow<DataState<MessageResponse>> {
-        return flow {
-            emit(DataState.Loading)
-            try {
-                val response = retrofitService.updateUser(token, userId, user)
-                emit(DataState.Success(response))
-            } catch (e: Exception) {
-                emit(DataState.Error(e.toString()))
-            }
-        }.flowOn(Dispatchers.IO)
-    }
+suspend fun <T : Any> handleApi(
+    execute: suspend () -> T
+): Flow<DataState<T>> {
+    return flow {
+        emit(DataState.Loading)
+        try {
+            val response = execute()
+            emit(DataState.Success(response))
+        } catch (e: Exception) {
+            emit(DataState.Error(e.toString()))
+        }
+    }.flowOn(Dispatchers.IO)
 }
