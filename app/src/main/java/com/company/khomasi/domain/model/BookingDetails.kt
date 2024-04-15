@@ -10,10 +10,12 @@ data class BookingDetails(
     val bookingNumber: Int,
     @SerialName("playgroundId")
     val playgroundId: Int,
-    @SerialName("name")
-    val name: String,
-    @SerialName("address")
-    val address: String,
+    @SerialName("playgroundName")
+    val playgroundName: String,
+    @SerialName("playgroundAddress")
+    val playgroundAddress: String,
+    @SerialName("playgroundPicture")
+    val playgroundPicture : String,
     @SerialName("bookingTime")
     val bookingTime: String,
     @SerialName("duration")
@@ -23,5 +25,7 @@ data class BookingDetails(
     @SerialName("confirmationCode")
     val confirmationCode: String,
     @SerialName("isCanceled")
-    val isCanceled: Boolean
+    val isCanceled: Boolean,
+    @SerialName("isFinished")
+    val isFinished: Boolean
 )

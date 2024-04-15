@@ -10,23 +10,27 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
 import com.company.khomasi.presentation.myBookings.MyBookingUiState
 import kotlinx.coroutines.flow.StateFlow
 
+val LocalMyBookingUiState =
+    staticCompositionLocalOf<StateFlow<MyBookingUiState>> {
+        error("No MyBookingUiState provided")
+    }
 @Composable
 fun CurrentPage(
-    uiState: StateFlow<MyBookingUiState>,
+    //uiState: StateFlow<MyBookingUiState>,
     //myBooking: StateFlow<DataState<MyBookingsResponse>>,
-    playgroundPicture: PlaygroundPicture,
 
     ) {
-
-    val currentState = uiState.collectAsState().value
+    val uiState = LocalMyBookingUiState.current
+    val currentState by uiState.collectAsState()
     // val myBookingState by myBooking.collectAsState()
 
 
@@ -47,7 +51,6 @@ fun CurrentPage(
                     items(currentState.bookingPlayground) {
                         BookingCard(
                             bookingDetails = it,
-                            playgroundPicture = playgroundPicture,
                             bookingStatus = BookingStatus.CONFIRMED
                         )
 

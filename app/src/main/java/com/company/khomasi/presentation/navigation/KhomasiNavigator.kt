@@ -9,7 +9,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.navigation.Screens
 import com.company.khomasi.navigation.listOfNavItems
 import com.company.khomasi.presentation.home.HomeScreen
@@ -59,9 +58,9 @@ fun KhomasiNavigator() {
             }
             composable(route = Screens.MyBookings.name) {
                 val bookingViewModel: MyBookingViewModel = hiltViewModel()
+
                 MyBookingPage(
-                    uiState = bookingViewModel.uiState,
-                    playgroundPicture = PlaygroundPicture
+                    //uiState = bookingViewModel.uiState,
                 )
 
             }

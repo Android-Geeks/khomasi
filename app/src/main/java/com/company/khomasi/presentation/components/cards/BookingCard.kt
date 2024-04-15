@@ -1,5 +1,7 @@
 package com.company.khomasi.presentation.components.cards
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -32,14 +34,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.domain.model.BookingDetails
-import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
+import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkSubText
 import com.company.khomasi.theme.darkWarningColor
 import com.company.khomasi.theme.lightSubText
@@ -50,7 +53,6 @@ import com.company.khomasi.utils.convertToBitmap
 @Composable
 fun BookingCard(
     bookingDetails: BookingDetails,
-    playgroundPicture: PlaygroundPicture,
     modifier: Modifier = Modifier,
     isDark: Boolean = isSystemInDarkTheme(),
     bookingStatus: BookingStatus
@@ -77,7 +79,7 @@ fun BookingCard(
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surface)
             )
             Column {
-                BookingCardDetails(bookingDetails,playgroundPicture)
+                BookingCardDetails(bookingDetails)
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -194,10 +196,8 @@ fun BookingCard(
 @Composable
 fun BookingCardDetails(
     bookingDetails: BookingDetails,
-    playgroundPicture: PlaygroundPicture,
     modifier: Modifier = Modifier
 ) {
-
     Column(
         modifier = modifier
             .fillMaxWidth(),
@@ -209,12 +209,11 @@ fun BookingCardDetails(
                 .fillMaxWidth()
                 .height(120.dp),
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(playgroundPicture.picture.convertToBitmap())
+                .data(bookingDetails.playgroundPicture.convertToBitmap())
                 .crossfade(true)
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.FillWidth,
-//                error = painterResource(id = R.drawable.ic_broken_image),
             placeholder = painterResource(id = R.drawable.playground_image)
         )
         Column(
@@ -226,11 +225,11 @@ fun BookingCardDetails(
         )
         {
             TextWithIcon(
-                text = bookingDetails.name,
+                text = bookingDetails.playgroundName,
                 iconId = R.drawable.soccerball
             )
             TextWithIcon(
-                text = bookingDetails.address,
+                text = bookingDetails.playgroundAddress,
                 iconId = R.drawable.mappin
             )
             TextWithIcon(
@@ -280,29 +279,27 @@ fun TextWithIcon(
     }
 }
 
-//@Preview(name = "Night", uiMode = UI_MODE_NIGHT_YES)
-//@Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO, locale = "ar")
-//@Composable
-//private fun BookingCardPreview() {
-//    KhomasiTheme {
-//        BookingCard(
-//            bookingDetails = BookingDetails(
-//                1,
-//                1,
-//                "Al Zamalek Club",
-//                "Nasr City",
-//                "1/10/2024",
-//                7,
-//               50,
-//               "2425",
-//                false
-//            ) ,
-//            playgroundPicture = PlaygroundPicture(
-//                1,
-//                1,
-//                " ",
-//                false
-//            ),
-//            bookingStatus = BookingStatus.CONFIRMED)
-//    }
-//}
+@Preview(name = "Night", uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO, locale = "ar")
+@Composable
+private fun BookingCardPreview() {
+    KhomasiTheme {
+        BookingCard(
+            bookingDetails = BookingDetails(
+                1,
+                1,
+                "Al Zamalek Club",
+                "Nasr City",
+                "1/10/2024",
+                "7",
+                50,
+                2425,
+                "false",
+                false,
+                false
+            ),
+
+            bookingStatus = BookingStatus.CONFIRMED
+        )
+    }
+}
