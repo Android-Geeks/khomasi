@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.MyBookingsResponse
-import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,10 +22,6 @@ class MyBookingViewModel @Inject constructor(
     private val _myBooking =
         MutableStateFlow<DataState<MyBookingsResponse>>(DataState.Empty)
     val myBooking: StateFlow<DataState<MyBookingsResponse>> = _myBooking.asStateFlow()
-
-    private val _myPic =
-        MutableStateFlow<DataState<PlaygroundPicture>>(DataState.Empty)
-    val myPic: StateFlow<DataState<PlaygroundPicture>> = _myPic.asStateFlow()
 
     private val _uiState: MutableStateFlow<MyBookingUiState> = MutableStateFlow(MyBookingUiState())
     val uiState:StateFlow<MyBookingUiState> =_uiState.asStateFlow()
