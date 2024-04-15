@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(
     private val _homeUiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
     val homeUiState: StateFlow<HomeUiState> = _homeUiState
 
-    init {
+    fun getPlaygrounds() {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect { userData ->
 
@@ -44,7 +44,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-//userId : "7c6fa4dc-a314-4cbc-a4cc-5e6110020491"
 
     fun onClickViewAll() {
         _homeUiState.update {
@@ -52,5 +51,32 @@ class HomeViewModel @Inject constructor(
                 viewAllSwitch = true
             )
         }
+    }
+
+    fun onClickPlayground(playgroundId: Int) {
+        viewModelScope.launch {
+            localUserUseCases.savePlaygroundId(playgroundId)
+        }
+    }
+
+    fun onFavouriteClicked(playgroundId: Int) {
+        if (_playgroundState.value is DataState.Success) {
+            val playgrounds = (_playgroundState.value as DataState.Success).data.playgrounds
+            val playground = playgrounds.find { it.id == playgroundId }
+            if (playground != null) {
+                _playgroundState.value = DataState.Success(
+                    (_playgroundState.value as DataState.Success).data.copy(
+                        playgrounds = playgrounds.map {
+                            if (it.id == playgroundId) {
+                                it.copy(isFavourite = !it.isFavourite)
+                            } else {
+                                it
+                            }
+                        }
+                    )
+                )
+            }
+        }
+
     }
 }

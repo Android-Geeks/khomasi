@@ -22,6 +22,7 @@ import com.company.khomasi.data.repository.PreferenceKeys.LATITUDE
 import com.company.khomasi.data.repository.PreferenceKeys.LONGITUDE
 import com.company.khomasi.data.repository.PreferenceKeys.OTP_CODE
 import com.company.khomasi.data.repository.PreferenceKeys.PHONE_NUMBER
+import com.company.khomasi.data.repository.PreferenceKeys.PLAYGROUND_ID
 import com.company.khomasi.data.repository.PreferenceKeys.PROFILE_PICTURE
 import com.company.khomasi.data.repository.PreferenceKeys.RATING
 import com.company.khomasi.data.repository.PreferenceKeys.SEARCH_HISTORY
@@ -51,8 +52,8 @@ class LocalUserRepositoryImpl(
                 latitude = preferences[LATITUDE] ?: 0.0,
                 longitude = preferences[LONGITUDE] ?: 0.0,
                 profilePicture = preferences[PROFILE_PICTURE] ?: "",
-                coins = preferences[COINS] ?: 0,
-                rating = preferences[RATING] ?: 0,
+                coins = preferences[COINS] ?: 0.0,
+                rating = preferences[RATING] ?: 0.0,
                 token = preferences[TOKEN] ?: "",
                 otpCode = preferences[OTP_CODE] ?: 0
             )
@@ -71,8 +72,8 @@ class LocalUserRepositoryImpl(
             settings[LATITUDE] = localUser.latitude ?: 0.0
             settings[LONGITUDE] = localUser.longitude ?: 0.0
             settings[PROFILE_PICTURE] = localUser.profilePicture ?: ""
-            settings[COINS] = localUser.coins ?: 0
-            settings[RATING] = localUser.rating ?: 0
+            settings[COINS] = localUser.coins ?: 0.0
+            settings[RATING] = localUser.rating ?: 0.0
             settings[TOKEN] = localUser.token ?: ""
             settings[OTP_CODE] = localUser.otpCode ?: 0
         }
@@ -84,9 +85,9 @@ class LocalUserRepositoryImpl(
         }
     }
 
-    override suspend fun saveIsLogin() {
+    override suspend fun saveIsLogin(isLogin: Boolean) {
         context.dataStore.edit { settings ->
-            settings[IS_LOGIN] = true
+            settings[IS_LOGIN] = isLogin
         }
     }
 
@@ -125,6 +126,18 @@ class LocalUserRepositoryImpl(
             settings[SEARCH_HISTORY] = setOf()
         }
     }
+
+    override suspend fun savePlaygroundId(playgroundId: Int) {
+        context.dataStore.edit { settings ->
+            settings[PLAYGROUND_ID] = playgroundId
+        }
+    }
+
+    override fun getPlaygroundId(): Flow<Int> {
+        return context.dataStore.data.map { preferences ->
+            preferences[PLAYGROUND_ID] ?: 1
+        }
+    }
 }
 
 private val readOnlyProperty = preferencesDataStore(name = Constants.USER_SETTINGS)
@@ -142,12 +155,13 @@ private object PreferenceKeys {
     val LATITUDE = doublePreferencesKey(Constants.LATITUDE)
     val LONGITUDE = doublePreferencesKey(Constants.LONGITUDE)
     val PROFILE_PICTURE = stringPreferencesKey(Constants.PROFILE_PICTURE)
-    val COINS = intPreferencesKey(Constants.COINS)
-    val RATING = intPreferencesKey(Constants.RATING)
+    val COINS = doublePreferencesKey(Constants.COINS)
+    val RATING = doublePreferencesKey(Constants.RATING)
     val OTP_CODE = intPreferencesKey(Constants.OTP_CODE)
     val TOKEN = stringPreferencesKey(Constants.TOKEN)
     val IS_ONBOARDING = booleanPreferencesKey(Constants.IS_ONBOARDING)
     val IS_LOGIN = booleanPreferencesKey(Constants.IS_LOGIN)
+    val PLAYGROUND_ID = intPreferencesKey(Constants.PLAYGROUND_ID)
 
     val SEARCH_HISTORY = stringSetPreferencesKey(Constants.SEARCH_HISTORY)
 }

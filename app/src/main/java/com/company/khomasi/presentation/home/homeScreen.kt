@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.home
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -54,7 +53,7 @@ import com.company.khomasi.presentation.components.connectionStates.ThreeBounce
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.utils.convertToBitmap
 
-@SuppressLint("ResourceType")
+
 @Composable
 fun HomeScreen(
     playgroundState: DataState<PlaygroundsResponse>,
@@ -63,9 +62,16 @@ fun HomeScreen(
     onClickBell: () -> Unit,
     onSearchBarClicked: () -> Unit,
     onClickViewAll: () -> Unit,
-    onAdClicked: () -> Unit
+    onAdClicked: () -> Unit,
+    onClickPlaygroundCard: (Int) -> Unit,
+    onFavouriteClick: (Int) -> Unit,
+    getPlaygrounds: () -> Unit
 ) {
     var showLoading by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        getPlaygrounds()
+    }
 
     LaunchedEffect(playgroundState) {
         when (playgroundState) {
@@ -88,7 +94,7 @@ fun HomeScreen(
 
     Log.d("HomeScreen", "HomeScreen: $playgroundState")
 
-    Box(modifier = Modifier.fillMaxSize()){
+    Box(modifier = Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -109,18 +115,22 @@ fun HomeScreen(
             )
             Spacer(modifier = Modifier.height(8.dp))
 
-            Box(modifier = Modifier.fillMaxSize()){
+            Box(modifier = Modifier.fillMaxSize()) {
                 HomeContent(
                     playgroundState = playgroundState,
                     homeUiState = homeUiState,
                     onAdClicked = { onAdClicked() },
                     onClickViewAll = { onClickViewAll() },
+                    onClickPlaygroundCard = { playgroundId -> onClickPlaygroundCard(playgroundId) },
+                    onFavouriteClick = { playgroundId -> onFavouriteClick(playgroundId) }
                 )
                 if (showLoading) {
                     ThreeBounce(
                         color = MaterialTheme.colorScheme.primary,
                         size = DpSize(75.dp, 75.dp),
-                        modifier = Modifier.fillMaxSize().align(Alignment.Center)
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .align(Alignment.Center)
                     )
                 }
             }
@@ -133,7 +143,9 @@ fun HomeContent(
     playgroundState: DataState<PlaygroundsResponse>,
     homeUiState: HomeUiState,
     onAdClicked: () -> Unit,
-    onClickViewAll: () -> Unit
+    onClickViewAll: () -> Unit,
+    onClickPlaygroundCard: (Int) -> Unit,
+    onFavouriteClick: (Int) -> Unit
 ) {
     //        -----------------Temporary-----------------           //
     val adsList = listOf(
@@ -150,52 +162,53 @@ fun HomeContent(
             contentText = " احجز اى ملعب صباحًا بخصم 30 %",
         ),
     )
+    if (playgroundState is DataState.Success) {
 
-    LazyColumn(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
+        val playgrounds = playgroundState.data.playgrounds/*.sortedBy { it.id }*/
+        val visiblePlaygrounds =
+            if (homeUiState.viewAllSwitch) playgrounds else playgrounds.take(3)
+
+        LazyColumn(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
 
 //      ------------ Temporary until the booking page is completed   -----//
-//            if(condition){
+//            if(true){
 //                item {
 //                    RatingCard(
 //                        buttonText = R.string.rating,
 //                        mainText = "كانت مباراه حماسيه",
-//                        subText = "قيم ملعب الشهداء",
+//                        subText = "اليوم الساعه 9:00 م",
 //                        timeIcon = R.drawable.clock
 //                    )
 //                }
 //            }
 //  -------------------------------------------------------------------//
 
-        item { AdsSlider(adsContent = adsList, onAdClicked = { onAdClicked() }) }
+            item { AdsSlider(adsContent = adsList, onAdClicked = { onAdClicked() }) }
 
-        item {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Text(
-                    text = stringResource(id = R.string.nearby_fields),
-                    style = MaterialTheme.typography.displayMedium
-                )
-                Spacer(modifier = Modifier.weight(1f))
-                Text(
-                    text = stringResource(id = R.string.view_all),
-                    style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clickable { onClickViewAll() }
-                )
+            item {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = stringResource(id = R.string.nearby_fields),
+                        style = MaterialTheme.typography.displayMedium
+                    )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(
+                        text = stringResource(id = R.string.view_all),
+                        style = MaterialTheme.typography.titleLarge,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.clickable { onClickViewAll() }
+                    )
+                }
             }
-        }
-        if (playgroundState is DataState.Success) {
-            val playgrounds = playgroundState.data.playgrounds.sortedBy { it.id }
-            val visiblePlaygrounds =
-                if (homeUiState.viewAllSwitch) playgrounds else playgrounds.take(3)
 
             items(visiblePlaygrounds) { playground ->
                 PlaygroundCard(
                     playground = playground,
-                    onFavouriteClick = {},
-                    onViewPlaygroundClick = {}
+                    onFavouriteClick = { onFavouriteClick(playground.id) },          // WILL BE IMPLEMENTED LATER
+                    onViewPlaygroundClick = { onClickPlaygroundCard(playground.id) }
                 )
             }
         }
@@ -297,15 +310,18 @@ fun HomeSearchBar(onSearchBarClicked: () -> Unit) {
 @Composable
 fun HomeScreenPreview() {
     KhomasiTheme {
-        val mockViewMode: MockHomeViewModel = hiltViewModel()
+        val mockViewModel: MockHomeViewModel = hiltViewModel()
         HomeScreen(
-            playgroundState = mockViewMode.playgroundState.collectAsState().value,
-            homeUiState = mockViewMode.homeUiState.collectAsState().value,
+            playgroundState = mockViewModel.playgroundState.collectAsState().value,
+            homeUiState = mockViewModel.homeUiState.collectAsState().value,
             onClickUserImage = { },
-            onClickViewAll = { mockViewMode.onClickViewAll() },
-            onSearchBarClicked = {},
             onClickBell = { },
-            onAdClicked = { }
+            onSearchBarClicked = {},
+            onClickViewAll = { mockViewModel.onClickViewAll() },
+            onAdClicked = { },
+            onClickPlaygroundCard = { playgroundId -> mockViewModel.onClickPlayground(playgroundId) },
+            onFavouriteClick = {},
+            getPlaygrounds = {}
         )
     }
 }

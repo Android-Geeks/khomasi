@@ -9,6 +9,7 @@ import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
+import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.model.VerificationResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -29,6 +30,19 @@ interface RemoteUserRepository {
     suspend fun  getUserFavouritePlaygrounds(token: String,userId: String):Flow<DataState<FavouritePlaygroundResponse>>
     suspend fun userFavourite(token: String,userId: String,playgroundId:String):Flow<DataState<MessageResponse>>
 
-    suspend fun getSpecificPlayground(token: String, id: Int): Flow<DataState<PlaygroundScreenResponse>>
+    suspend fun getSpecificPlayground(
+        token: String,
+        id: Int
+    ): Flow<DataState<PlaygroundScreenResponse>>
+    suspend fun uploadProfilePicture(
+        token: String,
+        userId: String,
+        picture: String
+    ): Flow<DataState<MessageResponse>>
 
+    suspend fun updateUser(
+        token: String,
+        userId: String,
+        user: UserUpdateData
+    ): Flow<DataState<MessageResponse>>
 }

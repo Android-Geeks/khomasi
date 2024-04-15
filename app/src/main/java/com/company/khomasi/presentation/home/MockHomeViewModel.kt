@@ -42,4 +42,8 @@ class MockHomeViewModel : ViewModel() {
             )
         }
     }
+
+    fun onClickPlayground(playgroundId: Int) {
+
+    }
 }

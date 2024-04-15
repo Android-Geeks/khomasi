@@ -80,6 +80,7 @@ fun AuthNavigator() {
                     uiState = otpViewModel.uiState.collectAsState(),
                     confirmEmailState = otpViewModel.confirmEmailState,
                     otpState = otpViewModel.otpState,
+                    getRegisterOtp = otpViewModel::getRegisterOtp,
                     updateSmsCode = otpViewModel::updateSmsCode,
                     resendCode = otpViewModel::resendCode,
                     confirmEmail = otpViewModel::confirmEmail,

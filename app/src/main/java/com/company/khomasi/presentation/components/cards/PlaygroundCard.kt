@@ -1,8 +1,6 @@
 package com.company.khomasi.presentation.components.cards
 
 import android.content.Context
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
-import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -31,15 +29,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.iconButtons.FavoriteIcon
-import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkCard
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightCard
@@ -52,6 +49,7 @@ fun PlaygroundCard(
     onFavouriteClick: () -> Unit,
     onViewPlaygroundClick: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: PlaygroundCardViewModel = hiltViewModel(),
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme()
 ) {
@@ -91,7 +89,13 @@ fun PlaygroundCard(
                         .height(62.dp)
                 ) {
                     FavoriteIcon(
-                        onFavoriteClick = onFavouriteClick,
+                        onFavoriteClick = {
+                            onFavouriteClick()
+                            viewModel.updateUserFavourite(
+                                playground.id.toString(),
+                                playground.isFavourite
+                            )
+                        },
                         isFavorite = playground.isFavourite,
                         modifier = Modifier.padding(top = 12.dp, start = 6.dp)
                     )
@@ -116,7 +120,6 @@ fun PlaygroundCard(
 
                 }
             }
-
             Row(modifier = Modifier.fillMaxWidth()) {
                 Text(
                     text = playground.name,
@@ -187,26 +190,6 @@ fun PlaygroundCard(
                     style = MaterialTheme.typography.bodyLarge,
                 )
                 Spacer(modifier = Modifier.weight(1f))
-//                Box(
-//                    modifier = Modifier
-//                        .weight(3f)
-//                        .height(48.dp)
-//                        .background(
-//                            color = MaterialTheme.colorScheme.primary,
-//                            shape = MaterialTheme.shapes.medium
-//                        )
-//                        .clickable {
-//                            onViewPlaygroundClick()
-//                        },
-//                    contentAlignment = Alignment.Center
-//                ) {
-//                    Text(
-//                        text = stringResource(id = R.string.view_playground),
-//                        textAlign = TextAlign.Center,
-//                        style = MaterialTheme.typography.titleLarge,
-//                        color = MaterialTheme.colorScheme.background
-//                    )
-//                }
                 MyButton(text =  R.string.view_playground,
                     onClick = {   onViewPlaygroundClick()},
                     modifier = Modifier
@@ -215,29 +198,5 @@ fun PlaygroundCard(
                 )
             }
         }
-    }
-}
-
-
-@Preview(name = "light", showBackground = true, uiMode = UI_MODE_NIGHT_NO)
-@Preview(name = "dark", locale = "ar", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
-@Composable
-fun PreviewCard() {
-    KhomasiTheme {
-        PlaygroundCard(
-            playground = Playground(
-                id = 1,
-                name = "Playground Name",
-                address = "Address",
-                rating = 4.5,
-                feesForHour = 100,
-                isBookable = true,
-                distance = 5.0,
-                playgroundPicture = null,
-                isFavourite = false
-            ),
-            onFavouriteClick = { },
-            onViewPlaygroundClick = { },
-        )
     }
 }

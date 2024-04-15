@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.VerificationResponse
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
@@ -24,8 +23,6 @@ class OtpViewModel @Inject constructor(
     private val localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
 
-    private lateinit var userData: LocalUser
-
     private val _uiState = MutableStateFlow(OtpUiState())
     val uiState: StateFlow<OtpUiState> = _uiState
 
@@ -38,15 +35,14 @@ class OtpViewModel @Inject constructor(
         MutableStateFlow(DataState.Empty)
     val confirmEmailState: StateFlow<DataState<MessageResponse>> = _confirmEmailState
 
-    init {
+    fun getRegisterOtp() {
         viewModelScope.launch {
-            localUserUseCases.getLocalUser().collect {
-                userData = it
-                _uiState.value = _uiState.value.copy(email = it.email ?: "")
+            localUserUseCases.getLocalUser().collect { localUser ->
+                _uiState.value = _uiState.value.copy(email = localUser.email ?: "")
                 _otpState.value = DataState.Success(
                     VerificationResponse(
-                        code = it.otpCode ?: 0,
-                        email = it.email ?: "",
+                        code = localUser.otpCode ?: 0,
+                        email = localUser.email ?: "",
                         message = "Confirmation Code Has Been Sent"
                     )
                 )

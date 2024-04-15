@@ -16,11 +16,12 @@ fun FavoriteIcon(
     onFavoriteClick: () -> Unit,
     isFavorite: Boolean,
     modifier: Modifier = Modifier,
+    inactiveColor: Color = Color.White,
 ) {
     Icon(
         painter = painterResource(id = if (isFavorite) R.drawable.heart_fill else R.drawable.heart),
         contentDescription = null,
-        tint = if (isFavorite) MaterialTheme.colorScheme.primary else Color.White,
+        tint = if (isFavorite) MaterialTheme.colorScheme.primary else inactiveColor,
         modifier = modifier.clickable {
             onFavoriteClick()
         }
