@@ -105,6 +105,19 @@ fun CalendarSlider(modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
+            IconButton(onClick = { bookingViewModel.UpdateDuration("+") }) {
+                Icon(
+                    painter = painterResource(R.drawable.pluscircle),
+                    contentDescription = null,
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            Text(
+                text = "${bookingUiState.duration} min",
+                style = MaterialTheme.typography.displayMedium,
+                color = MaterialTheme.colorScheme.tertiary,
+            )
             IconButton(
                 onClick = { bookingViewModel.UpdateDuration("-") },
                 enabled = bookingUiState.duration > 60,
@@ -113,18 +126,6 @@ fun CalendarSlider(modifier: Modifier = Modifier) {
                     painter = painterResource(R.drawable.minuscircle),
                     contentDescription = null,
                     tint = MaterialTheme.colorScheme.primary.copy(alpha = if (bookingUiState.duration > 60) 1f else 0.5f),
-                )
-            }
-            Text(
-                text = "${bookingUiState.duration} min",
-                style = MaterialTheme.typography.displayMedium,
-                color = MaterialTheme.colorScheme.tertiary,
-            )
-            IconButton(onClick = { bookingViewModel.UpdateDuration("+") }) {
-                Icon(
-                    painter = painterResource(R.drawable.pluscircle),
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
                 )
             }
         }
