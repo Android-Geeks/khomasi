@@ -2,6 +2,7 @@ package com.company.khomasi.domain.repository
 
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
+import com.company.khomasi.domain.model.FeedbackRequest
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
@@ -25,15 +26,29 @@ interface RemoteUserRepository {
     ): Flow<DataState<MessageResponse>>
 
     suspend fun getPlaygrounds(token: String, userId: String): Flow<DataState<PlaygroundsResponse>>
-    suspend fun getUserBookings(token: String,id:String):Flow<DataState<MyBookingsResponse>>
-    suspend fun deleteUserFavourite(token: String,userId: String,playgroundId:String): Flow<DataState<MessageResponse>>
-    suspend fun  getUserFavouritePlaygrounds(token: String,userId: String):Flow<DataState<FavouritePlaygroundResponse>>
-    suspend fun userFavourite(token: String,userId: String,playgroundId:String):Flow<DataState<MessageResponse>>
+    suspend fun getUserBookings(token: String, id: String): Flow<DataState<MyBookingsResponse>>
+    suspend fun deleteUserFavourite(
+        token: String,
+        userId: String,
+        playgroundId: String
+    ): Flow<DataState<MessageResponse>>
+
+    suspend fun getUserFavouritePlaygrounds(
+        token: String,
+        userId: String
+    ): Flow<DataState<FavouritePlaygroundResponse>>
+
+    suspend fun userFavourite(
+        token: String,
+        userId: String,
+        playgroundId: String
+    ): Flow<DataState<MessageResponse>>
 
     suspend fun getSpecificPlayground(
         token: String,
         id: Int
     ): Flow<DataState<PlaygroundScreenResponse>>
+
     suspend fun uploadProfilePicture(
         token: String,
         userId: String,
@@ -44,5 +59,10 @@ interface RemoteUserRepository {
         token: String,
         userId: String,
         user: UserUpdateData
+    ): Flow<DataState<MessageResponse>>
+
+    suspend fun sendFeedback(
+        token: String,
+        feedback: FeedbackRequest
     ): Flow<DataState<MessageResponse>>
 }

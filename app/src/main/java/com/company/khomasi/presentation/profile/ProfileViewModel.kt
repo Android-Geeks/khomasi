@@ -38,6 +38,14 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun onFeedbackCategorySelected(feedbackCategory: FeedbackCategory) {
+        _profileUiState.value = _profileUiState.value.copy(feedbackCategory = feedbackCategory)
+    }
+
+    fun onFeedbackChanged(feedback: String) {
+        _profileUiState.value = _profileUiState.value.copy(feedback = feedback)
+    }
+
     fun onEditProfile(isEdit: Boolean) {
         _profileUiState.value = _profileUiState.value.copy(isEditPage = isEdit)
     }
