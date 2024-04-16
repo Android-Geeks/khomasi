@@ -44,6 +44,7 @@ fun FeedbackBottomSheet(
     feedback: String,
     onFeedbackChanged: (String) -> Unit,
     onDismissRequest: () -> Unit,
+    sendFeedback: () -> Unit,
     isDark: Boolean
 ) {
     var expandFeedbackCategory by remember { mutableStateOf(false) }
@@ -148,6 +149,7 @@ fun FeedbackBottomSheet(
             MyButton(
                 text = R.string.send,
                 onClick = {
+                    sendFeedback()
                     onDismissRequest()
                 },
                 modifier = Modifier
@@ -171,6 +173,7 @@ fun FeedbackBottomSheetPreview() {
             selectedCategory = FeedbackCategory.Suggestion,
             feedback = "",
             onFeedbackChanged = {},
+            sendFeedback = {},
             isDark = false
         )
     }

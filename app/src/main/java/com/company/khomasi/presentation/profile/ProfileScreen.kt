@@ -50,7 +50,6 @@ import com.company.khomasi.theme.darkIconMask
 import com.company.khomasi.theme.lightIconMask
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlin.reflect.KFunction0
 import kotlin.reflect.KFunction1
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,8 +57,9 @@ import kotlin.reflect.KFunction1
 fun ProfileScreen(
     profileUiState: StateFlow<ProfileUiState>,
     localUserUiState: StateFlow<LocalUser>,
-    onLogout: KFunction0<Unit>,
-    onSaveProfile: KFunction0<Unit>,
+    onLogout: () -> Unit,
+    onSaveProfile: () -> Unit,
+    sendFeedback: () -> Unit,
     onFeedbackChanged: (String) -> Unit,
     onBackClick: () -> Unit,
     onEditProfile: KFunction1<Boolean, Unit>,
@@ -153,6 +153,7 @@ fun ProfileScreen(
                 feedback = uiState.feedback,
                 onFeedbackChanged = onFeedbackChanged,
                 onDismissRequest = { showShareOpinionSheet = false },
+                sendFeedback = sendFeedback,
                 isDark = isDark
             )
         }
@@ -168,7 +169,10 @@ fun ProfileScreen(
 }
 
 @Composable
-fun ProfileContent(onLogout: KFunction0<Unit>, onShareYourOpinion: () -> Unit) {
+fun ProfileContent(
+    onLogout: () -> Unit,
+    onShareYourOpinion: () -> Unit
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -272,7 +276,8 @@ fun ProfileScreenPreview() {
             onBackClick = {},
             onEditProfile = profileViewModel::onEditProfile,
             onFeedbackCategorySelected = {},
-            onFeedbackChanged = {}
+            onFeedbackChanged = {},
+            sendFeedback = {},
         )
     }
 }

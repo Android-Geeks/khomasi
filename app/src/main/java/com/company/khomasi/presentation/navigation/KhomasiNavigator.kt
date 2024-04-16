@@ -124,6 +124,7 @@ fun KhomasiNavigator() {
                     onFeedbackChanged = profileViewModel::onFeedbackChanged,
                     onLogout = profileViewModel::onLogout,
                     onBackClick = { navController.popBackStack() },
+                    sendFeedback = profileViewModel::sendFeedback
                 )
             }
         }
