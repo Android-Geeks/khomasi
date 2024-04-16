@@ -120,6 +120,8 @@ fun KhomasiNavigator() {
                     localUserUiState = profileViewModel.localUser,
                     onEditProfile = profileViewModel::onEditProfile,
                     onSaveProfile = profileViewModel::onSaveProfile,
+                    onFeedbackCategorySelected = profileViewModel::onFeedbackCategorySelected,
+                    onFeedbackChanged = profileViewModel::onFeedbackChanged,
                     onLogout = profileViewModel::onLogout,
                     onBackClick = { navController.popBackStack() },
                 )

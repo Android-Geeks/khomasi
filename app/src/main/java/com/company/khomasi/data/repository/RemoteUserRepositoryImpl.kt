@@ -3,6 +3,7 @@ package com.company.khomasi.data.repository
 
 import com.company.khomasi.data.data_source.remote.RetrofitService
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.FeedbackRequest
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.repository.RemoteUserRepository
@@ -54,12 +55,16 @@ class RemoteUserRepositoryImpl(
 
     override suspend fun updateUser(token: String, userId: String, user: UserUpdateData) =
         handleApi { retrofitService.updateUser(token, userId, user) }
+
+    override suspend fun sendFeedback(token: String, feedback: FeedbackRequest) =
+        handleApi { retrofitService.sendFeedback(token, feedback) }
 }
 
 suspend fun <T : Any> handleApi(
     execute: suspend () -> Response<T>
 ): Flow<DataState<T>> {
     return flow {
+        emit(DataState.Loading)
         try {
             val response = execute()
             val body = response.body()

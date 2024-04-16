@@ -1,6 +1,7 @@
 package com.company.khomasi.data.data_source.remote
 
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
+import com.company.khomasi.domain.model.FeedbackRequest
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
@@ -97,5 +98,11 @@ interface RetrofitService {
         @Header("Authorization") token: String,
         @Query("userId") userId: String,
         @Body user: UserUpdateData
+    ): Response<MessageResponse>
+
+    @POST("User/feedback")
+    suspend fun sendFeedback(
+        @Header("Authorization") token: String,
+        @Body feedback: FeedbackRequest
     ): Response<MessageResponse>
 }
