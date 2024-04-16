@@ -2,7 +2,13 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="PlaygroundScreenPreview">
+      <entry key="AllDaysOfMonth">
+        <State />
+      </entry>
+      <entry key="Calendar">
+        <State />
+      </entry>
+      <entry key="Po">
         <State>
           <targetSelectedWithDropDown>
             <Target>
@@ -15,7 +21,7 @@
               </deviceKey>
             </Target>
           </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-03-21T23:37:45.012650200Z" />
+          <timeTargetWasSelectedWithDropDown value="2024-04-15T14:30:39.602389600Z" />
         </State>
       </entry>
       <entry key="app">
@@ -33,9 +39,6 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-02-15T01:53:29.992637700Z" />
         </State>
-      </entry>
-      <entry key="po">
-        <State />
       </entry>
     </value>
   </component>
