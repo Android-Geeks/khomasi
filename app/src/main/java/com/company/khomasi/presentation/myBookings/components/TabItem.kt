@@ -1,29 +1,23 @@
 package com.company.khomasi.presentation.myBookings.components
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import com.company.khomasi.R
+import com.company.khomasi.presentation.myBookings.MyBookingUiState
+import kotlinx.coroutines.flow.StateFlow
 
-//sealed class TabItem(
-//    val title: String,
-//    val screens: @Composable (
-//        uiState: StateFlow<MyBookingUiState>, playgroundPicture: StateFlow<DataState<PlaygroundPicture>>
-//
-//    ) -> Unit
-//) {
-//    object Current : TabItem(
-//        title = "${R.string.current}",
-//        screens = { uiState, playgroundPicture -> CurrentPage(uiState) })
-//
-//    object Expired : TabItem(
-//        title = "${R.string.expired}",
-//        screens = { uiState, playgroundPicture -> ExpiredPage(uiState) })
-//}
-typealias ComposableFun = @Composable ()->Unit
+sealed class TabItem(
+    @StringRes val title: Int,
+    val screens: @Composable (uiState: StateFlow<MyBookingUiState>) -> Unit
+) {
+    data object Current : TabItem(
+        title = R.string.current,
+        screens = { uiState -> CurrentPage(uiState) }
+    )
 
-sealed class TabItem(val title:String, val screens: ComposableFun){
-
-    data object Current : TabItem(title = "${R.string.current}", screens = { CurrentPage() })
-    data object Expired: TabItem(title = "${R.string.expired}", screens={ ExpiredPage() })
-
-
+    data object Expired : TabItem(
+        title = R.string.expired,
+        screens = { uiState -> ExpiredPage(uiState) }
+    )
 }
+

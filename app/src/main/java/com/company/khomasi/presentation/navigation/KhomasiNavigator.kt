@@ -18,6 +18,7 @@ import com.company.khomasi.presentation.favorite.FavouriteViewModel
 import com.company.khomasi.presentation.home.HomeScreen
 import com.company.khomasi.presentation.home.HomeViewModel
 import com.company.khomasi.presentation.myBookings.MyBookingPage
+import com.company.khomasi.presentation.myBookings.MyBookingViewModel
 import com.company.khomasi.presentation.navigation.components.BottomNavigationBar
 import com.company.khomasi.presentation.playground.PlaygroundScreen
 import com.company.khomasi.presentation.playground.PlaygroundViewModel
@@ -80,10 +81,10 @@ fun KhomasiNavigator() {
             }
             composable(route = Screens.MyBookings.name) {
 
-                // val bookingViewModel: MyBookingViewModel = hiltViewModel()
+                val bookingViewModel: MyBookingViewModel = hiltViewModel()
 
                 MyBookingPage(
-                    //uiState = bookingViewModel.uiState,
+                    uiState = bookingViewModel.uiState,
                 )
 
             }

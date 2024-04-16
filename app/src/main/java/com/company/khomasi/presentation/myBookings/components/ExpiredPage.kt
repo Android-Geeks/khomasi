@@ -11,7 +11,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.presentation.components.cards.BookingCard
@@ -19,16 +18,10 @@ import com.company.khomasi.presentation.components.cards.BookingStatus
 import com.company.khomasi.presentation.myBookings.MyBookingUiState
 import kotlinx.coroutines.flow.StateFlow
 
-val MyBookingUiState =
-    staticCompositionLocalOf<StateFlow<MyBookingUiState>> {
-        error(" ")
-    }
-
 @Composable
 fun ExpiredPage(
-    //uiState: StateFlow<MyBookingUiState>,
+    uiState: StateFlow<MyBookingUiState>,
 ) {
-    val uiState = LocalMyBookingUiState.current
     val currentState by uiState.collectAsState()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
