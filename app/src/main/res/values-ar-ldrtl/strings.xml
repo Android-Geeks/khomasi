@@ -201,4 +201,5 @@
     <string name="date_and_duration">التاريخ والمدة:</string>
     <string name="send">ارسال</string>
     <string name="min">دقيقة</string>
+    <string name="available_times">الاوقات المتاحة:</string>
 </resources>

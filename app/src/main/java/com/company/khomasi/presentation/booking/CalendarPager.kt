@@ -44,7 +44,7 @@ import kotlin.math.absoluteValue
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun CalendarPager() {
+fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
     val coroutineScope = rememberCoroutineScope()
 
     val screenWidth = getScreenWidth()
@@ -61,6 +61,7 @@ fun CalendarPager() {
     LaunchedEffect(pagerState.currentPage) {
         selectedMonth.value = currentDaysList[pagerState.currentPage].month
         selectedYear.intValue = currentDaysList[pagerState.currentPage].year
+        updateSelectedDay(pagerState.currentPage)
     }
     Text(
         text = "${
@@ -82,7 +83,6 @@ fun CalendarPager() {
         contentPadding = PaddingValues(start = (screenWidth / 2).dp),
         snapPosition = if (pagerState.currentPage in 0..2) SnapPosition.Start else SnapPosition.Center,
     ) { page ->
-
         val dayNum = currentDaysList[page].dayOfMonth.toString()
         val dayName = currentDaysList[page].dayOfWeek.getDisplayName(
             TextStyle.SHORT, Locale.getDefault()

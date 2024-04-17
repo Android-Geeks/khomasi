@@ -41,4 +41,12 @@ class MockBookingViewModel : ViewModel() {
 
     }
 
+    fun updateSelectedDay(day: Int = 0) {
+        _bookingUiState.update {
+            it.copy(
+                selectedDay = day
+            )
+        }
+    }
+
 }

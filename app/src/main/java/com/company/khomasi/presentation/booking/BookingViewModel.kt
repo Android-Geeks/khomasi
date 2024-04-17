@@ -52,8 +52,8 @@ class BookingViewModel @Inject constructor(
                 localUserUseCases.getPlaygroundId().collect { playgroundId ->
                     remotePlaygroundUseCase.getFreeTimeSlotsUseCase(
                         token = "Bearer ${userData.token}",
-                        id = playgroundId,
-                        dayDiff = _bookingUiState.value.dayDiff
+                        id = 2,
+                        dayDiff = _bookingUiState.value.selectedDay
                     ).collect { playgroundsRes ->
                         _freeSlotsState.value = playgroundsRes
                     }
@@ -61,6 +61,18 @@ class BookingViewModel @Inject constructor(
 
             }
         }
+    }
+
+    fun updateSelectedDay(day: Int) {
+        _bookingUiState.update {
+            it.copy(
+                selectedDay = day
+            )
+        }
+    }
+
+    fun onSlotClicked() {
+
     }
 
 }
