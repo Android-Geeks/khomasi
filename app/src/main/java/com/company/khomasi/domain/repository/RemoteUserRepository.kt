@@ -3,7 +3,6 @@ package com.company.khomasi.domain.repository
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.FeedbackRequest
-import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
@@ -67,9 +66,4 @@ interface RemoteUserRepository {
         feedback: FeedbackRequest
     ): Flow<DataState<MessageResponse>>
 
-    suspend fun getFreeSlots(
-        token: String,
-        id: Int,
-        dayDiff: Int
-    ): Flow<DataState<FessTimeSlotsResponse>>
 }

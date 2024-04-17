@@ -2,7 +2,9 @@ package com.company.khomasi.di
 
 
 import com.company.khomasi.data.data_source.remote.RetrofitService
+import com.company.khomasi.data.repository.RemotePlaygroundRepositoryImpl
 import com.company.khomasi.data.repository.RemoteUserRepositoryImpl
+import com.company.khomasi.domain.repository.RemotePlaygroundRepository
 import com.company.khomasi.domain.repository.RemoteUserRepository
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
 import com.company.khomasi.domain.use_case.auth.ConfirmEmailUseCase
@@ -71,6 +73,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideRemotePlaygroundRepository(
+        retrofitService: RetrofitService
+    ): RemotePlaygroundRepository = RemotePlaygroundRepositoryImpl(retrofitService)
+
+    @Provides
+    @Singleton
     fun provideAuthUseCases(
         remoteUserRepository: RemoteUserRepository
     ): AuthUseCases = AuthUseCases(
@@ -99,8 +107,8 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRemotePlaygroundUseCase(
-        remoteUserRepository: RemoteUserRepository
+        remotePlaygroundRepository: RemotePlaygroundRepository
     ): RemotePlaygroundUseCase = RemotePlaygroundUseCase(
-        getFreeTimeSlotsUseCase = GetFreeTimeSlotsUseCase(remoteUserRepository),
+        getFreeTimeSlotsUseCase = GetFreeTimeSlotsUseCase(remotePlaygroundRepository),
     )
 }

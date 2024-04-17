@@ -1,12 +1,12 @@
 package com.company.khomasi.domain.use_case.remote_user
 
-import com.company.khomasi.domain.repository.RemoteUserRepository
+import com.company.khomasi.domain.repository.RemotePlaygroundRepository
 
 class GetFreeTimeSlotsUseCase(
-    private val remoteUserRepository: RemoteUserRepository
+    private val remotePlaygroundRepository: RemotePlaygroundRepository
 ) {
     suspend operator fun invoke(token: String, id: Int, dayDiff: Int) =
-        remoteUserRepository.getFreeSlots(token = token, id = id, dayDiff = dayDiff)
+        remotePlaygroundRepository.getFreeSlots(token = token, id = id, dayDiff = dayDiff)
 }
 
 

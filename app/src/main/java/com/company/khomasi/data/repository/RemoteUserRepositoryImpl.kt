@@ -60,9 +60,6 @@ class RemoteUserRepositoryImpl(
         handleApi { retrofitService.sendFeedback(token, feedback) }
 
 
-    override suspend fun getFreeSlots(token: String, id: Int, dayDiff: Int) =
-        handleApi { retrofitService.getOpenSlots(token, id, dayDiff) }
-
 }
 
 suspend fun <T : Any> handleApi(
