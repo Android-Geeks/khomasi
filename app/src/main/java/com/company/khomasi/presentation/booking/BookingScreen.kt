@@ -48,24 +48,33 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
+import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkOverlay
 import com.company.khomasi.theme.lightOverlay
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.time.OffsetDateTime
+import java.time.format.DateTimeFormatter
 import java.time.format.TextStyle
 import java.util.Locale
 import kotlin.math.absoluteValue
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CalendarSlider(modifier: Modifier = Modifier) {
-    val bookingViewModel: BookingViewModel = viewModel()
-    val bookingUiState: BookingUiState = bookingViewModel.bookingUiState.collectAsState().value
-
+fun BookingScreen(
+    bookingUiState: BookingUiState,
+    freeTimeState: DataState<FessTimeSlotsResponse>,
+    updateDuration: (String) -> Unit,
+    getFreeSlots: () -> Unit
+) {
+    LaunchedEffect(Unit) {
+        getFreeSlots()
+    }
     Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Column(
-            modifier = modifier.padding(start = 16.dp),
+            modifier = Modifier.padding(start = 16.dp),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ) {
@@ -105,7 +114,7 @@ fun CalendarSlider(modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            IconButton(onClick = { bookingViewModel.UpdateDuration("+") }) {
+            IconButton(onClick = { updateDuration("+") }) {
                 Icon(
                     painter = painterResource(R.drawable.pluscircle),
                     contentDescription = null,
@@ -114,12 +123,12 @@ fun CalendarSlider(modifier: Modifier = Modifier) {
             }
 
             Text(
-                text = "${bookingUiState.duration} min",
+                text = "${bookingUiState.duration} ${stringResource(R.string.min)}",
                 style = MaterialTheme.typography.displayMedium,
                 color = MaterialTheme.colorScheme.tertiary,
             )
             IconButton(
-                onClick = { bookingViewModel.UpdateDuration("-") },
+                onClick = { updateDuration("-") },
                 enabled = bookingUiState.duration > 60,
             ) {
                 Icon(
@@ -135,7 +144,28 @@ fun CalendarSlider(modifier: Modifier = Modifier) {
                 .height(1.dp)
                 .border(width = 1.dp, color = MaterialTheme.colorScheme.outline)
         )
+        Log.d("freeTimeState", freeTimeState.toString())
+        if (freeTimeState is DataState.Success) {
+            val freeTimeSlots = freeTimeState.data.freeTimeSlots
+            val formatter = DateTimeFormatter.ofPattern("HH:mm")
 
+            freeTimeSlots.forEach { slot ->
+                val startTime = OffsetDateTime.parse(slot.start)
+                val endTime = OffsetDateTime.parse(slot.end)
+//  this may make problem if some one booking the playground
+//  ex : (he want to booking at 3 and now time is 3) the slot of 3 will be not visible even playground is available at 3
+                val adjustedStartTime = startTime.plusHours(1).withMinute(0)
+
+                slot.start = adjustedStartTime.format(formatter)
+                slot.end = endTime.format(formatter)
+            }
+
+            Text(
+                text = "start Slots = ${freeTimeSlots[0].start} \n end Slots = ${freeTimeSlots[0].end}",
+                modifier = Modifier.fillMaxWidth(), textAlign = TextAlign.Center
+            )
+
+        }
     }
 }
 
@@ -264,44 +294,18 @@ fun getScreenWidth(): Float {
     return displayMetrics.widthPixels / displayMetrics.density
 }
 
-/*@Composable
-fun UnFocusedCalendarItem(
-    dayNum: String, dayName: String
-) {
-    Card(
-        modifier = Modifier
-            .padding(2.dp)
-            .width(60.dp)
-            .height(62.dp),
-        shape = MaterialTheme.shapes.small,
-        colors = CardDefaults.cardColors(Color(0x8010CE77))
-
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = dayNum,
-                color = MaterialTheme.colorScheme.background,
-                style = MaterialTheme.typography.bodyMedium,
-            )
-            Text(
-                text = dayName,
-                color = MaterialTheme.colorScheme.background,
-                style = MaterialTheme.typography.bodyMedium,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center,
-            )
-        }
-    }
-
-}*/
 
 @Preview(showSystemUi = true, locale = "ar")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Po() {
-    KhomasiTheme { CalendarSlider() }
+fun BookingScreenPreview() {
+    val mockViewModel: MockBookingViewModel = viewModel()
+    KhomasiTheme {
+        BookingScreen(
+            bookingUiState = mockViewModel.bookingUiState.collectAsState().value,
+            freeTimeState = mockViewModel.freeSlotsState.collectAsState().value,
+            updateDuration = { mockViewModel.updateDuration(it) },
+            getFreeSlots = mockViewModel::getTimeSlots,
+        )
+    }
 }

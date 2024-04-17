@@ -2,6 +2,7 @@ package com.company.khomasi.data.data_source.remote
 
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.FeedbackRequest
+import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
@@ -105,4 +106,12 @@ interface RetrofitService {
         @Header("Authorization") token: String,
         @Body feedback: FeedbackRequest
     ): Response<MessageResponse>
+
+    @GET("Playground/open-slots")
+    suspend fun getOpenSlots(
+        @Header("Authorization") token: String,
+        @Query("id") id: Int,
+        @Query("dayDiff") dayDiff: Int
+    ): Response<FessTimeSlotsResponse>
+
 }
