@@ -200,6 +200,7 @@
     <string name="Show_on_map">Show on map</string>
     <string name="date_and_duration">Date and duration:</string>
     <string name="send">Send</string>
+    <string name="min">min</string>
 
 
 </resources>
