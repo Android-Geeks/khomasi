@@ -1,6 +1,7 @@
 package com.company.khomasi.presentation.myBookings.components
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,7 @@ import com.company.khomasi.presentation.components.MyButton
 @Composable
 fun EmptyScreen(
     modifier: Modifier = Modifier,
+    isDark: Boolean = isSystemInDarkTheme()
 ) {
     Column(
         modifier = modifier.padding(vertical = 24.dp, horizontal = 24.dp),
@@ -28,7 +30,9 @@ fun EmptyScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.frame2),
+            painter = if (isDark) painterResource(id = R.drawable.dark_empty_booking_field) else painterResource(
+                id = R.drawable.empty_booking_field__light
+            ),
             contentDescription = "",
             alignment = Alignment.Center
         )

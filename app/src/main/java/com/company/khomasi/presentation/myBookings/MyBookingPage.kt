@@ -16,6 +16,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.company.khomasi.R
+import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.presentation.myBookings.components.TabItem
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -29,7 +31,10 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun MyBookingPage(
-    uiState: StateFlow<MyBookingUiState>
+    uiState: StateFlow<MyBookingUiState>,
+    myBooking: DataState<MyBookingsResponse>,
+    onClickPlaygroundCard: (Int) -> Unit,
+    myBookingPlaygrounds: () -> Unit
 ) {
     val list = listOf(TabItem.Current, TabItem.Expired)
     val pagerState = rememberPagerState(initialPage = 0)
@@ -42,7 +47,10 @@ fun MyBookingPage(
         TabContent(
             tabs = list,
             pagerState = pagerState,
-            uiState = uiState
+            uiState = uiState,
+            myBooking = myBooking,
+            myBookingPlaygrounds = myBookingPlaygrounds,
+            onClickPlaygroundCard = onClickPlaygroundCard
         )
     }
 }
@@ -92,11 +100,13 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
 fun TabContent(
     tabs: List<TabItem>,
     pagerState: PagerState,
-    uiState: StateFlow<MyBookingUiState>
-
+    uiState: StateFlow<MyBookingUiState>,
+    myBooking: DataState<MyBookingsResponse>,
+    onClickPlaygroundCard: (Int) -> Unit,
+    myBookingPlaygrounds: () -> Unit
 ) {
     HorizontalPager(count = tabs.size, state = pagerState) { page ->
-        tabs[page].screens(uiState)
+        tabs[page].screens(uiState, myBooking, myBookingPlaygrounds, onClickPlaygroundCard)
 
     }
 }

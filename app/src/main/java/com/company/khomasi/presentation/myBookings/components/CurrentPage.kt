@@ -9,10 +9,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
 import com.company.khomasi.presentation.myBookings.MyBookingUiState
@@ -25,11 +28,16 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun CurrentPage(
     uiState: StateFlow<MyBookingUiState>,
-    //myBooking: StateFlow<DataState<MyBookingsResponse>>,
-
+    myBooking: DataState<MyBookingsResponse>,
+    myBookingPlaygrounds: () -> Unit,
+    onClickPlaygroundCard: (Int) -> Unit,
     ) {
     val currentState by uiState.collectAsState()
-    // val myBookingState by myBooking.collectAsState()
+    LaunchedEffect(key1 = Unit) {
+        myBookingPlaygrounds()
+    }
+    if (myBooking is DataState.Success) {
+        val myBookingState = myBooking.data.results
 
 
     Scaffold(
@@ -49,7 +57,8 @@ fun CurrentPage(
                     items(currentState.bookingPlayground) {
                         BookingCard(
                             bookingDetails = it,
-                            bookingStatus = BookingStatus.CONFIRMED
+                            bookingStatus = BookingStatus.CONFIRMED,
+                            onViewPlaygroundClick = { onClickPlaygroundCard(it.playgroundId) }
                         )
 
                     }
@@ -58,5 +67,6 @@ fun CurrentPage(
                 EmptyScreen()
             }
         }
+    }
     }
 }

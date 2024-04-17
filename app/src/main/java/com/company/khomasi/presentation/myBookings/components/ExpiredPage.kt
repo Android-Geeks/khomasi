@@ -9,10 +9,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
 import com.company.khomasi.presentation.myBookings.MyBookingUiState
@@ -21,7 +24,13 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun ExpiredPage(
     uiState: StateFlow<MyBookingUiState>,
+    myBooking: DataState<MyBookingsResponse>,
+    myBookingPlaygrounds: () -> Unit,
+    onClickPlaygroundCard: (Int) -> Unit
 ) {
+    LaunchedEffect(key1 = Unit) {
+        myBookingPlaygrounds()
+    }
     val currentState by uiState.collectAsState()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -40,7 +49,8 @@ fun ExpiredPage(
                     items(currentState.bookingPlayground) {
                         BookingCard(
                             bookingDetails = it,
-                            bookingStatus = BookingStatus.EXPIRED
+                            bookingStatus = BookingStatus.EXPIRED,
+                            onViewPlaygroundClick = {}
                         )
                     }
                 }

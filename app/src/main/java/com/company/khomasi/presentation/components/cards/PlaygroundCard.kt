@@ -190,7 +190,8 @@ fun PlaygroundCard(
                     style = MaterialTheme.typography.bodyLarge,
                 )
                 Spacer(modifier = Modifier.weight(1f))
-                MyButton(text =  R.string.view_playground,
+                MyButton(
+                    text = R.string.view_playground,
                     onClick = {   onViewPlaygroundClick()},
                     modifier = Modifier
                         .weight(3f)

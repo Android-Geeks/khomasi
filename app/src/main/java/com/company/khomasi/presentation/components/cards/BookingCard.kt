@@ -54,6 +54,7 @@ import com.company.khomasi.utils.convertToBitmap
 fun BookingCard(
     bookingDetails: BookingDetails,
     modifier: Modifier = Modifier,
+    onViewPlaygroundClick: () -> Unit,
     isDark: Boolean = isSystemInDarkTheme(),
     bookingStatus: BookingStatus
 ) {
@@ -299,7 +300,9 @@ private fun BookingCardPreview() {
                 false
             ),
 
-            bookingStatus = BookingStatus.CONFIRMED
+            bookingStatus = BookingStatus.CONFIRMED,
+            onViewPlaygroundClick = {}
         )
+
     }
 }

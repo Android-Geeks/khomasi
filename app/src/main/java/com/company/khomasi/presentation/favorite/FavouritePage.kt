@@ -3,6 +3,7 @@ package com.company.khomasi.presentation.favorite
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -113,6 +114,7 @@ fun TopBar() {
 @Composable
 fun EmptyScreen(
     modifier: Modifier = Modifier,
+    isDark: Boolean = isSystemInDarkTheme()
 ) {
     Column(
         modifier = modifier
@@ -122,7 +124,9 @@ fun EmptyScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
-            painter = painterResource(id = R.drawable.frame),
+            painter = if (isDark) painterResource(id = R.drawable.dark_fav_screen) else painterResource(
+                id = R.drawable.light_empty_fav_screen
+            ),
             contentDescription = "",
             alignment = Alignment.Center
         )

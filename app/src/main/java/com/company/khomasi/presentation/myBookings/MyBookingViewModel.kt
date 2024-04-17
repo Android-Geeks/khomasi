@@ -28,11 +28,8 @@ class MyBookingViewModel @Inject constructor(
 
     private var localUser = LocalUser()
 
-init {
-    myBookingPlaygrounds()
-}
 
-    private fun myBookingPlaygrounds() {
+    fun myBookingPlaygrounds() {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect {
                 localUser = it
@@ -47,4 +44,11 @@ init {
             }
         }
     }
+
+    fun onClickPlayground(playgroundId: Int) {
+        viewModelScope.launch {
+            localUserUseCases.savePlaygroundId(playgroundId)
+        }
+    }
+
     }
