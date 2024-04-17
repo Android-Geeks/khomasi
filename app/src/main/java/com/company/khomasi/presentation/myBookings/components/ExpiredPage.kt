@@ -13,12 +13,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
+import com.company.khomasi.presentation.myBookings.MockViewModel
 import com.company.khomasi.presentation.myBookings.MyBookingUiState
+import com.company.khomasi.theme.KhomasiTheme
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -47,11 +51,13 @@ fun ExpiredPage(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(currentState.bookingPlayground) {
-                        BookingCard(
-                            bookingDetails = it,
-                            bookingStatus = BookingStatus.EXPIRED,
-                            onViewPlaygroundClick = {}
-                        )
+                        if (!currentState.isCanceled) {
+                            BookingCard(
+                                bookingDetails = it,
+                                bookingStatus = BookingStatus.EXPIRED,
+                                onViewPlaygroundClick = {}
+                            )
+                        }
                     }
                 }
             } else {
@@ -59,4 +65,20 @@ fun ExpiredPage(
             }
         }
     }
+}
+
+@Preview
+@Composable
+private fun ExpiredPagePreview() {
+    val myMockViewModel: MockViewModel = hiltViewModel()
+    KhomasiTheme {
+        ExpiredPage(
+            uiState = myMockViewModel.uiState,
+            myBooking = myMockViewModel.myBooking.collectAsState().value,
+            myBookingPlaygrounds = myMockViewModel::myBookingPlaygrounds
+        ) {
+
+        }
+    }
+
 }

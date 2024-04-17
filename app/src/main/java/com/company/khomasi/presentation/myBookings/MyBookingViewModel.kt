@@ -39,7 +39,10 @@ class MyBookingViewModel @Inject constructor(
                 localUser.userID ?: ""
             ).collect { dataState ->
                 if (dataState is DataState.Success) {
-                    _uiState.value = _uiState.value.copy(bookingPlayground = dataState.data.results)
+                    _uiState.value = _uiState.value.copy(
+                        bookingPlayground = dataState.data.results,
+                        isCanceled = dataState.data.results[1].isCanceled
+                    )
                 }
             }
         }

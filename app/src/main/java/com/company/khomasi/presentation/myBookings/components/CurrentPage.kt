@@ -20,11 +20,6 @@ import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
 import com.company.khomasi.presentation.myBookings.MyBookingUiState
 import kotlinx.coroutines.flow.StateFlow
-
-//val LocalMyBookingUiState =
-//    staticCompositionLocalOf<StateFlow<MyBookingUiState>> {
-//        error("No MyBookingUiState provided")
-//    }
 @Composable
 fun CurrentPage(
     uiState: StateFlow<MyBookingUiState>,
@@ -33,11 +28,6 @@ fun CurrentPage(
     onClickPlaygroundCard: (Int) -> Unit,
     ) {
     val currentState by uiState.collectAsState()
-    LaunchedEffect(key1 = Unit) {
-        myBookingPlaygrounds()
-    }
-    if (myBooking is DataState.Success) {
-        val myBookingState = myBooking.data.results
 
 
     Scaffold(
@@ -55,12 +45,16 @@ fun CurrentPage(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(currentState.bookingPlayground) {
-                        BookingCard(
-                            bookingDetails = it,
-                            bookingStatus = BookingStatus.CONFIRMED,
-                            onViewPlaygroundClick = { onClickPlaygroundCard(it.playgroundId) }
-                        )
-
+                        if (currentState.isCanceled) {
+                            LaunchedEffect(key1 = Unit) {
+                                myBookingPlaygrounds()
+                            }
+                            BookingCard(
+                                bookingDetails = it,
+                                bookingStatus = BookingStatus.CONFIRMED,
+                                onViewPlaygroundClick = { onClickPlaygroundCard(it.playgroundId) }
+                            )
+                        }
                     }
                 }
             } else {
@@ -69,4 +63,3 @@ fun CurrentPage(
         }
     }
     }
-}
