@@ -94,7 +94,7 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             localUserUseCases.saveLocalUser(_profileUiState.value.user)
             remoteUserUseCase.updateUserUseCase(
-                token = _profileUiState.value.user.token ?: "",
+                token = "Bearer ${_profileUiState.value.user.token ?: ""}",
                 userId = _profileUiState.value.user.userID ?: "",
                 user = UserUpdateData(
                     id = _profileUiState.value.user.userID ?: "",

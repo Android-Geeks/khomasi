@@ -93,7 +93,7 @@ fun RegisterDataPage(
         }
     )
     val scrollState = rememberScrollState()
-    val keyboardHeight = WindowInsets.ime.getBottom(LocalDensity.current)
+    val keyboardHeight = WindowInsets.ime.getTop(LocalDensity.current)
 
     LaunchedEffect(key1 = keyboardHeight) {
         scrollState.scrollBy(keyboardHeight.toFloat())

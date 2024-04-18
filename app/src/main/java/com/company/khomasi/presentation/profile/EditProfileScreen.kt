@@ -1,23 +1,32 @@
 package com.company.khomasi.presentation.profile
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.scrollBy
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -44,6 +53,7 @@ import com.company.khomasi.utils.convertToBitmap
 
 @Composable
 fun EditProfileScreen(
+    oldLocalUser: LocalUser,
     localUser: LocalUser,
     onSaveProfile: () -> Unit,
     onFirstNameChange: (String) -> Unit,
@@ -52,7 +62,7 @@ fun EditProfileScreen(
     onPhoneChange: (String) -> Unit,
     onLocationChange: (LatandLong) -> Unit,
     onBackClick: () -> Unit,
-    isDark: Boolean
+    isDark: Boolean,
 ) {
     val localFocusManager = LocalFocusManager.current
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -62,6 +72,12 @@ fun EditProfileScreen(
             keyboardController?.hide()
         }
     )
+    val scrollState = rememberScrollState()
+    val keyboardHeight = WindowInsets.ime.getTop(LocalDensity.current)
+
+    LaunchedEffect(key1 = keyboardHeight) {
+        scrollState.scrollBy(keyboardHeight.toFloat())
+    }
 
     val isErrorFirstName = !(CheckInputValidation.isFirstNameValid(localUser.firstName ?: ""))
     val isErrorLastName = !(CheckInputValidation.isLastNameValid(localUser.lastName ?: ""))
@@ -69,15 +85,19 @@ fun EditProfileScreen(
     val isErrorEmail = !CheckInputValidation.isEmailValid(localUser.email ?: "")
 
     Column(
-        modifier = Modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        modifier = Modifier
+            .wrapContentHeight()
+            .imePadding()
+            .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Top
     ) {
         SubScreenTopBar(
             title = R.string.edit_profile,
             onBackClick = onBackClick
         )
 
-        Spacer(modifier = Modifier.weight(24f))
+        Spacer(modifier = Modifier.size(16.dp))
 
         AsyncImage(
             model = ImageRequest
@@ -95,15 +115,11 @@ fun EditProfileScreen(
                 .background(MaterialTheme.colorScheme.surface)
         )
 
-        Spacer(modifier = Modifier.weight(8f))
-
         MyTextButton(
             text = R.string.change,
             onClick = { },
             isUnderlined = false
         )
-
-        Spacer(modifier = Modifier.weight(24f))
 
         MyTextField(
             value = localUser.firstName ?: "",
@@ -124,8 +140,6 @@ fun EditProfileScreen(
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        Spacer(modifier = Modifier.weight(16f))
-
         MyTextField(
             value = localUser.lastName ?: "",
             onValueChange = onLastNameChange,
@@ -145,7 +159,6 @@ fun EditProfileScreen(
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        Spacer(modifier = Modifier.weight(24f))
 
         Text(
             text = stringResource(R.string.contact_information),
@@ -159,7 +172,6 @@ fun EditProfileScreen(
                 .background(if (isDark) darkIconMask else lightIconMask)
         )
 
-        Spacer(modifier = Modifier.weight(16f))
 
         MyTextField(
             value = localUser.email ?: "",
@@ -180,13 +192,12 @@ fun EditProfileScreen(
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        Spacer(modifier = Modifier.weight(16f))
 
         MyTextField(
             value = localUser.phoneNumber ?: "",
             onValueChange = onPhoneChange,
             label = R.string.phone_number,
-            imeAction = ImeAction.Next,
+            imeAction = ImeAction.Done,
             keyBoardType = KeyboardType.Phone,
             keyboardActions = keyboardActions,
             isError = isErrorPhoneNumber,
@@ -201,11 +212,12 @@ fun EditProfileScreen(
             modifier = Modifier.padding(horizontal = 16.dp)
         )
 
-        Spacer(modifier = Modifier.weight(24f))
 
         Text(
             text = stringResource(R.string.location),
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyMedium.copy(
+                textAlign = TextAlign.Center
+            ),
             color = if (isDark) darkText else lightText,
             modifier = Modifier
                 .fillMaxWidth()
@@ -213,14 +225,17 @@ fun EditProfileScreen(
                 .background(if (isDark) darkIconMask else lightIconMask)
         )
 
-        Spacer(modifier = Modifier.weight(16f))
 
         MyButton(
             text = R.string.save_changes,
             onClick = {
                 onSaveProfile()
             },
-            buttonEnable = !isErrorFirstName && !isErrorLastName && !isErrorPhoneNumber && !isErrorEmail,
+            buttonEnable = !isErrorFirstName
+                    && !isErrorLastName
+                    && !isErrorPhoneNumber
+                    && !isErrorEmail
+                    && localUser != oldLocalUser,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)

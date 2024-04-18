@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,7 +51,10 @@ fun ProfileScreen(
 ) {
     val uiState = profileUiState.collectAsState().value
     val localUser = localUserUiState.collectAsState().value
-    updateUserData(localUser)
+
+    LaunchedEffect(localUser) {
+        updateUserData(localUser)
+    }
 
     BackHandler {
         if (uiState.isEditPage) {
@@ -62,6 +66,7 @@ fun ProfileScreen(
 
     if (uiState.isEditPage) {
         EditProfileScreen(
+            oldLocalUser = localUser,
             localUser = uiState.user,
             onSaveProfile = onSaveProfile,
             onFirstNameChange = onFirstNameChanged,
