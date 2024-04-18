@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,8 @@ import com.company.khomasi.presentation.profile.FeedbackCategory
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,6 +45,7 @@ fun FeedbackBottomSheet(
     selectedCategory: FeedbackCategory,
     onFeedbackSelected: (FeedbackCategory) -> Unit,
     feedback: String,
+    scope: CoroutineScope,
     onFeedbackChanged: (String) -> Unit,
     onDismissRequest: () -> Unit,
     sendFeedback: () -> Unit,
@@ -149,8 +153,11 @@ fun FeedbackBottomSheet(
             MyButton(
                 text = R.string.send,
                 onClick = {
-                    sendFeedback()
-                    onDismissRequest()
+                    scope.launch {
+                        sendFeedback()
+                        bottomSheetState.hide()
+                        onDismissRequest()
+                    }
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -174,6 +181,7 @@ fun FeedbackBottomSheetPreview() {
             feedback = "",
             onFeedbackChanged = {},
             sendFeedback = {},
+            scope = rememberCoroutineScope(),
             isDark = false
         )
     }

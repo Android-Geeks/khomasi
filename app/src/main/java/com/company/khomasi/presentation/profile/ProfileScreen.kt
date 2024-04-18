@@ -43,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.presentation.profile.components.FeedbackBottomSheet
+import com.company.khomasi.presentation.profile.components.LogoutBottomSheet
 import com.company.khomasi.presentation.profile.components.ProfileContentItem
 import com.company.khomasi.presentation.profile.components.ProfileImage
 import com.company.khomasi.theme.KhomasiTheme
@@ -50,7 +51,6 @@ import com.company.khomasi.theme.darkIconMask
 import com.company.khomasi.theme.lightIconMask
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlin.reflect.KFunction1
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,7 +62,7 @@ fun ProfileScreen(
     sendFeedback: () -> Unit,
     onFeedbackChanged: (String) -> Unit,
     onBackClick: () -> Unit,
-    onEditProfile: KFunction1<Boolean, Unit>,
+    onEditProfile: (Boolean) -> Unit,
     isDark: Boolean = isSystemInDarkTheme(),
     onFeedbackCategorySelected: (FeedbackCategory) -> Unit,
 ) {
@@ -143,6 +143,7 @@ fun ProfileScreen(
         }
         val bottomSheetState = rememberModalBottomSheetState()
         var showShareOpinionSheet by remember { mutableStateOf(false) }
+        var showLogoutSheet by remember { mutableStateOf(false) }
         val scope = rememberCoroutineScope()
 
         if (showShareOpinionSheet) {
@@ -152,17 +153,38 @@ fun ProfileScreen(
                 onFeedbackSelected = onFeedbackCategorySelected,
                 feedback = uiState.feedback,
                 onFeedbackChanged = onFeedbackChanged,
-                onDismissRequest = { showShareOpinionSheet = false },
+                onDismissRequest = {
+                    scope.launch {
+                        bottomSheetState.hide()
+                        showShareOpinionSheet = false
+                    }
+                },
                 sendFeedback = sendFeedback,
+                scope = scope,
                 isDark = isDark
             )
         }
+        if (showLogoutSheet) {
+            LogoutBottomSheet(
+                bottomSheetState = bottomSheetState,
+                onDismissRequest = {
+                    scope.launch {
+                        bottomSheetState.hide()
+                        showLogoutSheet = false
+                    }
+                },
+                logout = onLogout,
+                scope = scope,
+                isDark = isDark
+            )
+        }
+
         ProfileContent(
-            onLogout = onLogout,
+            onLogout = {
+                showLogoutSheet = true
+            },
             onShareYourOpinion = {
-                scope.launch {
-                    showShareOpinionSheet = true
-                }
+                showShareOpinionSheet = true
             }
         )
     }
@@ -245,7 +267,7 @@ fun ProfileContent(
             ProfileContentItem(
                 title = R.string.logout,
                 icon = R.drawable.signout,
-                onclick = {}
+                onclick = onLogout
             )
         }
     }

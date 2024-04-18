@@ -35,8 +35,8 @@ class ProfileViewModel @Inject constructor(
 
     fun onLogout() {
         viewModelScope.launch {
-            localUserUseCases.saveLocalUser(LocalUser())
             appEntryUseCases.saveIsLogin(false)
+            localUserUseCases.saveLocalUser(LocalUser())
         }
     }
 
