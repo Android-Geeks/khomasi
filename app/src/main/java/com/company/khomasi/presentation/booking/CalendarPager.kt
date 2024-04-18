@@ -33,8 +33,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
+import com.company.khomasi.theme.KhomasiTheme
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.TextStyle
@@ -58,6 +60,8 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
     val selectedYear = remember { mutableIntStateOf(currentDate.year) }
 
     val pagerState = rememberPagerState(pageCount = { currentDaysList.size }, initialPage = 0)
+    Log.d("selectedDay", "${pagerState.currentPage + currentDay}")
+
     LaunchedEffect(pagerState.currentPage) {
         selectedMonth.value = currentDaysList[pagerState.currentPage].month
         selectedYear.intValue = currentDaysList[pagerState.currentPage].year
@@ -87,7 +91,6 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
         val dayName = currentDaysList[page].dayOfWeek.getDisplayName(
             TextStyle.SHORT, Locale.getDefault()
         )
-        Log.d("selectedDay", "${pagerState.currentPage + currentDay}")
 
         Card(
             modifier = Modifier
@@ -157,4 +160,11 @@ fun CalendarItem(
             )
         }
     }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Preview(showSystemUi = true)
+@Composable
+fun CalendarPreview() {
+    KhomasiTheme { CalendarPager(updateSelectedDay = {}) }
 }

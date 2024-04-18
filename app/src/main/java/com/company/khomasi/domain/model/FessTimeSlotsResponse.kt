@@ -6,11 +6,11 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class FessTimeSlotsResponse(
     @SerialName("freeTimeSlots")
-    val freeTimeSlots: List<FreeTimeSlot>
+    val freeTimeSlots: List<FreeTimeSlots>
 )
 
 @Serializable
-data class FreeTimeSlot(
+data class FreeTimeSlots(
     @SerialName("start")
     var start: String,
     @SerialName("end")

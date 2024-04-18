@@ -7,6 +7,7 @@ import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import java.time.LocalDateTime
 
 
 class MockBookingViewModel : ViewModel() {
@@ -49,4 +50,11 @@ class MockBookingViewModel : ViewModel() {
         }
     }
 
+    fun onSlotClicked(slot: Pair<LocalDateTime, LocalDateTime>) {
+        _bookingUiState.update {
+            it.copy(
+                selectedSlots = _bookingUiState.value.selectedSlots.apply { add(slot) }
+            )
+        }
+    }
 }

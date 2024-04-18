@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.booking
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
@@ -7,10 +8,14 @@ import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemotePlaygroundUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.time.LocalDateTime
 import javax.inject.Inject
 
 @HiltViewModel
@@ -48,17 +53,20 @@ class BookingViewModel @Inject constructor(
 
     fun getFreeTimeSlots() {
         viewModelScope.launch {
-            localUserUseCases.getLocalUser().collect { userData ->
-                localUserUseCases.getPlaygroundId().collect { playgroundId ->
-                    remotePlaygroundUseCase.getFreeTimeSlotsUseCase(
-                        token = "Bearer ${userData.token}",
-                        id = 2,
-                        dayDiff = _bookingUiState.value.selectedDay
-                    ).collect { playgroundsRes ->
-                        _freeSlotsState.value = playgroundsRes
+            withContext(Dispatchers.Main) {
+                localUserUseCases.getLocalUser().collect { userData ->
+                    localUserUseCases.getPlaygroundId().collect { playgroundId ->
+                        remotePlaygroundUseCase.getFreeTimeSlotsUseCase(
+                            token = "Bearer ${userData.token}",
+                            id = 2,
+                            dayDiff = _bookingUiState.value.selectedDay
+                        ).collect { playgroundsRes ->
+                            delay(350)
+                            _freeSlotsState.value = playgroundsRes
+                        }
                     }
-                }
 
+                }
             }
         }
     }
@@ -71,8 +79,13 @@ class BookingViewModel @Inject constructor(
         }
     }
 
-    fun onSlotClicked() {
-
+    fun onSlotClicked(slot: Pair<LocalDateTime, LocalDateTime>) {
+        _bookingUiState.update {
+            it.copy(
+                selectedSlots = _bookingUiState.value.selectedSlots.apply { add(slot) }
+            )
+        }
+        Log.d("selectedSlot", "onSlotClicked: ${_bookingUiState.value.selectedSlots}")
     }
 
 }
