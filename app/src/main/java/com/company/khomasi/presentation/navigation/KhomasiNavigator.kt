@@ -123,6 +123,12 @@ fun KhomasiNavigator() {
                     onFeedbackCategorySelected = profileViewModel::onFeedbackCategorySelected,
                     onFeedbackChanged = profileViewModel::onFeedbackChanged,
                     onLogout = profileViewModel::onLogout,
+                    updateUserData = profileViewModel::updateUserData,
+                    onFirstNameChanged = profileViewModel::onFirstNameChanged,
+                    onLastNameChanged = profileViewModel::onLastNameChanged,
+                    onEmailChanged = profileViewModel::onEmailChanged,
+                    onPhoneChanged = profileViewModel::onPhoneChanged,
+                    onLocationChanged = profileViewModel::onLocationChanged,
                     onBackClick = { navController.popBackStack() },
                     sendFeedback = profileViewModel::sendFeedback
                 )

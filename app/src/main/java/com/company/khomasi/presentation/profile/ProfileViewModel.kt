@@ -8,6 +8,7 @@ import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.use_case.app_entry.AppEntryUseCases
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
+import com.company.khomasi.presentation.components.LatandLong
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -40,6 +41,10 @@ class ProfileViewModel @Inject constructor(
         }
     }
 
+    fun updateUserData(user: LocalUser) {
+        _profileUiState.value = _profileUiState.value.copy(user = user)
+    }
+
     fun onFeedbackCategorySelected(feedbackCategory: FeedbackCategory) {
         _profileUiState.value = _profileUiState.value.copy(feedbackCategory = feedbackCategory)
     }
@@ -50,6 +55,39 @@ class ProfileViewModel @Inject constructor(
 
     fun onEditProfile(isEdit: Boolean) {
         _profileUiState.value = _profileUiState.value.copy(isEditPage = isEdit)
+    }
+
+    fun onFirstNameChanged(firstName: String) {
+        _profileUiState.value = _profileUiState.value.copy(
+            user = _profileUiState.value.user.copy(firstName = firstName)
+        )
+    }
+
+    fun onLastNameChanged(lastName: String) {
+        _profileUiState.value = _profileUiState.value.copy(
+            user = _profileUiState.value.user.copy(lastName = lastName)
+        )
+    }
+
+    fun onEmailChanged(email: String) {
+        _profileUiState.value = _profileUiState.value.copy(
+            user = _profileUiState.value.user.copy(email = email)
+        )
+    }
+
+    fun onPhoneChanged(phone: String) {
+        _profileUiState.value = _profileUiState.value.copy(
+            user = _profileUiState.value.user.copy(phoneNumber = phone)
+        )
+    }
+
+    fun onLocationChanged(latandLong: LatandLong) {
+        _profileUiState.value = _profileUiState.value.copy(
+            user = _profileUiState.value.user.copy(
+                latitude = latandLong.latitude,
+                longitude = latandLong.longitude
+            )
+        )
     }
 
     fun onSaveProfile() {
@@ -68,7 +106,7 @@ class ProfileViewModel @Inject constructor(
                     longitude = _profileUiState.value.user.longitude ?: 0.0,
                     latitude = _profileUiState.value.user.latitude ?: 0.0
                 )
-            )
+            ).collect()
             _profileUiState.value = _profileUiState.value.copy(isEditPage = false)
         }
     }

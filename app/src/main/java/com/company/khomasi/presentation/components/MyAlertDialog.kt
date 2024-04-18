@@ -58,7 +58,7 @@ fun MyAlertDialog(
                 Text(
                     text = stringResource(id = if (confirmButtonText == 0) R.string.clear else confirmButtonText),
                     style = MaterialTheme.typography.titleLarge,
-                    color = MaterialTheme.colorScheme.background
+                    color = if (isDark) darkText else lightText
                 )
             }
         },

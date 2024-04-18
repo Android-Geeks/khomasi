@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.profile.components
+package com.company.khomasi.presentation.profile.components.sheets
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
