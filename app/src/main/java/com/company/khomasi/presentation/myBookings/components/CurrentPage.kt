@@ -29,7 +29,9 @@ fun CurrentPage(
     ) {
     val currentState by uiState.collectAsState()
 
-
+//    LaunchedEffect(key1 = Unit) {
+//        myBookingPlaygrounds()
+//    }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -52,6 +54,11 @@ fun CurrentPage(
                             BookingCard(
                                 bookingDetails = it,
                                 bookingStatus = BookingStatus.CONFIRMED,
+                                onViewPlaygroundClick = { onClickPlaygroundCard(it.playgroundId) }
+                            )
+                            BookingCard(
+                                bookingDetails = it,
+                                bookingStatus = BookingStatus.PENDING,
                                 onViewPlaygroundClick = { onClickPlaygroundCard(it.playgroundId) }
                             )
                         }
