@@ -128,10 +128,16 @@ fun ProfileScreen(
 
             ProfileContent(
                 onLogout = {
-                    showLogoutSheet = true
+                    scope.launch {
+                        showLogoutSheet = true
+                        bottomSheetState.show()
+                    }
                 },
                 onShareYourOpinion = {
-                    showShareOpinionSheet = true
+                    scope.launch {
+                        showShareOpinionSheet = true
+                        bottomSheetState.show()
+                    }
                 }
             )
         }
