@@ -51,7 +51,10 @@ fun PhotoSelectorView(
     SubcomposeAsyncImage(
         model = ImageRequest
             .Builder(context = LocalContext.current)
-            .data(selectedImage ?: oldPic?.convertToBitmap())
+            .data(
+                selectedImage
+                    ?: if (oldPic != null) oldPic.convertToBitmap() else R.drawable.user_img
+            )
             .crossfade(true)
             .build(),
         contentDescription = null,
