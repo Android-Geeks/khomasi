@@ -84,7 +84,7 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
         pageSize = PageSize.Fixed(60.dp),
 
         pageSpacing = if (pagerState.currentPage == 0) (-2).dp else (0).dp,
-        contentPadding = PaddingValues(start = (screenWidth / 2).dp),
+        contentPadding = PaddingValues(start = (screenWidth / 2).dp - 30.dp),
         snapPosition = if (pagerState.currentPage in 0..2) SnapPosition.Start else SnapPosition.Center,
     ) { page ->
         val dayNum = currentDaysList[page].dayOfMonth.toString()

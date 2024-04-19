@@ -21,28 +21,29 @@ fun DurationSelection(updateDuration: (String) -> Unit, duration: Int) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {
-        IconButton(onClick = { updateDuration("+") }) {
-            Icon(
-                painter = painterResource(R.drawable.pluscircle),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary
-            )
-        }
+        DurationButton(updateDuration, "+", R.drawable.pluscircle)
 
         Text(
             text = "$duration ${stringResource(R.string.min)}",
             style = MaterialTheme.typography.displayMedium,
             color = MaterialTheme.colorScheme.tertiary,
         )
-        IconButton(
-            onClick = { updateDuration("-") },
-            enabled = duration > 60,
-        ) {
-            Icon(
-                painter = painterResource(R.drawable.minuscircle),
-                contentDescription = null,
-                tint = MaterialTheme.colorScheme.primary.copy(alpha = if (duration > 60) 1f else 0.5f),
-            )
-        }
+        DurationButton(updateDuration, "-", R.drawable.minuscircle, duration > 60)
+    }
+}
+
+@Composable
+fun DurationButton(
+    updateDuration: (String) -> Unit,
+    type: String,
+    icon: Int,
+    enabled: Boolean = true
+) {
+    IconButton(onClick = { updateDuration(type) }, enabled = enabled) {
+        Icon(
+            painter = painterResource(icon),
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary.copy(alpha = if (enabled) 1f else 0.5f),
+        )
     }
 }

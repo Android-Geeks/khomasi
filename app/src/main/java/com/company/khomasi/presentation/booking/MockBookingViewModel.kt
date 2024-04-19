@@ -1,6 +1,8 @@
 package com.company.khomasi.presentation.booking
 
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
@@ -18,20 +20,48 @@ class MockBookingViewModel : ViewModel() {
     private val _bookingUiState: MutableStateFlow<BookingUiState> =
         MutableStateFlow(BookingUiState())
     val bookingUiState: StateFlow<BookingUiState> = _bookingUiState
-    fun updateDuration(type: String = "") {
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getNextAndPastSlots(
+        next: Pair<LocalDateTime, LocalDateTime>,
+        past: Pair<LocalDateTime, LocalDateTime>
+    ) {
+        _bookingUiState.update {
+            it.copy(
+                nextSlot = next,
+                currentSlot = past
+            )
+        }
+    }
+
+    fun updateDuration(type: String) {
+
         when (type) {
+
             "+" -> {
                 _bookingUiState.update {
+                    val updatedDuration = it.selectedDuration + 30
+                    if (updatedDuration > it.selectedSlots.size * 60) {
+
+                        val nextSlot = it.nextSlot
+                        if (nextSlot != null) {
+                            it.selectedSlots.add(nextSlot)
+                        }
+                    }
                     it.copy(
-                        duration = it.duration + 30
+                        selectedDuration = updatedDuration,
+                        selectedSlots = it.selectedSlots
                     )
+
                 }
             }
 
             "-" -> {
                 _bookingUiState.update {
+                    val decreasedDuration = it.selectedDuration - 30
+
                     it.copy(
-                        duration = it.duration - 30
+                        selectedDuration = decreasedDuration,
                     )
                 }
             }
