@@ -74,7 +74,8 @@ fun BookingScreen(
     getFreeSlots: () -> Unit,
     updateSelectedDay: (Int) -> Unit,
     onSlotClicked: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
-    getNextAndPastSlots: (Pair<LocalDateTime, LocalDateTime>, Pair<LocalDateTime, LocalDateTime>) -> Unit
+    getCurrentAndNextSlots: (Pair<LocalDateTime, LocalDateTime>, Pair<LocalDateTime, LocalDateTime>) -> Unit,
+    updateNextSlot: (Pair<LocalDateTime, LocalDateTime>) -> Unit
 ) {
     Scaffold(topBar = {
         BookingTopBar(onBackClicked = { onBackClicked() })
@@ -170,12 +171,12 @@ fun BookingScreen(
                             Pair(hourStartTime, hourEndTime)
                         }
                     }.flatten()
-
-//                    val slotColor = remember { List(hourlyIntervalsList.size) { mutableStateOf(Color.Transparent) } }
-
-                    val primaryColor = MaterialTheme.colorScheme.primary
-
-//                    Log.d("booking", hourlyIntervalsList.toString())
+                    LaunchedEffect(bookingUiState.selectedDuration) {
+                        val currentSlot = bookingUiState.selectedSlots.lastOrNull()
+                        val nextSlotIndex = hourlyIntervalsList.indexOf(currentSlot) + 1
+                        val nextSlott = hourlyIntervalsList[nextSlotIndex]
+                        updateNextSlot(nextSlott)
+                    }
                     LazyColumn(
                         modifier = Modifier.fillMaxWidth(),
                         contentPadding = PaddingValues(start = 12.dp, end = 20.dp)
@@ -192,11 +193,11 @@ fun BookingScreen(
                                 onClickSlot = {
 
                                     onSlotClicked(Pair(slotStart, slotEnd))
-
-                                    getNextAndPastSlots(
+                                    getCurrentAndNextSlots(
                                         if ((slot + 1) < hourlyIntervalsList.size) hourlyIntervalsList[slot + 1] else hourlyIntervalsList[slot],
                                         hourlyIntervalsList[slot]
                                     )
+
                                 })
 
                             Spacer(modifier = Modifier.height(16.dp))
@@ -215,25 +216,6 @@ fun BookingScreen(
         }
     }
 }
-/*
-val selectedSlotsIndex = remember { mutableStateOf(mutableListOf<Int>()) }
-
-onClickSlot = {
-                                    selectedSlotsIndex.value.apply {
-                                        if (contains(slot)) {
-                                            remove(slot)
-                                        } else {
-                                            add(slot)
-                                        }
-                                    }
-                                    Log.d("booking", "selectedSlotsIndex : ${selectedSlotsIndex.value}")
-
-                                    slotColor[slot].value =
-                                        if (slot in selectedSlotsIndex.value) primaryColor
-                                        else Color.Transparent
-                                    onTimeSlotClicked(Pair(slotStart, slotEnd))
-                                })
-*/
 
 @Composable
 fun SlotItem(
@@ -345,7 +327,13 @@ fun BookingScreenPreview() {
             getFreeSlots = mockViewModel::getTimeSlots,
             updateSelectedDay = { mockViewModel.updateSelectedDay(it) },
             onSlotClicked = { mockViewModel.onSlotClicked(it) },
-            getNextAndPastSlots = { next, past -> mockViewModel.getNextAndPastSlots(next, past) }
+            getCurrentAndNextSlots = { next, past ->
+                mockViewModel.getNextAndPastSlots(
+                    next,
+                    past
+                )
+            },
+            updateNextSlot = { mockViewModel.updateNextSlot(it) }
         )
     }
 }

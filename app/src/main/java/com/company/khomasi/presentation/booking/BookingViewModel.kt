@@ -54,78 +54,6 @@ class BookingViewModel @Inject constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun updateDuration(type: String) {
-        var slotAdded = false
-        var slotRemoved = false
-        when (type) {
-            "+" -> {
-                _bookingUiState.update {
-                    val increasedDuration = it.selectedDuration + 30  //90
-
-                    if (increasedDuration > it.selectedSlots.size * 60 && !slotAdded) {
-                        it.nextSlot.apply {
-                            if (this != null) {
-                                onSlotAdded(this)
-                            }
-                        }
-
-                    }
-                    slotAdded = true
-                    it.copy(
-                        selectedDuration = increasedDuration,
-                    )
-                }
-            }
-// شغالين بس فيهم مشاكل
-            "-" -> {
-                _bookingUiState.update {
-                    val decreasedDuration = it.selectedDuration - 30    //90 -> 60
-
-                    if (decreasedDuration < it.selectedSlots.size * 60 && !slotRemoved) {
-                        it.currentSlot.apply {
-                            if (this != null) {
-                                onSlotAdded(this)
-                            }
-                        }
-                    }
-                    slotRemoved = true
-                    it.copy(
-                        selectedDuration = decreasedDuration,
-                    )
-                }
-            }
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getNextAndPastSlots(
-        next: Pair<LocalDateTime, LocalDateTime>,
-        past: Pair<LocalDateTime, LocalDateTime>
-    ) {
-        _bookingUiState.update {
-            it.copy(
-                nextSlot = next,
-                currentSlot = past
-            )
-        }
-        Log.d(
-            "booking", "nextSlot: ${
-                Pair(
-                    _bookingUiState.value.nextSlot?.let { formatTime(it.first) },
-                    _bookingUiState.value.nextSlot?.let {
-                        formatTime(
-                            it.second
-                        )
-                    }
-                )
-            } - currentSlot: ${
-                Pair(_bookingUiState.value.currentSlot?.let { formatTime(it.first) },
-                    _bookingUiState.value.currentSlot?.let { formatTime(it.second) })
-            }"
-        )
-    }
-
     fun updateSelectedDay(day: Int) {
         _bookingUiState.update {
             it.copy(
@@ -135,7 +63,121 @@ class BookingViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun onSlotAdded(slot: Pair<LocalDateTime, LocalDateTime>) {
+    fun updateDuration(type: String) {
+
+        when (type) {
+            "+" -> {
+                val increasedDuration = _bookingUiState.value.selectedDuration + 30  //90
+
+                if (increasedDuration > _bookingUiState.value.selectedSlots.size * 60) {
+                    _bookingUiState.value.nextSlot?.let { addSlot(it) }
+                }
+                _bookingUiState.update {
+                    it.copy(
+                        selectedDuration = increasedDuration,
+                        selectedSlots = it.selectedSlots
+                    )
+                }
+                val nexts = _bookingUiState.value.nextSlot!!
+                _bookingUiState.value.selectedSlots.lastOrNull()?.let { currentSlot ->
+                    getCurrentAndNextSlots(nexts, currentSlot)
+                }
+                Log.d(
+                    "booking",
+                    "selectedSlots after +: ${
+                        (_bookingUiState.value.selectedSlots.map { pair ->
+                            Pair(
+                                formatTime(pair.first), formatTime(pair.second)
+                            )
+                        })
+                    }"
+                )
+                Log.d(
+                    "booking",
+                    "currentSlot +: ${
+                        Pair(_bookingUiState.value.currentSlot?.let { formatTime(it.first) },
+                            _bookingUiState.value.currentSlot?.let { formatTime(it.second) })
+                    } - nextSlot: ${
+                        Pair(
+                            _bookingUiState.value.nextSlot?.let { formatTime(it.first) },
+                            _bookingUiState.value.nextSlot?.let {
+                                formatTime(
+                                    it.second
+                                )
+                            }
+                        )
+                    }"
+                )
+
+            }
+            /*
+             selectedSlots +: [(06:00 ص, 07:00 ص), (08:00 ص, 07:00 ص)]
+             currentSlot +: (07:00 ص, 08:00 ص) - nextSlot: (07:00 ص, 08:00 ص)
+             currentSlot: (07:00 ص, 08:00 ص) - nextSlot: (08:00 ص, 09:00 ص)
+             selectedSlots after +: [(06:00 ص, 07:00 ص), (08:00 ص, 07:00 ص)]
+             currentSlot +: (07:00 ص, 08:00 ص) - nextSlot: (08:00 ص, 09:00 ص)
+
+             كله تمام بس بيعمل ابديت لل next بعد ما نظوس + مرتين مش مره واحده مش عارف ليه
+            * */
+            "-" -> {
+                _bookingUiState.update {
+                    val decreasedDuration = it.selectedDuration - 30    //90 -> 60
+
+                    /*                    if (decreasedDuration < it.selectedSlots.size * 60 && !slotRemoved) {
+                                            it.currentSlot.apply {
+                                                if (this != null) {
+                                                    onSlotAdded(this)
+                                                }
+                                            }
+                                        }
+                                        slotRemoved = true*/
+                    it.copy(
+                        selectedDuration = decreasedDuration,
+                    )
+                }
+            }
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun updateNextSlot(nextSlot: Pair<LocalDateTime, LocalDateTime>) {
+        _bookingUiState.update {
+            it.copy(
+                nextSlot = nextSlot
+            )
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun getCurrentAndNextSlots(
+        next: Pair<LocalDateTime, LocalDateTime>,
+        current: Pair<LocalDateTime, LocalDateTime>
+    ) {
+        _bookingUiState.update {
+            it.copy(
+                nextSlot = if (it.selectedSlots.isEmpty()) null else next,
+                currentSlot = if (it.selectedSlots.isEmpty()) null else current
+            )
+        }
+        Log.d(
+            "booking",
+            "currentSlot: ${
+                Pair(_bookingUiState.value.currentSlot?.let { formatTime(it.first) },
+                    _bookingUiState.value.currentSlot?.let { formatTime(it.second) })
+            } - nextSlot: ${
+                Pair(
+                    _bookingUiState.value.nextSlot?.let { formatTime(it.first) },
+                    _bookingUiState.value.nextSlot?.let {
+                        formatTime(
+                            it.second
+                        )
+                    }
+                )
+            }"
+        )
+    }
+
+    private fun addSlot(slot: Pair<LocalDateTime, LocalDateTime>) {
         _bookingUiState.update {
 
             if (it.selectedSlots.contains(slot)) {
@@ -145,12 +187,23 @@ class BookingViewModel @Inject constructor(
             }
             it.copy(
                 selectedSlots = it.selectedSlots,
+            )
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun onSlotClicked(slot: Pair<LocalDateTime, LocalDateTime>) {
+        _bookingUiState.update {
+
+            addSlot(slot)
+            it.copy(
+                selectedSlots = it.selectedSlots,
                 selectedDuration = if (it.selectedSlots.size > 1) it.selectedSlots.size * 60 else 60
             )
         }
         Log.d(
             "booking",
-            "selectedSlots: ${
+            "selectedSlots ck: ${
                 (_bookingUiState.value.selectedSlots.map { pair ->
                     Pair(
                         formatTime(pair.first), formatTime(pair.second)
@@ -158,32 +211,8 @@ class BookingViewModel @Inject constructor(
                 })
             }"
         )
-//        Log.d("booking", "selectedDuration: ${_bookingUiState.value.selectedDuration}")
 
-        /*
-        onSlotClicked: [
-        (2024-04-18T03:00:00.565507900, 2024-04-18T04:00:00.565507900),
-        (2024-04-18T04:00:00.565507900, 2024-04-18T05:00:00.565507900)
-        ]
-        */
     }
 
 }
 
-/*        val hourlyIntervalsList = _freeSlotsState.value.apply {
-            if (this is DataState.Success) {
-                data.freeTimeSlots.map { slot ->
-                    val startTime = parseTimestamp(slot.start).withMinute(0).withSecond(0)
-                    val endTime = parseTimestamp(slot.end).withMinute(0).withSecond(0)
-                    val duration = Duration.between(startTime, endTime).toHours()
-
-                    List(duration.toInt()) { i ->
-                        val hourStartTime = startTime.plusHours(i.toLong())
-                        val hourEndTime = hourStartTime.plusHours(1)
-                        Pair(hourStartTime, hourEndTime)
-                    }
-                }.flatten()
-            } else {
-                return
-            }
-        }*/

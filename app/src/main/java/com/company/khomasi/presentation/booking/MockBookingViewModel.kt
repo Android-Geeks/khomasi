@@ -87,4 +87,13 @@ class MockBookingViewModel : ViewModel() {
             )
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun updateNextSlot(nextSlot: Pair<LocalDateTime, LocalDateTime>) {
+        _bookingUiState.update {
+            it.copy(
+                nextSlot = nextSlot
+            )
+        }
+    }
 }
