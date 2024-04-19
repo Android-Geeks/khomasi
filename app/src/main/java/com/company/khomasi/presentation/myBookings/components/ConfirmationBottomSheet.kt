@@ -153,7 +153,7 @@ fun ConfirmationBottomSheet(
             if (myBooking is DataState.Success) {
                 BookingCard(
                     bookingDetails = bookingDetails,
-                    bookingStatus = BookingStatus.PENDING,
+                    bookingStatus = BookingStatus.CANCEL,
                     onViewPlaygroundClick = {}
                 )
             }

@@ -43,10 +43,10 @@ import com.company.khomasi.domain.model.BookingDetails
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
 import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.theme.darkErrorColor
 import com.company.khomasi.theme.darkSubText
-import com.company.khomasi.theme.darkWarningColor
+import com.company.khomasi.theme.lightErrorColor
 import com.company.khomasi.theme.lightSubText
-import com.company.khomasi.theme.lightWarningColor
 import com.company.khomasi.utils.convertToBitmap
 
 
@@ -150,16 +150,16 @@ fun BookingCard(
                             }
                         }
 
-                        BookingStatus.PENDING -> {
+                        BookingStatus.CANCEL -> {
                             MyButton(
-                                text = R.string.waiting,
+                                text = R.string.booking_cancelled,
                                 onClick = { },
                                 shape = MaterialTheme.shapes.medium,
                                 modifier = Modifier
                                     .padding(start = 92.dp, end = 92.dp)
                                     .weight(1f),
-                                color = if (isDark) ButtonDefaults.buttonColors(darkWarningColor) else ButtonDefaults.buttonColors(
-                                    lightWarningColor
+                                color = if (isDark) ButtonDefaults.buttonColors(darkErrorColor) else ButtonDefaults.buttonColors(
+                                    lightErrorColor
                                 ),
                             )
                         }

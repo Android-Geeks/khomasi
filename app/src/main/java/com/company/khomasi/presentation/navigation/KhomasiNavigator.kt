@@ -87,7 +87,8 @@ fun KhomasiNavigator() {
                     uiState = bookingViewModel.uiState,
                     myBookingPlaygrounds = bookingViewModel::myBookingPlaygrounds,
                     myBooking = bookingViewModel.myBooking.collectAsState().value,
-                    onClickPlaygroundCard = bookingViewModel::onClickPlayground
+                    onClickPlaygroundCard = bookingViewModel::onClickPlayground,
+                    showConfirmationBottomSheet = bookingViewModel.showConfirmationBottomSheet
                 )
 
             }

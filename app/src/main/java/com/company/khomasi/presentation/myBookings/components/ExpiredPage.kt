@@ -9,7 +9,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -32,9 +31,9 @@ fun ExpiredPage(
     myBookingPlaygrounds: () -> Unit,
     onClickPlaygroundCard: (Int) -> Unit
 ) {
-    LaunchedEffect(key1 = Unit) {
-        myBookingPlaygrounds()
-    }
+//    LaunchedEffect(key1 = Unit) {
+//        myBookingPlaygrounds()
+//    }
     val currentState by uiState.collectAsState()
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -45,13 +44,13 @@ fun ExpiredPage(
                 .padding(all = 16.dp),
             color = MaterialTheme.colorScheme.background,
         ) {
-            if (currentState.bookingPlayground.isNotEmpty()) {
+            //    if (currentState.bookingPlayground.isNotEmpty()) {
                 LazyColumn(
                     contentPadding = it,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(currentState.bookingPlayground) {
-                        if (!currentState.isCanceled) {
+                        if (currentState.isFinished) {
                             BookingCard(
                                 bookingDetails = it,
                                 bookingStatus = BookingStatus.EXPIRED,
@@ -60,9 +59,9 @@ fun ExpiredPage(
                         }
                     }
                 }
-            } else {
-                EmptyScreen()
-            }
+//            } else {
+//                EmptyScreen()
+//            }
         }
     }
 }

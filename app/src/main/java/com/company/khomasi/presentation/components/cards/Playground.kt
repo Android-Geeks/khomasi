@@ -1,7 +1,7 @@
 package com.company.khomasi.presentation.components.cards
 
 enum class BookingStatus{
-    PENDING,
+    CANCEL,
     CONFIRMED,
     EXPIRED
 }

@@ -10,6 +10,8 @@ import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -18,6 +20,8 @@ import androidx.compose.ui.res.stringResource
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.MyBookingsResponse
+import com.company.khomasi.presentation.myBookings.components.ConfirmationBottomSheet
+import com.company.khomasi.presentation.myBookings.components.CurrentPage
 import com.company.khomasi.presentation.myBookings.components.TabItem
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -34,14 +38,18 @@ fun MyBookingPage(
     uiState: StateFlow<MyBookingUiState>,
     myBooking: DataState<MyBookingsResponse>,
     onClickPlaygroundCard: (Int) -> Unit,
-    myBookingPlaygrounds: () -> Unit
+    myBookingPlaygrounds: () -> Unit,
+    showConfirmationBottomSheet: StateFlow<Boolean>
 ) {
+    LaunchedEffect(key1 = Unit) {
+        myBookingPlaygrounds()
+    }
     val list = listOf(TabItem.Current, TabItem.Expired)
     val pagerState = rememberPagerState(initialPage = 0)
     Column(modifier = Modifier.fillMaxSize()) {
         Tabs(tabs = list, pagerState = pagerState)
         Image(
-            painter = painterResource(R.drawable.group_34282), contentDescription = null,
+            painter = painterResource(R.drawable.view_pager_group), contentDescription = null,
             contentScale = ContentScale.FillWidth, modifier = Modifier.fillMaxWidth()
         )
         TabContent(
@@ -52,6 +60,23 @@ fun MyBookingPage(
             myBookingPlaygrounds = myBookingPlaygrounds,
             onClickPlaygroundCard = onClickPlaygroundCard
         )
+        if (myBooking is DataState.Success) {
+            val booking = myBooking.data.results[1]
+
+            if (showConfirmationBottomSheet.collectAsState().value) {
+                ConfirmationBottomSheet(
+                    bookingDetails = booking,
+                    myBooking = myBooking
+                )
+            } else {
+                CurrentPage(
+                    uiState = uiState,
+                    myBooking = myBooking,
+                    myBookingPlaygrounds = myBookingPlaygrounds,
+                    onClickPlaygroundCard = onClickPlaygroundCard
+                )
+            }
+        }
     }
 }
 @OptIn(ExperimentalPagerApi::class)
@@ -106,6 +131,9 @@ fun TabContent(
     myBookingPlaygrounds: () -> Unit
 ) {
     HorizontalPager(count = tabs.size, state = pagerState) { page ->
+        LaunchedEffect(key1 = Unit) {
+            myBookingPlaygrounds()
+        }
         tabs[page].screens(uiState, myBooking, myBookingPlaygrounds, onClickPlaygroundCard)
 
     }

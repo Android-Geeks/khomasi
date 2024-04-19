@@ -20,6 +20,7 @@ import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
 import com.company.khomasi.presentation.myBookings.MyBookingUiState
 import kotlinx.coroutines.flow.StateFlow
+
 @Composable
 fun CurrentPage(
     uiState: StateFlow<MyBookingUiState>,
@@ -29,9 +30,9 @@ fun CurrentPage(
     ) {
     val currentState by uiState.collectAsState()
 
-//    LaunchedEffect(key1 = Unit) {
-//        myBookingPlaygrounds()
-//    }
+    LaunchedEffect(key1 = Unit) {
+        myBookingPlaygrounds()
+    }
     Scaffold(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -47,22 +48,17 @@ fun CurrentPage(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(currentState.bookingPlayground) {
-                        if (currentState.isCanceled) {
+                        // if (currentState.isCanceled) {
                             LaunchedEffect(key1 = Unit) {
                                 myBookingPlaygrounds()
                             }
                             BookingCard(
                                 bookingDetails = it,
-                                bookingStatus = BookingStatus.CONFIRMED,
-                                onViewPlaygroundClick = { onClickPlaygroundCard(it.playgroundId) }
-                            )
-                            BookingCard(
-                                bookingDetails = it,
-                                bookingStatus = BookingStatus.PENDING,
+                                bookingStatus = if (currentState.isCanceled) BookingStatus.CANCEL else BookingStatus.CONFIRMED,
                                 onViewPlaygroundClick = { onClickPlaygroundCard(it.playgroundId) }
                             )
                         }
-                    }
+                    // }
                 }
             } else {
                 EmptyScreen()

@@ -17,7 +17,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MyBookingViewModel @Inject constructor(
     private val remoteUserUseCase: RemoteUserUseCase,
-    private val localUserUseCases: LocalUserUseCases
+    private val localUserUseCases: LocalUserUseCases,
 ): ViewModel()  {
     private val _myBooking =
         MutableStateFlow<DataState<MyBookingsResponse>>(DataState.Empty)
@@ -28,12 +28,14 @@ class MyBookingViewModel @Inject constructor(
 
     private var localUser = LocalUser()
 
+    private val _showConfirmationBottomSheet = MutableStateFlow(false)
+    val showConfirmationBottomSheet: StateFlow<Boolean> = _showConfirmationBottomSheet
+
 
     fun myBookingPlaygrounds() {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect {
                 localUser = it
-            }
             remoteUserUseCase.getUserBookingsUseCase(
                 "Bearer ${localUser.token}",
                 localUser.userID ?: ""
@@ -41,9 +43,12 @@ class MyBookingViewModel @Inject constructor(
                 if (dataState is DataState.Success) {
                     _uiState.value = _uiState.value.copy(
                         bookingPlayground = dataState.data.results,
-                        isCanceled = dataState.data.results[1].isCanceled
+                        isCanceled = dataState.data.results[1].isCanceled,
+                        isFinished = dataState.data.results[1].isFinished
+
                     )
                 }
+            }
             }
         }
     }
@@ -51,7 +56,8 @@ class MyBookingViewModel @Inject constructor(
     fun onClickPlayground(playgroundId: Int) {
         viewModelScope.launch {
             localUserUseCases.savePlaygroundId(playgroundId)
+            _showConfirmationBottomSheet.value = true
         }
     }
 
-    }
+}
