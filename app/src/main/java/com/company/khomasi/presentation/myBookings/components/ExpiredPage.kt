@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.myBookings.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -9,6 +10,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -31,9 +33,11 @@ fun ExpiredPage(
     myBookingPlaygrounds: () -> Unit,
     onClickPlaygroundCard: (Int) -> Unit
 ) {
-//    LaunchedEffect(key1 = Unit) {
-//        myBookingPlaygrounds()
-//    }
+    LaunchedEffect(key1 = Unit) {
+        myBookingPlaygrounds()
+    }
+    Log.d("MyBooking -> Expired Page", "Expired Page: $myBooking")
+
     val currentState by uiState.collectAsState()
     Scaffold(
         modifier = Modifier.fillMaxSize(),

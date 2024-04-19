@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.myBookings.components
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -28,11 +29,14 @@ fun CurrentPage(
     myBookingPlaygrounds: () -> Unit,
     onClickPlaygroundCard: (Int) -> Unit,
     ) {
-    val currentState by uiState.collectAsState()
 
     LaunchedEffect(key1 = Unit) {
         myBookingPlaygrounds()
     }
+    Log.d("MyBooking -> Current Page", "Current Page: $myBooking")
+
+    val currentState by uiState.collectAsState()
+
     Scaffold(
         modifier = Modifier.fillMaxSize(),
     ) {
@@ -48,17 +52,12 @@ fun CurrentPage(
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
                     items(currentState.bookingPlayground) {
-                        // if (currentState.isCanceled) {
-                            LaunchedEffect(key1 = Unit) {
-                                myBookingPlaygrounds()
-                            }
                             BookingCard(
                                 bookingDetails = it,
                                 bookingStatus = if (currentState.isCanceled) BookingStatus.CANCEL else BookingStatus.CONFIRMED,
                                 onViewPlaygroundClick = { onClickPlaygroundCard(it.playgroundId) }
                             )
                         }
-                    // }
                 }
             } else {
                 EmptyScreen()

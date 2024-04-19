@@ -41,9 +41,6 @@ fun MyBookingPage(
     myBookingPlaygrounds: () -> Unit,
     showConfirmationBottomSheet: StateFlow<Boolean>
 ) {
-    LaunchedEffect(key1 = Unit) {
-        myBookingPlaygrounds()
-    }
     val list = listOf(TabItem.Current, TabItem.Expired)
     val pagerState = rememberPagerState(initialPage = 0)
     Column(modifier = Modifier.fillMaxSize()) {
