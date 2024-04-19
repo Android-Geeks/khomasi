@@ -4,6 +4,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Arrangement
@@ -91,14 +92,10 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
         val dayName = currentDaysList[page].dayOfWeek.getDisplayName(
             TextStyle.SHORT, Locale.getDefault()
         )
-
         Card(
             modifier = Modifier
-                .clickable { // Add clickable modifier to the Card
-                    coroutineScope.launch { // Launch a coroutine
-                        pagerState.animateScrollToPage(page) // Scroll to the clicked page
-                    }
-                }
+                .width(60.dp)
+                .height(74.dp)
                 .graphicsLayer {
                     // Calculate the absolute offset for the current page from the \scroll position. We use the absolute value which allows us to mirror\ any effects for both directions
                     val pageOffset =
@@ -117,9 +114,15 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
                     scaleX = lerp(
                         start = 0.9f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
                     )
+                }
+                .background(shape = MaterialTheme.shapes.small, color = Color.Transparent)
+                .clickable { // Add clickable modifier to the Card
+                    coroutineScope.launch { // Launch a coroutine
+                        pagerState.animateScrollToPage(page) // Scroll to the clicked page
+                    }
                 },
-            colors = CardDefaults.cardColors(Color.Transparent),
-            elevation = CardDefaults.cardElevation(if (page == pagerState.currentPage) 18.dp else (-10).dp)
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary),
+            elevation = CardDefaults.cardElevation(if (page == pagerState.currentPage) 18.dp else (-10).dp),
         ) {
             CalendarItem(
                 dayNum = dayNum,
@@ -133,33 +136,26 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
 fun CalendarItem(
     dayNum: String, dayName: String,
 ) {
-    Card(
+    Column(
         modifier = Modifier
-            .width(60.dp)
-            .height(74.dp),
-        shape = MaterialTheme.shapes.small,
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary),
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Text(
-                text = dayNum,
-                color = MaterialTheme.colorScheme.background,
-                style = MaterialTheme.typography.bodyLarge,
-            )
-            Text(
-                text = dayName,
-                color = MaterialTheme.colorScheme.background,
-                style = MaterialTheme.typography.bodyLarge,
-                overflow = TextOverflow.Ellipsis,
-                textAlign = TextAlign.Center,
-            )
-        }
+        Text(
+            text = dayNum,
+            color = MaterialTheme.colorScheme.background,
+            style = MaterialTheme.typography.bodyLarge,
+        )
+        Text(
+            text = dayName,
+            color = MaterialTheme.colorScheme.background,
+            style = MaterialTheme.typography.bodyLarge,
+            overflow = TextOverflow.Ellipsis,
+            textAlign = TextAlign.Center,
+        )
     }
+
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
