@@ -68,6 +68,10 @@ class BookingViewModel @Inject constructor(
         when (type) {
             "+" -> {
                 val increasedDuration = _bookingUiState.value.selectedDuration + 30  //90
+                val nexts = _bookingUiState.value.nextSlot!!
+                _bookingUiState.value.selectedSlots.lastOrNull()?.let { currentSlot ->
+                    getCurrentAndNextSlots(nexts, currentSlot)
+                }
 
                 if (increasedDuration > _bookingUiState.value.selectedSlots.size * 60) {
                     _bookingUiState.value.nextSlot?.let { addSlot(it) }
@@ -78,61 +82,50 @@ class BookingViewModel @Inject constructor(
                         selectedSlots = it.selectedSlots
                     )
                 }
-                val nexts = _bookingUiState.value.nextSlot!!
-                _bookingUiState.value.selectedSlots.lastOrNull()?.let { currentSlot ->
-                    getCurrentAndNextSlots(nexts, currentSlot)
-                }
-                Log.d(
-                    "booking",
-                    "selectedSlots after +: ${
-                        (_bookingUiState.value.selectedSlots.map { pair ->
-                            Pair(
-                                formatTime(pair.first), formatTime(pair.second)
-                            )
-                        })
-                    }"
-                )
-                Log.d(
-                    "booking",
-                    "currentSlot +: ${
-                        Pair(_bookingUiState.value.currentSlot?.let { formatTime(it.first) },
-                            _bookingUiState.value.currentSlot?.let { formatTime(it.second) })
-                    } - nextSlot: ${
-                        Pair(
-                            _bookingUiState.value.nextSlot?.let { formatTime(it.first) },
-                            _bookingUiState.value.nextSlot?.let {
-                                formatTime(
-                                    it.second
+
+                /*                Log.d(
+                                    "booking",
+                                    "selectedSlots after +: ${
+                                        (_bookingUiState.value.selectedSlots.map { pair ->
+                                            Pair(
+                                                formatTime(pair.first), formatTime(pair.second)
+                                            )
+                                        })
+                                    }"
                                 )
-                            }
-                        )
-                    }"
-                )
-
+                                Log.d(
+                                    "booking",
+                                    "currentSlot +: ${
+                                        Pair(_bookingUiState.value.currentSlot?.let { formatTime(it.first) },
+                                            _bookingUiState.value.currentSlot?.let { formatTime(it.second) })
+                                    } - nextSlot: ${
+                                        Pair(
+                                            _bookingUiState.value.nextSlot?.let { formatTime(it.first) },
+                                            _bookingUiState.value.nextSlot?.let {
+                                                formatTime(
+                                                    it.second
+                                                )
+                                            }
+                                        )
+                                    }"
+                                )*/
             }
-            /*
-             selectedSlots +: [(06:00 ص, 07:00 ص), (08:00 ص, 07:00 ص)]
-             currentSlot +: (07:00 ص, 08:00 ص) - nextSlot: (07:00 ص, 08:00 ص)
-             currentSlot: (07:00 ص, 08:00 ص) - nextSlot: (08:00 ص, 09:00 ص)
-             selectedSlots after +: [(06:00 ص, 07:00 ص), (08:00 ص, 07:00 ص)]
-             currentSlot +: (07:00 ص, 08:00 ص) - nextSlot: (08:00 ص, 09:00 ص)
 
-             كله تمام بس بيعمل ابديت لل next بعد ما نظوس + مرتين مش مره واحده مش عارف ليه
-            * */
             "-" -> {
                 _bookingUiState.update {
-                    val decreasedDuration = it.selectedDuration - 30    //90 -> 60
+                    val decreasedDuration = it.selectedDuration - 30    // 120 -> 90
+//                    90 -> 60
+                    /*
+                    180 -> 150
+                    * */
 
-                    /*                    if (decreasedDuration < it.selectedSlots.size * 60 && !slotRemoved) {
-                                            it.currentSlot.apply {
-                                                if (this != null) {
-                                                    onSlotAdded(this)
-                                                }
-                                            }
-                                        }
-                                        slotRemoved = true*/
+                    if (decreasedDuration % 60 == 0 && it.selectedSlots.size > 1) {
+                        it.selectedSlots.removeAt(it.selectedSlots.size - 1)
+                    }
+
                     it.copy(
                         selectedDuration = decreasedDuration,
+                        selectedSlots = it.selectedSlots
                     )
                 }
             }
@@ -161,7 +154,7 @@ class BookingViewModel @Inject constructor(
         }
         Log.d(
             "booking",
-            "currentSlot: ${
+            "currentSlot get: ${
                 Pair(_bookingUiState.value.currentSlot?.let { formatTime(it.first) },
                     _bookingUiState.value.currentSlot?.let { formatTime(it.second) })
             } - nextSlot: ${

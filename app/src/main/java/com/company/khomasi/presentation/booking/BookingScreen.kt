@@ -3,7 +3,6 @@ package com.company.khomasi.presentation.booking
 import android.annotation.SuppressLint
 import android.os.Build
 import android.util.DisplayMetrics
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -61,7 +60,6 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
-
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
 @RequiresApi(Build.VERSION_CODES.O)
@@ -145,7 +143,6 @@ fun BookingScreen(
                     thickness = 1.dp,
                     color = MaterialTheme.colorScheme.outline
                 )
-                Log.d("freeSlotsState", freeSlotsState.toString())
 
                 Text(
                     text = stringResource(id = R.string.available_times),
@@ -159,7 +156,6 @@ fun BookingScreen(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 if (freeSlotsState is DataState.Success) {
-
                     val hourlyIntervalsList = freeSlotsState.data.freeTimeSlots.map { daySlots ->
                         val startTime = parseTimestamp(daySlots.start).withMinute(0).withSecond(0)
                         val endTime = parseTimestamp(daySlots.end).withMinute(0).withSecond(0)
@@ -174,8 +170,10 @@ fun BookingScreen(
                     LaunchedEffect(bookingUiState.selectedDuration) {
                         val currentSlot = bookingUiState.selectedSlots.lastOrNull()
                         val nextSlotIndex = hourlyIntervalsList.indexOf(currentSlot) + 1
-                        val nextSlott = hourlyIntervalsList[nextSlotIndex]
-                        updateNextSlot(nextSlott)
+                        if (nextSlotIndex in hourlyIntervalsList.indices) {
+                            val nextSlot = hourlyIntervalsList[nextSlotIndex]
+                            updateNextSlot(nextSlot)
+                        }
                     }
                     LazyColumn(
                         modifier = Modifier.fillMaxWidth(),
