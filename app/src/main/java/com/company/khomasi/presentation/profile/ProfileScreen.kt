@@ -20,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.company.khomasi.domain.model.LocalUser
-import com.company.khomasi.presentation.components.LatandLong
 import com.company.khomasi.presentation.profile.components.profile_content.ProfileContent
 import com.company.khomasi.presentation.profile.components.profile_topbar.ProfileTopBar
 import com.company.khomasi.presentation.profile.components.sheets.FeedbackBottomSheet
@@ -38,12 +37,11 @@ fun ProfileScreen(
     updateUserData: (LocalUser) -> Unit,
     onFirstNameChanged: (String) -> Unit,
     onLastNameChanged: (String) -> Unit,
-    onEmailChanged: (String) -> Unit,
     onPhoneChanged: (String) -> Unit,
-    onLocationChanged: (LatandLong) -> Unit,
     onSaveProfile: () -> Unit,
     sendFeedback: () -> Unit,
     onFeedbackChanged: (String) -> Unit,
+    onChangeProfileImage: (String) -> Unit,
     onBackClick: () -> Unit,
     onEditProfile: (Boolean) -> Unit,
     isDark: Boolean = isSystemInDarkTheme(),
@@ -71,10 +69,9 @@ fun ProfileScreen(
             onSaveProfile = onSaveProfile,
             onFirstNameChange = onFirstNameChanged,
             onLastNameChange = onLastNameChanged,
-            onEmailChange = onEmailChanged,
             onPhoneChange = onPhoneChanged,
-            onLocationChange = onLocationChanged,
-            onBackClick = onBackClick,
+            onBackClick = { onEditProfile(false) },
+            onChangeProfileImage = onChangeProfileImage,
             isDark = isDark
         )
     } else {
@@ -85,7 +82,7 @@ fun ProfileScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             ProfileTopBar(
-                localUser = uiState.user,
+                localUser = localUser,
                 onEditProfile = onEditProfile,
                 onBackClick = onBackClick,
                 isDark = isDark
@@ -171,9 +168,8 @@ fun ProfileScreenPreview() {
             updateUserData = {},
             onFirstNameChanged = {},
             onLastNameChanged = {},
-            onEmailChanged = {},
             onPhoneChanged = {},
-            onLocationChanged = {}
+            onChangeProfileImage = {}
         )
     }
 }

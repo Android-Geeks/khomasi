@@ -8,7 +8,6 @@ import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.use_case.app_entry.AppEntryUseCases
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
-import com.company.khomasi.presentation.components.LatandLong
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -69,26 +68,18 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    fun onEmailChanged(email: String) {
-        _profileUiState.value = _profileUiState.value.copy(
-            user = _profileUiState.value.user.copy(email = email)
-        )
-    }
-
     fun onPhoneChanged(phone: String) {
         _profileUiState.value = _profileUiState.value.copy(
             user = _profileUiState.value.user.copy(phoneNumber = phone)
         )
     }
 
-    fun onLocationChanged(latandLong: LatandLong) {
+    fun onChangeProfileImage(image: String) {
         _profileUiState.value = _profileUiState.value.copy(
-            user = _profileUiState.value.user.copy(
-                latitude = latandLong.latitude,
-                longitude = latandLong.longitude
-            )
+            user = _profileUiState.value.user.copy(profilePicture = image)
         )
     }
+
 
     fun onSaveProfile() {
         viewModelScope.launch {
@@ -127,4 +118,5 @@ class ProfileViewModel @Inject constructor(
             )
         }
     }
+
 }
