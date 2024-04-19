@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.components.cards
 
-import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -26,9 +25,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
@@ -64,7 +67,7 @@ fun RatingCard(
                 verticalArrangement = Arrangement.SpaceEvenly,
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(horizontal = 8.dp)
+                    .padding(start = 8.dp)
             ) {
                 Text(
                     text = mainText,
@@ -75,7 +78,7 @@ fun RatingCard(
                     if (timeIcon != 0) {
                         Icon(
                             painter = painterResource(timeIcon),
-                            contentDescription = " ",
+                            contentDescription = null,
                             tint = MaterialTheme.colorScheme.primary,
                             modifier = Modifier.padding(end = 4.dp)
                         )
@@ -86,18 +89,33 @@ fun RatingCard(
                         color = MaterialTheme.colorScheme.primary,
                         textAlign = TextAlign.Start
                     )
-
                 }
             }
-            Spacer(modifier = Modifier.weight(0.9f))
-
-            Box(modifier = Modifier) {
+            Spacer(modifier = Modifier.weight(1f))
+            Box {
+//                Icon(painter =painterResource(id = R.drawable.lines) ,
+//                    contentDescription = null,
+//                    modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier
+//                        .rotate(-180f)
+//                        .width(120.dp)
+//                        .fillMaxWidth()
+//                    else Modifier
+//                        .width(125.dp)
+//                        .fillMaxWidth()
+//                            ,
+//                    tint = if(isDark) darkIcon else lightIcon
+//                    )
                 Image(
-                    painter = painterResource(id = R.drawable.group_lines),
+                    painter = painterResource(id = R.drawable.lines),
                     contentDescription = null,
-                    modifier = Modifier
-                        .width(95.dp)
-                        .fillMaxSize()
+                    modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier
+                        .rotate(-180f)
+                        .width(120.dp)
+                        .fillMaxWidth()
+                    else Modifier
+                        .width(135.dp)
+                        .fillMaxWidth(),
+                    contentScale = ContentScale.FillBounds
                 )
                 Column(
                     verticalArrangement = Arrangement.SpaceEvenly,
@@ -119,9 +137,8 @@ fun RatingCard(
     }
 }
 
-@Preview(name = "dark", uiMode = UI_MODE_NIGHT_YES)
-@Preview(name = "light", uiMode = UI_MODE_NIGHT_NO)
-
+@Preview(name = "dark", uiMode = UI_MODE_NIGHT_YES, locale = "ar")
+@Preview(name = "light", uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewRatingCard() {
     KhomasiTheme {
