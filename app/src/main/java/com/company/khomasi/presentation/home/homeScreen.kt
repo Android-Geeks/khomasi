@@ -1,5 +1,7 @@
 package com.company.khomasi.presentation.home
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -233,16 +235,19 @@ fun UserProfileSection(
             modifier = Modifier
                 .size(50.dp)
                 .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surface)
                 .clickable { onClickUserImage() },
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(
-                    if (userData.profilePicture != null)
-                        userData.profilePicture.convertToBitmap()
-                    else R.drawable.user_img
-                )
+                .data(userData.profilePicture?.convertToBitmap())
                 .crossfade(true).build(),
             loading = {
                 CircularProgressIndicator()
+            },
+            error = {
+                Image(
+                    painter = painterResource(id = R.drawable.user_img),
+                    contentDescription = null
+                )
             },
             contentDescription = null,
             contentScale = ContentScale.Crop,
