@@ -86,6 +86,7 @@ fun MyTextButton(
             text = stringResource(id = text),
             textAlign = TextAlign.Center,
             textDecoration = if (isUnderlined) TextDecoration.Underline else TextDecoration.None,
+            style = MaterialTheme.typography.titleLarge,
             fontSize = textSize
         )
     }

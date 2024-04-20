@@ -3,12 +3,15 @@ package com.company.khomasi.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,20 +29,22 @@ class HomeViewModel @Inject constructor(
     private val _homeUiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
     val homeUiState: StateFlow<HomeUiState> = _homeUiState
 
+    private val _localUser =
+        localUserUseCases.getLocalUser()
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(5_000),
+                LocalUser()
+            )
+    val localUser: StateFlow<LocalUser> = _localUser
+
     fun getPlaygrounds() {
         viewModelScope.launch {
-            localUserUseCases.getLocalUser().collect { userData ->
-
-                remoteUserUseCase.getPlaygroundsUseCase(
-                    token = "Bearer ${userData.token}",
-                    userId = userData.userID ?: ""
-                ).collect { playgroundsRes ->
-                    _playgroundState.value = playgroundsRes
-                }
-                _homeUiState.value = HomeUiState(
-                    name = userData.firstName ?: "",
-                    userImg = userData.profilePicture
-                )
+            remoteUserUseCase.getPlaygroundsUseCase(
+                token = "Bearer ${_localUser.value.token ?: ""}",
+                userId = _localUser.value.userID ?: ""
+            ).collect { playgroundsRes ->
+                _playgroundState.value = playgroundsRes
             }
         }
     }
@@ -77,6 +82,5 @@ class HomeViewModel @Inject constructor(
                 )
             }
         }
-
     }
 }

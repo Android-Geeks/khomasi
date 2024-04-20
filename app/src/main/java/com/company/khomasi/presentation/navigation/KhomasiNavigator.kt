@@ -3,7 +3,6 @@ package com.company.khomasi.presentation.navigation
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -49,8 +48,9 @@ fun KhomasiNavigator() {
             composable(route = Screens.Home.name) {
                 val homeViewModel: HomeViewModel = hiltViewModel()
                 HomeScreen(
-                    playgroundState = homeViewModel.playgroundState.collectAsState().value,
-                    homeUiState = homeViewModel.homeUiState.collectAsState().value,
+                    playgroundsState = homeViewModel.playgroundState,
+                    homeUiState = homeViewModel.homeUiState,
+                    localUserState = homeViewModel.localUser,
                     onClickUserImage = { navController.navigate(Screens.Profile.name) },
                     onClickPlaygroundCard = { playgroundId ->
                         homeViewModel.onClickPlayground(playgroundId)
@@ -123,7 +123,13 @@ fun KhomasiNavigator() {
                     onFeedbackCategorySelected = profileViewModel::onFeedbackCategorySelected,
                     onFeedbackChanged = profileViewModel::onFeedbackChanged,
                     onLogout = profileViewModel::onLogout,
+                    updateUserData = profileViewModel::updateUserData,
+                    onFirstNameChanged = profileViewModel::onFirstNameChanged,
+                    onLastNameChanged = profileViewModel::onLastNameChanged,
+                    onPhoneChanged = profileViewModel::onPhoneChanged,
                     onBackClick = { navController.popBackStack() },
+                    onChangeProfileImage = profileViewModel::onChangeProfileImage,
+                    sendFeedback = profileViewModel::sendFeedback
                 )
             }
         }

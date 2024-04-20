@@ -2,6 +2,7 @@ package com.company.khomasi.presentation.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.company.khomasi.domain.model.FeedbackRequest
 import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.use_case.app_entry.AppEntryUseCases
@@ -11,6 +12,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -33,9 +35,13 @@ class ProfileViewModel @Inject constructor(
 
     fun onLogout() {
         viewModelScope.launch {
-            localUserUseCases.saveLocalUser(LocalUser())
             appEntryUseCases.saveIsLogin(false)
+            localUserUseCases.saveLocalUser(LocalUser())
         }
+    }
+
+    fun updateUserData(user: LocalUser) {
+        _profileUiState.value = _profileUiState.value.copy(user = user)
     }
 
     fun onFeedbackCategorySelected(feedbackCategory: FeedbackCategory) {
@@ -50,11 +56,36 @@ class ProfileViewModel @Inject constructor(
         _profileUiState.value = _profileUiState.value.copy(isEditPage = isEdit)
     }
 
+    fun onFirstNameChanged(firstName: String) {
+        _profileUiState.value = _profileUiState.value.copy(
+            user = _profileUiState.value.user.copy(firstName = firstName)
+        )
+    }
+
+    fun onLastNameChanged(lastName: String) {
+        _profileUiState.value = _profileUiState.value.copy(
+            user = _profileUiState.value.user.copy(lastName = lastName)
+        )
+    }
+
+    fun onPhoneChanged(phone: String) {
+        _profileUiState.value = _profileUiState.value.copy(
+            user = _profileUiState.value.user.copy(phoneNumber = phone)
+        )
+    }
+
+    fun onChangeProfileImage(image: String) {
+        _profileUiState.value = _profileUiState.value.copy(
+            user = _profileUiState.value.user.copy(profilePicture = image)
+        )
+    }
+
+
     fun onSaveProfile() {
         viewModelScope.launch {
             localUserUseCases.saveLocalUser(_profileUiState.value.user)
             remoteUserUseCase.updateUserUseCase(
-                token = _profileUiState.value.user.token ?: "",
+                token = "Bearer ${_profileUiState.value.user.token ?: ""}",
                 userId = _profileUiState.value.user.userID ?: "",
                 user = UserUpdateData(
                     id = _profileUiState.value.user.userID ?: "",
@@ -66,8 +97,25 @@ class ProfileViewModel @Inject constructor(
                     longitude = _profileUiState.value.user.longitude ?: 0.0,
                     latitude = _profileUiState.value.user.latitude ?: 0.0
                 )
-            )
+            ).collect()
             _profileUiState.value = _profileUiState.value.copy(isEditPage = false)
+        }
+    }
+
+    fun sendFeedback() {
+        viewModelScope.launch {
+            remoteUserUseCase.sendFeedbackUseCase(
+                token = "Bearer ${_localUser.value.token ?: ""}",
+                feedback = FeedbackRequest(
+                    userId = _localUser.value.userID ?: "",
+                    content = _profileUiState.value.feedback,
+                    category = _profileUiState.value.feedbackCategory.name
+                )
+            ).collect()
+            _profileUiState.value = _profileUiState.value.copy(
+                feedback = "",
+                feedbackCategory = FeedbackCategory.Suggestion
+            )
         }
     }
 

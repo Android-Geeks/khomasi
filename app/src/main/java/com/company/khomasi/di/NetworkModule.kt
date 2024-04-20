@@ -20,6 +20,7 @@ import com.company.khomasi.domain.use_case.remote_user.GetUserBookingsUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetUserFavoritePlaygroundsUseCase
 import com.company.khomasi.domain.use_case.remote_user.RemotePlaygroundUseCase
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
+import com.company.khomasi.domain.use_case.remote_user.SendFeedbackUseCase
 import com.company.khomasi.domain.use_case.remote_user.UpdateProfilePictureUseCase
 import com.company.khomasi.domain.use_case.remote_user.UpdateUserUseCase
 import com.company.khomasi.domain.use_case.remote_user.UserFavouriteUseCase
@@ -101,7 +102,8 @@ object NetworkModule {
         userFavouriteUseCase = UserFavouriteUseCase(remoteUserRepository),
         getSpecificPlaygroundUseCase = GetSpecificPlaygroundUseCase(remoteUserRepository),
         updateProfilePictureUseCase = UpdateProfilePictureUseCase(remoteUserRepository),
-        updateUserUseCase = UpdateUserUseCase(remoteUserRepository)
+        updateUserUseCase = UpdateUserUseCase(remoteUserRepository),
+        sendFeedbackUseCase = SendFeedbackUseCase(remoteUserRepository)
     )
 
     @Provides

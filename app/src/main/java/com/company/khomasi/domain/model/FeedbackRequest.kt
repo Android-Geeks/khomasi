@@ -6,8 +6,6 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class FeedbackRequest(
-    @SerialName("id")
-    val id: Int,
     @SerialName("userId")
     val userId: String,
     @SerialName("category")
