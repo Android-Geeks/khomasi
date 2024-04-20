@@ -125,7 +125,7 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
                         }
                     },
                 colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary),
-                elevation = CardDefaults.cardElevation(if (page == pagerState.currentPage) 18.dp else (-10).dp),
+                elevation = CardDefaults.cardElevation(if (page == pagerState.currentPage) 1.dp else (0).dp),
             ) {
                 CalendarItem(
                     dayNum = dayNum,
