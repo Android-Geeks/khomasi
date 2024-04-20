@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.util.DisplayMetrics
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -74,6 +75,7 @@ fun BookingScreen(
     bookingUiState: BookingUiState,
     freeSlotsState: DataState<FessTimeSlotsResponse>,
     context: Context = LocalContext.current,
+    isDark: Boolean = isSystemInDarkTheme(),
     onBackClicked: () -> Unit,
     updateDuration: (String) -> Unit,
     getFreeSlots: () -> Unit,
@@ -99,15 +101,14 @@ fun BookingScreen(
                     BookingScreenContent(
                         bookingUiState = bookingUiState,
                         freeSlotsState = freeSlotsState,
+                        isDark = isDark,
                         updateDuration = updateDuration,
                         getFreeSlots = { getFreeSlots() },
                         updateSelectedDay = updateSelectedDay,
                         onSlotClicked = onSlotClicked,
                         updateCurrentAndNextSlots = updateCurrentAndNextSlots,
                         updateNextSlot = updateNextSlot,
-                        checkValidity = checkValidity
                     )
-
                 }) {
                 Column(
                     Modifier
@@ -117,16 +118,31 @@ fun BookingScreen(
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
 
-//                    Text(
-//                        text = context.getString(
+                    Text(
+                        text = "50 جنيه / ساعة"
+//                        context.getString(
 //                            R.string.fees_per_hour, playgroundData.playground.feesForHour
 //                        )
-//                    )
+                        ,
+                        style = MaterialTheme.typography.displayLarge,
+                        color = if (isDark) darkText else lightText
+                    )
 
                     MyButton(
-                        text = R.string.book_now,
-                        onClick = { },
-                        modifier = Modifier.fillMaxWidth()
+                        text = R.string.next,
+                        onClick = {
+                            if (!checkValidity()) {
+                                Toast
+                                    .makeText(
+                                        context,
+                                        "Please select one valid time period",
+                                        Toast.LENGTH_LONG
+                                    )
+                                    .show()
+                            }
+                        },
+                        modifier = Modifier.fillMaxWidth(),
+                        textStyle = MaterialTheme.typography.displayLarge
                     )
 
                 }
@@ -141,13 +157,13 @@ fun BookingScreen(
 fun BookingScreenContent(
     bookingUiState: BookingUiState,
     freeSlotsState: DataState<FessTimeSlotsResponse>,
+    isDark: Boolean,
     updateDuration: (String) -> Unit,
     getFreeSlots: () -> Unit,
     updateSelectedDay: (Int) -> Unit,
     onSlotClicked: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
     updateCurrentAndNextSlots: (Pair<LocalDateTime, LocalDateTime>, Pair<LocalDateTime, LocalDateTime>) -> Unit,
     updateNextSlot: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
-    checkValidity: () -> Boolean
 ) {
 
     LaunchedEffect(bookingUiState.selectedDay) {
@@ -190,7 +206,7 @@ fun BookingScreenContent(
                 .padding(top = 8.dp, bottom = 12.dp)
                 .width((getScreenWidth() * 0.92).dp),
             thickness = 1.dp,
-            color = if (isSystemInDarkTheme()) darkOverlay else lightOverlay
+            color = if (isDark) darkOverlay else lightOverlay
         )
 
         Text(
@@ -219,7 +235,7 @@ fun BookingScreenContent(
         Text(
             text = stringResource(id = R.string.available_times),
             style = MaterialTheme.typography.displayLarge,
-            color = if (isSystemInDarkTheme()) darkText else lightText,
+            color = if (isDark) darkText else lightText,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 12.dp),
@@ -263,18 +279,6 @@ fun BookingScreenContent(
                 size = DpSize(75.dp, 75.dp)
             )
         }
-        /*
-        *   if (!checkValidity()) {
-                            Toast
-                                .makeText(
-                                    context,
-                                    "Please select one valid time period",
-                                    Toast.LENGTH_LONG
-                                )
-                                .show()
-                        }
-        * */
-
     }
 }
 

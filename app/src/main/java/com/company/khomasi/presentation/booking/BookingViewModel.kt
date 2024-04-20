@@ -9,6 +9,7 @@ import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemotePlaygroundUseCase
+import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -23,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class BookingViewModel @Inject constructor(
     private val remotePlaygroundUseCase: RemotePlaygroundUseCase,
+    private val remoteUserUseCase: RemoteUserUseCase,
     private val localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
 
@@ -34,6 +36,10 @@ class BookingViewModel @Inject constructor(
         MutableStateFlow(BookingUiState())
     val bookingUiState: StateFlow<BookingUiState> = _bookingUiState
 
+//    private val _playgroundState: MutableStateFlow<DataState<PlaygroundScreenResponse>> =
+//        MutableStateFlow(DataState.Empty)
+//    val playgroundState: StateFlow<DataState<PlaygroundScreenResponse>> = _playgroundState
+
     fun getFreeTimeSlots() {
         viewModelScope.launch {
             withContext(Dispatchers.Main) {
@@ -41,12 +47,19 @@ class BookingViewModel @Inject constructor(
                     localUserUseCases.getPlaygroundId().collect { playgroundId ->
                         remotePlaygroundUseCase.getFreeTimeSlotsUseCase(
                             token = "Bearer ${userData.token}",
-                            id = 2,
+                            id = 2,   ////////////
                             dayDiff = _bookingUiState.value.selectedDay
-                        ).collect { playgroundsRes ->
+                        ).collect { freeSlotsRes ->
                             delay(350)
-                            _freeSlotsState.value = playgroundsRes
+                            _freeSlotsState.value = freeSlotsRes
                         }
+
+//                        remoteUserUseCase.getSpecificPlaygroundUseCase(
+//                            token = "Bearer ${userData.token}",
+//                            id = 2   ////////////
+//                        ).collect {
+//                            _playgroundState.value = it
+//                        }
                     }
 
                 }
@@ -218,6 +231,9 @@ class BookingViewModel @Inject constructor(
                     temp = false
                 }
             }
+        }
+        if (_bookingUiState.value.selectedSlots.size == 0) {
+            temp = false
         }
         return temp
     }
