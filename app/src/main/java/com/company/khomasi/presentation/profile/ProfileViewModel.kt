@@ -9,6 +9,7 @@ import com.company.khomasi.domain.use_case.app_entry.AppEntryUseCases
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -34,7 +35,7 @@ class ProfileViewModel @Inject constructor(
     val profileUiState: StateFlow<ProfileUiState> = _profileUiState
 
     fun onLogout() {
-        viewModelScope.launch {
+        viewModelScope.launch(IO) {
             appEntryUseCases.saveIsLogin(false)
             localUserUseCases.saveLocalUser(LocalUser())
         }
@@ -82,7 +83,7 @@ class ProfileViewModel @Inject constructor(
 
 
     fun onSaveProfile() {
-        viewModelScope.launch {
+        viewModelScope.launch(IO) {
             localUserUseCases.saveLocalUser(_profileUiState.value.user)
             remoteUserUseCase.updateUserUseCase(
                 token = "Bearer ${_profileUiState.value.user.token ?: ""}",
@@ -98,12 +99,17 @@ class ProfileViewModel @Inject constructor(
                     latitude = _profileUiState.value.user.latitude ?: 0.0
                 )
             ).collect()
+            remoteUserUseCase.updateProfilePictureUseCase(
+                token = "Bearer ${_profileUiState.value.user.token ?: ""}",
+                userId = _profileUiState.value.user.userID ?: "",
+                image = _profileUiState.value.user.profilePicture ?: ""
+            ).collect()
             _profileUiState.value = _profileUiState.value.copy(isEditPage = false)
         }
     }
 
     fun sendFeedback() {
-        viewModelScope.launch {
+        viewModelScope.launch(IO) {
             remoteUserUseCase.sendFeedbackUseCase(
                 token = "Bearer ${_localUser.value.token ?: ""}",
                 feedback = FeedbackRequest(
@@ -118,5 +124,4 @@ class ProfileViewModel @Inject constructor(
             )
         }
     }
-
 }

@@ -7,7 +7,7 @@ class UpdateProfilePictureUseCase(
 ) {
     suspend operator fun invoke(
         token: String,
-        email: String,
+        userId: String,
         image: String
-    ) = remoteUserRepository.uploadProfilePicture(token, email, image)
+    ) = remoteUserRepository.uploadProfilePicture(token, userId, image)
 }
