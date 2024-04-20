@@ -66,14 +66,20 @@ class BookingViewModel @Inject constructor(
     fun updateDuration(type: String) {
         when (type) {
             "+" -> {
-                val increasedDuration = _bookingUiState.value.selectedDuration + 30  //90
-                val nexts = _bookingUiState.value.nextSlot!!
+                val increasedDuration = _bookingUiState.value.selectedDuration.plus(30)   //90
+                val nextExpectedSlot = _bookingUiState.value.nextSlot
                 _bookingUiState.value.selectedSlots.lastOrNull()?.let { currentSlot ->
-                    getCurrentAndNextSlots(nexts, currentSlot)
+                    if (nextExpectedSlot != null) {
+                        getCurrentAndNextSlots(next = nextExpectedSlot, current = currentSlot)
+                    }
                 }
 
-                if (increasedDuration > _bookingUiState.value.selectedSlots.size * 60) {
-                    _bookingUiState.value.nextSlot?.let { addSlot(it) }
+                if (increasedDuration > _bookingUiState.value.selectedSlots.size * 60 && _bookingUiState.value.selectedSlots.size > 0) {
+                    _bookingUiState.value.nextSlot?.let {
+                        if (nextExpectedSlot != null) {
+                            addSlot(it)
+                        }
+                    }
                 }
                 _bookingUiState.update {
                     it.copy(
