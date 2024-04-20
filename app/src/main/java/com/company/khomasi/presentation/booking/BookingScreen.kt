@@ -1,6 +1,7 @@
 package com.company.khomasi.presentation.booking
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Build
 import android.util.DisplayMetrics
 import androidx.annotation.RequiresApi
@@ -52,6 +53,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
+import com.company.khomasi.presentation.components.AuthSheet
+import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.connectionStates.ThreeBounce
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkOverlay
@@ -70,6 +73,7 @@ import java.util.Locale
 fun BookingScreen(
     bookingUiState: BookingUiState,
     freeSlotsState: DataState<FessTimeSlotsResponse>,
+    context: Context = LocalContext.current,
     onBackClicked: () -> Unit,
     updateDuration: (String) -> Unit,
     getFreeSlots: () -> Unit,
@@ -90,133 +94,187 @@ fun BookingScreen(
                 .padding(paddingValues),
             color = MaterialTheme.colorScheme.background,
         ) {
-            LaunchedEffect(bookingUiState.selectedDay) {
-                getFreeSlots()
-            }
-            var showLoading by remember { mutableStateOf(false) }
-            val hourlyIntervalsList = calculateHourlyIntervalsList(freeSlotsState)
+            AuthSheet(sheetModifier = Modifier.fillMaxWidth(),
+                screenContent = {
+                    BookingScreenContent(
+                        bookingUiState = bookingUiState,
+                        freeSlotsState = freeSlotsState,
+                        updateDuration = updateDuration,
+                        getFreeSlots = { getFreeSlots() },
+                        updateSelectedDay = updateSelectedDay,
+                        onSlotClicked = onSlotClicked,
+                        updateCurrentAndNextSlots = updateCurrentAndNextSlots,
+                        updateNextSlot = updateNextSlot,
+                        checkValidity = checkValidity
+                    )
 
-            LaunchedEffect(freeSlotsState) {
-                showLoading = freeSlotsState is DataState.Loading
-            }
-            LaunchedEffect(bookingUiState.selectedDuration) {
-                updateNextSlotIfNeeded(bookingUiState, hourlyIntervalsList, updateNextSlot)
-            }
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+                }) {
                 Column(
-                    modifier = Modifier.padding(top = 16.dp),
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.date_and_duration),
-                        style = MaterialTheme.typography.titleLarge,
-                        textAlign = TextAlign.Start,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 16.dp),
-                    )
-
-                    Spacer(modifier = Modifier.height(8.dp))
-
-                    CalendarPager(updateSelectedDay)
-                }
-
-                HorizontalDivider(
-                    modifier = Modifier
-                        .padding(top = 8.dp, bottom = 12.dp)
-                        .width((getScreenWidth() * 0.92).dp),
-                    thickness = 1.dp,
-                    color = if (isSystemInDarkTheme()) darkOverlay else lightOverlay
-                )
-
-                Text(
-                    text = stringResource(id = R.string.duration),
-                    style = MaterialTheme.typography.displayMedium,
-                    color = MaterialTheme.colorScheme.tertiary,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-
-                DurationSelection(
-                    updateDuration = updateDuration,
-                    duration = bookingUiState.selectedDuration
-                )
-
-                HorizontalDivider(
-                    modifier = Modifier.fillMaxWidth(),
-                    thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.outline
-                )
-
-                Spacer(modifier = Modifier.height(12.dp))
-
-                Text(
-                    text = stringResource(id = R.string.available_times),
-                    style = MaterialTheme.typography.displayLarge,
-                    color = if (isSystemInDarkTheme()) darkText else lightText,
-                    modifier = Modifier
+                    Modifier
                         .fillMaxWidth()
-                        .padding(start = 12.dp),
-                    textAlign = TextAlign.Start
-                )
+                        .height(116.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
 
-                Spacer(modifier = Modifier.height(8.dp))
+//                    Text(
+//                        text = context.getString(
+//                            R.string.fees_per_hour, playgroundData.playground.feesForHour
+//                        )
+//                    )
 
-                if (freeSlotsState is DataState.Success) {
-
-                    LazyColumn(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentPadding = PaddingValues(start = 12.dp, end = 20.dp)
-                    ) {
-                        items(hourlyIntervalsList.size) { slot ->
-                            val slotStart = hourlyIntervalsList[slot].first
-                            val slotEnd = hourlyIntervalsList[slot].second
-                            val isSelected =
-                                bookingUiState.selectedSlots.contains(Pair(slotStart, slotEnd))
-
-                            SlotItem(
-                                slotStart = formatTime(slotStart),
-                                slotEnd = formatTime(slotEnd),
-                                isSelected = isSelected,
-                                onClickSlot = {
-                                    onSlotClicked(Pair(slotStart, slotEnd))
-                                    updateCurrentAndNextSlots(
-                                        /*next*/     if ((slot + 1) < hourlyIntervalsList.size) hourlyIntervalsList[slot + 1] else hourlyIntervalsList[slot],
-                                        /*current*/  hourlyIntervalsList[slot]
-                                    )
-                                })
-
-                            Spacer(modifier = Modifier.height(16.dp))
-                        }
-                    }
-                }
-                if (showLoading) {
-                    ThreeBounce(
-                        modifier = Modifier.fillMaxSize(),
-                        delayBetweenDotsMillis = 50,
-                        size = DpSize(75.dp, 75.dp)
+                    MyButton(
+                        text = R.string.book_now,
+                        onClick = { },
+                        modifier = Modifier.fillMaxWidth()
                     )
-                }
-                /*
-                *   if (!checkValidity()) {
-                                    Toast
-                                        .makeText(
-                                            context,
-                                            "Please select one valid time period",
-                                            Toast.LENGTH_LONG
-                                        )
-                                        .show()
-                                }
-                * */
 
+                }
             }
         }
+    }
+}
+
+
+@RequiresApi(Build.VERSION_CODES.O)
+@Composable
+fun BookingScreenContent(
+    bookingUiState: BookingUiState,
+    freeSlotsState: DataState<FessTimeSlotsResponse>,
+    updateDuration: (String) -> Unit,
+    getFreeSlots: () -> Unit,
+    updateSelectedDay: (Int) -> Unit,
+    onSlotClicked: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
+    updateCurrentAndNextSlots: (Pair<LocalDateTime, LocalDateTime>, Pair<LocalDateTime, LocalDateTime>) -> Unit,
+    updateNextSlot: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
+    checkValidity: () -> Boolean
+) {
+
+    LaunchedEffect(bookingUiState.selectedDay) {
+        getFreeSlots()
+    }
+    var showLoading by remember { mutableStateOf(false) }
+    val hourlyIntervalsList = calculateHourlyIntervalsList(freeSlotsState)
+
+    LaunchedEffect(freeSlotsState) {
+        showLoading = freeSlotsState is DataState.Loading
+    }
+    LaunchedEffect(bookingUiState.selectedDuration) {
+        updateNextSlotIfNeeded(bookingUiState, hourlyIntervalsList, updateNextSlot)
+    }
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Column(
+            modifier = Modifier.padding(top = 16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.Start
+        ) {
+            Text(
+                text = stringResource(id = R.string.date_and_duration),
+                style = MaterialTheme.typography.titleLarge,
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp),
+            )
+
+            Spacer(modifier = Modifier.height(8.dp))
+
+            CalendarPager(updateSelectedDay)
+        }
+
+        HorizontalDivider(
+            modifier = Modifier
+                .padding(top = 8.dp, bottom = 12.dp)
+                .width((getScreenWidth() * 0.92).dp),
+            thickness = 1.dp,
+            color = if (isSystemInDarkTheme()) darkOverlay else lightOverlay
+        )
+
+        Text(
+            text = stringResource(id = R.string.duration),
+            style = MaterialTheme.typography.displayMedium,
+            color = MaterialTheme.colorScheme.tertiary,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Center
+
+        )
+        Spacer(modifier = Modifier.height(4.dp))
+
+        DurationSelection(
+            updateDuration = updateDuration,
+            duration = bookingUiState.selectedDuration
+        )
+
+        HorizontalDivider(
+            modifier = Modifier.fillMaxWidth(),
+            thickness = 1.dp,
+            color = MaterialTheme.colorScheme.outline
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        Text(
+            text = stringResource(id = R.string.available_times),
+            style = MaterialTheme.typography.displayLarge,
+            color = if (isSystemInDarkTheme()) darkText else lightText,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 12.dp),
+            textAlign = TextAlign.Start
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        if (freeSlotsState is DataState.Success) {
+
+            LazyColumn(
+                modifier = Modifier.fillMaxWidth(),
+                contentPadding = PaddingValues(start = 12.dp, end = 20.dp)
+            ) {
+                items(hourlyIntervalsList.size) { slot ->
+                    val slotStart = hourlyIntervalsList[slot].first
+                    val slotEnd = hourlyIntervalsList[slot].second
+                    val isSelected =
+                        bookingUiState.selectedSlots.contains(Pair(slotStart, slotEnd))
+
+                    SlotItem(
+                        slotStart = formatTime(slotStart),
+                        slotEnd = formatTime(slotEnd),
+                        isSelected = isSelected,
+                        onClickSlot = {
+                            onSlotClicked(Pair(slotStart, slotEnd))
+                            updateCurrentAndNextSlots(
+                                /*next*/     if ((slot + 1) < hourlyIntervalsList.size) hourlyIntervalsList[slot + 1] else hourlyIntervalsList[slot],
+                                /*current*/  hourlyIntervalsList[slot]
+                            )
+                        })
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                }
+            }
+        }
+        if (showLoading) {
+            ThreeBounce(
+                modifier = Modifier.fillMaxSize(),
+                delayBetweenDotsMillis = 50,
+                size = DpSize(75.dp, 75.dp)
+            )
+        }
+        /*
+        *   if (!checkValidity()) {
+                            Toast
+                                .makeText(
+                                    context,
+                                    "Please select one valid time period",
+                                    Toast.LENGTH_LONG
+                                )
+                                .show()
+                        }
+        * */
+
     }
 }
 
