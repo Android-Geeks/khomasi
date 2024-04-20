@@ -39,6 +39,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -60,6 +61,7 @@ import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
 @RequiresApi(Build.VERSION_CODES.O)
@@ -186,7 +188,8 @@ fun BookingScreen(
                                 bookingUiState.selectedSlots.contains(Pair(slotStart, slotEnd))
 
                             SlotItem(
-                                slotContent = "${formatTime(slotStart)} _ ${formatTime(slotEnd)}",
+                                slotStart = formatTime(slotStart),
+                                slotEnd = formatTime(slotEnd),
                                 isSelected = isSelected,
                                 onClickSlot = {
 
@@ -217,16 +220,17 @@ fun BookingScreen(
 
 @Composable
 fun SlotItem(
-    slotContent: String,
+    slotStart: String,
+    slotEnd: String,
     isSelected: Boolean,
     onClickSlot: () -> Unit = {}
 ) {
-
     val cardColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent
     val textColor =
         if (isSelected) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary
-
-
+    val textSize =
+        if (isSelected) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium
+    val currentLanguage = Locale.getDefault().language
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -240,16 +244,45 @@ fun SlotItem(
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(cardColor),
     ) {
-        Column(
+        Row(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = slotContent,
+                text = slotStart,
                 color = textColor,
-                style = MaterialTheme.typography.titleLarge,
-                textAlign = TextAlign.Center,
+                style = textSize,
+
+                )
+            Spacer(modifier = Modifier.width(4.dp))
+            if (isSelected) {
+                Icon(
+                    painter = painterResource(id = R.drawable.arrow_left),
+                    tint = MaterialTheme.colorScheme.background,
+                    modifier = Modifier
+                        .size(24.dp)
+                        .then(
+                            if (currentLanguage == "en") {
+                                Modifier.rotate(180f)
+                            } else {
+                                Modifier
+                            }
+                        ),
+                    contentDescription = null,
+                )
+            } else {
+                Text(
+                    text = "_",
+                    color = textColor,
+                    style = textSize,
+                )
+            }
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = slotEnd,
+                color = textColor,
+                style = textSize,
             )
         }
     }

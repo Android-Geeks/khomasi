@@ -64,7 +64,6 @@ class BookingViewModel @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun updateDuration(type: String) {
-
         when (type) {
             "+" -> {
                 val increasedDuration = _bookingUiState.value.selectedDuration + 30  //90
@@ -78,7 +77,7 @@ class BookingViewModel @Inject constructor(
                 }
                 _bookingUiState.update {
                     it.copy(
-                        selectedDuration = increasedDuration,
+                        selectedDuration = if (increasedDuration < 3600) increasedDuration else 3500,   // always less than or equal to 3600 minutes to avoid overlapping time slots.
                         selectedSlots = it.selectedSlots
                     )
                 }
@@ -114,10 +113,6 @@ class BookingViewModel @Inject constructor(
             "-" -> {
                 _bookingUiState.update {
                     val decreasedDuration = it.selectedDuration - 30    // 120 -> 90
-//                    90 -> 60
-                    /*
-                    180 -> 150
-                    * */
 
                     if (decreasedDuration % 60 == 0 && it.selectedSlots.size > 1) {
                         it.selectedSlots.removeAt(it.selectedSlots.size - 1)

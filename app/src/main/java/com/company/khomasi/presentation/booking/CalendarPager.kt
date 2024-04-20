@@ -1,7 +1,6 @@
 package com.company.khomasi.presentation.booking
 
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -61,73 +60,78 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
     val selectedYear = remember { mutableIntStateOf(currentDate.year) }
 
     val pagerState = rememberPagerState(pageCount = { currentDaysList.size }, initialPage = 0)
-    Log.d("selectedDay", "${pagerState.currentPage + currentDay}")
+//    Log.d("selectedDay", "${pagerState.currentPage + currentDay}")
 
     LaunchedEffect(pagerState.currentPage) {
         selectedMonth.value = currentDaysList[pagerState.currentPage].month
         selectedYear.intValue = currentDaysList[pagerState.currentPage].year
         updateSelectedDay(pagerState.currentPage)
     }
-    Text(
-        text = "${
-            selectedMonth.value.getDisplayName(
-                TextStyle.FULL, Locale.getDefault()
-            )
-        } ${selectedYear.intValue}",
-        style = MaterialTheme.typography.titleMedium,
-        textAlign = TextAlign.Start,
-        modifier = Modifier.fillMaxWidth()
-    )
-    Spacer(modifier = Modifier.height(4.dp))
-
-    HorizontalPager(
-        state = pagerState,
-        pageSize = PageSize.Fixed(60.dp),
-
-        pageSpacing = if (pagerState.currentPage == 0) (-2).dp else (0).dp,
-        contentPadding = PaddingValues(start = (screenWidth / 2).dp - 30.dp),
-        snapPosition = if (pagerState.currentPage in 0..2) SnapPosition.Start else SnapPosition.Center,
-    ) { page ->
-        val dayNum = currentDaysList[page].dayOfMonth.toString()
-        val dayName = currentDaysList[page].dayOfWeek.getDisplayName(
-            TextStyle.SHORT, Locale.getDefault()
+    Column(
+        verticalArrangement = Arrangement.Top,
+        horizontalAlignment = Alignment.Start
+    ) {
+        Text(
+            text = "${
+                selectedMonth.value.getDisplayName(
+                    TextStyle.FULL, Locale.getDefault()
+                )
+            } ${selectedYear.intValue}",
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.fillMaxWidth(),
+            textAlign = TextAlign.Start,
         )
-        Card(
-            modifier = Modifier
-                .width(60.dp)
-                .height(74.dp)
-                .graphicsLayer {
-                    // Calculate the absolute offset for the current page from the \scroll position. We use the absolute value which allows us to mirror\ any effects for both directions
-                    val pageOffset =
-                        ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
+        Spacer(modifier = Modifier.height(4.dp))
 
-                    // We animate the alpha, between 50% and 100%
-                    alpha = lerp(
-                        start = 0.3f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                    )
-                    // Scale the size of the page based on its distance from the current page \ The current page will have a scale of 1 (original size), and other pages will have a smaller scale
-                    scaleY = lerp(
-                        start = 0.85f,
-                        stop = 1f,
-                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                    )
-                    scaleX = lerp(
-                        start = 0.9f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                    )
-                }
-                .background(shape = MaterialTheme.shapes.small, color = Color.Transparent)
-                .clickable { // Add clickable modifier to the Card
-                    coroutineScope.launch { // Launch a coroutine
-                        pagerState.animateScrollToPage(page) // Scroll to the clicked page
-                    }
-                },
-            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary),
-            elevation = CardDefaults.cardElevation(if (page == pagerState.currentPage) 18.dp else (-10).dp),
-        ) {
-            CalendarItem(
-                dayNum = dayNum,
-                dayName = dayName
+        HorizontalPager(
+            state = pagerState,
+            pageSize = PageSize.Fixed(60.dp),
+
+            pageSpacing = if (pagerState.currentPage == 0) (-2).dp else (0).dp,
+            contentPadding = PaddingValues(start = (screenWidth / 2).dp - 40.dp),
+            snapPosition = if (pagerState.currentPage in 0..2) SnapPosition.Start else SnapPosition.Center,
+        ) { page ->
+            val dayNum = currentDaysList[page].dayOfMonth.toString()
+            val dayName = currentDaysList[page].dayOfWeek.getDisplayName(
+                TextStyle.SHORT, Locale.getDefault()
             )
+            Card(
+                modifier = Modifier
+                    .width(60.dp)
+                    .height(74.dp)
+                    .graphicsLayer {
+                        // Calculate the absolute offset for the current page from the \scroll position. We use the absolute value which allows us to mirror\ any effects for both directions
+                        val pageOffset =
+                            ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
+
+                        // We animate the alpha, between 50% and 100%
+                        alpha = lerp(
+                            start = 0.3f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        )
+                        // Scale the size of the page based on its distance from the current page \ The current page will have a scale of 1 (original size), and other pages will have a smaller scale
+                        scaleY = lerp(
+                            start = 0.85f,
+                            stop = 1f,
+                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        )
+                        scaleX = lerp(
+                            start = 0.9f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        )
+                    }
+                    .background(shape = MaterialTheme.shapes.small, color = Color.Transparent)
+                    .clickable { // Add clickable modifier to the Card
+                        coroutineScope.launch { // Launch a coroutine
+                            pagerState.animateScrollToPage(page) // Scroll to the clicked page
+                        }
+                    },
+                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary),
+                elevation = CardDefaults.cardElevation(if (page == pagerState.currentPage) 18.dp else (-10).dp),
+            ) {
+                CalendarItem(
+                    dayNum = dayNum,
+                    dayName = dayName
+                )
+            }
         }
     }
 }
