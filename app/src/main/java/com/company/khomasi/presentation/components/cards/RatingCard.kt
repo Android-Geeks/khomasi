@@ -26,6 +26,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
@@ -36,8 +37,10 @@ import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.theme.darkIcon
 import com.company.khomasi.theme.darkOverlay
 import com.company.khomasi.theme.darkText
+import com.company.khomasi.theme.lightIcon
 import com.company.khomasi.theme.lightOverlay
 import com.company.khomasi.theme.lightText
 
@@ -93,29 +96,18 @@ fun RatingCard(
             }
             Spacer(modifier = Modifier.weight(1f))
             Box {
-//                Icon(painter =painterResource(id = R.drawable.lines) ,
-//                    contentDescription = null,
-//                    modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier
-//                        .rotate(-180f)
-//                        .width(120.dp)
-//                        .fillMaxWidth()
-//                    else Modifier
-//                        .width(125.dp)
-//                        .fillMaxWidth()
-//                            ,
-//                    tint = if(isDark) darkIcon else lightIcon
-//                    )
                 Image(
                     painter = painterResource(id = R.drawable.lines),
                     contentDescription = null,
                     modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier
                         .rotate(-180f)
-                        .width(120.dp)
+                        .width(135.dp)
                         .fillMaxWidth()
                     else Modifier
                         .width(135.dp)
                         .fillMaxWidth(),
-                    contentScale = ContentScale.FillBounds
+                    contentScale = ContentScale.FillBounds,
+                    colorFilter = ColorFilter.tint(if (isDark) darkIcon else lightIcon)
                 )
                 Column(
                     verticalArrangement = Arrangement.SpaceEvenly,
