@@ -13,9 +13,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PageSize
+import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -60,7 +62,6 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
     val selectedYear = remember { mutableIntStateOf(currentDate.year) }
 
     val pagerState = rememberPagerState(pageCount = { currentDaysList.size }, initialPage = 0)
-//    Log.d("selectedDay", "${pagerState.currentPage + currentDay}")
 
     LaunchedEffect(pagerState.currentPage) {
         selectedMonth.value = currentDaysList[pagerState.currentPage].month
@@ -78,7 +79,9 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
                 )
             } ${selectedYear.intValue}",
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp),
             textAlign = TextAlign.Start,
         )
         Spacer(modifier = Modifier.height(4.dp))
@@ -88,22 +91,21 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
             pageSize = PageSize.Fixed(60.dp),
 
             pageSpacing = if (pagerState.currentPage == 0) (-2).dp else (0).dp,
-            contentPadding = PaddingValues(start = (screenWidth / 2).dp - 40.dp),
+            contentPadding = PaddingValues(start = (screenWidth / 2).dp - 30.dp),
             snapPosition = if (pagerState.currentPage in 0..2) SnapPosition.Start else SnapPosition.Center,
         ) { page ->
             val dayNum = currentDaysList[page].dayOfMonth.toString()
-            val dayName = currentDaysList[page].dayOfWeek.getDisplayName(
-                TextStyle.SHORT, Locale.getDefault()
-            )
+            val dayName =
+                currentDaysList[page].dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.getDefault())
+
+            // Calculate the absolute offset for the current page from the \scroll position. We use the absolute value which allows us to mirror\ any effects for both directions
+            val pageOffset = calculatePageOffset(pagerState, page)
+
             Card(
                 modifier = Modifier
                     .width(60.dp)
                     .height(74.dp)
                     .graphicsLayer {
-                        // Calculate the absolute offset for the current page from the \scroll position. We use the absolute value which allows us to mirror\ any effects for both directions
-                        val pageOffset =
-                            ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
-
                         // We animate the alpha, between 50% and 100%
                         alpha = lerp(
                             start = 0.3f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
@@ -134,6 +136,11 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
             }
         }
     }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+fun calculatePageOffset(pagerState: PagerState, page: Int): Float {
+    return ((pagerState.currentPage - page) + pagerState.currentPageOffsetFraction).absoluteValue
 }
 
 @Composable

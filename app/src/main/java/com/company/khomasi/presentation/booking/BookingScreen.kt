@@ -41,6 +41,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -74,8 +75,9 @@ fun BookingScreen(
     getFreeSlots: () -> Unit,
     updateSelectedDay: (Int) -> Unit,
     onSlotClicked: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
-    getCurrentAndNextSlots: (Pair<LocalDateTime, LocalDateTime>, Pair<LocalDateTime, LocalDateTime>) -> Unit,
-    updateNextSlot: (Pair<LocalDateTime, LocalDateTime>) -> Unit
+    updateCurrentAndNextSlots: (Pair<LocalDateTime, LocalDateTime>, Pair<LocalDateTime, LocalDateTime>) -> Unit,
+    updateNextSlot: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
+    checkValidity: () -> Boolean
 ) {
     Scaffold(topBar = {
         BookingTopBar(onBackClicked = { onBackClicked() })
@@ -92,16 +94,20 @@ fun BookingScreen(
                 getFreeSlots()
             }
             var showLoading by remember { mutableStateOf(false) }
+            val hourlyIntervalsList = calculateHourlyIntervalsList(freeSlotsState)
 
             LaunchedEffect(freeSlotsState) {
                 showLoading = freeSlotsState is DataState.Loading
+            }
+            LaunchedEffect(bookingUiState.selectedDuration) {
+                updateNextSlotIfNeeded(bookingUiState, hourlyIntervalsList, updateNextSlot)
             }
             Column(
                 modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Column(
-                    modifier = Modifier.padding(start = 16.dp, top = 16.dp),
+                    modifier = Modifier.padding(top = 16.dp),
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.Start
                 ) {
@@ -109,7 +115,9 @@ fun BookingScreen(
                         text = stringResource(id = R.string.date_and_duration),
                         style = MaterialTheme.typography.titleLarge,
                         textAlign = TextAlign.Start,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp),
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -146,6 +154,8 @@ fun BookingScreen(
                     color = MaterialTheme.colorScheme.outline
                 )
 
+                Spacer(modifier = Modifier.height(12.dp))
+
                 Text(
                     text = stringResource(id = R.string.available_times),
                     style = MaterialTheme.typography.displayLarge,
@@ -155,28 +165,11 @@ fun BookingScreen(
                         .padding(start = 12.dp),
                     textAlign = TextAlign.Start
                 )
+
                 Spacer(modifier = Modifier.height(8.dp))
 
                 if (freeSlotsState is DataState.Success) {
-                    val hourlyIntervalsList = freeSlotsState.data.freeTimeSlots.map { daySlots ->
-                        val startTime = parseTimestamp(daySlots.start).withMinute(0).withSecond(0)
-                        val endTime = parseTimestamp(daySlots.end).withMinute(0).withSecond(0)
-                        val startEndDuration = Duration.between(startTime, endTime).toHours()
 
-                        List(startEndDuration.toInt()) { i ->
-                            val hourStartTime = startTime.plusHours(i.toLong())
-                            val hourEndTime = hourStartTime.plusHours(1)
-                            Pair(hourStartTime, hourEndTime)
-                        }
-                    }.flatten()
-                    LaunchedEffect(bookingUiState.selectedDuration) {
-                        val currentSlot = bookingUiState.selectedSlots.lastOrNull()
-                        val nextSlotIndex = hourlyIntervalsList.indexOf(currentSlot) + 1
-                        if (nextSlotIndex in hourlyIntervalsList.indices) {
-                            val nextSlot = hourlyIntervalsList[nextSlotIndex]
-                            updateNextSlot(nextSlot)
-                        }
-                    }
                     LazyColumn(
                         modifier = Modifier.fillMaxWidth(),
                         contentPadding = PaddingValues(start = 12.dp, end = 20.dp)
@@ -192,13 +185,11 @@ fun BookingScreen(
                                 slotEnd = formatTime(slotEnd),
                                 isSelected = isSelected,
                                 onClickSlot = {
-
                                     onSlotClicked(Pair(slotStart, slotEnd))
-                                    getCurrentAndNextSlots(
-                                        if ((slot + 1) < hourlyIntervalsList.size) hourlyIntervalsList[slot + 1] else hourlyIntervalsList[slot],
-                                        hourlyIntervalsList[slot]
+                                    updateCurrentAndNextSlots(
+                                        /*next*/     if ((slot + 1) < hourlyIntervalsList.size) hourlyIntervalsList[slot + 1] else hourlyIntervalsList[slot],
+                                        /*current*/  hourlyIntervalsList[slot]
                                     )
-
                                 })
 
                             Spacer(modifier = Modifier.height(16.dp))
@@ -212,9 +203,53 @@ fun BookingScreen(
                         size = DpSize(75.dp, 75.dp)
                     )
                 }
+                /*
+                *   if (!checkValidity()) {
+                                    Toast
+                                        .makeText(
+                                            context,
+                                            "Please select one valid time period",
+                                            Toast.LENGTH_LONG
+                                        )
+                                        .show()
+                                }
+                * */
 
             }
         }
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun calculateHourlyIntervalsList(freeSlotsState: DataState<FessTimeSlotsResponse>): List<Pair<LocalDateTime, LocalDateTime>> {
+    return if (freeSlotsState is DataState.Success) {
+        freeSlotsState.data.freeTimeSlots.map { daySlots ->
+            val startTime = parseTimestamp(daySlots.start).withMinute(0).withSecond(0)
+            val endTime = parseTimestamp(daySlots.end).withMinute(0).withSecond(0)
+            val startEndDuration = Duration.between(startTime, endTime).toHours()
+
+            List(startEndDuration.toInt()) { i ->
+                val hourStartTime = startTime.plusHours(i.toLong())
+                val hourEndTime = hourStartTime.plusHours(1)
+                Pair(hourStartTime, hourEndTime)
+            }
+        }.flatten()
+    } else {
+        emptyList()
+    }
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun updateNextSlotIfNeeded(
+    bookingUiState: BookingUiState,
+    hourlyIntervalsList: List<Pair<LocalDateTime, LocalDateTime>>,
+    updateNextSlot: (Pair<LocalDateTime, LocalDateTime>) -> Unit
+) {
+    val currentSlot = bookingUiState.selectedSlots.lastOrNull()
+    val nextSlotIndex = hourlyIntervalsList.indexOf(currentSlot) + 1
+    if (nextSlotIndex in hourlyIntervalsList.indices) {
+        val nextSlot = hourlyIntervalsList[nextSlotIndex]
+        updateNextSlot(nextSlot)
     }
 }
 
@@ -289,6 +324,11 @@ fun SlotItem(
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
+fun formatTime(localDateTime: LocalDateTime): String {
+    return localDateTime.format(DateTimeFormatter.ofPattern("hh:mm a"))
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
 fun parseTimestamp(timestamp: String): LocalDateTime {
     return try {
         val offsetDateTime = OffsetDateTime.parse(timestamp)
@@ -299,16 +339,10 @@ fun parseTimestamp(timestamp: String): LocalDateTime {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-fun formatTime(localDateTime: LocalDateTime): String {
-    return localDateTime.format(DateTimeFormatter.ofPattern("hh:mm a"))
-}
-
-
 @Composable
 fun getScreenWidth(): Float {
     val displayMetrics: DisplayMetrics =
-        androidx.compose.ui.platform.LocalContext.current.resources.displayMetrics
+        LocalContext.current.resources.displayMetrics
     return displayMetrics.widthPixels / displayMetrics.density
 }
 
@@ -358,13 +392,14 @@ fun BookingScreenPreview() {
             getFreeSlots = mockViewModel::getTimeSlots,
             updateSelectedDay = { mockViewModel.updateSelectedDay(it) },
             onSlotClicked = { mockViewModel.onSlotClicked(it) },
-            getCurrentAndNextSlots = { next, past ->
+            updateCurrentAndNextSlots = { next, past ->
                 mockViewModel.getNextAndPastSlots(
                     next,
                     past
                 )
             },
-            updateNextSlot = { mockViewModel.updateNextSlot(it) }
+            updateNextSlot = { mockViewModel.updateNextSlot(it) },
+            checkValidity = { mockViewModel.CheckSlotsConsecutive() }
         )
     }
 }

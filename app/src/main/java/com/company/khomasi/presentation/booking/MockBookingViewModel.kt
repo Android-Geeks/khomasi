@@ -96,4 +96,19 @@ class MockBookingViewModel : ViewModel() {
             )
         }
     }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun CheckSlotsConsecutive(): Boolean {
+        val selectedTimes = _bookingUiState.value.selectedSlots
+        var temp = true
+        selectedTimes.forEachIndexed { index, it ->
+            if (it.second != selectedTimes[index + 1].first && (index + 1) < selectedTimes.size) {
+                temp = false
+
+            }
+        }
+        return temp
+    }
+
+
 }

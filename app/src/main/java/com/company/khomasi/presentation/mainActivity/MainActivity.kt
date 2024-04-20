@@ -43,13 +43,14 @@ class MainActivity : ComponentActivity() {
                         getFreeSlots = { bookingViewModel.getFreeTimeSlots() },
                         updateSelectedDay = { bookingViewModel.updateSelectedDay(it) },
                         onSlotClicked = { bookingViewModel.onSlotClicked(it) },
-                        getCurrentAndNextSlots = { next, current ->
-                            bookingViewModel.getCurrentAndNextSlots(
+                        updateCurrentAndNextSlots = { next, current ->
+                            bookingViewModel.updateCurrentAndNextSlots(
                                 next,
                                 current
                             )
                         },
                         updateNextSlot = { bookingViewModel.updateNextSlot(it) },
+                        checkValidity = { bookingViewModel.checkSlotsConsecutive() },
                     )
                 }
             }

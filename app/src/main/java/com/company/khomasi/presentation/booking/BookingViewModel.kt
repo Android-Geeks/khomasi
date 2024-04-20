@@ -70,7 +70,7 @@ class BookingViewModel @Inject constructor(
                 val nextExpectedSlot = _bookingUiState.value.nextSlot
                 _bookingUiState.value.selectedSlots.lastOrNull()?.let { currentSlot ->
                     if (nextExpectedSlot != null) {
-                        getCurrentAndNextSlots(next = nextExpectedSlot, current = currentSlot)
+                        updateCurrentAndNextSlots(next = nextExpectedSlot, current = currentSlot)
                     }
                 }
 
@@ -143,7 +143,7 @@ class BookingViewModel @Inject constructor(
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun getCurrentAndNextSlots(
+    fun updateCurrentAndNextSlots(
         next: Pair<LocalDateTime, LocalDateTime>,
         current: Pair<LocalDateTime, LocalDateTime>
     ) {
@@ -188,13 +188,13 @@ class BookingViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     fun onSlotClicked(slot: Pair<LocalDateTime, LocalDateTime>) {
         _bookingUiState.update {
-
             addSlot(slot)
             it.copy(
                 selectedSlots = it.selectedSlots,
                 selectedDuration = if (it.selectedSlots.size > 1) it.selectedSlots.size * 60 else 60
             )
         }
+
         Log.d(
             "booking",
             "selectedSlots ck: ${
@@ -206,6 +206,20 @@ class BookingViewModel @Inject constructor(
             }"
         )
 
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun checkSlotsConsecutive(): Boolean {
+        val selectedTimes = _bookingUiState.value.selectedSlots.sortedBy { it.first }
+        var temp = true
+        selectedTimes.forEachIndexed { index, it ->
+            if (index + 1 < selectedTimes.size) {
+                if (it.second != selectedTimes[index + 1].first) {
+                    temp = false
+                }
+            }
+        }
+        return temp
     }
 
 }
