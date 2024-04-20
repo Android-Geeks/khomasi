@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.myBookings
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
@@ -22,15 +23,9 @@ class MyBookingViewModel @Inject constructor(
     private val _myBooking =
         MutableStateFlow<DataState<MyBookingsResponse>>(DataState.Empty)
     val myBooking: StateFlow<DataState<MyBookingsResponse>> = _myBooking.asStateFlow()
-
     private val _uiState: MutableStateFlow<MyBookingUiState> = MutableStateFlow(MyBookingUiState())
     val uiState:StateFlow<MyBookingUiState> =_uiState.asStateFlow()
-
     private var localUser = LocalUser()
-
-    private val _showConfirmationBottomSheet = MutableStateFlow(false)
-    val showConfirmationBottomSheet: StateFlow<Boolean> = _showConfirmationBottomSheet
-
 
     fun myBookingPlaygrounds() {
         viewModelScope.launch {
@@ -41,11 +36,15 @@ class MyBookingViewModel @Inject constructor(
                 localUser.userID ?: ""
             ).collect { dataState ->
                 if (dataState is DataState.Success) {
-                    _uiState.value = _uiState.value.copy(
-                        bookingPlayground = dataState.data.results,
-                        isCanceled = dataState.data.results[1].isCanceled,
-                        isFinished = dataState.data.results[1].isFinished
+                    Log.d("MyBookingViewModel", "Page: ${dataState.data.results.size}")
 
+                    _uiState.value = _uiState.value.copy(
+                        currentBookings = dataState.data.results.filter { bookingDetails ->
+                            !bookingDetails.isFinished
+                        },
+                        expiredBookings = dataState.data.results.filter { bookingDetails ->
+                            bookingDetails.isFinished
+                        }
                     )
                 }
             }
@@ -53,11 +52,16 @@ class MyBookingViewModel @Inject constructor(
         }
     }
 
+    //    fun onBack() {
+//        _uiState.value = _uiState.value.copy(page = _uiState.value.page - 1)
+//    }
+//
+    fun onNextClick() {
+        _uiState.value = _uiState.value.copy(page = _uiState.value.page + 1)
+    }
     fun onClickPlayground(playgroundId: Int) {
         viewModelScope.launch {
             localUserUseCases.savePlaygroundId(playgroundId)
-            _showConfirmationBottomSheet.value = true
         }
     }
-
 }

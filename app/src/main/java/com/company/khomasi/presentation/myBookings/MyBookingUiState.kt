@@ -1,12 +1,11 @@
 package com.company.khomasi.presentation.myBookings
 
 import com.company.khomasi.domain.model.BookingDetails
-
 data class MyBookingUiState(
-    val bookingPlayground: List<BookingDetails> = listOf(),
-    val isCanceled: Boolean = true,
-    val isFinished: Boolean = true
-
+    val currentBookings: List<BookingDetails> = listOf(),
+    val expiredBookings: List<BookingDetails> = listOf(),
+    val isConfirmationPage: Boolean = false,
+    val page: Int = 1
 )
 
 

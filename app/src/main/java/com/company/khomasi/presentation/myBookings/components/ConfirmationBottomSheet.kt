@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.myBookings.components
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,10 +21,11 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -31,14 +33,12 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.R
-import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.BookingDetails
-import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
 import com.company.khomasi.presentation.components.cards.BookingCard
@@ -46,6 +46,8 @@ import com.company.khomasi.presentation.components.cards.BookingStatus
 import com.company.khomasi.presentation.myBookings.MockViewModel
 import com.company.khomasi.theme.Cairo
 import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.theme.darkIcon
+import com.company.khomasi.theme.lightIcon
 import kotlinx.coroutines.launch
 
 
@@ -53,11 +55,21 @@ import kotlinx.coroutines.launch
 @Composable
 fun ConfirmationBottomSheet(
     bookingDetails: BookingDetails,
-    myBooking: DataState<MyBookingsResponse>,
+    onBackClick: () -> Unit
+    // myBooking: DataState<MyBookingsResponse>,
 ) {
+//    BackHandler {
+//        if (uiState.isEditPage) {
+//            onEditProfile(false)
+//        } else {
+//            onBackClick()
+//        }
+//    }
+//    LaunchedEffect(key1 = Unit) {
+//        myBookingPlaygrounds()
+//    }
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
-    val navController = rememberNavController()
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
         sheetContent = {
@@ -135,14 +147,17 @@ fun ConfirmationBottomSheet(
                     )
                 },
                 colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
-                navigationIcon = { },
-                actions = {
+                navigationIcon = {
                     IconButton(
-                        onClick = { navController.popBackStack() },
+                        onClick = onBackClick,
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.back),
-                            contentDescription = null
+                            modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier.rotate(
+                                180f
+                            ) else Modifier,
+                            contentDescription = null,
+                            tint = if (isSystemInDarkTheme()) darkIcon else lightIcon
                         )
                     }
                 }
@@ -150,13 +165,11 @@ fun ConfirmationBottomSheet(
             HorizontalDivider(
                 modifier = Modifier.fillMaxWidth(), thickness = 1.dp
             )
-            if (myBooking is DataState.Success) {
                 BookingCard(
                     bookingDetails = bookingDetails,
                     bookingStatus = BookingStatus.CANCEL,
                     onViewPlaygroundClick = {}
                 )
-            }
             Spacer(modifier = Modifier.height(141.dp))
             MyButton(
                 text = R.string.booking_cancelled,
@@ -192,7 +205,8 @@ private fun ConfirmationBottomSheetPreview() {
                 false,
                 false
             ),
-            myBooking = mockViewModel.myBooking.collectAsState().value
+            onBackClick = {}
+            // myBooking = mockViewModel.myBooking.collectAsState().value
         )
     }
 }

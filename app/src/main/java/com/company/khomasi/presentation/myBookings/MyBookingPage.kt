@@ -20,8 +20,6 @@ import androidx.compose.ui.res.stringResource
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.MyBookingsResponse
-import com.company.khomasi.presentation.myBookings.components.ConfirmationBottomSheet
-import com.company.khomasi.presentation.myBookings.components.CurrentPage
 import com.company.khomasi.presentation.myBookings.components.TabItem
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -36,11 +34,17 @@ import kotlinx.coroutines.launch
 @Composable
 fun MyBookingPage(
     uiState: StateFlow<MyBookingUiState>,
-    myBooking: DataState<MyBookingsResponse>,
+    myBooking: StateFlow<DataState<MyBookingsResponse>>,
     onClickPlaygroundCard: (Int) -> Unit,
     myBookingPlaygrounds: () -> Unit,
-    showConfirmationBottomSheet: StateFlow<Boolean>
+    onBackClick: () -> Unit
 ) {
+    val bookingUiState = uiState.collectAsState().value
+    val myBooking = myBooking.collectAsState().value
+    LaunchedEffect(key1 = Unit) {
+        myBookingPlaygrounds()
+    }
+
     val list = listOf(TabItem.Current, TabItem.Expired)
     val pagerState = rememberPagerState(initialPage = 0)
     Column(modifier = Modifier.fillMaxSize()) {
@@ -52,28 +56,10 @@ fun MyBookingPage(
         TabContent(
             tabs = list,
             pagerState = pagerState,
-            uiState = uiState,
-            myBooking = myBooking,
-            myBookingPlaygrounds = myBookingPlaygrounds,
-            onClickPlaygroundCard = onClickPlaygroundCard
+            uiState = bookingUiState,
+            onClickPlaygroundCard = onClickPlaygroundCard,
+            onBackClick = onBackClick
         )
-        if (myBooking is DataState.Success) {
-            val booking = myBooking.data.results[1]
-
-            if (showConfirmationBottomSheet.collectAsState().value) {
-                ConfirmationBottomSheet(
-                    bookingDetails = booking,
-                    myBooking = myBooking
-                )
-            } else {
-                CurrentPage(
-                    uiState = uiState,
-                    myBooking = myBooking,
-                    myBookingPlaygrounds = myBookingPlaygrounds,
-                    onClickPlaygroundCard = onClickPlaygroundCard
-                )
-            }
-        }
     }
 }
 @OptIn(ExperimentalPagerApi::class)
@@ -122,18 +108,14 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
 fun TabContent(
     tabs: List<TabItem>,
     pagerState: PagerState,
-    uiState: StateFlow<MyBookingUiState>,
-    myBooking: DataState<MyBookingsResponse>,
+    uiState: MyBookingUiState,
     onClickPlaygroundCard: (Int) -> Unit,
-    myBookingPlaygrounds: () -> Unit
+    onBackClick: () -> Unit
+
 ) {
     HorizontalPager(count = tabs.size, state = pagerState) { page ->
-        LaunchedEffect(key1 = Unit) {
-            myBookingPlaygrounds()
-        }
-        tabs[page].screens(uiState, myBooking, myBookingPlaygrounds, onClickPlaygroundCard)
 
+        tabs[page].screens(uiState, onClickPlaygroundCard, onBackClick)
     }
 }
-
 

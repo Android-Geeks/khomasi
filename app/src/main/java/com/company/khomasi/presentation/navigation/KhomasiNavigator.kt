@@ -86,9 +86,9 @@ fun KhomasiNavigator() {
                 MyBookingPage(
                     uiState = bookingViewModel.uiState,
                     myBookingPlaygrounds = bookingViewModel::myBookingPlaygrounds,
-                    myBooking = bookingViewModel.myBooking.collectAsState().value,
+                    myBooking = bookingViewModel.myBooking,
                     onClickPlaygroundCard = bookingViewModel::onClickPlayground,
-                    showConfirmationBottomSheet = bookingViewModel.showConfirmationBottomSheet
+                    onBackClick = { navController.popBackStack() }
                 )
 
             }
