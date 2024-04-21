@@ -54,19 +54,21 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
     val screenWidth = getScreenWidth()
 
     val currentDate = LocalDate.now()
-    val currentDay = currentDate.dayOfMonth
+//    val currentDay = currentDate.dayOfMonth
     val currentDaysList = remember {
         (0..20).map { day -> (currentDate).plusDays(day.toLong()) }
     }
-    val selectedMonth = remember { mutableStateOf(currentDaysList[currentDay].month) }
+    val selectedMonth = remember { mutableStateOf(currentDaysList[0].month) }
     val selectedYear = remember { mutableIntStateOf(currentDate.year) }
 
-    val pagerState = rememberPagerState(pageCount = { currentDaysList.size }, initialPage = 0)
+    val pagerState = rememberPagerState(pageCount = { currentDaysList.size - 1 }, initialPage = 0)
 
     LaunchedEffect(pagerState.currentPage) {
-        selectedMonth.value = currentDaysList[pagerState.currentPage].month
-        selectedYear.intValue = currentDaysList[pagerState.currentPage].year
-        updateSelectedDay(pagerState.currentPage)
+        if (pagerState.currentPage in currentDaysList.indices) {
+            selectedMonth.value = currentDaysList[pagerState.currentPage].month
+            selectedYear.intValue = currentDaysList[pagerState.currentPage].year
+            updateSelectedDay(pagerState.currentPage)
+        }
     }
     Column(
         verticalArrangement = Arrangement.Top,
@@ -89,10 +91,12 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
         HorizontalPager(
             state = pagerState,
             pageSize = PageSize.Fixed(60.dp),
-
             pageSpacing = if (pagerState.currentPage == 0) (-2).dp else (0).dp,
-            contentPadding = PaddingValues(start = (screenWidth / 2).dp - 30.dp),
-            snapPosition = if (pagerState.currentPage in 0..2) SnapPosition.Start else SnapPosition.Center,
+            contentPadding = PaddingValues(
+                start = (screenWidth / 2).dp - 30.dp,
+                end = (screenWidth / 2).dp - 30.dp
+            ),
+            snapPosition = SnapPosition.Start,
         ) { page ->
             val dayNum = currentDaysList[page].dayOfMonth.toString()
             val dayName =
