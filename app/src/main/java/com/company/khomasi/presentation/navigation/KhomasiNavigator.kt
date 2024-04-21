@@ -88,7 +88,7 @@ fun KhomasiNavigator() {
                     myBookingPlaygrounds = bookingViewModel::myBookingPlaygrounds,
                     myBooking = bookingViewModel.myBooking,
                     onClickPlaygroundCard = bookingViewModel::onClickPlayground,
-                    onBackClick = { navController.popBackStack() }
+                    onBackClick = { navController.popBackStack() },
                 )
 
             }

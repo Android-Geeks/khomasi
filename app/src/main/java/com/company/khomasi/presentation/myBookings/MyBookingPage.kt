@@ -37,7 +37,9 @@ fun MyBookingPage(
     myBooking: StateFlow<DataState<MyBookingsResponse>>,
     onClickPlaygroundCard: (Int) -> Unit,
     myBookingPlaygrounds: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    // showConfirmationBottomSheet: StateFlow<Boolean>
+
 ) {
     val bookingUiState = uiState.collectAsState().value
     val myBooking = myBooking.collectAsState().value
@@ -56,10 +58,25 @@ fun MyBookingPage(
         TabContent(
             tabs = list,
             pagerState = pagerState,
-            uiState = bookingUiState,
+            uiState = uiState,
             onClickPlaygroundCard = onClickPlaygroundCard,
             onBackClick = onBackClick
         )
+//        val selectedPlaygroundIdState = remember { mutableStateOf<Int?>(null) }
+//        if (myBooking is DataState.Success) {
+//            if (showConfirmationBottomSheet.collectAsState().value) {
+//                selectedPlaygroundIdState.value?.let { playgroundId ->
+//                    ConfirmationBottomSheet(bookingDetails =
+//                    bookingUiState.currentBookings.find { it.playgroundId == playgroundId },
+//                        onBackClick
+//                    )
+//                }
+//            } else {
+//                CurrentPage(
+//                    uiState, onClickPlaygroundCard, onBackClick
+//                )
+//            }
+//        }
     }
 }
 @OptIn(ExperimentalPagerApi::class)
@@ -108,7 +125,7 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
 fun TabContent(
     tabs: List<TabItem>,
     pagerState: PagerState,
-    uiState: MyBookingUiState,
+    uiState: StateFlow<MyBookingUiState>,
     onClickPlaygroundCard: (Int) -> Unit,
     onBackClick: () -> Unit
 

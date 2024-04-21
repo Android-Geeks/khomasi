@@ -52,13 +52,6 @@ class MyBookingViewModel @Inject constructor(
         }
     }
 
-    //    fun onBack() {
-//        _uiState.value = _uiState.value.copy(page = _uiState.value.page - 1)
-//    }
-//
-    fun onNextClick() {
-        _uiState.value = _uiState.value.copy(page = _uiState.value.page + 1)
-    }
     fun onClickPlayground(playgroundId: Int) {
         viewModelScope.launch {
             localUserUseCases.savePlaygroundId(playgroundId)

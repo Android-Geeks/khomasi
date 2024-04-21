@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.myBookings.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.Scaffold
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -54,20 +56,9 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConfirmationBottomSheet(
-    bookingDetails: BookingDetails,
-    onBackClick: () -> Unit
-    // myBooking: DataState<MyBookingsResponse>,
+    bookingDetails: BookingDetails?,
+    onBackClick: () -> Unit,
 ) {
-//    BackHandler {
-//        if (uiState.isEditPage) {
-//            onEditProfile(false)
-//        } else {
-//            onBackClick()
-//        }
-//    }
-//    LaunchedEffect(key1 = Unit) {
-//        myBookingPlaygrounds()
-//    }
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
     BottomSheetScaffold(
@@ -133,18 +124,29 @@ fun ConfirmationBottomSheet(
         sheetPeekHeight = 0.dp
 
     ) {
-        Column {
+        Scaffold(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+
+            ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(MaterialTheme.colorScheme.background),
+            ) {
             TopAppBar(
                 title = {
-                    Text(
-                        text = bookingDetails.playgroundName,
-                        style = MaterialTheme.typography.displayMedium,
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .wrapContentSize(Alignment.CenterStart)
-                            .padding(start = 16.dp)
-                            .align(Alignment.Start)
-                    )
+                    if (bookingDetails != null) {
+                        Text(
+                            text = bookingDetails.playgroundName,
+                            style = MaterialTheme.typography.displayMedium,
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .wrapContentSize(Alignment.CenterStart)
+                                .padding(it)
+                        )
+                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
                 navigationIcon = {
@@ -165,12 +167,14 @@ fun ConfirmationBottomSheet(
             HorizontalDivider(
                 modifier = Modifier.fillMaxWidth(), thickness = 1.dp
             )
+                if (bookingDetails != null) {
                 BookingCard(
                     bookingDetails = bookingDetails,
-                    bookingStatus = BookingStatus.CANCEL,
+                    bookingStatus = BookingStatus.CONFIRMED,
                     onViewPlaygroundClick = {}
                 )
-            Spacer(modifier = Modifier.height(141.dp))
+                }
+                Spacer(modifier = Modifier.height(50.dp))
             MyButton(
                 text = R.string.booking_cancelled,
                 onClick = {
@@ -183,6 +187,7 @@ fun ConfirmationBottomSheet(
 
         }
         Spacer(modifier = Modifier.height(56.dp))
+    }
     }
 }
 
@@ -205,8 +210,10 @@ private fun ConfirmationBottomSheetPreview() {
                 false,
                 false
             ),
-            onBackClick = {}
-            // myBooking = mockViewModel.myBooking.collectAsState().value
+            {}
         )
+
+        // myBooking = mockViewModel.myBooking.collectAsState().value
+
     }
 }

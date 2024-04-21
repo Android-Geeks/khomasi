@@ -5,6 +5,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -63,7 +64,10 @@ fun BookingCard(
             .height(
                 if (bookingStatus == BookingStatus.CONFIRMED) 482.dp else 432.dp
             )
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .clickable {
+                onViewPlaygroundClick()
+            },
         shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
         colors = CardDefaults.cardColors(Color.Unspecified),
         elevation = CardDefaults.cardElevation(1.dp)

@@ -4,13 +4,15 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import com.company.khomasi.R
 import com.company.khomasi.presentation.myBookings.MyBookingUiState
+import kotlinx.coroutines.flow.StateFlow
 
 sealed class TabItem(
     @StringRes val title: Int,
     val screens: @Composable (
-        uiState: MyBookingUiState,
+        uiState: StateFlow<MyBookingUiState>,
         onClickPlaygroundCard: ((Int) -> Unit)?,
-        onBackClick: (() -> Unit)?
+        onBackClick: (() -> Unit)?,
+
     ) -> Unit,
 ) {
     data object Current : TabItem(

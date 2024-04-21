@@ -9,17 +9,20 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
 import com.company.khomasi.presentation.myBookings.MyBookingUiState
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun ExpiredPage(
-    uiState: MyBookingUiState,
+    uiState: StateFlow<MyBookingUiState>,
 ) {
 
+    val expiredState = uiState.collectAsState().value
 
 
     Scaffold(
@@ -31,12 +34,12 @@ fun ExpiredPage(
                 .padding(all = 16.dp),
             color = MaterialTheme.colorScheme.background,
         ) {
-            if (uiState.expiredBookings.isNotEmpty()) {
+            if (expiredState.expiredBookings.isNotEmpty()) {
                 LazyColumn(
                     contentPadding = it,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    items(uiState.expiredBookings) {
+                    items(expiredState.expiredBookings) {
                             BookingCard(
                                 bookingDetails = it,
                                 bookingStatus = BookingStatus.EXPIRED,
