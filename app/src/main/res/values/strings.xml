@@ -202,6 +202,7 @@
     <string name="send">Send</string>
     <string name="min">min</string>
     <string name="available_times">Available times:</string>
+    <string name="time_slot_validation">Please select one consecutive time period</string>
 
 
 </resources>

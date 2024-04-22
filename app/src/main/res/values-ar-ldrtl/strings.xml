@@ -202,4 +202,5 @@
     <string name="send">ارسال</string>
     <string name="min">دقيقة</string>
     <string name="available_times">الاوقات المتاحة:</string>
+    <string name="time_slot_validation">الرجاء تحديد فترة زمنية واحدة متتالية</string>
 </resources>
