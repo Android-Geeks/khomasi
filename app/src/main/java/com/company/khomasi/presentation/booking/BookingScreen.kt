@@ -135,7 +135,7 @@ fun BookingScreen(
                                 Toast
                                     .makeText(
                                         context,
-                                        "Please select one valid time period",
+                                        R.string.time_slot_validation,
                                         Toast.LENGTH_LONG
                                     )
                                     .show()
