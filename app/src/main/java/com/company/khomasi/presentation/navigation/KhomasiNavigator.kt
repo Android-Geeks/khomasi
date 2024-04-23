@@ -70,6 +70,7 @@ fun KhomasiNavigator() {
                 val favouriteViewModel: FavouriteViewModel = hiltViewModel()
                 FavouritePage(
                     uiState = favouriteViewModel.uiState,
+                    favState = favouriteViewModel.favState,
                     getFavoritePlaygrounds = favouriteViewModel::getFavoritePlaygrounds,
                     onFavouriteClick = favouriteViewModel::onFavouriteClicked,
                     onPlaygroundClick = { playgroundId ->

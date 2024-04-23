@@ -10,7 +10,6 @@ import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,7 +20,7 @@ class FavouriteViewModel @Inject constructor(
 ) : ViewModel() {
     private val _favState: MutableStateFlow<DataState<FavouritePlaygroundResponse>> =
         MutableStateFlow(DataState.Empty)
-    val favState: StateFlow<DataState<FavouritePlaygroundResponse>> = _favState.asStateFlow()
+    val favState: StateFlow<DataState<FavouritePlaygroundResponse>> = _favState
     private val _uiState: MutableStateFlow<FavouriteUiState> = MutableStateFlow(FavouriteUiState())
     val uiState: StateFlow<FavouriteUiState> = _uiState
     private var localUser = LocalUser()
@@ -54,7 +53,7 @@ class FavouriteViewModel @Inject constructor(
 
     fun onFavouriteClicked(playgroundId: Int) {
         _uiState.value = _uiState.value.copy(
-            playgrounds = _uiState.value.playgrounds.filterNot { it.id == playgroundId }
+            playgrounds = _uiState.value.playgrounds.filterNot { it.id == playgroundId },
         )
     }
 }
