@@ -1,5 +1,7 @@
 package com.company.khomasi.presentation.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -12,6 +14,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.navigation.Screens
 import com.company.khomasi.navigation.listOfNavItems
+import com.company.khomasi.presentation.booking.BookingScreen
+import com.company.khomasi.presentation.booking.BookingViewModel
 import com.company.khomasi.presentation.favorite.FavouritePage
 import com.company.khomasi.presentation.favorite.FavouriteViewModel
 import com.company.khomasi.presentation.home.HomeScreen
@@ -25,6 +29,7 @@ import com.company.khomasi.presentation.search.SearchScreen
 import com.company.khomasi.presentation.search.SearchViewModel
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun KhomasiNavigator() {
     val navController = rememberNavController()
@@ -96,7 +101,7 @@ fun KhomasiNavigator() {
                     onClickBack = { navController.popBackStack() },
                     onClickShare = {},
                     onClickFav = { viewModel.onClickFavourite() },
-                    onBookNowClicked = { },
+                    onBookNowClicked = { navController.navigate(Screens.bookingPlayground.name) },
                     onClickDisplayOnMap = {},
                     getPlaygroundDetails = viewModel::getPlaygroundDetails
                 )
@@ -134,6 +139,26 @@ fun KhomasiNavigator() {
                     onBackClick = { navController.popBackStack() },
                     onChangeProfileImage = profileViewModel::onChangeProfileImage,
                     sendFeedback = profileViewModel::sendFeedback
+                )
+            }
+            composable(route = Screens.bookingPlayground.name) {
+                val bookingViewModel: BookingViewModel = hiltViewModel()
+                BookingScreen(
+                    bookingUiState = bookingViewModel.bookingUiState,
+                    freeSlots = bookingViewModel.freeSlotsState,
+                    onBackClicked = { navController.popBackStack() },
+                    updateDuration = { bookingViewModel.updateDuration(it) },
+                    getFreeSlots = { bookingViewModel.getFreeTimeSlots() },
+                    updateSelectedDay = { bookingViewModel.updateSelectedDay(it) },
+                    onSlotClicked = { bookingViewModel.onSlotClicked(it) },
+                    updateCurrentAndNextSlots = { next, current ->
+                        bookingViewModel.updateCurrentAndNextSlots(
+                            next,
+                            current
+                        )
+                    },
+                    updateNextSlot = { bookingViewModel.updateNextSlot(it) },
+                    checkValidity = { bookingViewModel.checkSlotsConsecutive() },
                 )
             }
         }

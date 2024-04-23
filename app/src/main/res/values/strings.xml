@@ -165,6 +165,7 @@
     <string name="unbookable">Unbookable</string>
     <string name="view_playground">View Playground</string>
     <string name="fees_per_hour">%1$d EGP / hour</string>
+    <string name="booking_playground">Booking %1$s Playground</string>
     <string name="forgot_your_password">Forgot your password ?</string>
     <string name="enter_email_to_reset_password">Enter your email to reset your password.</string>
     <string name="set_password">Set password</string>

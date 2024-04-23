@@ -177,6 +177,7 @@
     <string name="and">و</string>
     <string name="do_not_have_an_account">لا تملك حساب؟</string>
     <string name="create_an_account_now">إنشاء حساب الان</string>
+    <string name="booking_playground">حجز ملعب %1$s</string>
     <string name="forgot_your_password">نسيت كلمة المرور؟</string>
     <string name="Your_code_has_arrived_in_your_email">وصلك رمز تحقق على ايميلك</string>
     <string name="invalid_pass_message">تأكد من أن كلمة المرور الخاصة بك تحتوي على 12 حرفًا أو أكثر مع مزيج من الحروف والأرقام والرموز، ولا تحتوي على مسافة بيضاء.</string>

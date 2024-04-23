@@ -41,8 +41,8 @@ class BookingViewModel @Inject constructor(
                 localUserUseCases.getLocalUser().collect { userData ->
                     localUserUseCases.getPlaygroundId().collect { playgroundId ->
                         remotePlaygroundUseCase.getFreeTimeSlotsUseCase(
-                            token = "Bearer ",
-                            id = 2,   ////////////
+                            token = "Bearer ${userData.token}",
+                            id = playgroundId,
                             dayDiff = _bookingUiState.value.selectedDay
                         ).collect { freeSlotsRes ->
                             delay(350)

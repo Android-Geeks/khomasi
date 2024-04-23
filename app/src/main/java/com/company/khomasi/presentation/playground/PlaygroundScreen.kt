@@ -182,9 +182,9 @@ fun PlaygroundScreenContent(
         }
 
         item {
-            PlaygroundDefinition(name = "playgroundData.playground.name",
+            PlaygroundDefinition(name = playgroundData.playground.name,
                 openingTime = playgroundData.playground.openingHours,
-                address = "playgroundData.playground.address",
+                address = playgroundData.playground.address,
                 onClickDisplayOnMap = { onClickDisplayOnMap() })
         }
 

@@ -62,6 +62,7 @@ import com.company.khomasi.theme.darkOverlay
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightOverlay
 import com.company.khomasi.theme.lightText
+import kotlinx.coroutines.flow.StateFlow
 import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
@@ -72,8 +73,8 @@ import java.util.Locale
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BookingScreen(
-    bookingUiState: BookingUiState,
-    freeSlotsState: DataState<FessTimeSlotsResponse>,
+    bookingUiState: StateFlow<BookingUiState>,
+    freeSlots: StateFlow<DataState<FessTimeSlotsResponse>>,
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme(),
     onBackClicked: () -> Unit,
@@ -85,9 +86,16 @@ fun BookingScreen(
     updateNextSlot: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
     checkValidity: () -> Boolean
 ) {
-    Scaffold(topBar = {
-        BookingTopBar(onBackClicked = { onBackClicked() })
-    }
+    val bookingState = bookingUiState.collectAsState().value
+    val freeSlots = freeSlots.collectAsState().value
+    Scaffold(
+        topBar = {
+            BookingTopBar(
+                playgroundName = bookingState.playgroundName,
+                onBackClicked = { onBackClicked() },
+                context = context
+            )
+        }
 
     ) { paddingValues ->
         Surface(
@@ -96,11 +104,12 @@ fun BookingScreen(
                 .padding(paddingValues),
             color = MaterialTheme.colorScheme.background,
         ) {
-            AuthSheet(sheetModifier = Modifier.fillMaxWidth(),
+            AuthSheet(
+                sheetModifier = Modifier.fillMaxWidth(),
                 screenContent = {
                     BookingScreenContent(
-                        bookingUiState = bookingUiState,
-                        freeSlotsState = freeSlotsState,
+                        bookingUiState = bookingState,
+                        freeSlotsState = freeSlots,
                         isDark = isDark,
                         updateDuration = updateDuration,
                         getFreeSlots = { getFreeSlots() },
@@ -120,7 +129,8 @@ fun BookingScreen(
 
                     Text(
                         text = context.getString(
-                            R.string.fees_per_hour, bookingUiState.playgroundPrice
+                            R.string.fees_per_hour, bookingState
+                                .playgroundPrice
                         ),
                         style = MaterialTheme.typography.displayLarge,
                         color = if (isDark) darkText else lightText
@@ -281,9 +291,9 @@ fun BookingScreenContent(
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun calculateHourlyIntervalsList(freeSlotsState: DataState<FessTimeSlotsResponse>): List<Pair<LocalDateTime, LocalDateTime>> {
-    return if (freeSlotsState is DataState.Success) {
-        freeSlotsState.data.freeTimeSlots.map { daySlots ->
+fun calculateHourlyIntervalsList(freeSlots: DataState<FessTimeSlotsResponse>): List<Pair<LocalDateTime, LocalDateTime>> {
+    return if (freeSlots is DataState.Success) {
+        freeSlots.data.freeTimeSlots.map { daySlots ->
             val startTime = parseTimestamp(daySlots.start).withMinute(0).withSecond(0)
             val endTime = parseTimestamp(daySlots.end).withMinute(0).withSecond(0)
             val startEndDuration = Duration.between(startTime, endTime).toHours()
@@ -408,7 +418,10 @@ fun getScreenWidth(): Float {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BookingTopBar(onBackClicked: () -> Unit = {}) {
+fun BookingTopBar(
+    playgroundName: String, onBackClicked: () -> Unit = {},
+    context: Context
+) {
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -417,13 +430,17 @@ fun BookingTopBar(onBackClicked: () -> Unit = {}) {
         ) {
 
             Spacer(modifier = Modifier.width(4.dp))
-            TopAppBar(title = {
-                Text(
-                    text = "حجز ملعب الشهداء",
-                    style = MaterialTheme.typography.displayMedium,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Start
-                )
+            TopAppBar(
+                title = {
+                    Text(
+                        text = context.getString(
+                            R.string.booking_playground,
+                            playgroundName
+                        ),
+                        style = MaterialTheme.typography.displayMedium,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Start
+                    )
             }, navigationIcon = {
                 Icon(painter = painterResource(id = R.drawable.back),
                     contentDescription = null,
@@ -445,8 +462,10 @@ fun BookingTopBar(onBackClicked: () -> Unit = {}) {
 fun BookingScreenPreview() {
     val mockViewModel: MockBookingViewModel = viewModel()
     KhomasiTheme {
-        BookingScreen(bookingUiState = mockViewModel.bookingUiState.collectAsState().value,
-            freeSlotsState = mockViewModel.freeSlotsState.collectAsState().value,
+        BookingScreen(
+            bookingUiState
+            = mockViewModel.bookingUiState,
+            freeSlots = mockViewModel.freeSlotsState,
             onBackClicked = {},
             updateDuration = { mockViewModel.updateDuration(it) },
             getFreeSlots = mockViewModel::getTimeSlots,
