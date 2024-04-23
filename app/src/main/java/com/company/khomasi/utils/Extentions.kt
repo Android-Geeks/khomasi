@@ -1,12 +1,16 @@
 package com.company.khomasi.utils
 
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.Date
 
 fun String.convertToBitmap(): Bitmap? {
     val byte = Base64.decode(this, Base64.DEFAULT)
@@ -27,4 +31,39 @@ fun Uri.toBase64String(context: Context): String {
 
     // Encode the ByteArray into a Base64 String and return it
     return Base64.encodeToString(byteArray, Base64.DEFAULT)
+}
+
+fun Uri.toByteArray(context: Context): ByteArray? {
+    // Get the input stream of the image from the Uri
+    val inputStream = context.contentResolver.openInputStream(this) ?: return null
+
+    // Create a ByteArrayOutputStream
+    val byteBuffer = ByteArrayOutputStream()
+
+    // Create a buffer
+    val buffer = ByteArray(1024)
+    var len: Int
+
+    // Read the bytes from the InputStream into the ByteArrayOutputStream
+    while (inputStream.read(buffer).also { len = it } != -1) {
+        byteBuffer.write(buffer, 0, len)
+    }
+
+    // Close the InputStream
+    inputStream.close()
+
+    // Return the bytes from the ByteArrayOutputStream
+    return byteBuffer.toByteArray()
+}
+
+@SuppressLint("SimpleDateFormat")
+fun Context.createImageFile(): File {
+    // Create an image file name
+    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    val imageFileName = "JPEG_" + timeStamp + "_"
+    return File.createTempFile(
+        imageFileName, /* prefix */
+        ".jpg", /* suffix */
+        externalCacheDir      /* directory */
+    )
 }
