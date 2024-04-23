@@ -27,6 +27,7 @@ import com.company.khomasi.presentation.profile.components.sheets.LogoutBottomSh
 import com.company.khomasi.theme.KhomasiTheme
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -41,7 +42,7 @@ fun ProfileScreen(
     onSaveProfile: () -> Unit,
     sendFeedback: () -> Unit,
     onFeedbackChanged: (String) -> Unit,
-    onChangeProfileImage: (String) -> Unit,
+    onChangeProfileImage: (File) -> Unit,
     onBackClick: () -> Unit,
     onEditProfile: (Boolean) -> Unit,
     isDark: Boolean = isSystemInDarkTheme(),

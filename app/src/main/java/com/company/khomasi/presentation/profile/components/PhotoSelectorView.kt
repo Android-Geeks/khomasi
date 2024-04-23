@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.profile.components
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import android.widget.Toast
@@ -38,15 +39,16 @@ import com.company.khomasi.presentation.profile.components.sheets.UploadPhotoOpt
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.utils.convertToBitmap
 import com.company.khomasi.utils.createImageFile
-import com.company.khomasi.utils.toBase64String
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
 import java.util.Objects
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PhotoSelectorView(
     oldPic: String?,
-    onChangeProfileImage: (String) -> Unit,
+    onChangeProfileImage: (File) -> Unit,
 ) {
     val context = LocalContext.current
     val file = context.createImageFile()
@@ -150,12 +152,25 @@ fun PhotoSelectorView(
     )
 
     if (selectedImage != null) {
-        onChangeProfileImage(selectedImage!!.toBase64String(context))
+        Log.d("PhotoSelectorView", "selectedImage: $selectedImage")
+        val tempFile = createTempFileFromUri(context, selectedImage!!)
+        onChangeProfileImage(tempFile)
     }
     if (capturedImageUri.path?.isNotEmpty() == true) {
         Log.d("PhotoSelectorView", "capturedImageUri: $capturedImageUri")
-        onChangeProfileImage(capturedImageUri.toBase64String(context))
+        val tempFile = createTempFileFromUri(context, capturedImageUri)
+        onChangeProfileImage(tempFile)
     }
+}
+
+fun createTempFileFromUri(context: Context, uri: Uri): File {
+    val tempFile = File.createTempFile("temp", null, context.cacheDir)
+    context.contentResolver.openInputStream(uri)?.use { inputStream ->
+        FileOutputStream(tempFile).use { outputStream ->
+            inputStream.copyTo(outputStream)
+        }
+    }
+    return tempFile
 }
 
 

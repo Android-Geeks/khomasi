@@ -11,13 +11,16 @@ import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.model.VerificationResponse
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Query
 
 
@@ -86,12 +89,14 @@ interface RetrofitService {
         @Query("userId") userId: String,
     ): Response<FavouritePlaygroundResponse>
 
+    @Multipart
     @POST("User/picture")
     suspend fun uploadProfilePicture(
         @Header("Authorization") token: String,
         @Query("userId") userId: String,
-        @Body picture: String
+        @Part picture: MultipartBody.Part
     ): Response<MessageResponse>
+
 
     @PUT("User/user")
     suspend fun updateUser(

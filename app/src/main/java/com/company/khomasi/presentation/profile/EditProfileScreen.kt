@@ -42,6 +42,7 @@ import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightIconMask
 import com.company.khomasi.theme.lightText
 import com.company.khomasi.utils.CheckInputValidation
+import java.io.File
 
 @Composable
 fun EditProfileScreen(
@@ -51,7 +52,7 @@ fun EditProfileScreen(
     onFirstNameChange: (String) -> Unit,
     onLastNameChange: (String) -> Unit,
     onPhoneChange: (String) -> Unit,
-    onChangeProfileImage: (String) -> Unit,
+    onChangeProfileImage: (File) -> Unit,
     onBackClick: () -> Unit,
     isDark: Boolean,
 ) {
@@ -173,8 +174,7 @@ fun EditProfileScreen(
                 },
                 buttonEnable = !isErrorFirstName
                         && !isErrorLastName
-                        && !isErrorPhoneNumber
-                        && localUser != oldLocalUser,
+                        && !isErrorPhoneNumber,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)

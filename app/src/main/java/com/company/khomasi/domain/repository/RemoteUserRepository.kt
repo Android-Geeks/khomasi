@@ -13,6 +13,7 @@ import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.model.VerificationResponse
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
 
 interface RemoteUserRepository {
     suspend fun registerUser(userRegisterData: UserRegisterData): Flow<DataState<UserRegisterResponse>>
@@ -52,7 +53,7 @@ interface RemoteUserRepository {
     suspend fun uploadProfilePicture(
         token: String,
         userId: String,
-        picture: String
+        picture: MultipartBody.Part
     ): Flow<DataState<MessageResponse>>
 
     suspend fun updateUser(

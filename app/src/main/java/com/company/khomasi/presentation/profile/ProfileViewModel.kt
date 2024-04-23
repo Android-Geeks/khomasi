@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.profile
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.model.FeedbackRequest
@@ -16,6 +17,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
@@ -75,16 +80,22 @@ class ProfileViewModel @Inject constructor(
         )
     }
 
-    fun onChangeProfileImage(image: String) {
-        _profileUiState.value = _profileUiState.value.copy(
-            user = _profileUiState.value.user.copy(profilePicture = image)
-        )
+    fun onChangeProfileImage(image: File) {
+        viewModelScope.launch(IO) {
+            _profileUiState.value = _profileUiState.value.copy(
+                profileImage = image
+            )
+        }
     }
 
 
     fun onSaveProfile() {
         viewModelScope.launch(IO) {
-            localUserUseCases.saveLocalUser(_profileUiState.value.user)
+            localUserUseCases.saveLocalUser(
+                _profileUiState.value.user.copy(
+                    //Update this
+                )
+            )
             remoteUserUseCase.updateUserUseCase(
                 token = "Bearer ${_profileUiState.value.user.token ?: ""}",
                 userId = _profileUiState.value.user.userID ?: "",
@@ -99,11 +110,25 @@ class ProfileViewModel @Inject constructor(
                     latitude = _profileUiState.value.user.latitude ?: 0.0
                 )
             ).collect()
-            remoteUserUseCase.updateProfilePictureUseCase(
-                token = "Bearer ${_profileUiState.value.user.token ?: ""}",
-                userId = _profileUiState.value.user.userID ?: "",
-                image = _profileUiState.value.user.profilePicture ?: ""
-            ).collect()
+
+
+            val imageFile = _profileUiState.value.profileImage
+            Log.d("ProfileViewModel", "onSaveProfile: File path: ${imageFile.absolutePath}")
+            if (imageFile.exists()) {
+                val requestFile = imageFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                val body =
+                    MultipartBody.Part.createFormData("profilePicture", imageFile.name, requestFile)
+
+                remoteUserUseCase.updateProfilePictureUseCase(
+                    token = "Bearer ${_profileUiState.value.user.token ?: ""}",
+                    userId = _profileUiState.value.user.userID ?: "",
+                    image = body
+                ).collect {
+                    Log.d("ProfileViewModel", "onSaveProfile: $it")
+                }
+            } else {
+                Log.d("ProfileViewModel", "onSaveProfile: File does not exist")
+            }
             _profileUiState.value = _profileUiState.value.copy(isEditPage = false)
         }
     }

@@ -2,10 +2,10 @@ package com.company.khomasi.utils
 
 object CheckInputValidation {
     fun isFirstNameValid(firstName: String) =
-        firstName.length >= 2 && !firstName.any { it.isDigit() }
+        firstName.length in 2..20 && !firstName.any { it.isDigit() }
 
     fun isLastNameValid(lastName: String) =
-        lastName.length >= 2 && !lastName.any { it.isDigit() }
+        lastName.length in 2..20 && !lastName.any { it.isDigit() }
 
     fun isPhoneNumberValid(phoneNumber: String) =
         phoneNumber.matches(Regex("^(010|011|012|015)\\d{8}\$"))

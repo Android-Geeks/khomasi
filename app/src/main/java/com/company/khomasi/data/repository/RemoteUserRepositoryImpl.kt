@@ -11,6 +11,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import okhttp3.MultipartBody
 import retrofit2.HttpException
 import retrofit2.Response
 
@@ -50,7 +51,11 @@ class RemoteUserRepositoryImpl(
     override suspend fun userFavourite(token: String, userId: String, playgroundId: String) =
         handleApi { retrofitService.userFavourite(token, userId, playgroundId) }
 
-    override suspend fun uploadProfilePicture(token: String, userId: String, picture: String) =
+    override suspend fun uploadProfilePicture(
+        token: String,
+        userId: String,
+        picture: MultipartBody.Part
+    ) =
         handleApi { retrofitService.uploadProfilePicture(token, userId, picture) }
 
     override suspend fun updateUser(token: String, userId: String, user: UserUpdateData) =
