@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.PlaygroundsResponse
+import com.company.khomasi.domain.use_case.local_user.LocalPlaygroundUseCase
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +20,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val remoteUserUseCase: RemoteUserUseCase,
-    private val localUserUseCases: LocalUserUseCases
+    private val localUserUseCases: LocalUserUseCases,
+    private val localPlaygroundUseCase: LocalPlaygroundUseCase
 ) : ViewModel() {
 
     private val _playgroundState: MutableStateFlow<DataState<PlaygroundsResponse>> =
@@ -29,13 +31,9 @@ class HomeViewModel @Inject constructor(
     private val _homeUiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
     val homeUiState: StateFlow<HomeUiState> = _homeUiState
 
-    private val _localUser =
-        localUserUseCases.getLocalUser()
-            .stateIn(
-                viewModelScope,
-                SharingStarted.WhileSubscribed(5_000),
-                LocalUser()
-            )
+    private val _localUser = localUserUseCases.getLocalUser().stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5_000), LocalUser()
+    )
     val localUser: StateFlow<LocalUser> = _localUser
 
     fun getPlaygrounds() {
@@ -58,9 +56,20 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun onClickPlayground(playgroundId: Int) {
+    fun onClickPlayground(playgroundId: Int, playgroundName: String, playgroundPrice: Int) {
         viewModelScope.launch {
             localUserUseCases.savePlaygroundId(playgroundId)
+            getPlaygroundData(playgroundName, playgroundPrice)
+        }
+    }
+
+    // --------    Until locate playground id into LocalPlaygroundUseCases -------------
+    private fun getPlaygroundData(playgroundName: String, playgroundPrice: Int) {
+        viewModelScope.launch {
+            localPlaygroundUseCase.apply {
+                this.savePlaygroundName(playgroundName)
+                this.savePlaygroundPrice(playgroundPrice)
+            }
         }
     }
 
@@ -69,17 +78,17 @@ class HomeViewModel @Inject constructor(
             val playgrounds = (_playgroundState.value as DataState.Success).data.playgrounds
             val playground = playgrounds.find { it.id == playgroundId }
             if (playground != null) {
-                _playgroundState.value = DataState.Success(
-                    (_playgroundState.value as DataState.Success).data.copy(
-                        playgrounds = playgrounds.map {
-                            if (it.id == playgroundId) {
-                                it.copy(isFavourite = !it.isFavourite)
-                            } else {
-                                it
-                            }
-                        }
+                _playgroundState.value =
+                    DataState.Success(
+                        (_playgroundState.value as DataState.Success).data.copy(
+                            playgrounds = playgrounds.map {
+                                if (it.id == playgroundId) {
+                                    it.copy(isFavourite = !it.isFavourite)
+                                } else {
+                                    it
+                                }
+                            })
                     )
-                )
             }
         }
     }

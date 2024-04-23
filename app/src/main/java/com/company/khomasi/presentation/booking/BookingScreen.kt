@@ -119,11 +119,9 @@ fun BookingScreen(
                 ) {
 
                     Text(
-                        text = "50 جنيه / ساعة"
-//                        context.getString(
-//                            R.string.fees_per_hour, playgroundData.playground.feesForHour
-//                        )
-                        ,
+                        text = context.getString(
+                            R.string.fees_per_hour, bookingUiState.playgroundPrice
+                        ),
                         style = MaterialTheme.typography.displayLarge,
                         color = if (isDark) darkText else lightText
                     )

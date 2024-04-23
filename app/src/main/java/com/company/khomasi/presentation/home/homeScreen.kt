@@ -68,7 +68,7 @@ fun HomeScreen(
     onSearchBarClicked: () -> Unit,
     onClickViewAll: () -> Unit,
     onAdClicked: () -> Unit,
-    onClickPlaygroundCard: (Int) -> Unit,
+    onClickPlaygroundCard: (Int, String, Int) -> Unit,
     onFavouriteClick: (Int) -> Unit,
     getPlaygrounds: () -> Unit
 ) {
@@ -83,21 +83,7 @@ fun HomeScreen(
     }
 
     LaunchedEffect(playgrounds) {
-        when (playgrounds) {
-            is DataState.Loading -> {
-                showLoading = true
-            }
-
-            is DataState.Success -> {
-                showLoading = false
-            }
-
-            is DataState.Error -> {
-                showLoading = false
-            }
-
-            is DataState.Empty -> {}
-        }
+        showLoading = playgrounds is DataState.Loading
     }
 
 
@@ -128,7 +114,9 @@ fun HomeScreen(
                     homeUiState = uiState,
                     onAdClicked = { onAdClicked() },
                     onClickViewAll = { onClickViewAll() },
-                    onClickPlaygroundCard = { playgroundId -> onClickPlaygroundCard(playgroundId) },
+                    onClickPlaygroundCard = { playgroundId, playgroundName, playgroundPrice ->
+                        onClickPlaygroundCard(playgroundId, playgroundName, playgroundPrice)
+                    },
                     onFavouriteClick = { playgroundId -> onFavouriteClick(playgroundId) }
                 )
                 if (showLoading) {
@@ -151,7 +139,7 @@ fun HomeContent(
     homeUiState: HomeUiState,
     onAdClicked: () -> Unit,
     onClickViewAll: () -> Unit,
-    onClickPlaygroundCard: (Int) -> Unit,
+    onClickPlaygroundCard: (Int, String, Int) -> Unit,
     onFavouriteClick: (Int) -> Unit
 ) {
     //        -----------------Temporary-----------------           //
@@ -181,16 +169,16 @@ fun HomeContent(
         ) {
 
 //      ------------ Temporary until the booking page is completed   -----//
-//            if(true){
-//                item {
-//                    RatingCard(
-//                        buttonText = R.string.rating,
-//                        mainText = "كانت مباراه حماسيه",
-//                        subText = "اليوم الساعه 9:00 م",
-//                        timeIcon = R.drawable.clock
-//                    )
-//                }
-//            }
+            /*            if(true){
+                            item {
+                                RatingCard(
+                                    buttonText = R.string.rating,
+                                    mainText = "كانت مباراه حماسيه",
+                                    subText = "اليوم الساعه 9:00 م",
+                                    timeIcon = R.drawable.clock
+                                )
+                            }
+                        }*/
 //  -------------------------------------------------------------------//
 
             item { AdsSlider(adsContent = adsList, onAdClicked = { onAdClicked() }) }
@@ -215,7 +203,13 @@ fun HomeContent(
                 PlaygroundCard(
                     playground = playground,
                     onFavouriteClick = { onFavouriteClick(playground.id) },          // WILL BE IMPLEMENTED LATER
-                    onViewPlaygroundClick = { onClickPlaygroundCard(playground.id) }
+                    onViewPlaygroundClick = {
+                        onClickPlaygroundCard(
+                            playground.id,
+                            playground.name,
+                            playground.feesForHour
+                        )
+                    }
                 )
             }
         }
@@ -327,7 +321,9 @@ fun HomeScreenPreview() {
             onSearchBarClicked = {},
             onClickViewAll = { mockViewModel.onClickViewAll() },
             onAdClicked = { },
-            onClickPlaygroundCard = { playgroundId -> mockViewModel.onClickPlayground(playgroundId) },
+            onClickPlaygroundCard = { playgroundId, playgroundName, playgroundPrice ->
+                mockViewModel.onClickPlaygroundCard(playgroundId, playgroundName, playgroundPrice)
+            },
             onFavouriteClick = {},
             getPlaygrounds = {},
             localUserState = MutableStateFlow(LocalUser())

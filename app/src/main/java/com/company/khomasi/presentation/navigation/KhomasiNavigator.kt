@@ -52,8 +52,12 @@ fun KhomasiNavigator() {
                     homeUiState = homeViewModel.homeUiState,
                     localUserState = homeViewModel.localUser,
                     onClickUserImage = { navController.navigate(Screens.Profile.name) },
-                    onClickPlaygroundCard = { playgroundId ->
-                        homeViewModel.onClickPlayground(playgroundId)
+                    onClickPlaygroundCard = { playgroundId, playgroundName, playgroundPrice ->
+                        homeViewModel.onClickPlayground(
+                            playgroundId,
+                            playgroundName,
+                            playgroundPrice
+                        )
                         navController.navigate(Screens.PlaygroundDetails.name)
                     },
                     getPlaygrounds = homeViewModel::getPlaygrounds,

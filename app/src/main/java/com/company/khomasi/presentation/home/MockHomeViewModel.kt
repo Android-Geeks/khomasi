@@ -43,7 +43,8 @@ class MockHomeViewModel : ViewModel() {
         }
     }
 
-    fun onClickPlayground(playgroundId: Int) {
+
+    fun onClickPlaygroundCard(playgroundId: Int, playgroundName: String, playgroundPrice: Int) {
 
     }
 }

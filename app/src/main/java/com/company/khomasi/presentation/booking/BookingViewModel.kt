@@ -9,7 +9,6 @@ import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemotePlaygroundUseCase
-import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -24,7 +23,6 @@ import javax.inject.Inject
 @HiltViewModel
 class BookingViewModel @Inject constructor(
     private val remotePlaygroundUseCase: RemotePlaygroundUseCase,
-    private val remoteUserUseCase: RemoteUserUseCase,
     private val localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
 
@@ -36,9 +34,6 @@ class BookingViewModel @Inject constructor(
         MutableStateFlow(BookingUiState())
     val bookingUiState: StateFlow<BookingUiState> = _bookingUiState
 
-//    private val _playgroundState: MutableStateFlow<DataState<PlaygroundScreenResponse>> =
-//        MutableStateFlow(DataState.Empty)
-//    val playgroundState: StateFlow<DataState<PlaygroundScreenResponse>> = _playgroundState
 
     fun getFreeTimeSlots() {
         viewModelScope.launch {
@@ -46,7 +41,7 @@ class BookingViewModel @Inject constructor(
                 localUserUseCases.getLocalUser().collect { userData ->
                     localUserUseCases.getPlaygroundId().collect { playgroundId ->
                         remotePlaygroundUseCase.getFreeTimeSlotsUseCase(
-                            token = "Bearer ${userData.token}",
+                            token = "Bearer ",
                             id = 2,   ////////////
                             dayDiff = _bookingUiState.value.selectedDay
                         ).collect { freeSlotsRes ->
@@ -54,12 +49,6 @@ class BookingViewModel @Inject constructor(
                             _freeSlotsState.value = freeSlotsRes
                         }
 
-//                        remoteUserUseCase.getSpecificPlaygroundUseCase(
-//                            token = "Bearer ${userData.token}",
-//                            id = 2   ////////////
-//                        ).collect {
-//                            _playgroundState.value = it
-//                        }
                     }
 
                 }
