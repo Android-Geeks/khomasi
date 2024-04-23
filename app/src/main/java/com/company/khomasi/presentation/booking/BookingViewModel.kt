@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
+import com.company.khomasi.domain.use_case.local_user.LocalPlaygroundUseCase
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemotePlaygroundUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +24,8 @@ import javax.inject.Inject
 @HiltViewModel
 class BookingViewModel @Inject constructor(
     private val remotePlaygroundUseCase: RemotePlaygroundUseCase,
-    private val localUserUseCases: LocalUserUseCases
+    private val localUserUseCases: LocalUserUseCases,
+    private val localPlaygroundUseCases: LocalPlaygroundUseCase
 ) : ViewModel() {
 
     private val _freeSlotsState: MutableStateFlow<DataState<FessTimeSlotsResponse>> =
@@ -51,6 +53,21 @@ class BookingViewModel @Inject constructor(
 
                     }
 
+                }
+            }
+        }
+    }
+
+    init {
+        viewModelScope.launch {
+            localPlaygroundUseCases.getPlaygroundName().collect { playgroundName ->
+                localPlaygroundUseCases.getPlaygroundPrice().collect { playgroundPrice ->
+                    _bookingUiState.update {
+                        it.copy(
+                            playgroundName = playgroundName,
+                            playgroundPrice = playgroundPrice
+                        )
+                    }
                 }
             }
         }

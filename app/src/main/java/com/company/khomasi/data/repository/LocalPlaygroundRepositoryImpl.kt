@@ -5,6 +5,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.company.khomasi.domain.repository.LocalPlaygroundRepository
+import com.company.khomasi.utils.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -38,6 +39,6 @@ class LocalPlaygroundRepositoryImpl(
 }
 
 private object PlaygroundPreferenceKeys {
-    val PLAYGROUND_NAME = stringPreferencesKey("playground_name")
-    val PLAYGROUND_PRICE = intPreferencesKey("playground_price")
+    val PLAYGROUND_NAME = stringPreferencesKey(Constants.PLAYGROUND_NAME)
+    val PLAYGROUND_PRICE = intPreferencesKey(Constants.PLAYGROUND_PRICE)
 }
