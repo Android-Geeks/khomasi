@@ -18,23 +18,6 @@ class MockHomeViewModel : ViewModel() {
     val homeUiState: StateFlow<HomeUiState> = _homeUiState
 
 
-//    init {
-//        viewModelScope.launch {
-//            localUserUseCases.getLocalUser().collect {
-//                userData = it
-//            }
-//        }
-//
-//        viewModelScope.launch {
-//            remoteUserUseCase.getPlaygroundsUseCase(
-//                "Bearer ${userData.token}",
-//                "7c6fa4dc-a314-4cbc-a4cc-5e6110020491"
-//            ).collect {
-//                _playgroundState.value = it
-//            }
-//        }
-//    }
-
     fun onClickViewAll() {
         _homeUiState.update {
             it.copy(
@@ -43,7 +26,7 @@ class MockHomeViewModel : ViewModel() {
         }
     }
 
-    fun onClickPlayground(playgroundId: Int) {
+    fun onClickPlayground() {
 
     }
 }

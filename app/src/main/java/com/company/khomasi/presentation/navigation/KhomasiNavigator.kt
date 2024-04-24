@@ -56,7 +56,7 @@ fun KhomasiNavigator() {
                         homeViewModel.onClickPlayground(playgroundId)
                         navController.navigate(Screens.PlaygroundDetails.name)
                     },
-                    getPlaygrounds = homeViewModel::getPlaygrounds,
+                    getHomeScreenData = homeViewModel::getHomeScreenData,
                     onClickBell = { /* will nav to notification page */ },
                     onClickViewAll = { homeViewModel.onClickViewAll() },
                     onSearchBarClicked = { navController.navigate(Screens.Search.name) },
@@ -118,6 +118,7 @@ fun KhomasiNavigator() {
                 ProfileScreen(
                     profileUiState = profileViewModel.profileUiState,
                     localUserUiState = profileViewModel.localUser,
+                    getProfileImage = profileViewModel::getProfileImage,
                     onEditProfile = profileViewModel::onEditProfile,
                     onSaveProfile = profileViewModel::onSaveProfile,
                     onFeedbackCategorySelected = profileViewModel::onFeedbackCategorySelected,

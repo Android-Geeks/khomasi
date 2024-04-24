@@ -31,6 +31,7 @@ import com.company.khomasi.theme.lightIconMask
 @Composable
 fun ProfileTopBar(
     localUser: LocalUser,
+    image: String?,
     onEditProfile: (Boolean) -> Unit,
     onBackClick: () -> Unit,
     isDark: Boolean
@@ -89,7 +90,7 @@ fun ProfileTopBar(
         }
         ProfileImage(
             name = localUser.firstName + " " + localUser.lastName,
-            image = localUser.profilePicture,
+            image = image,
             rating = localUser.rating ?: 0.0,
             isDark = isDark
         )

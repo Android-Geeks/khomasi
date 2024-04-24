@@ -23,7 +23,6 @@ import com.company.khomasi.data.repository.PreferenceKeys.LONGITUDE
 import com.company.khomasi.data.repository.PreferenceKeys.OTP_CODE
 import com.company.khomasi.data.repository.PreferenceKeys.PHONE_NUMBER
 import com.company.khomasi.data.repository.PreferenceKeys.PLAYGROUND_ID
-import com.company.khomasi.data.repository.PreferenceKeys.PROFILE_PICTURE
 import com.company.khomasi.data.repository.PreferenceKeys.RATING
 import com.company.khomasi.data.repository.PreferenceKeys.SEARCH_HISTORY
 import com.company.khomasi.data.repository.PreferenceKeys.TOKEN
@@ -51,7 +50,6 @@ class LocalUserRepositoryImpl(
                 country = preferences[COUNTRY] ?: "",
                 latitude = preferences[LATITUDE] ?: 0.0,
                 longitude = preferences[LONGITUDE] ?: 0.0,
-                profilePicture = preferences[PROFILE_PICTURE] ?: "",
                 coins = preferences[COINS] ?: 0.0,
                 rating = preferences[RATING] ?: 0.0,
                 token = preferences[TOKEN] ?: "",
@@ -71,7 +69,6 @@ class LocalUserRepositoryImpl(
             settings[COUNTRY] = localUser.country ?: ""
             settings[LATITUDE] = localUser.latitude ?: 0.0
             settings[LONGITUDE] = localUser.longitude ?: 0.0
-            settings[PROFILE_PICTURE] = localUser.profilePicture ?: ""
             settings[COINS] = localUser.coins ?: 0.0
             settings[RATING] = localUser.rating ?: 0.0
             settings[TOKEN] = localUser.token ?: ""
@@ -154,7 +151,6 @@ private object PreferenceKeys {
     val COUNTRY = stringPreferencesKey(Constants.COUNTRY)
     val LATITUDE = doublePreferencesKey(Constants.LATITUDE)
     val LONGITUDE = doublePreferencesKey(Constants.LONGITUDE)
-    val PROFILE_PICTURE = stringPreferencesKey(Constants.PROFILE_PICTURE)
     val COINS = doublePreferencesKey(Constants.COINS)
     val RATING = doublePreferencesKey(Constants.RATING)
     val OTP_CODE = intPreferencesKey(Constants.OTP_CODE)

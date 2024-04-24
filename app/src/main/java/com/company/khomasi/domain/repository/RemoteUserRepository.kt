@@ -7,6 +7,7 @@ import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
+import com.company.khomasi.domain.model.ProfileImageResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
@@ -66,4 +67,9 @@ interface RemoteUserRepository {
         token: String,
         feedback: FeedbackRequest
     ): Flow<DataState<MessageResponse>>
+
+    suspend fun getProfileImage(
+        token: String,
+        userId: String
+    ): Flow<DataState<ProfileImageResponse>>
 }

@@ -72,7 +72,7 @@ fun HomeScreen(
     onAdClicked: () -> Unit,
     onClickPlaygroundCard: (Int) -> Unit,
     onFavouriteClick: (Int) -> Unit,
-    getPlaygrounds: () -> Unit
+    getHomeScreenData: () -> Unit
 ) {
     val playgrounds = playgroundsState.collectAsState().value
     val uiState = homeUiState.collectAsState().value
@@ -81,7 +81,7 @@ fun HomeScreen(
     var showLoading by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        getPlaygrounds()
+        getHomeScreenData()
     }
 
     LaunchedEffect(playgrounds) {
@@ -113,6 +113,7 @@ fun HomeScreen(
 
             UserProfileSection(
                 userData = localUser,
+                profileImage = uiState.profileImage,
                 onClickUserImage = onClickUserImage,
                 onClickBell = onClickBell
             )
@@ -227,6 +228,7 @@ fun HomeContent(
 @Composable
 fun UserProfileSection(
     userData: LocalUser,
+    profileImage: String?,
     onClickUserImage: () -> Unit,
     onClickBell: () -> Unit
 ) {
@@ -238,7 +240,7 @@ fun UserProfileSection(
                 .background(MaterialTheme.colorScheme.surface)
                 .clickable { onClickUserImage() },
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(userData.profilePicture?.convertToBitmap())
+                .data(profileImage?.convertToBitmap())
                 .crossfade(true).build(),
             loading = {
                 CircularProgressIndicator()
@@ -332,9 +334,9 @@ fun HomeScreenPreview() {
             onSearchBarClicked = {},
             onClickViewAll = { mockViewModel.onClickViewAll() },
             onAdClicked = { },
-            onClickPlaygroundCard = { playgroundId -> mockViewModel.onClickPlayground(playgroundId) },
+            onClickPlaygroundCard = { playgroundId -> mockViewModel.onClickPlayground() },
             onFavouriteClick = {},
-            getPlaygrounds = {},
+            getHomeScreenData = {},
             localUserState = MutableStateFlow(LocalUser())
         )
     }

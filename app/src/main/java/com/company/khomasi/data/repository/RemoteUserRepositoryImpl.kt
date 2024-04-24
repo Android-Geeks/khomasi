@@ -63,6 +63,9 @@ class RemoteUserRepositoryImpl(
 
     override suspend fun sendFeedback(token: String, feedback: FeedbackRequest) =
         handleApi { retrofitService.sendFeedback(token, feedback) }
+
+    override suspend fun getProfileImage(token: String, userId: String) =
+        handleApi { retrofitService.getProfileImage(token, userId) }
 }
 
 suspend fun <T : Any> handleApi(

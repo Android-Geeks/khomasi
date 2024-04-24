@@ -32,7 +32,6 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
-import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.presentation.components.SubScreenTopBar
@@ -46,8 +45,7 @@ import java.io.File
 
 @Composable
 fun EditProfileScreen(
-    oldLocalUser: LocalUser,
-    localUser: LocalUser,
+    uiState: ProfileUiState,
     onSaveProfile: () -> Unit,
     onFirstNameChange: (String) -> Unit,
     onLastNameChange: (String) -> Unit,
@@ -71,9 +69,10 @@ fun EditProfileScreen(
         scrollState.scrollBy(keyboardHeight.toFloat())
     }
 
-    val isErrorFirstName = !(CheckInputValidation.isFirstNameValid(localUser.firstName ?: ""))
-    val isErrorLastName = !(CheckInputValidation.isLastNameValid(localUser.lastName ?: ""))
-    val isErrorPhoneNumber = !CheckInputValidation.isPhoneNumberValid(localUser.phoneNumber ?: "")
+    val isErrorFirstName = !(CheckInputValidation.isFirstNameValid(uiState.user.firstName ?: ""))
+    val isErrorLastName = !(CheckInputValidation.isLastNameValid(uiState.user.lastName ?: ""))
+    val isErrorPhoneNumber =
+        !CheckInputValidation.isPhoneNumberValid(uiState.user.phoneNumber ?: "")
 
     Column(
         modifier = Modifier
@@ -94,12 +93,12 @@ fun EditProfileScreen(
             Spacer(modifier = Modifier.size(16.dp))
 
             PhotoSelectorView(
-                oldPic = oldLocalUser.profilePicture,
+                profileImage = uiState.oldProfileImage,
                 onChangeProfileImage = onChangeProfileImage
             )
 
             MyTextField(
-                value = localUser.firstName ?: "",
+                value = uiState.user.firstName ?: "",
                 onValueChange = onFirstNameChange,
                 label = R.string.first_name,
                 imeAction = ImeAction.Next,
@@ -118,7 +117,7 @@ fun EditProfileScreen(
             )
 
             MyTextField(
-                value = localUser.lastName ?: "",
+                value = uiState.user.lastName ?: "",
                 onValueChange = onLastNameChange,
                 label = R.string.last_name,
                 imeAction = ImeAction.Next,
@@ -149,7 +148,7 @@ fun EditProfileScreen(
             )
 
             MyTextField(
-                value = localUser.phoneNumber ?: "",
+                value = uiState.user.phoneNumber ?: "",
                 onValueChange = onPhoneChange,
                 label = R.string.phone_number,
                 imeAction = ImeAction.Done,

@@ -34,6 +34,7 @@ import java.io.File
 fun ProfileScreen(
     profileUiState: StateFlow<ProfileUiState>,
     localUserUiState: StateFlow<LocalUser>,
+    getProfileImage: () -> Unit,
     onLogout: () -> Unit,
     updateUserData: (LocalUser) -> Unit,
     onFirstNameChanged: (String) -> Unit,
@@ -48,11 +49,12 @@ fun ProfileScreen(
     isDark: Boolean = isSystemInDarkTheme(),
     onFeedbackCategorySelected: (FeedbackCategory) -> Unit,
 ) {
-    val uiState = profileUiState.collectAsState().value
     val localUser = localUserUiState.collectAsState().value
+    val uiState = profileUiState.collectAsState().value
 
     LaunchedEffect(localUser) {
         updateUserData(localUser)
+        getProfileImage()
     }
 
     BackHandler {
@@ -65,14 +67,13 @@ fun ProfileScreen(
 
     if (uiState.isEditPage) {
         EditProfileScreen(
-            oldLocalUser = localUser,
-            localUser = uiState.user,
+            uiState = uiState,
             onSaveProfile = onSaveProfile,
             onFirstNameChange = onFirstNameChanged,
             onLastNameChange = onLastNameChanged,
             onPhoneChange = onPhoneChanged,
-            onBackClick = { onEditProfile(false) },
             onChangeProfileImage = onChangeProfileImage,
+            onBackClick = { onEditProfile(false) },
             isDark = isDark
         )
     } else {
@@ -84,6 +85,7 @@ fun ProfileScreen(
         ) {
             ProfileTopBar(
                 localUser = localUser,
+                image = uiState.oldProfileImage,
                 onEditProfile = onEditProfile,
                 onBackClick = onBackClick,
                 isDark = isDark
@@ -176,7 +178,8 @@ fun ProfileScreenPreview() {
             onFirstNameChanged = {},
             onLastNameChanged = {},
             onPhoneChanged = {},
-            onChangeProfileImage = {}
+            onChangeProfileImage = {},
+            getProfileImage = {},
         )
     }
 }

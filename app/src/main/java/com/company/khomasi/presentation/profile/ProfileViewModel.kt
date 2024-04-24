@@ -3,12 +3,14 @@ package com.company.khomasi.presentation.profile
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FeedbackRequest
 import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.use_case.app_entry.AppEntryUseCases
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
+import com.company.khomasi.utils.toBase64String
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,6 +41,21 @@ class ProfileViewModel @Inject constructor(
         MutableStateFlow(ProfileUiState())
     val profileUiState: StateFlow<ProfileUiState> = _profileUiState
 
+    fun getProfileImage() {
+        viewModelScope.launch {
+            remoteUserUseCase.getProfileImageUseCase(
+                token = "Bearer ${_profileUiState.value.user.token ?: ""}",
+                userId = _profileUiState.value.user.userID ?: ""
+            ).collect {
+                if (it is DataState.Success) {
+                    _profileUiState.value = _profileUiState.value.copy(
+                        oldProfileImage = it.data.profilePicture
+                    )
+                }
+            }
+        }
+    }
+
     fun onLogout() {
         viewModelScope.launch(IO) {
             appEntryUseCases.saveIsLogin(false)
@@ -47,7 +64,9 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun updateUserData(user: LocalUser) {
-        _profileUiState.value = _profileUiState.value.copy(user = user)
+        _profileUiState.value = _profileUiState.value.copy(
+            user = user,
+        )
     }
 
     fun onFeedbackCategorySelected(feedbackCategory: FeedbackCategory) {
@@ -83,7 +102,7 @@ class ProfileViewModel @Inject constructor(
     fun onChangeProfileImage(image: File) {
         viewModelScope.launch(IO) {
             _profileUiState.value = _profileUiState.value.copy(
-                profileImage = image
+                profileImage = image,
             )
         }
     }
@@ -91,11 +110,10 @@ class ProfileViewModel @Inject constructor(
 
     fun onSaveProfile() {
         viewModelScope.launch(IO) {
-            localUserUseCases.saveLocalUser(
-                _profileUiState.value.user.copy(
-                    //Update this
-                )
+            _profileUiState.value = _profileUiState.value.copy(
+                oldProfileImage = _profileUiState.value.profileImage.toBase64String()
             )
+            localUserUseCases.saveLocalUser(_profileUiState.value.user)
             remoteUserUseCase.updateUserUseCase(
                 token = "Bearer ${_profileUiState.value.user.token ?: ""}",
                 userId = _profileUiState.value.user.userID ?: "",

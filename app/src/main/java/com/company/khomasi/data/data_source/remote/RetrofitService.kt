@@ -6,6 +6,7 @@ import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
+import com.company.khomasi.domain.model.ProfileImageResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
@@ -110,4 +111,10 @@ interface RetrofitService {
         @Header("Authorization") token: String,
         @Body feedback: FeedbackRequest
     ): Response<MessageResponse>
+
+    @GET("User/picture")
+    suspend fun getProfileImage(
+        @Header("Authorization") token: String,
+        @Query("userId") userId: String
+    ): Response<ProfileImageResponse>
 }

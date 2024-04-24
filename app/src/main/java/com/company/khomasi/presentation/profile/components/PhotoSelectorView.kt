@@ -1,8 +1,6 @@
 package com.company.khomasi.presentation.profile.components
 
-import android.content.Context
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -17,6 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,16 +37,16 @@ import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.presentation.profile.components.sheets.UploadPhotoOptionsSheet
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.utils.convertToBitmap
+import com.company.khomasi.utils.createFileFromUri
 import com.company.khomasi.utils.createImageFile
 import kotlinx.coroutines.launch
 import java.io.File
-import java.io.FileOutputStream
 import java.util.Objects
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PhotoSelectorView(
-    oldPic: String?,
+    profileImage: String?,
     onChangeProfileImage: (File) -> Unit,
 ) {
     val context = LocalContext.current
@@ -59,7 +58,7 @@ fun PhotoSelectorView(
     val scope = rememberCoroutineScope()
 
 
-    var selectedImage by remember {
+    var selectedImageUri by remember {
         mutableStateOf<Uri?>(null)
     }
     var capturedImageUri by remember {
@@ -69,7 +68,7 @@ fun PhotoSelectorView(
 
     val singlePhotoPickerLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
-        onResult = { uriImage -> selectedImage = uriImage }
+        onResult = { uriImage -> selectedImageUri = uriImage }
     )
 
 
@@ -102,23 +101,28 @@ fun PhotoSelectorView(
             },
             onTakePhoto = {
                 permissionLauncher.launch(android.Manifest.permission.CAMERA)
+                showChooserSheet = false
+                selectedImageUri = null
             },
             onChooseFromGallery = {
                 singlePhotoPickerLauncher.launch(
                     PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
                 )
+                showChooserSheet = false
+                capturedImageUri = Uri.EMPTY
             },
             isDark = isSystemInDarkTheme()
         )
     }
 
+
     SubcomposeAsyncImage(
         model = ImageRequest
             .Builder(context = context)
             .data(
-                if (capturedImageUri.path?.isNotEmpty() == true) capturedImageUri
-                else
-                    selectedImage ?: oldPic?.convertToBitmap()
+                if (capturedImageUri != Uri.EMPTY) capturedImageUri
+                else if (selectedImageUri != null) selectedImageUri
+                else profileImage?.convertToBitmap()
             )
             .crossfade(true)
             .build(),
@@ -143,36 +147,25 @@ fun PhotoSelectorView(
     MyTextButton(
         text = R.string.change,
         onClick = {
-            showChooserSheet = true
             scope.launch {
+                showChooserSheet = true
                 sheetState.show()
             }
         },
         isUnderlined = false
     )
 
-    if (selectedImage != null) {
-        Log.d("PhotoSelectorView", "selectedImage: $selectedImage")
-        val tempFile = createTempFileFromUri(context, selectedImage!!)
-        onChangeProfileImage(tempFile)
-    }
-    if (capturedImageUri.path?.isNotEmpty() == true) {
-        Log.d("PhotoSelectorView", "capturedImageUri: $capturedImageUri")
-        val tempFile = createTempFileFromUri(context, capturedImageUri)
-        onChangeProfileImage(tempFile)
-    }
-}
-
-fun createTempFileFromUri(context: Context, uri: Uri): File {
-    val tempFile = File.createTempFile("temp", null, context.cacheDir)
-    context.contentResolver.openInputStream(uri)?.use { inputStream ->
-        FileOutputStream(tempFile).use { outputStream ->
-            inputStream.copyTo(outputStream)
+    LaunchedEffect(selectedImageUri, capturedImageUri) {
+        if (selectedImageUri != null) {
+            val tempFile = selectedImageUri!!.createFileFromUri(context)
+            onChangeProfileImage(tempFile)
+        }
+        if (capturedImageUri != Uri.EMPTY) {
+            val tempFile = capturedImageUri.createFileFromUri(context)
+            onChangeProfileImage(tempFile)
         }
     }
-    return tempFile
 }
-
 
 @Preview(showBackground = true)
 @Composable
