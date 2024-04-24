@@ -1,5 +1,6 @@
 package com.company.khomasi.data.data_source.remote
 
+import com.company.khomasi.domain.model.CancelBookingResponse
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
@@ -98,4 +99,11 @@ interface RetrofitService {
         @Query("userId") userId: String,
         @Body user: UserUpdateData
     ): Response<MessageResponse>
+
+    @DELETE("Playground/cancel-booking")
+    suspend fun cancelBooking(
+        @Header("Authorization") token: String,
+        @Query("bookingID") bookingId: Int,
+        @Query("isUser") isUser: Boolean
+    ): Response<CancelBookingResponse>
 }

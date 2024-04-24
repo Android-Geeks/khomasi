@@ -1,6 +1,7 @@
 package com.company.khomasi.domain.repository
 
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.CancelBookingResponse
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
@@ -29,6 +30,11 @@ interface RemoteUserRepository {
     suspend fun deleteUserFavourite(token: String,userId: String,playgroundId:String): Flow<DataState<MessageResponse>>
     suspend fun  getUserFavouritePlaygrounds(token: String,userId: String):Flow<DataState<FavouritePlaygroundResponse>>
     suspend fun userFavourite(token: String,userId: String,playgroundId:String):Flow<DataState<MessageResponse>>
+    suspend fun cancelBooking(
+        token: String,
+        bookingId: Int,
+        isUser: Boolean
+    ): Flow<DataState<CancelBookingResponse>>
 
     suspend fun getSpecificPlayground(
         token: String,
