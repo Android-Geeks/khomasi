@@ -65,7 +65,6 @@ fun MyTextField(
         OutlinedTextField(
             value = value,
             onValueChange = onValueChange,
-            singleLine = true,
             leadingIcon = leadingIcon,
             trailingIcon = if (keyBoardType == KeyboardType.Password) {
                 {

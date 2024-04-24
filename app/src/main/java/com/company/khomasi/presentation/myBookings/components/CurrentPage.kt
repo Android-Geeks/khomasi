@@ -46,21 +46,21 @@ fun CurrentPage(
                     itemsIndexed(currentState.currentBookings) { index, it ->
                         BookingCard(
                             bookingDetails = it,
-                            bookingStatus = BookingStatus.CONFIRMED,
-                            //bookingStatus = if (!uiState.currentBookings[index].isCanceled) BookingStatus.CONFIRMED else BookingStatus.CANCEL,
+                            bookingStatus = if (!currentState.currentBookings[index].isCanceled) BookingStatus.CONFIRMED else BookingStatus.CANCEL,
                             onViewPlaygroundClick = {
                                 onClickPlaygroundCard(it.playgroundId)
                                 selectedPlaygroundIdState.value = it.playgroundId
 
                             }
                         )
-                        BookingCard(
-                            bookingDetails = it,
-                            bookingStatus = BookingStatus.CANCEL,
-                            onViewPlaygroundClick = {
-                                onClickPlaygroundCard(it.playgroundId)
-                            }
-                        )
+//                        BookingCard(
+//                            bookingDetails = it,
+//                            bookingStatus = BookingStatus.CANCEL,
+//                            onViewPlaygroundClick = {
+//                                onClickPlaygroundCard(it.playgroundId)
+//                            },
+//                            toRate = {}
+//                        )
                     }
                 }
             } else {

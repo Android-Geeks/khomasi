@@ -108,12 +108,12 @@ fun ConfirmationBottomSheet(
                     horizontalArrangement = Arrangement.End
                 ) {
                     MyOutlinedButton(
-                        onClick = { }, text = R.string.confirm,
+                        onClick = { }, text = R.string.back,
                         modifier = Modifier.weight(1f)
                     )
                     MyButton(
                         onClick = { },
-                        text = R.string.cancel,
+                        text = R.string.cancel_booking,
                         modifier = Modifier
                             .padding(start = 16.dp)
                             .weight(1f)
@@ -213,7 +213,6 @@ private fun ConfirmationBottomSheetPreview() {
             {}
         )
 
-        // myBooking = mockViewModel.myBooking.collectAsState().value
 
     }
 }
