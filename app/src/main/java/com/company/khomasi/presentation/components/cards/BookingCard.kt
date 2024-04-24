@@ -56,7 +56,8 @@ fun BookingCard(
     playgroundPicture: PlaygroundPicture,
     modifier: Modifier = Modifier,
     isDark: Boolean = isSystemInDarkTheme(),
-    bookingStatus: BookingStatus
+    bookingStatus: BookingStatus,
+    showPendingButton: Boolean = true
 ) {
     Card(
         modifier
@@ -65,7 +66,7 @@ fun BookingCard(
             )
             .fillMaxWidth(),
         shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-        colors = CardDefaults.cardColors(Color.Unspecified),
+        colors = CardDefaults.cardColors(Color.Transparent),
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Box(
@@ -151,17 +152,19 @@ fun BookingCard(
                         }
 
                         BookingStatus.PENDING -> {
-                            MyButton(
-                                text = R.string.waiting,
-                                onClick = { },
-                                shape = MaterialTheme.shapes.medium,
-                                modifier = Modifier
-                                    .padding(start = 92.dp, end = 92.dp)
-                                    .weight(1f),
-                                color = if (isDark) ButtonDefaults.buttonColors(darkWarningColor) else ButtonDefaults.buttonColors(
-                                    lightWarningColor
-                                ),
-                            )
+                            if (showPendingButton) {
+                                MyButton(
+                                    text = R.string.waiting,
+                                    onClick = { },
+                                    shape = MaterialTheme.shapes.medium,
+                                    modifier = Modifier
+                                        .padding(start = 92.dp, end = 92.dp)
+                                        .weight(1f),
+                                    color = if (isDark) ButtonDefaults.buttonColors(darkWarningColor) else ButtonDefaults.buttonColors(
+                                        lightWarningColor
+                                    ),
+                                )
+                            }
                         }
 
                         BookingStatus.EXPIRED -> {
@@ -295,16 +298,17 @@ private fun BookingCardPreview() {
                 "Nasr City",
                 "1/10/2024",
                 7,
-               50,
-               "2425",
+                50,
+                "2425",
                 false
-            ) ,
+            ),
             playgroundPicture = PlaygroundPicture(
                 1,
                 1,
                 " ",
                 false
             ),
-            bookingStatus = BookingStatus.CONFIRMED)
+            bookingStatus = BookingStatus.PENDING
+        )
     }
 }
