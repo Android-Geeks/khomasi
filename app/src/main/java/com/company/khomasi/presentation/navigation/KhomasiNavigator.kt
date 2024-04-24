@@ -101,7 +101,7 @@ fun KhomasiNavigator() {
                     onClickBack = { navController.popBackStack() },
                     onClickShare = {},
                     onClickFav = { viewModel.onClickFavourite() },
-                    onBookNowClicked = { navController.navigate(Screens.bookingPlayground.name) },
+                    onBookNowClicked = { navController.navigate(Screens.BookingPlayground.name) },
                     onClickDisplayOnMap = {},
                     getPlaygroundDetails = viewModel::getPlaygroundDetails
                 )
@@ -141,23 +141,16 @@ fun KhomasiNavigator() {
                     sendFeedback = profileViewModel::sendFeedback
                 )
             }
-            composable(route = Screens.bookingPlayground.name) {
+            composable(route = Screens.BookingPlayground.name) {
                 val bookingViewModel: BookingViewModel = hiltViewModel()
                 BookingScreen(
                     bookingUiState = bookingViewModel.bookingUiState,
-                    freeSlots = bookingViewModel.freeSlotsState,
+                    freeSlotsState = bookingViewModel.freeSlotsState,
                     onBackClicked = { navController.popBackStack() },
                     updateDuration = { bookingViewModel.updateDuration(it) },
                     getFreeSlots = { bookingViewModel.getFreeTimeSlots() },
                     updateSelectedDay = { bookingViewModel.updateSelectedDay(it) },
                     onSlotClicked = { bookingViewModel.onSlotClicked(it) },
-                    updateCurrentAndNextSlots = { next, current ->
-                        bookingViewModel.updateCurrentAndNextSlots(
-                            next,
-                            current
-                        )
-                    },
-                    updateNextSlot = { bookingViewModel.updateNextSlot(it) },
                     checkValidity = { bookingViewModel.checkSlotsConsecutive() },
                 )
             }

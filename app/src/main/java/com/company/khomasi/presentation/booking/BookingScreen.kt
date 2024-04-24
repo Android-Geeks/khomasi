@@ -34,6 +34,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -63,7 +64,6 @@ import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightOverlay
 import com.company.khomasi.theme.lightText
 import kotlinx.coroutines.flow.StateFlow
-import java.time.Duration
 import java.time.LocalDateTime
 import java.time.OffsetDateTime
 import java.time.format.DateTimeFormatter
@@ -74,7 +74,7 @@ import java.util.Locale
 @Composable
 fun BookingScreen(
     bookingUiState: StateFlow<BookingUiState>,
-    freeSlots: StateFlow<DataState<FessTimeSlotsResponse>>,
+    freeSlotsState: StateFlow<DataState<FessTimeSlotsResponse>>,
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme(),
     onBackClicked: () -> Unit,
@@ -82,12 +82,10 @@ fun BookingScreen(
     getFreeSlots: () -> Unit,
     updateSelectedDay: (Int) -> Unit,
     onSlotClicked: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
-    updateCurrentAndNextSlots: (Pair<LocalDateTime, LocalDateTime>, Pair<LocalDateTime, LocalDateTime>) -> Unit,
-    updateNextSlot: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
     checkValidity: () -> Boolean
 ) {
     val bookingState = bookingUiState.collectAsState().value
-    val freeSlots = freeSlots.collectAsState().value
+    val freeSlots = freeSlotsState.collectAsState().value
     Scaffold(
         topBar = {
             BookingTopBar(
@@ -114,9 +112,7 @@ fun BookingScreen(
                         updateDuration = updateDuration,
                         getFreeSlots = { getFreeSlots() },
                         updateSelectedDay = updateSelectedDay,
-                        onSlotClicked = onSlotClicked,
-                        updateCurrentAndNextSlots = updateCurrentAndNextSlots,
-                        updateNextSlot = updateNextSlot,
+                        onSlotClicked = onSlotClicked
                     )
                 }) {
                 Column(
@@ -159,7 +155,6 @@ fun BookingScreen(
     }
 }
 
-
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BookingScreenContent(
@@ -170,21 +165,17 @@ fun BookingScreenContent(
     getFreeSlots: () -> Unit,
     updateSelectedDay: (Int) -> Unit,
     onSlotClicked: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
-    updateCurrentAndNextSlots: (Pair<LocalDateTime, LocalDateTime>, Pair<LocalDateTime, LocalDateTime>) -> Unit,
-    updateNextSlot: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
 ) {
 
     LaunchedEffect(bookingUiState.selectedDay) {
         getFreeSlots()
     }
     var showLoading by remember { mutableStateOf(false) }
-    val hourlyIntervalsList = calculateHourlyIntervalsList(freeSlotsState)
+    val hourlyIntervalsList =
+        calculateHourlyIntervalsList(freeSlotsState, bookingUiState.selectedDuration)
 
     LaunchedEffect(freeSlotsState) {
         showLoading = freeSlotsState is DataState.Loading
-    }
-    LaunchedEffect(bookingUiState.selectedDuration) {
-        updateNextSlotIfNeeded(bookingUiState, hourlyIntervalsList, updateNextSlot)
     }
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -253,7 +244,6 @@ fun BookingScreenContent(
         Spacer(modifier = Modifier.height(8.dp))
 
         if (freeSlotsState is DataState.Success) {
-
             LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
                 contentPadding = PaddingValues(start = 12.dp, end = 20.dp)
@@ -262,21 +252,28 @@ fun BookingScreenContent(
                     val slotStart = hourlyIntervalsList[slot].first
                     val slotEnd = hourlyIntervalsList[slot].second
                     val isSelected =
-                        bookingUiState.selectedSlots.contains(Pair(slotStart, slotEnd))
+                        remember {
+                            mutableStateOf(
+                                bookingUiState.selectedSlots.contains(
+                                    Pair(
+                                        slotStart,
+                                        slotEnd
+                                    )
+                                )
+                            )
+                        }
 
                     SlotItem(
                         slotStart = formatTime(slotStart),
                         slotEnd = formatTime(slotEnd),
                         isSelected = isSelected,
-                        onClickSlot = {
-                            onSlotClicked(Pair(slotStart, slotEnd))
-                            updateCurrentAndNextSlots(
-                                /*next*/     if ((slot + 1) < hourlyIntervalsList.size) hourlyIntervalsList[slot + 1] else hourlyIntervalsList[slot],
-                                /*current*/  hourlyIntervalsList[slot]
-                            )
-                        })
+                        onClickSlot = { onSlotClicked(Pair(slotStart, slotEnd)) }
+                    )
 
                     Spacer(modifier = Modifier.height(16.dp))
+                }
+                item {
+                    Spacer(modifier = Modifier.height(126.dp))
                 }
             }
         }
@@ -287,39 +284,40 @@ fun BookingScreenContent(
                 size = DpSize(75.dp, 75.dp)
             )
         }
+
     }
 }
 
 @RequiresApi(Build.VERSION_CODES.O)
-fun calculateHourlyIntervalsList(freeSlots: DataState<FessTimeSlotsResponse>): List<Pair<LocalDateTime, LocalDateTime>> {
+fun calculateHourlyIntervalsList(
+    freeSlots: DataState<FessTimeSlotsResponse>,
+    selectedDuration: Int
+): List<Pair<LocalDateTime, LocalDateTime>> {
     return if (freeSlots is DataState.Success) {
         freeSlots.data.freeTimeSlots.map { daySlots ->
             val startTime = parseTimestamp(daySlots.start).withMinute(0).withSecond(0)
             val endTime = parseTimestamp(daySlots.end).withMinute(0).withSecond(0)
-            val startEndDuration = Duration.between(startTime, endTime).toHours()
-
-            List(startEndDuration.toInt()) { i ->
-                val hourStartTime = startTime.plusHours(i.toLong())
-                val hourEndTime = hourStartTime.plusHours(1)
+            val startHour = startTime.hour
+            val endHour = endTime.hour
+            val startEndDuration = if (endHour > startHour) {
+                (endHour - startHour) * 60
+            } else {
+                if (endHour < startHour) {
+                    (24 - startHour + endHour) * 60
+                } else {
+                    24 * 60
+                }
+            }
+            val slotsCount = startEndDuration / selectedDuration
+            List(slotsCount) { i ->
+                val hourStartTime = startTime.plusMinutes(i * selectedDuration.toLong())
+                val hourEndTime = hourStartTime.plusMinutes(selectedDuration.toLong())
                 Pair(hourStartTime, hourEndTime)
             }
         }.flatten()
+
     } else {
         emptyList()
-    }
-}
-
-@RequiresApi(Build.VERSION_CODES.O)
-fun updateNextSlotIfNeeded(
-    bookingUiState: BookingUiState,
-    hourlyIntervalsList: List<Pair<LocalDateTime, LocalDateTime>>,
-    updateNextSlot: (Pair<LocalDateTime, LocalDateTime>) -> Unit
-) {
-    val currentSlot = bookingUiState.selectedSlots.lastOrNull()
-    val nextSlotIndex = hourlyIntervalsList.indexOf(currentSlot) + 1
-    if (nextSlotIndex in hourlyIntervalsList.indices) {
-        val nextSlot = hourlyIntervalsList[nextSlotIndex]
-        updateNextSlot(nextSlot)
     }
 }
 
@@ -327,14 +325,14 @@ fun updateNextSlotIfNeeded(
 fun SlotItem(
     slotStart: String,
     slotEnd: String,
-    isSelected: Boolean,
+    isSelected: MutableState<Boolean>,
     onClickSlot: () -> Unit = {}
 ) {
-    val cardColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent
+    val cardColor = if (isSelected.value) MaterialTheme.colorScheme.primary else Color.Transparent
     val textColor =
-        if (isSelected) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary
+        if (isSelected.value) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary
     val textSize =
-        if (isSelected) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium
+        if (isSelected.value) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium
     val currentLanguage = Locale.getDefault().language
     Card(
         modifier = Modifier
@@ -345,7 +343,10 @@ fun SlotItem(
                 width = 1.dp,
                 shape = MaterialTheme.shapes.medium
             )
-            .clickable { onClickSlot() },
+            .clickable {
+                onClickSlot()
+                isSelected.value = !isSelected.value
+            },
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(cardColor),
     ) {
@@ -361,7 +362,7 @@ fun SlotItem(
 
                 )
             Spacer(modifier = Modifier.width(4.dp))
-            if (isSelected) {
+            if (isSelected.value) {
                 Icon(
                     painter = painterResource(id = R.drawable.arrow_left),
                     tint = MaterialTheme.colorScheme.background,
@@ -430,17 +431,16 @@ fun BookingTopBar(
         ) {
 
             Spacer(modifier = Modifier.width(4.dp))
-            TopAppBar(
-                title = {
-                    Text(
-                        text = context.getString(
-                            R.string.booking_playground,
-                            playgroundName
-                        ),
-                        style = MaterialTheme.typography.displayMedium,
-                        modifier = Modifier.fillMaxWidth(),
-                        textAlign = TextAlign.Start
-                    )
+            TopAppBar(title = {
+                Text(
+                    text = context.getString(
+                        R.string.booking_playground,
+                        playgroundName
+                    ),
+                    style = MaterialTheme.typography.displayMedium,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Start
+                )
             }, navigationIcon = {
                 Icon(painter = painterResource(id = R.drawable.back),
                     contentDescription = null,
@@ -462,23 +462,15 @@ fun BookingTopBar(
 fun BookingScreenPreview() {
     val mockViewModel: MockBookingViewModel = viewModel()
     KhomasiTheme {
-        BookingScreen(
-            bookingUiState
-            = mockViewModel.bookingUiState,
-            freeSlots = mockViewModel.freeSlotsState,
+        BookingScreen(bookingUiState
+        = mockViewModel.bookingUiState,
+            freeSlotsState = mockViewModel.freeSlotsState,
             onBackClicked = {},
             updateDuration = { mockViewModel.updateDuration(it) },
             getFreeSlots = mockViewModel::getTimeSlots,
             updateSelectedDay = { mockViewModel.updateSelectedDay(it) },
             onSlotClicked = { mockViewModel.onSlotClicked(it) },
-            updateCurrentAndNextSlots = { next, past ->
-                mockViewModel.getNextAndPastSlots(
-                    next,
-                    past
-                )
-            },
-            updateNextSlot = { mockViewModel.updateNextSlot(it) },
-            checkValidity = { mockViewModel.CheckSlotsConsecutive() }
+            checkValidity = { mockViewModel.checkSlotsConsecutive() }
         )
     }
 }

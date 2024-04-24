@@ -16,7 +16,7 @@ enum class Screens {
     Search,
     Profile,
     PlaygroundDetails,
-    bookingPlayground,
+    BookingPlayground,
 }
 
 enum class Routes {

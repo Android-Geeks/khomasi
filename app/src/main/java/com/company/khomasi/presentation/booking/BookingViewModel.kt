@@ -36,7 +36,6 @@ class BookingViewModel @Inject constructor(
         MutableStateFlow(BookingUiState())
     val bookingUiState: StateFlow<BookingUiState> = _bookingUiState
 
-
     fun getFreeTimeSlots() {
         viewModelScope.launch {
             withContext(Dispatchers.Main) {
@@ -76,7 +75,8 @@ class BookingViewModel @Inject constructor(
     fun updateSelectedDay(day: Int) {
         _bookingUiState.update {
             it.copy(
-                selectedDay = day
+                selectedDay = day,
+                selectedSlots = mutableListOf()      // clear selected slots when day is changed
             )
         }
     }
@@ -86,108 +86,26 @@ class BookingViewModel @Inject constructor(
         when (type) {
             "+" -> {
                 val increasedDuration = _bookingUiState.value.selectedDuration.plus(30)   //90
-                val nextExpectedSlot = _bookingUiState.value.nextSlot
-                _bookingUiState.value.selectedSlots.lastOrNull()?.let { currentSlot ->
-                    if (nextExpectedSlot != null) {
-                        updateCurrentAndNextSlots(next = nextExpectedSlot, current = currentSlot)
-                    }
-                }
 
-                if (increasedDuration > _bookingUiState.value.selectedSlots.size * 60 && _bookingUiState.value.selectedSlots.size > 0) {
-                    _bookingUiState.value.nextSlot?.let {
-                        if (nextExpectedSlot != null) {
-                            addSlot(it)
-                        }
-                    }
-                }
                 _bookingUiState.update {
                     it.copy(
                         selectedDuration = if (increasedDuration < 3600) increasedDuration else 3500,   // always less than or equal to 3600 minutes to avoid overlapping time slots.
-                        selectedSlots = it.selectedSlots
+                        selectedSlots = mutableListOf()
                     )
                 }
 
-                /*                Log.d(
-                                    "booking",
-                                    "selectedSlots after +: ${
-                                        (_bookingUiState.value.selectedSlots.map { pair ->
-                                            Pair(
-                                                formatTime(pair.first), formatTime(pair.second)
-                                            )
-                                        })
-                                    }"
-                                )
-                                Log.d(
-                                    "booking",
-                                    "currentSlot +: ${
-                                        Pair(_bookingUiState.value.currentSlot?.let { formatTime(it.first) },
-                                            _bookingUiState.value.currentSlot?.let { formatTime(it.second) })
-                                    } - nextSlot: ${
-                                        Pair(
-                                            _bookingUiState.value.nextSlot?.let { formatTime(it.first) },
-                                            _bookingUiState.value.nextSlot?.let {
-                                                formatTime(
-                                                    it.second
-                                                )
-                                            }
-                                        )
-                                    }"
-                                )*/
             }
 
             "-" -> {
                 _bookingUiState.update {
                     val decreasedDuration = it.selectedDuration - 30    // 120 -> 90
-
-                    if (decreasedDuration % 60 == 0 && it.selectedSlots.size > 1) {
-                        it.selectedSlots.removeAt(it.selectedSlots.size - 1)
-                    }
-
                     it.copy(
                         selectedDuration = decreasedDuration,
-                        selectedSlots = it.selectedSlots
+                        selectedSlots = mutableListOf()
                     )
                 }
             }
         }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun updateNextSlot(nextSlot: Pair<LocalDateTime, LocalDateTime>) {
-        _bookingUiState.update {
-            it.copy(
-                nextSlot = nextSlot
-            )
-        }
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun updateCurrentAndNextSlots(
-        next: Pair<LocalDateTime, LocalDateTime>,
-        current: Pair<LocalDateTime, LocalDateTime>
-    ) {
-        _bookingUiState.update {
-            it.copy(
-                nextSlot = if (it.selectedSlots.isEmpty()) null else next,
-                currentSlot = if (it.selectedSlots.isEmpty()) null else current
-            )
-        }
-        Log.d(
-            "booking",
-            "currentSlot get: ${
-                Pair(_bookingUiState.value.currentSlot?.let { formatTime(it.first) },
-                    _bookingUiState.value.currentSlot?.let { formatTime(it.second) })
-            } - nextSlot: ${
-                Pair(
-                    _bookingUiState.value.nextSlot?.let { formatTime(it.first) },
-                    _bookingUiState.value.nextSlot?.let {
-                        formatTime(
-                            it.second
-                        )
-                    }
-                )
-            }"
-        )
     }
 
     private fun addSlot(slot: Pair<LocalDateTime, LocalDateTime>) {
@@ -210,7 +128,7 @@ class BookingViewModel @Inject constructor(
             addSlot(slot)
             it.copy(
                 selectedSlots = it.selectedSlots,
-                selectedDuration = if (it.selectedSlots.size > 1) it.selectedSlots.size * 60 else 60
+//                selectedDuration = if (it.selectedSlots.size > 1) it.selectedSlots.size * 60 else 60
             )
         }
 
@@ -224,7 +142,6 @@ class BookingViewModel @Inject constructor(
                 })
             }"
         )
-
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -243,6 +160,94 @@ class BookingViewModel @Inject constructor(
         }
         return temp
     }
-
 }
+
+
+/*
+@RequiresApi(Build.VERSION_CODES.O)
+fun updateDuration(type: String) {
+    when (type) {
+        "+" -> {
+            val increasedDuration = _bookingUiState.value.selectedDuration.plus(30)   //90
+
+            val nextExpectedSlot = _bookingUiState.value.nextSlot
+            _bookingUiState.value.selectedSlots.lastOrNull()?.let { currentSlot ->
+                if (nextExpectedSlot != null) {
+                    updateCurrentAndNextSlots(next = nextExpectedSlot, current = currentSlot)
+                }
+            }
+
+            if (increasedDuration > _bookingUiState.value.selectedSlots.size * 60 && _bookingUiState.value.selectedSlots.size > 0) {
+                _bookingUiState.value.nextSlot?.let {
+                    if (nextExpectedSlot != null) {
+                        addSlot(it)
+                    }
+                }
+            }
+            _bookingUiState.update {
+                it.copy(
+                    selectedDuration = if (increasedDuration < 3600) increasedDuration else 3500,   // always less than or equal to 3600 minutes to avoid overlapping time slots.
+                    selectedSlots = mutableListOf()
+                )
+            }
+
+            Log.d(
+                "booking",
+                "selectedSlots after +: ${
+                    (_bookingUiState.value.selectedSlots.map { pair ->
+                        Pair(
+                            formatTime(pair.first), formatTime(pair.second)
+                        )
+                    })
+                }"
+            )
+            Log.d(
+                "booking",
+                "currentSlot +: ${
+                    Pair(_bookingUiState.value.currentSlot?.let { formatTime(it.first) },
+                        _bookingUiState.value.currentSlot?.let { formatTime(it.second) })
+                } - nextSlot: ${
+                    Pair(
+                        _bookingUiState.value.nextSlot?.let { formatTime(it.first) },
+                        _bookingUiState.value.nextSlot?.let {
+                            formatTime(
+                                it.second
+                            )
+                        }
+                    )
+                }"
+            )
+        }
+
+        "-" -> {
+            _bookingUiState.update {
+                val decreasedDuration = it.selectedDuration - 30    // 120 -> 90
+
+                                 if (decreasedDuration % 60 == 0 && it.selectedSlots.size > 1) {
+                it.selectedSlots.removeAt(it.selectedSlots.size - 1)
+            }
+
+                    it.copy(
+                        selectedDuration = decreasedDuration,
+                        selectedSlots = it.selectedSlots
+                    )
+        }
+    }
+}
+}
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun updateNextSlot(
+    nextSlot: Pair<LocalDateTime, LocalDateTime>,
+    current: Pair<LocalDateTime, LocalDateTime>
+) {
+    _bookingUiState.update {
+        it.copy(
+            nextSlot = nextSlot,
+            currentSlot = current
+        )
+    }
+}
+
+*/
 

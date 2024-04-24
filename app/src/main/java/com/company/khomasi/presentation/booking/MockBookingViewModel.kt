@@ -21,18 +21,6 @@ class MockBookingViewModel : ViewModel() {
         MutableStateFlow(BookingUiState())
     val bookingUiState: StateFlow<BookingUiState> = _bookingUiState
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun getNextAndPastSlots(
-        next: Pair<LocalDateTime, LocalDateTime>,
-        past: Pair<LocalDateTime, LocalDateTime>
-    ) {
-        _bookingUiState.update {
-            it.copy(
-                nextSlot = next,
-                currentSlot = past
-            )
-        }
-    }
 
     fun updateDuration(type: String) {
 
@@ -88,17 +76,9 @@ class MockBookingViewModel : ViewModel() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
-    fun updateNextSlot(nextSlot: Pair<LocalDateTime, LocalDateTime>) {
-        _bookingUiState.update {
-            it.copy(
-                nextSlot = nextSlot
-            )
-        }
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun CheckSlotsConsecutive(): Boolean {
+    fun checkSlotsConsecutive(): Boolean {
         val selectedTimes = _bookingUiState.value.selectedSlots
         var temp = true
         selectedTimes.forEachIndexed { index, it ->
