@@ -1,5 +1,7 @@
 package com.company.khomasi.presentation.profile.components.profile_topbar
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,15 +41,22 @@ fun ProfileImage(
         SubcomposeAsyncImage(
             model = ImageRequest
                 .Builder(context = LocalContext.current)
-                .data(if (image != null) image.convertToBitmap() else R.drawable.user_img)
+                .data(image?.convertToBitmap())
                 .crossfade(true)
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
             loading = { CircularProgressIndicator() },
+            error = {
+                Image(
+                    painter = painterResource(id = R.drawable.user_img),
+                    contentDescription = null
+                )
+            },
             modifier = Modifier
                 .size(150.dp)
                 .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surface)
         )
         Text(
             text = name,

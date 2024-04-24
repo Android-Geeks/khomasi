@@ -7,12 +7,14 @@ import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
+import com.company.khomasi.domain.model.ProfileImageResponse
 import com.company.khomasi.domain.model.UserLoginResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.model.VerificationResponse
 import kotlinx.coroutines.flow.Flow
+import okhttp3.MultipartBody
 
 interface RemoteUserRepository {
     suspend fun registerUser(userRegisterData: UserRegisterData): Flow<DataState<UserRegisterResponse>>
@@ -52,7 +54,7 @@ interface RemoteUserRepository {
     suspend fun uploadProfilePicture(
         token: String,
         userId: String,
-        picture: String
+        picture: MultipartBody.Part
     ): Flow<DataState<MessageResponse>>
 
     suspend fun updateUser(
@@ -66,4 +68,8 @@ interface RemoteUserRepository {
         feedback: FeedbackRequest
     ): Flow<DataState<MessageResponse>>
 
+    suspend fun getProfileImage(
+        token: String,
+        userId: String
+    ): Flow<DataState<ProfileImageResponse>>
 }

@@ -18,7 +18,6 @@ object Constants {
     const val COUNTRY = "country"
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
-    const val PROFILE_PICTURE = "profile_picture"
     const val COINS = "coins"
     const val RATING = "rating"
     const val TOKEN = "token"

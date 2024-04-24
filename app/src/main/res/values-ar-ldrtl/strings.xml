@@ -206,4 +206,8 @@
     <string name="available_times">الاوقات المتاحة:</string>
     <string name="time_slot_validation">الرجاء تحديد فترة زمنية واحدة متتالية</string>
     <string name="continue_to_payment">المتابعة للدفع</string>
+    <string name="grant_permission">تم منح الإذن</string>
+    <string name="permission_denied">تم رفض الإذن</string>
+    <string name="take_a_photo">التقاط صورة</string>
+    <string name="choose_from_gallery">اختر من المعرض</string>
 </resources>

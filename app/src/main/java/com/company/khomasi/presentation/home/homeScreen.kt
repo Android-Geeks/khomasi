@@ -1,5 +1,7 @@
 package com.company.khomasi.presentation.home
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -70,7 +72,7 @@ fun HomeScreen(
     onAdClicked: () -> Unit,
     onClickPlaygroundCard: (Int, String, Int) -> Unit,
     onFavouriteClick: (Int) -> Unit,
-    getPlaygrounds: () -> Unit
+    getHomeScreenData: () -> Unit
 ) {
     val playgrounds = playgroundsState.collectAsState().value
     val uiState = homeUiState.collectAsState().value
@@ -79,7 +81,7 @@ fun HomeScreen(
     var showLoading by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        getPlaygrounds()
+        getHomeScreenData()
     }
 
     LaunchedEffect(playgrounds) {
@@ -97,6 +99,7 @@ fun HomeScreen(
 
             UserProfileSection(
                 userData = localUser,
+                profileImage = uiState.profileImage,
                 onClickUserImage = onClickUserImage,
                 onClickBell = onClickBell
             )
@@ -219,6 +222,7 @@ fun HomeContent(
 @Composable
 fun UserProfileSection(
     userData: LocalUser,
+    profileImage: String?,
     onClickUserImage: () -> Unit,
     onClickBell: () -> Unit
 ) {
@@ -227,16 +231,19 @@ fun UserProfileSection(
             modifier = Modifier
                 .size(50.dp)
                 .clip(CircleShape)
+                .background(MaterialTheme.colorScheme.surface)
                 .clickable { onClickUserImage() },
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(
-                    if (userData.profilePicture != null)
-                        userData.profilePicture.convertToBitmap()
-                    else R.drawable.user_img
-                )
+                .data(profileImage?.convertToBitmap())
                 .crossfade(true).build(),
             loading = {
                 CircularProgressIndicator()
+            },
+            error = {
+                Image(
+                    painter = painterResource(id = R.drawable.user_img),
+                    contentDescription = null
+                )
             },
             contentDescription = null,
             contentScale = ContentScale.Crop,
@@ -325,7 +332,7 @@ fun HomeScreenPreview() {
                 mockViewModel.onClickPlaygroundCard(playgroundId, playgroundName, playgroundPrice)
             },
             onFavouriteClick = {},
-            getPlaygrounds = {},
+            getHomeScreenData = {},
             localUserState = MutableStateFlow(LocalUser())
         )
     }

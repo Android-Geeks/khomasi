@@ -202,6 +202,10 @@
     <string name="Show_on_map">Show on map</string>
     <string name="date_and_duration">Date and duration:</string>
     <string name="send">Send</string>
+    <string name="grant_permission">Permission Granted</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="take_a_photo">Take a photo</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
     <string name="min">min</string>
     <string name="available_times">Available times:</string>
     <string name="time_slot_validation">Please select one consecutive time period</string>

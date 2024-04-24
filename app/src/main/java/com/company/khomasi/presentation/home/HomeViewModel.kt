@@ -36,8 +36,21 @@ class HomeViewModel @Inject constructor(
     )
     val localUser: StateFlow<LocalUser> = _localUser
 
-    fun getPlaygrounds() {
+
+    fun getHomeScreenData() {
         viewModelScope.launch {
+            remoteUserUseCase.getProfileImageUseCase(
+                token = "Bearer ${_localUser.value.token ?: ""}",
+                userId = _localUser.value.userID ?: ""
+            ).collect { profileImageRes ->
+                if (profileImageRes is DataState.Success) {
+                    _homeUiState.update {
+                        it.copy(
+                            profileImage = profileImageRes.data.profilePicture
+                        )
+                    }
+                }
+            }
             remoteUserUseCase.getPlaygroundsUseCase(
                 token = "Bearer ${_localUser.value.token ?: ""}",
                 userId = _localUser.value.userID ?: ""
