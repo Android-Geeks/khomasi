@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.components.cards
 
+import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
@@ -57,7 +58,7 @@ fun BookingCard(
     modifier: Modifier = Modifier,
     isDark: Boolean = isSystemInDarkTheme(),
     bookingStatus: BookingStatus,
-    showPendingButton: Boolean = true
+    showPendingButton: Boolean = true,
 ) {
     Card(
         modifier
@@ -66,8 +67,7 @@ fun BookingCard(
             )
             .fillMaxWidth(),
         shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-        colors = CardDefaults.cardColors(Color.Transparent),
-        elevation = CardDefaults.cardElevation(1.dp)
+        colors = CardDefaults.cardColors(Color.Transparent)
     ) {
         Box(
             modifier = Modifier
@@ -81,7 +81,7 @@ fun BookingCard(
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surface)
             )
             Column {
-                BookingCardDetails(bookingDetails,playgroundPicture)
+                BookingCardDetails(bookingDetails, playgroundPicture)
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -201,7 +201,8 @@ fun BookingCard(
 fun BookingCardDetails(
     bookingDetails: BookingDetails,
     playgroundPicture: PlaygroundPicture,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    context: Context = LocalContext.current
 ) {
     Column(
         modifier = modifier
@@ -247,7 +248,9 @@ fun BookingCardDetails(
                 iconId = R.drawable.clock
             )
             TextWithIcon(
-                text = "bookingDetails.playground.price",
+                text = context.getString(
+                    R.string.fees_per_hour, bookingDetails.cost
+                ),
                 iconId = R.drawable.currencycircledollar
             )
         }

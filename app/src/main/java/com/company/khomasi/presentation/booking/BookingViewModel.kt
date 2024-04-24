@@ -41,6 +41,9 @@ class BookingViewModel @Inject constructor(
             withContext(Dispatchers.Main) {
                 localUserUseCases.getLocalUser().collect { userData ->
                     localUserUseCases.getPlaygroundId().collect { playgroundId ->
+
+                        _bookingUiState.update { it.copy(playgroundId = playgroundId) }
+
                         remotePlaygroundUseCase.getFreeTimeSlotsUseCase(
                             token = "Bearer ${userData.token}",
                             id = playgroundId,
@@ -159,6 +162,17 @@ class BookingViewModel @Inject constructor(
             temp = false
         }
         return temp
+    }
+
+    fun onBackClicked() {
+        _bookingUiState.value = _bookingUiState.value.copy(page = _bookingUiState.value.page - 1)
+    }
+
+    fun onNextClicked() {
+        _bookingUiState.update {
+            it.copy(page = it.page.plus(1))
+        }
+
     }
 }
 

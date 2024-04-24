@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -43,6 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -52,6 +54,7 @@ import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.connectionStates.ThreeBounce
+import com.company.khomasi.presentation.screenDimensions.getScreenHeight
 import com.company.khomasi.presentation.screenDimensions.getScreenWidth
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkOverlay
@@ -78,10 +81,20 @@ fun BookingScreen(
     updateSelectedDay: (Int) -> Unit,
     onSlotClicked: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
     checkValidity: () -> Boolean,
-    onClickNext: () -> Unit
+    onNextClicked: () -> Unit,
+    onBackToBookingScreen: () -> Unit
 ) {
+
     val bookingState = bookingUiState.collectAsState().value
     val freeSlots = freeSlotsState.collectAsState().value
+    val screenHeight = getScreenHeight()
+    BackHandler {
+        if (bookingState.page == 2) {
+            onBackToBookingScreen()
+        } else {
+            onBackClicked()
+        }
+    }
     Scaffold(
         topBar = {
             BookingTopBar(
@@ -99,56 +112,46 @@ fun BookingScreen(
             color = MaterialTheme.colorScheme.background,
         ) {
             AuthSheet(
+                modifier = Modifier.fillMaxSize(),
                 sheetModifier = Modifier.fillMaxWidth(),
                 screenContent = {
-                    BookingScreenContent(
-                        bookingUiState = bookingState,
-                        freeSlotsState = freeSlots,
-                        isDark = isDark,
-                        updateDuration = updateDuration,
-                        getFreeSlots = { getFreeSlots() },
-                        updateSelectedDay = updateSelectedDay,
-                        onSlotClicked = onSlotClicked
-                    )
-                }) {
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(116.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
+                    when (bookingState.page) {
+                        1 -> BookingScreenContent(
+                            bookingUiState = bookingState,
+                            freeSlotsState = freeSlots,
+                            isDark = isDark,
+                            updateDuration = updateDuration,
+                            getFreeSlots = { getFreeSlots() },
+                            updateSelectedDay = updateSelectedDay,
+                            onSlotClicked = onSlotClicked
+                        )
 
-                    Text(
-                        text = context.getString(
-                            R.string.fees_per_hour, bookingState
-                                .playgroundPrice
-                        ),
-                        style = MaterialTheme.typography.displayLarge,
-                        color = if (isDark) darkText else lightText
-                    )
+                        2 -> ConfirmBookingContent(
+                            bookingState = bookingState,
+                        )
+                    }
+                },
+                sheetContent = {
+                    when (bookingState.page) {
+                        1 -> BookingBottomSheet(
+                            sheetHeight = (screenHeight * 0.16).dp,
+                            playgroundPrice = bookingState.playgroundPrice,
+                            isDark = isDark,
+                            context = context,
+                            onNextClicked = onNextClicked,
+                            checkValidity = checkValidity
+                        )
 
-                    MyButton(
-                        text = R.string.next,
-                        onClick = {
-                            if (!checkValidity()) {
-                                Toast
-                                    .makeText(
-                                        context,
-                                        R.string.time_slot_validation,
-                                        Toast.LENGTH_LONG
-                                    )
-                                    .show()
-                            } else {
-                                onClickNext()
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                        textStyle = MaterialTheme.typography.displayLarge
-                    )
-
+                        2 -> ConfirmBookingBottomSheet(
+                            sheetHeight = (screenHeight * 0.16).dp,
+                            playgroundPrice = bookingState.playgroundPrice,
+                            isDark = isDark,
+                            context = context,
+                            onContinueToPaymentClicked = { onNextClicked() }
+                        )
+                    }
                 }
-            }
+            )
         }
     }
 }
@@ -270,7 +273,7 @@ fun BookingScreenContent(
                     Spacer(modifier = Modifier.height(16.dp))
                 }
                 item {
-                    Spacer(modifier = Modifier.height(126.dp))
+                    Spacer(modifier = Modifier.height(136.dp))
                 }
             }
         }
@@ -281,6 +284,53 @@ fun BookingScreenContent(
                 size = DpSize(75.dp, 75.dp)
             )
         }
+
+    }
+}
+
+@Composable
+fun BookingBottomSheet(
+    sheetHeight: Dp,
+    playgroundPrice: Int,
+    isDark: Boolean,
+    context: Context,
+    onNextClicked: () -> Unit,
+    checkValidity: () -> Boolean
+) {
+    Column(
+        Modifier
+            .fillMaxWidth()
+            .height(sheetHeight),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+
+        Text(
+            text = context.getString(
+                R.string.fees_per_hour, playgroundPrice
+            ),
+            style = MaterialTheme.typography.displayLarge,
+            color = if (isDark) darkText else lightText
+        )
+
+        MyButton(
+            text = R.string.next,
+            onClick = {
+                if (!checkValidity()) {
+                    Toast
+                        .makeText(
+                            context,
+                            R.string.time_slot_validation,
+                            Toast.LENGTH_LONG
+                        )
+                        .show()
+                } else {
+                    onNextClicked()
+                }
+            },
+            modifier = Modifier.fillMaxWidth(),
+            textStyle = MaterialTheme.typography.displayLarge
+        )
 
     }
 }
@@ -317,6 +367,7 @@ fun calculateHourlyIntervalsList(
         emptyList()
     }
 }
+
 @RequiresApi(Build.VERSION_CODES.O)
 fun formatTime(localDateTime: LocalDateTime): String {
     return localDateTime.format(DateTimeFormatter.ofPattern("hh:mm a"))
@@ -397,7 +448,8 @@ fun BookingScreenPreview() {
             updateSelectedDay = { mockViewModel.updateSelectedDay(it) },
             onSlotClicked = { mockViewModel.onSlotClicked(it) },
             checkValidity = { mockViewModel.checkSlotsConsecutive() },
-            onClickNext = { }
+            onNextClicked = { },
+            onBackToBookingScreen = { }
         )
     }
 }

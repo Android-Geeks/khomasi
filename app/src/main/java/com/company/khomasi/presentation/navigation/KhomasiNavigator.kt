@@ -16,7 +16,6 @@ import com.company.khomasi.navigation.Screens
 import com.company.khomasi.navigation.listOfNavItems
 import com.company.khomasi.presentation.booking.BookingScreen
 import com.company.khomasi.presentation.booking.BookingViewModel
-import com.company.khomasi.presentation.booking.ConfirmBookingScreen
 import com.company.khomasi.presentation.favorite.FavouritePage
 import com.company.khomasi.presentation.favorite.FavouriteViewModel
 import com.company.khomasi.presentation.home.HomeScreen
@@ -153,16 +152,8 @@ fun KhomasiNavigator() {
                     updateSelectedDay = { bookingViewModel.updateSelectedDay(it) },
                     onSlotClicked = { bookingViewModel.onSlotClicked(it) },
                     checkValidity = { bookingViewModel.checkSlotsConsecutive() },
-                    onClickNext = { navController.navigate(Screens.ConfirmBooking.name) },
-                )
-            }
-            composable(route = Screens.ConfirmBooking.name) {
-
-                val bookingViewModel: BookingViewModel = hiltViewModel()
-
-                ConfirmBookingScreen(bookingUiState = bookingViewModel.bookingUiState,
-                    onClickTermsOfService = { },
-                    onBackClicked = { navController.popBackStack() }
+                    onNextClicked = { bookingViewModel.onNextClicked() },
+                    onBackToBookingScreen = { bookingViewModel.onBackClicked() }
                 )
             }
         }
