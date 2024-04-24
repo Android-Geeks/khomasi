@@ -41,6 +41,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
@@ -76,6 +77,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.flow.StateFlow
+import java.util.Locale
 
 /*
 /////////////////////////////////////////////////////////////////////////////////////
@@ -632,11 +634,21 @@ fun IconWithText(
     @DrawableRes iconId: Int,
     text: String,
 ) {
+    val currentLanguage = Locale.getDefault().language
     Row(
         Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            painter = painterResource(iconId), contentDescription = null
+            painter = painterResource(iconId), contentDescription = null,
+            modifier = Modifier
+                .size(24.dp)
+                .then(
+                    if (currentLanguage == "en") {
+                        Modifier.rotate(180f)
+                    } else {
+                        Modifier
+                    }
+                )
         )
 
         Spacer(modifier = Modifier.width(4.dp))
