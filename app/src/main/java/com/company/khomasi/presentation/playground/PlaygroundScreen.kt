@@ -322,6 +322,7 @@ fun ImageSlider(
 fun ButtonWithIcon(
     iconId: Int, onClick: () -> Unit
 ) {
+    val currentLanguage = Locale.getDefault().language
     Card(shape = CircleShape, modifier = Modifier
         .size(44.dp)
         .clickable { onClick() }) {
@@ -334,7 +335,15 @@ fun ButtonWithIcon(
                 painter = painterResource(id = iconId),
                 contentDescription = null,
                 tint = if (isSystemInDarkTheme()) darkIcon else lightIcon,
-                modifier = Modifier.size(24.dp)
+                modifier = Modifier
+                    .size(24.dp)
+                    .then(
+                        if (currentLanguage == "en") {
+                            Modifier.rotate(180f)
+                        } else {
+                            Modifier
+                        }
+                    )
             )
         }
     }
@@ -634,21 +643,11 @@ fun IconWithText(
     @DrawableRes iconId: Int,
     text: String,
 ) {
-    val currentLanguage = Locale.getDefault().language
     Row(
         Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
             painter = painterResource(iconId), contentDescription = null,
-            modifier = Modifier
-                .size(24.dp)
-                .then(
-                    if (currentLanguage == "en") {
-                        Modifier.rotate(180f)
-                    } else {
-                        Modifier
-                    }
-                )
         )
 
         Spacer(modifier = Modifier.width(4.dp))
