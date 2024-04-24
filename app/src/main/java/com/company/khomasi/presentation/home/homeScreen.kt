@@ -1,6 +1,7 @@
 package com.company.khomasi.presentation.home
 
-import android.util.Log
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,11 +14,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -41,10 +44,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.presentation.components.AdsContent
 import com.company.khomasi.presentation.components.AdsSlider
@@ -52,47 +56,39 @@ import com.company.khomasi.presentation.components.cards.PlaygroundCard
 import com.company.khomasi.presentation.components.connectionStates.ThreeBounce
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.utils.convertToBitmap
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
 fun HomeScreen(
-    playgroundState: DataState<PlaygroundsResponse>,
-    homeUiState: HomeUiState,
+    playgroundsState: StateFlow<DataState<PlaygroundsResponse>>,
+    localUserState: StateFlow<LocalUser>,
+    homeUiState: StateFlow<HomeUiState>,
     onClickUserImage: () -> Unit,
     onClickBell: () -> Unit,
     onSearchBarClicked: () -> Unit,
     onClickViewAll: () -> Unit,
     onAdClicked: () -> Unit,
-    onClickPlaygroundCard: (Int) -> Unit,
+    onClickPlaygroundCard: (Int, String, Int) -> Unit,
     onFavouriteClick: (Int) -> Unit,
-    getPlaygrounds: () -> Unit
+    getHomeScreenData: () -> Unit
 ) {
+    val playgrounds = playgroundsState.collectAsState().value
+    val uiState = homeUiState.collectAsState().value
+    val localUser = localUserState.collectAsState().value
+
     var showLoading by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
-        getPlaygrounds()
+        getHomeScreenData()
     }
 
-    LaunchedEffect(playgroundState) {
-        when (playgroundState) {
-            is DataState.Loading -> {
-                showLoading = true
-            }
-
-            is DataState.Success -> {
-                showLoading = false
-            }
-
-            is DataState.Error -> {
-                showLoading = false
-            }
-
-            is DataState.Empty -> {}
-        }
+    LaunchedEffect(playgrounds) {
+        showLoading = playgrounds is DataState.Loading
     }
 
 
-    Log.d("HomeScreen", "HomeScreen: $playgroundState")
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -102,13 +98,13 @@ fun HomeScreen(
         ) {
 
             UserProfileSection(
-                userData = homeUiState,
+                userData = localUser,
+                profileImage = uiState.profileImage,
                 onClickUserImage = onClickUserImage,
                 onClickBell = onClickBell
             )
 
             Spacer(modifier = Modifier.height(10.dp))
-
 
             HomeSearchBar(
                 onSearchBarClicked = onSearchBarClicked
@@ -117,11 +113,13 @@ fun HomeScreen(
 
             Box(modifier = Modifier.fillMaxSize()) {
                 HomeContent(
-                    playgroundState = playgroundState,
-                    homeUiState = homeUiState,
+                    playgroundState = playgrounds,
+                    homeUiState = uiState,
                     onAdClicked = { onAdClicked() },
                     onClickViewAll = { onClickViewAll() },
-                    onClickPlaygroundCard = { playgroundId -> onClickPlaygroundCard(playgroundId) },
+                    onClickPlaygroundCard = { playgroundId, playgroundName, playgroundPrice ->
+                        onClickPlaygroundCard(playgroundId, playgroundName, playgroundPrice)
+                    },
                     onFavouriteClick = { playgroundId -> onFavouriteClick(playgroundId) }
                 )
                 if (showLoading) {
@@ -144,7 +142,7 @@ fun HomeContent(
     homeUiState: HomeUiState,
     onAdClicked: () -> Unit,
     onClickViewAll: () -> Unit,
-    onClickPlaygroundCard: (Int) -> Unit,
+    onClickPlaygroundCard: (Int, String, Int) -> Unit,
     onFavouriteClick: (Int) -> Unit
 ) {
     //        -----------------Temporary-----------------           //
@@ -174,16 +172,16 @@ fun HomeContent(
         ) {
 
 //      ------------ Temporary until the booking page is completed   -----//
-//            if(true){
-//                item {
-//                    RatingCard(
-//                        buttonText = R.string.rating,
-//                        mainText = "كانت مباراه حماسيه",
-//                        subText = "اليوم الساعه 9:00 م",
-//                        timeIcon = R.drawable.clock
-//                    )
-//                }
-//            }
+            /*            if(true){
+                            item {
+                                RatingCard(
+                                    buttonText = R.string.rating,
+                                    mainText = "كانت مباراه حماسيه",
+                                    subText = "اليوم الساعه 9:00 م",
+                                    timeIcon = R.drawable.clock
+                                )
+                            }
+                        }*/
 //  -------------------------------------------------------------------//
 
             item { AdsSlider(adsContent = adsList, onAdClicked = { onAdClicked() }) }
@@ -208,7 +206,13 @@ fun HomeContent(
                 PlaygroundCard(
                     playground = playground,
                     onFavouriteClick = { onFavouriteClick(playground.id) },          // WILL BE IMPLEMENTED LATER
-                    onViewPlaygroundClick = { onClickPlaygroundCard(playground.id) }
+                    onViewPlaygroundClick = {
+                        onClickPlaygroundCard(
+                            playground.id,
+                            playground.name,
+                            playground.feesForHour
+                        )
+                    }
                 )
             }
         }
@@ -217,35 +221,40 @@ fun HomeContent(
 
 @Composable
 fun UserProfileSection(
-    userData: HomeUiState,
+    userData: LocalUser,
+    profileImage: String?,
     onClickUserImage: () -> Unit,
     onClickBell: () -> Unit
 ) {
     Row {
-        AsyncImage(
+        SubcomposeAsyncImage(
             modifier = Modifier
                 .size(50.dp)
                 .clip(CircleShape)
-                .padding(end = 4.dp)
+                .background(MaterialTheme.colorScheme.surface)
                 .clickable { onClickUserImage() },
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(
-                    if (userData.userImg.isNullOrEmpty())
-                        R.drawable.user_img
-                    else {
-                        userData.userImg.convertToBitmap()
-                    }
-                )
+                .data(profileImage?.convertToBitmap())
                 .crossfade(true).build(),
+            loading = {
+                CircularProgressIndicator()
+            },
+            error = {
+                Image(
+                    painter = painterResource(id = R.drawable.user_img),
+                    contentDescription = null
+                )
+            },
             contentDescription = null,
-            contentScale = ContentScale.FillBounds,
-            placeholder = painterResource(id = R.drawable.user_img)
+            contentScale = ContentScale.Crop,
         )
+
+        Spacer(modifier = Modifier.width(8.dp))
 
         Column {
             Text(
                 text = "${stringResource(id = R.string.hello)} ${
-                    userData.name
+                    userData.firstName
                 }",
                 style = MaterialTheme.typography.bodyMedium,
 
@@ -312,16 +321,19 @@ fun HomeScreenPreview() {
     KhomasiTheme {
         val mockViewModel: MockHomeViewModel = hiltViewModel()
         HomeScreen(
-            playgroundState = mockViewModel.playgroundState.collectAsState().value,
-            homeUiState = mockViewModel.homeUiState.collectAsState().value,
+            playgroundsState = mockViewModel.playgroundState,
+            homeUiState = mockViewModel.homeUiState,
             onClickUserImage = { },
             onClickBell = { },
             onSearchBarClicked = {},
             onClickViewAll = { mockViewModel.onClickViewAll() },
             onAdClicked = { },
-            onClickPlaygroundCard = { playgroundId -> mockViewModel.onClickPlayground(playgroundId) },
+            onClickPlaygroundCard = { playgroundId, playgroundName, playgroundPrice ->
+                mockViewModel.onClickPlaygroundCard(playgroundId, playgroundName, playgroundPrice)
+            },
             onFavouriteClick = {},
-            getPlaygrounds = {}
+            getHomeScreenData = {},
+            localUserState = MutableStateFlow(LocalUser())
         )
     }
 }

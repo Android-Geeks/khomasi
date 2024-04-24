@@ -30,7 +30,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -48,7 +47,9 @@ import com.company.khomasi.presentation.search.components.SearchHistory
 import com.company.khomasi.presentation.search.components.SearchResults
 import com.company.khomasi.presentation.search.components.SearchTopAppBar
 import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.theme.darkErrorColor
 import com.company.khomasi.theme.darkText
+import com.company.khomasi.theme.lightErrorColor
 import com.company.khomasi.theme.lightText
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -106,7 +107,7 @@ fun SearchScreen(
                         )
                     }
                 },
-                confirmButtonColor = Color.Red
+                confirmButtonColor = if (isDark) darkErrorColor else lightErrorColor
             )
         }
         Scaffold(

@@ -1,5 +1,6 @@
-package com.company.khomasi.presentation.profile.components
+package com.company.khomasi.presentation.profile.components.profile_topbar
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -18,7 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.theme.darkText
@@ -36,7 +38,7 @@ fun ProfileImage(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(16.dp)
     ) {
-        AsyncImage(
+        SubcomposeAsyncImage(
             model = ImageRequest
                 .Builder(context = LocalContext.current)
                 .data(image?.convertToBitmap())
@@ -44,8 +46,13 @@ fun ProfileImage(
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            placeholder = painterResource(id = R.drawable.playground),
-            error = painterResource(id = R.drawable.user_img),
+            loading = { CircularProgressIndicator() },
+            error = {
+                Image(
+                    painter = painterResource(id = R.drawable.user_img),
+                    contentDescription = null
+                )
+            },
             modifier = Modifier
                 .size(150.dp)
                 .clip(CircleShape)

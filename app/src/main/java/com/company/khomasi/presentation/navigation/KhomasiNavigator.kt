@@ -1,9 +1,10 @@
 package com.company.khomasi.presentation.navigation
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -13,6 +14,8 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.navigation.Screens
 import com.company.khomasi.navigation.listOfNavItems
+import com.company.khomasi.presentation.booking.BookingScreen
+import com.company.khomasi.presentation.booking.BookingViewModel
 import com.company.khomasi.presentation.favorite.FavouritePage
 import com.company.khomasi.presentation.favorite.FavouriteViewModel
 import com.company.khomasi.presentation.home.HomeScreen
@@ -28,6 +31,7 @@ import com.company.khomasi.presentation.search.SearchScreen
 import com.company.khomasi.presentation.search.SearchViewModel
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun KhomasiNavigator() {
     val navController = rememberNavController()
@@ -51,14 +55,19 @@ fun KhomasiNavigator() {
             composable(route = Screens.Home.name) {
                 val homeViewModel: HomeViewModel = hiltViewModel()
                 HomeScreen(
-                    playgroundState = homeViewModel.playgroundState.collectAsState().value,
-                    homeUiState = homeViewModel.homeUiState.collectAsState().value,
+                    playgroundsState = homeViewModel.playgroundState,
+                    homeUiState = homeViewModel.homeUiState,
+                    localUserState = homeViewModel.localUser,
                     onClickUserImage = { navController.navigate(Screens.Profile.name) },
-                    onClickPlaygroundCard = { playgroundId ->
-                        homeViewModel.onClickPlayground(playgroundId)
+                    onClickPlaygroundCard = { playgroundId, playgroundName, playgroundPrice ->
+                        homeViewModel.onClickPlayground(
+                            playgroundId,
+                            playgroundName,
+                            playgroundPrice
+                        )
                         navController.navigate(Screens.PlaygroundDetails.name)
                     },
-                    getPlaygrounds = homeViewModel::getPlaygrounds,
+                    getHomeScreenData = homeViewModel::getHomeScreenData,
                     onClickBell = { /* will nav to notification page */ },
                     onClickViewAll = { homeViewModel.onClickViewAll() },
                     onSearchBarClicked = { navController.navigate(Screens.Search.name) },
@@ -105,7 +114,7 @@ fun KhomasiNavigator() {
                     onClickBack = { navController.popBackStack() },
                     onClickShare = {},
                     onClickFav = { viewModel.onClickFavourite() },
-                    onBookNowClicked = { },
+                    onBookNowClicked = { navController.navigate(Screens.BookingPlayground.name) },
                     onClickDisplayOnMap = {},
                     getPlaygroundDetails = viewModel::getPlaygroundDetails
                 )
@@ -131,10 +140,34 @@ fun KhomasiNavigator() {
                 ProfileScreen(
                     profileUiState = profileViewModel.profileUiState,
                     localUserUiState = profileViewModel.localUser,
+                    getProfileImage = profileViewModel::getProfileImage,
                     onEditProfile = profileViewModel::onEditProfile,
                     onSaveProfile = profileViewModel::onSaveProfile,
+                    onFeedbackCategorySelected = profileViewModel::onFeedbackCategorySelected,
+                    onFeedbackChanged = profileViewModel::onFeedbackChanged,
                     onLogout = profileViewModel::onLogout,
+                    updateUserData = profileViewModel::updateUserData,
+                    onFirstNameChanged = profileViewModel::onFirstNameChanged,
+                    onLastNameChanged = profileViewModel::onLastNameChanged,
+                    onPhoneChanged = profileViewModel::onPhoneChanged,
                     onBackClick = { navController.popBackStack() },
+                    onChangeProfileImage = profileViewModel::onChangeProfileImage,
+                    sendFeedback = profileViewModel::sendFeedback
+                )
+            }
+            composable(route = Screens.BookingPlayground.name) {
+                val bookingViewModel: BookingViewModel = hiltViewModel()
+                BookingScreen(
+                    bookingUiState = bookingViewModel.bookingUiState,
+                    freeSlotsState = bookingViewModel.freeSlotsState,
+                    onBackClicked = { navController.popBackStack() },
+                    updateDuration = { bookingViewModel.updateDuration(it) },
+                    getFreeSlots = { bookingViewModel.getFreeTimeSlots() },
+                    updateSelectedDay = { bookingViewModel.updateSelectedDay(it) },
+                    onSlotClicked = { bookingViewModel.onSlotClicked(it) },
+                    checkValidity = { bookingViewModel.checkSlotsConsecutive() },
+                    onNextClicked = { bookingViewModel.onNextClicked() },
+                    onBackToBookingScreen = { bookingViewModel.onBackClicked() }
                 )
             }
         }

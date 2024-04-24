@@ -2,32 +2,14 @@ package com.company.khomasi.presentation.profile
 
 import android.content.res.Configuration
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,42 +18,45 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.rotate
-import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.LayoutDirection
-import androidx.compose.ui.unit.dp
-import com.company.khomasi.R
 import com.company.khomasi.domain.model.LocalUser
-import com.company.khomasi.presentation.components.MyModalBottomSheet
-import com.company.khomasi.presentation.profile.components.ProfileContentItem
-import com.company.khomasi.presentation.profile.components.ProfileImage
+import com.company.khomasi.presentation.profile.components.profile_content.ProfileContent
+import com.company.khomasi.presentation.profile.components.profile_topbar.ProfileTopBar
+import com.company.khomasi.presentation.profile.components.sheets.FeedbackBottomSheet
+import com.company.khomasi.presentation.profile.components.sheets.LogoutBottomSheet
 import com.company.khomasi.theme.KhomasiTheme
-import com.company.khomasi.theme.darkIconMask
-import com.company.khomasi.theme.darkText
-import com.company.khomasi.theme.lightIconMask
-import com.company.khomasi.theme.lightText
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlin.reflect.KFunction0
-import kotlin.reflect.KFunction1
+import java.io.File
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
     profileUiState: StateFlow<ProfileUiState>,
     localUserUiState: StateFlow<LocalUser>,
-    onLogout: KFunction0<Unit>,
-    onSaveProfile: KFunction0<Unit>,
+    getProfileImage: () -> Unit,
+    onLogout: () -> Unit,
+    updateUserData: (LocalUser) -> Unit,
+    onFirstNameChanged: (String) -> Unit,
+    onLastNameChanged: (String) -> Unit,
+    onPhoneChanged: (String) -> Unit,
+    onSaveProfile: () -> Unit,
+    sendFeedback: () -> Unit,
+    onFeedbackChanged: (String) -> Unit,
+    onChangeProfileImage: (File) -> Unit,
     onBackClick: () -> Unit,
-    onEditProfile: KFunction1<Boolean, Unit>,
+    onEditProfile: (Boolean) -> Unit,
     isDark: Boolean = isSystemInDarkTheme(),
+    onFeedbackCategorySelected: (FeedbackCategory) -> Unit,
 ) {
-    val uiState = profileUiState.collectAsState().value
     val localUser = localUserUiState.collectAsState().value
+    val uiState = profileUiState.collectAsState().value
+
+    LaunchedEffect(localUser) {
+        updateUserData(localUser)
+        getProfileImage()
+    }
+
     BackHandler {
         if (uiState.isEditPage) {
             onEditProfile(false)
@@ -80,204 +65,83 @@ fun ProfileScreen(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize(),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box(
-            contentAlignment = Alignment.TopCenter,
+    if (uiState.isEditPage) {
+        EditProfileScreen(
+            uiState = uiState,
+            onSaveProfile = onSaveProfile,
+            onFirstNameChange = onFirstNameChanged,
+            onLastNameChange = onLastNameChanged,
+            onPhoneChange = onPhoneChanged,
+            onChangeProfileImage = onChangeProfileImage,
+            onBackClick = { onEditProfile(false) },
+            isDark = isDark
+        )
+    } else {
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(120.dp)
-                    .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
-                    .background(if (isDark) darkIconMask else lightIconMask)
-                    .padding(16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.Top
-            ) {
-                IconButton(
-                    onClick = onBackClick,
-                    modifier = Modifier
-                        .size(44.dp)
-                        .clip(
-                            shape = CircleShape
-                        ),
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    )
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.back),
-                        modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier.rotate(
-                            180f
-                        ) else Modifier,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-                IconButton(
-                    onClick = { onEditProfile(true) },
-                    modifier = Modifier
-                        .size(44.dp)
-                        .clip(
-                            shape = CircleShape
-                        ),
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surface
-                    )
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.pencilsimpleline),
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-
-            }
-            ProfileImage(
-                name = localUser.firstName + " " + localUser.lastName,
-                image = localUser.profilePicture,
-                rating = localUser.rating ?: 0.0,
+            ProfileTopBar(
+                localUser = localUser,
+                image = uiState.oldProfileImage,
+                onEditProfile = onEditProfile,
+                onBackClick = onBackClick,
                 isDark = isDark
             )
-        }
-        val bottomSheetState = rememberModalBottomSheetState()
-        var showShareOpinionSheet by remember { mutableStateOf(false) }
-        var expandFeedbackCategory by remember { mutableStateOf(false) }
-        val scope = rememberCoroutineScope()
 
-        if (showShareOpinionSheet) {
-            MyModalBottomSheet(
-                sheetState = bottomSheetState,
-                onDismissRequest = {
-                    scope.launch {
-                        showShareOpinionSheet = false
-                    }
-                }) {
-                val feedbackCategories = listOf<Int>(
-                    R.string.suggestion,
-                    R.string.issue,
-                    R.string.complaint,
-                    R.string.other
-                )
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.SpaceEvenly,
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.share_your_feedback),
-                        style = MaterialTheme.typography.displayMedium,
-                        color = if (isDark) darkText else lightText
-                    )
-                    DropdownMenu(expanded = expandFeedbackCategory,
-                        onDismissRequest = { expandFeedbackCategory = false }) {
-                        repeat(feedbackCategories.size) {
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        text = stringResource(id = it),
-                                        style = MaterialTheme.typography.titleMedium,
-                                        color = if (isDark) darkText else lightText
-                                    )
-                                },
-                                onClick = {}
-                            )
+            val bottomSheetState = rememberModalBottomSheetState()
+            var showShareOpinionSheet by remember { mutableStateOf(false) }
+            var showLogoutSheet by remember { mutableStateOf(false) }
+            val scope = rememberCoroutineScope()
+
+            if (showShareOpinionSheet) {
+                FeedbackBottomSheet(
+                    bottomSheetState = bottomSheetState,
+                    selectedCategory = uiState.feedbackCategory,
+                    onFeedbackSelected = onFeedbackCategorySelected,
+                    feedback = uiState.feedback,
+                    onFeedbackChanged = onFeedbackChanged,
+                    onDismissRequest = {
+                        scope.launch {
+                            bottomSheetState.hide()
+                            showShareOpinionSheet = false
                         }
+                    },
+                    sendFeedback = sendFeedback,
+                    scope = scope,
+                    isDark = isDark
+                )
+            }
+            if (showLogoutSheet) {
+                LogoutBottomSheet(
+                    bottomSheetState = bottomSheetState,
+                    onDismissRequest = {
+                        scope.launch {
+                            bottomSheetState.hide()
+                            showLogoutSheet = false
+                        }
+                    },
+                    logout = onLogout,
+                    scope = scope,
+                    isDark = isDark
+                )
+            }
+
+            ProfileContent(
+                onLogout = {
+                    scope.launch {
+                        showLogoutSheet = true
+                        bottomSheetState.show()
+                    }
+                },
+                onShareYourOpinion = {
+                    scope.launch {
+                        showShareOpinionSheet = true
+                        bottomSheetState.show()
                     }
                 }
-            }
-        }
-        ProfileContent(
-            onLogout = onLogout,
-            onShareYourOpinion = {
-                scope.launch {
-                    showShareOpinionSheet = true
-                }
-            }
-        )
-    }
-}
-
-@Composable
-fun ProfileContent(onLogout: KFunction0<Unit>, onShareYourOpinion: () -> Unit) {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(horizontal = 8.dp)
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Column(
-            modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-        ) {
-            ProfileContentItem(
-                title = R.string.share_your_feedback,
-                icon = R.drawable.chatcircledots,
-                onclick = onShareYourOpinion
-            )
-            HorizontalDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 4.dp),
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.tertiary
-            )
-            ProfileContentItem(
-                title = R.string.rate_the_app,
-                icon = R.drawable.appstorelogo,
-                onclick = {}
-            )
-            HorizontalDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 4.dp),
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.tertiary
-            )
-            ProfileContentItem(
-                title = R.string.share_the_app,
-                icon = R.drawable.sharenetwork,
-                onclick = {}
-            )
-        }
-        Column(
-            modifier = Modifier
-                .clip(RoundedCornerShape(16.dp))
-        ) {
-            ProfileContentItem(
-                title = R.string.help_and_support,
-                icon = R.drawable.info,
-                onclick = {}
-            )
-            HorizontalDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 4.dp),
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.tertiary
-            )
-            ProfileContentItem(
-                title = R.string.terms_of_service,
-                icon = R.drawable.shieldwarning,
-                onclick = {}
-            )
-            HorizontalDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 4.dp),
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.tertiary
-            )
-            ProfileContentItem(
-                title = R.string.logout,
-                icon = R.drawable.signout,
-                onclick = {}
             )
         }
     }
@@ -302,11 +166,20 @@ fun ProfileScreenPreview() {
     KhomasiTheme {
         ProfileScreen(
             profileUiState = profileViewModel.profileUiState,
+            localUserUiState = profileViewModel.localUser,
             onLogout = profileViewModel::onLogout,
             onSaveProfile = profileViewModel::onSaveProfile,
             onBackClick = {},
             onEditProfile = profileViewModel::onEditProfile,
-            localUserUiState = profileViewModel.localUser
+            onFeedbackCategorySelected = {},
+            onFeedbackChanged = {},
+            sendFeedback = {},
+            updateUserData = {},
+            onFirstNameChanged = {},
+            onLastNameChanged = {},
+            onPhoneChanged = {},
+            onChangeProfileImage = {},
+            getProfileImage = {},
         )
     }
 }

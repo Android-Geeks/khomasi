@@ -10,5 +10,7 @@ data class RemoteUserUseCase(
     val updateProfilePictureUseCase: UpdateProfilePictureUseCase,
     val updateUserUseCase: UpdateUserUseCase,
     val cancelBookingUseCase: CancelBookingUseCase,
-    val playgroundReviewUseCase: PlaygroundReviewUseCase
+    val playgroundReviewUseCase: PlaygroundReviewUseCase,
+    val sendFeedbackUseCase: SendFeedbackUseCase,
+    val getProfileImageUseCase: GetProfileImageUseCase,
 )

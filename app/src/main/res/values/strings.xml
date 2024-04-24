@@ -57,6 +57,7 @@
     <string name="sunday">Sunday</string>
     <string name="credit_card_payment">Credit Card Payment</string>
     <string name="agree_to_terms">By continuing, you agree to the terms of service</string>
+    <string name="agree_to_terms_part1">By continuing, you agree to the </string>
     <string name="field">Field</string>
     <string name="edit">Edit</string>
     <string name="price_egp">EGP</string>
@@ -165,6 +166,7 @@
     <string name="unbookable">Unbookable</string>
     <string name="view_playground">View Playground</string>
     <string name="fees_per_hour">%1$d EGP / hour</string>
+    <string name="booking_playground">Booking %1$s Playground</string>
     <string name="forgot_your_password">Forgot your password ?</string>
     <string name="enter_email_to_reset_password">Enter your email to reset your password.</string>
     <string name="set_password">Set password</string>
@@ -198,6 +200,16 @@
     <string name="book_now">Book now</string>
     <string name="field_size_5x5">5 X 5</string>
     <string name="Show_on_map">Show on map</string>
+    <string name="date_and_duration">Date and duration:</string>
+    <string name="send">Send</string>
+    <string name="grant_permission">Permission Granted</string>
+    <string name="permission_denied">Permission Denied</string>
+    <string name="take_a_photo">Take a photo</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
+    <string name="min">min</string>
+    <string name="available_times">Available times:</string>
+    <string name="time_slot_validation">Please select one consecutive time period</string>
+    <string name="continue_to_payment">Continue to payment</string>
     <string name="your_comment">your comment</string>
 
 

@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,8 +41,10 @@ fun MyButton(
     @DrawableRes icon: Int = 0,
     shape: CornerBasedShape = MaterialTheme.shapes.medium,
     buttonEnable: Boolean = true,
-    color: ButtonColors? = null
+    color: ButtonColors? = null,
+    textStyle: TextStyle = MaterialTheme.typography.titleLarge
 ) {
+
     Button(
         onClick = onClick,
         modifier = modifier,
@@ -63,7 +66,7 @@ fun MyButton(
             Text(
                 text = stringResource(id = text),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.titleLarge
+                style = textStyle
             )
         }
     }
@@ -86,6 +89,7 @@ fun MyTextButton(
             text = stringResource(id = text),
             textAlign = TextAlign.Center,
             textDecoration = if (isUnderlined) TextDecoration.Underline else TextDecoration.None,
+            style = MaterialTheme.typography.titleLarge,
             fontSize = textSize
         )
     }

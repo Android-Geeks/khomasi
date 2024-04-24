@@ -2,6 +2,8 @@ package com.company.khomasi.utils
 
 object Constants {
     const val PLAYGROUND_ID: String = "playground_id"
+    const val PLAYGROUND_NAME: String = "playground_name"
+    const val PLAYGROUND_PRICE: String = "playground_price"
     const val DATABASE_NAME = "app_db"
     const val BASE_URL = "http://10.0.2.2:5000/api/"
 
@@ -16,7 +18,6 @@ object Constants {
     const val COUNTRY = "country"
     const val LATITUDE = "latitude"
     const val LONGITUDE = "longitude"
-    const val PROFILE_PICTURE = "profile_picture"
     const val COINS = "coins"
     const val RATING = "rating"
     const val TOKEN = "token"

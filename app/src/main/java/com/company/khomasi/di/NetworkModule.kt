@@ -2,7 +2,9 @@ package com.company.khomasi.di
 
 
 import com.company.khomasi.data.data_source.remote.RetrofitService
+import com.company.khomasi.data.repository.RemotePlaygroundRepositoryImpl
 import com.company.khomasi.data.repository.RemoteUserRepositoryImpl
+import com.company.khomasi.domain.repository.RemotePlaygroundRepository
 import com.company.khomasi.domain.repository.RemoteUserRepository
 import com.company.khomasi.domain.use_case.auth.AuthUseCases
 import com.company.khomasi.domain.use_case.auth.ConfirmEmailUseCase
@@ -12,12 +14,16 @@ import com.company.khomasi.domain.use_case.auth.RecoverAccountUseCase
 import com.company.khomasi.domain.use_case.auth.RegisterUseCase
 import com.company.khomasi.domain.use_case.remote_user.CancelBookingUseCase
 import com.company.khomasi.domain.use_case.remote_user.DeleteUserFavouriteUseCase
+import com.company.khomasi.domain.use_case.remote_user.GetFreeTimeSlotsUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetPlaygroundsUseCase
+import com.company.khomasi.domain.use_case.remote_user.GetProfileImageUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetSpecificPlaygroundUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetUserBookingsUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetUserFavoritePlaygroundsUseCase
 import com.company.khomasi.domain.use_case.remote_user.PlaygroundReviewUseCase
+import com.company.khomasi.domain.use_case.remote_user.RemotePlaygroundUseCase
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
+import com.company.khomasi.domain.use_case.remote_user.SendFeedbackUseCase
 import com.company.khomasi.domain.use_case.remote_user.UpdateProfilePictureUseCase
 import com.company.khomasi.domain.use_case.remote_user.UpdateUserUseCase
 import com.company.khomasi.domain.use_case.remote_user.UserFavouriteUseCase
@@ -71,6 +77,12 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideRemotePlaygroundRepository(
+        retrofitService: RetrofitService
+    ): RemotePlaygroundRepository = RemotePlaygroundRepositoryImpl(retrofitService)
+
+    @Provides
+    @Singleton
     fun provideAuthUseCases(
         remoteUserRepository: RemoteUserRepository
     ): AuthUseCases = AuthUseCases(
@@ -93,6 +105,17 @@ object NetworkModule {
         userFavouriteUseCase = UserFavouriteUseCase(remoteUserRepository),
         getSpecificPlaygroundUseCase = GetSpecificPlaygroundUseCase(remoteUserRepository),
         updateProfilePictureUseCase = UpdateProfilePictureUseCase(remoteUserRepository),
+        updateUserUseCase = UpdateUserUseCase(remoteUserRepository),
+        sendFeedbackUseCase = SendFeedbackUseCase(remoteUserRepository),
+        getProfileImageUseCase = GetProfileImageUseCase(remoteUserRepository)
+    )
+
+    @Provides
+    @Singleton
+    fun provideRemotePlaygroundUseCase(
+        remotePlaygroundRepository: RemotePlaygroundRepository
+    ): RemotePlaygroundUseCase = RemotePlaygroundUseCase(
+        getFreeTimeSlotsUseCase = GetFreeTimeSlotsUseCase(remotePlaygroundRepository),
         updateUserUseCase = UpdateUserUseCase(remoteUserRepository),
         cancelBookingUseCase = CancelBookingUseCase(remoteUserRepository),
         playgroundReviewUseCase = PlaygroundReviewUseCase(remoteUserRepository)

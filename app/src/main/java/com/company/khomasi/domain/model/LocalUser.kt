@@ -11,10 +11,8 @@ data class LocalUser(
     val country: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val profilePicture: String? = null,
     val coins: Double? = null,
     val rating: Double? = null,
     val token: String? = null,
    // val playgroundId: String? = null,
-
 )
