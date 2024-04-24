@@ -58,7 +58,7 @@ fun BookingCard(
     onViewPlaygroundClick: () -> Unit,
     isDark: Boolean = isSystemInDarkTheme(),
     bookingStatus: BookingStatus,
-    toRate: (() -> Unit)? = null
+    toRate: (() -> Unit)
 ) {
     Card(
         modifier
@@ -184,7 +184,7 @@ fun BookingCard(
 
                             MyOutlinedButton(
                                 text = R.string.rate_field,
-                                onClick = { toRate ?: {} },
+                                onClick = toRate,
                                 icon = R.drawable.chatcircledots,
                                 modifier = Modifier
                                     .weight(1f),
@@ -306,7 +306,8 @@ private fun BookingCardPreview() {
             ),
 
             bookingStatus = BookingStatus.CONFIRMED,
-            onViewPlaygroundClick = {})
+            onViewPlaygroundClick = {},
+            toRate = {})
 
     }
 }

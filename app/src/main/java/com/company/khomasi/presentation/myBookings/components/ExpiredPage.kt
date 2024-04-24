@@ -102,11 +102,12 @@ fun ExpiredPage(
                                 bookingDetails = it,
                                 bookingStatus = BookingStatus.EXPIRED,
                                 onViewPlaygroundClick = {},
+
                                 toRate = {
                                     scope.launch {
                                         scaffoldState.bottomSheetState.expand()
                                     }
-                                },
+                                }
                             )
                         }
                     }

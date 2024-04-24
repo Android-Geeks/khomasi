@@ -10,8 +10,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.presentation.components.cards.BookingCard
@@ -23,10 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun CurrentPage(
     uiState: StateFlow<MyBookingUiState>,
     onClickPlaygroundCard: (Int) -> Unit,
-    onBackClick: () -> Unit,
 ) {
-    val selectedPlaygroundIdState = remember { mutableStateOf<Int?>(null) }
-
     val currentState = uiState.collectAsState().value
     Scaffold(
         modifier = Modifier.fillMaxSize(),
@@ -49,30 +44,17 @@ fun CurrentPage(
                             bookingStatus = if (!currentState.currentBookings[index].isCanceled) BookingStatus.CONFIRMED else BookingStatus.CANCEL,
                             onViewPlaygroundClick = {
                                 onClickPlaygroundCard(it.playgroundId)
-                                selectedPlaygroundIdState.value = it.playgroundId
-
-                            }
+                            },
+                            toRate = {}
                         )
-//                        BookingCard(
-//                            bookingDetails = it,
-//                            bookingStatus = BookingStatus.CANCEL,
-//                            onViewPlaygroundClick = {
-//                                onClickPlaygroundCard(it.playgroundId)
-//                            },
-//                            toRate = {}
-//                        )
                     }
                 }
             } else {
                 EmptyScreen()
             }
         }
-        selectedPlaygroundIdState.value?.let { playgroundId ->
-            ConfirmationBottomSheet(
-                bookingDetails = currentState.currentBookings.find { it.playgroundId == playgroundId },
-                onBackClick = onBackClick,
-            )
-        }
+
+
     }
 }
 

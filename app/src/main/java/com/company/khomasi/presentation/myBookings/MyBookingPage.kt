@@ -37,9 +37,6 @@ fun MyBookingPage(
     myBooking: StateFlow<DataState<MyBookingsResponse>>,
     onClickPlaygroundCard: (Int) -> Unit,
     myBookingPlaygrounds: () -> Unit,
-    onBackClick: () -> Unit,
-    // showConfirmationBottomSheet: StateFlow<Boolean>
-
 ) {
     val bookingUiState = uiState.collectAsState().value
     val myBooking = myBooking.collectAsState().value
@@ -60,23 +57,7 @@ fun MyBookingPage(
             pagerState = pagerState,
             uiState = uiState,
             onClickPlaygroundCard = onClickPlaygroundCard,
-            onBackClick = onBackClick
         )
-//        val selectedPlaygroundIdState = remember { mutableStateOf<Int?>(null) }
-//        if (myBooking is DataState.Success) {
-//            if (showConfirmationBottomSheet.collectAsState().value) {
-//                selectedPlaygroundIdState.value?.let { playgroundId ->
-//                    ConfirmationBottomSheet(bookingDetails =
-//                    bookingUiState.currentBookings.find { it.playgroundId == playgroundId },
-//                        onBackClick
-//                    )
-//                }
-//            } else {
-//                CurrentPage(
-//                    uiState, onClickPlaygroundCard, onBackClick
-//                )
-//            }
-//        }
     }
 }
 @OptIn(ExperimentalPagerApi::class)
@@ -127,12 +108,10 @@ fun TabContent(
     pagerState: PagerState,
     uiState: StateFlow<MyBookingUiState>,
     onClickPlaygroundCard: (Int) -> Unit,
-    onBackClick: () -> Unit
-
 ) {
     HorizontalPager(count = tabs.size, state = pagerState) { page ->
 
-        tabs[page].screens(uiState, onClickPlaygroundCard, onBackClick)
+        tabs[page].screens(uiState, onClickPlaygroundCard)
     }
 }
 

@@ -23,6 +23,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,20 +35,17 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.model.BookingDetails
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
 import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
-import com.company.khomasi.presentation.myBookings.MockViewModel
+import com.company.khomasi.presentation.myBookings.MyBookingUiState
 import com.company.khomasi.theme.Cairo
-import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkIcon
 import com.company.khomasi.theme.lightIcon
 import kotlinx.coroutines.launch
@@ -56,13 +54,17 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ConfirmationBottomSheet(
+//    confirmState : StateFlow<DataState<BookingDetails>>,
+    uiStateFlow: State<MyBookingUiState>,
     bookingDetails: BookingDetails?,
     onBackClick: () -> Unit,
 ) {
+    // val confirmUiState = confirmState.collectAsState().value
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
     BottomSheetScaffold(
         scaffoldState = scaffoldState,
+        containerColor = MaterialTheme.colorScheme.background,
         sheetContent = {
             Column(
                 modifier = Modifier
@@ -135,46 +137,50 @@ fun ConfirmationBottomSheet(
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background),
             ) {
-            TopAppBar(
-                title = {
-                    if (bookingDetails != null) {
-                        Text(
-                            text = bookingDetails.playgroundName,
-                            style = MaterialTheme.typography.displayMedium,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .wrapContentSize(Alignment.CenterStart)
-                                .padding(it)
-                        )
+//                if (confirmUiState is DataState.Success) {
+//                    val bookingDetails = confirmUiState.data
+                TopAppBar(
+                    title = {
+                        if (bookingDetails != null) {
+                            Text(
+                                text = bookingDetails.playgroundName,
+                                style = MaterialTheme.typography.displayMedium,
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .wrapContentSize(Alignment.CenterStart)
+                                    .padding(it)
+                            )
+                        }
+                    },
+                    colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
+                    navigationIcon = {
+                        IconButton(
+                            onClick = onBackClick,
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.back),
+                                modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier.rotate(
+                                    180f
+                                ) else Modifier,
+                                contentDescription = null,
+                                tint = if (isSystemInDarkTheme()) darkIcon else lightIcon
+                            )
+                        }
                     }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
-                navigationIcon = {
-                    IconButton(
-                        onClick = onBackClick,
-                    ) {
-                        Icon(
-                            painter = painterResource(id = R.drawable.back),
-                            modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier.rotate(
-                                180f
-                            ) else Modifier,
-                            contentDescription = null,
-                            tint = if (isSystemInDarkTheme()) darkIcon else lightIcon
-                        )
-                    }
-                }
-            )
-            HorizontalDivider(
-                modifier = Modifier.fillMaxWidth(), thickness = 1.dp
-            )
-                if (bookingDetails != null) {
-                BookingCard(
-                    bookingDetails = bookingDetails,
-                    bookingStatus = BookingStatus.CONFIRMED,
-                    onViewPlaygroundClick = {}
                 )
+                HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth(), thickness = 1.dp
+                )
+                if (bookingDetails != null) {
+                    BookingCard(
+                        bookingDetails = bookingDetails,
+                        bookingStatus = BookingStatus.CONFIRMED,
+                        onViewPlaygroundClick = {},
+                        toRate = {}
+                    )
                 }
-                Spacer(modifier = Modifier.height(50.dp))
+                }
+            Spacer(modifier = Modifier.height(141.dp))
             MyButton(
                 text = R.string.booking_cancelled,
                 onClick = {
@@ -182,37 +188,11 @@ fun ConfirmationBottomSheet(
                         scaffoldState.bottomSheetState.expand()
                     }
                 },
-                modifier = Modifier.align(Alignment.CenterHorizontally)
+                //modifier = Modifier.align(Alignment.BottomCenter)
             )
 
+            //   }
+            Spacer(modifier = Modifier.height(56.dp))
         }
-        Spacer(modifier = Modifier.height(56.dp))
-    }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ConfirmationBottomSheetPreview() {
-    KhomasiTheme {
-        val mockViewModel: MockViewModel = viewModel()
-        ConfirmationBottomSheet(
-            bookingDetails = BookingDetails(
-                1,
-                1,
-                "Al Zamalek Club",
-                "Nasr City",
-                "1/10/2024",
-                "7",
-                50,
-                2425,
-                "false",
-                false,
-                false
-            ),
-            {}
-        )
-
-
     }
 }
