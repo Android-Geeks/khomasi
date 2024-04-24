@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.booking
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,15 +38,17 @@ import com.company.khomasi.theme.lightText
 
 @Composable
 fun ConfirmBookingContent(
+    bookingState: BookingUiState,
     onClickTermsOfService: () -> Unit = {},
-    bookingState: BookingUiState
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
     val screenWidth = getScreenWidth()
     val screenHeight = getScreenHeight()
     Column(
-        Modifier
+        modifier
             .fillMaxSize()
-            .padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BookingCard(
             modifier = Modifier

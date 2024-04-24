@@ -102,17 +102,18 @@ fun BookingScreen(
                 onBackClicked = { onBackClicked() },
                 context = context
             )
-        }
+        },
+        modifier = Modifier.fillMaxSize(),
 
-    ) { paddingValues ->
+        ) { paddingValues ->
         Surface(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues),
+                .fillMaxSize(),
             color = MaterialTheme.colorScheme.background,
         ) {
             AuthSheet(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize(),
                 sheetModifier = Modifier.fillMaxWidth(),
                 screenContent = {
                     when (bookingState.page) {
@@ -123,11 +124,13 @@ fun BookingScreen(
                             updateDuration = updateDuration,
                             getFreeSlots = { getFreeSlots() },
                             updateSelectedDay = updateSelectedDay,
-                            onSlotClicked = onSlotClicked
+                            onSlotClicked = onSlotClicked,
+                            modifier = Modifier.padding(paddingValues)
                         )
 
                         2 -> ConfirmBookingContent(
                             bookingState = bookingState,
+                            modifier = Modifier.padding(paddingValues),
                         )
                     }
                 },
@@ -166,6 +169,7 @@ fun BookingScreenContent(
     getFreeSlots: () -> Unit,
     updateSelectedDay: (Int) -> Unit,
     onSlotClicked: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
+    modifier: Modifier = Modifier
 ) {
     LaunchedEffect(bookingUiState.selectedDay) {
         getFreeSlots()
@@ -178,7 +182,7 @@ fun BookingScreenContent(
         showLoading = freeSlotsState is DataState.Loading
     }
     Column(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
