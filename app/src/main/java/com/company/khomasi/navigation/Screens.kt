@@ -17,6 +17,7 @@ enum class Screens {
     Profile,
     PlaygroundDetails,
     BookingPlayground,
+    ConfirmBooking,
 }
 
 enum class Routes {

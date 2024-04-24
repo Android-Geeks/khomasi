@@ -3,7 +3,6 @@ package com.company.khomasi.presentation.booking
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
-import android.util.DisplayMetrics
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
@@ -53,6 +52,7 @@ import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.connectionStates.ThreeBounce
+import com.company.khomasi.presentation.screenDimensions.getScreenWidth
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkOverlay
 import com.company.khomasi.theme.darkText
@@ -77,7 +77,8 @@ fun BookingScreen(
     getFreeSlots: () -> Unit,
     updateSelectedDay: (Int) -> Unit,
     onSlotClicked: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
-    checkValidity: () -> Boolean
+    checkValidity: () -> Boolean,
+    onClickNext: () -> Unit
 ) {
     val bookingState = bookingUiState.collectAsState().value
     val freeSlots = freeSlotsState.collectAsState().value
@@ -138,6 +139,8 @@ fun BookingScreen(
                                         Toast.LENGTH_LONG
                                     )
                                     .show()
+                            } else {
+                                onClickNext()
                             }
                         },
                         modifier = Modifier.fillMaxWidth(),
@@ -330,13 +333,6 @@ fun parseTimestamp(timestamp: String): LocalDateTime {
     }
 }
 
-@Composable
-fun getScreenWidth(): Float {
-    val displayMetrics: DisplayMetrics =
-        LocalContext.current.resources.displayMetrics
-    return displayMetrics.widthPixels / displayMetrics.density
-}
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BookingTopBar(
@@ -344,7 +340,7 @@ fun BookingTopBar(
     context: Context
 ) {
     val currentLanguage = Locale.getDefault().language
-    Column {
+    Column(verticalArrangement = Arrangement.Center) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
@@ -363,7 +359,8 @@ fun BookingTopBar(
                     textAlign = TextAlign.Start
                 )
             }, navigationIcon = {
-                Icon(painter = painterResource(id = R.drawable.back),
+                Icon(
+                    painter = painterResource(id = R.drawable.back),
                     contentDescription = null,
                     Modifier
                         .size(24.dp)
@@ -385,7 +382,7 @@ fun BookingTopBar(
     }
 }
 
-@Preview(showSystemUi = true, locale = "ar")
+@Preview(showSystemUi = true, locale = "en")
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BookingScreenPreview() {
@@ -399,7 +396,8 @@ fun BookingScreenPreview() {
             getFreeSlots = mockViewModel::getTimeSlots,
             updateSelectedDay = { mockViewModel.updateSelectedDay(it) },
             onSlotClicked = { mockViewModel.onSlotClicked(it) },
-            checkValidity = { mockViewModel.checkSlotsConsecutive() }
+            checkValidity = { mockViewModel.checkSlotsConsecutive() },
+            onClickNext = { }
         )
     }
 }
