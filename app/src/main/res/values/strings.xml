@@ -57,6 +57,7 @@
     <string name="sunday">Sunday</string>
     <string name="credit_card_payment">Credit Card Payment</string>
     <string name="agree_to_terms">By continuing, you agree to the terms of service</string>
+    <string name="agree_to_terms_part1">By continuing, you agree to the </string>
     <string name="field">Field</string>
     <string name="edit">Edit</string>
     <string name="price_egp">EGP</string>
@@ -204,6 +205,7 @@
     <string name="min">min</string>
     <string name="available_times">Available times:</string>
     <string name="time_slot_validation">Please select one consecutive time period</string>
+    <string name="continue_to_payment">Continue to payment</string>
 
 
 </resources>

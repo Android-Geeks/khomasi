@@ -58,6 +58,7 @@
     <string name="sunday">الاحد</string>
     <string name="credit_card_payment">الدفع عبر البطاقة الائتمانية</string>
     <string name="agree_to_terms">بالاستمرار, انت توافق على شروط الخدمة</string>
+    <string name="agree_to_terms_part1">الاستمرار, انت توافق على</string>
     <string name="field">ملعب</string>
     <string name="edit">تعديل</string>
     <string name="price_egp">ج.م</string>
@@ -204,4 +205,5 @@
     <string name="min">دقيقة</string>
     <string name="available_times">الاوقات المتاحة:</string>
     <string name="time_slot_validation">الرجاء تحديد فترة زمنية واحدة متتالية</string>
+    <string name="continue_to_payment">المتابعة للدفع</string>
 </resources>
