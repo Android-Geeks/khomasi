@@ -5,6 +5,7 @@ import com.company.khomasi.domain.model.CancelBookingResponse
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
+import com.company.khomasi.domain.model.PlaygroundReviewResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
@@ -51,4 +52,8 @@ interface RemoteUserRepository {
         userId: String,
         user: UserUpdateData
     ): Flow<DataState<MessageResponse>>
+
+    suspend fun playgroundReview(
+        playgroundReview: PlaygroundReviewResponse
+    ): Flow<DataState<PlaygroundReviewResponse>>
 }

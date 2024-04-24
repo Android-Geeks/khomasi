@@ -3,6 +3,7 @@ package com.company.khomasi.data.repository
 
 import com.company.khomasi.data.data_source.remote.RetrofitService
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.PlaygroundReviewResponse
 import com.company.khomasi.domain.model.UserRegisterData
 import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.repository.RemoteUserRepository
@@ -60,6 +61,10 @@ class RemoteUserRepositoryImpl(
 
     override suspend fun updateUser(token: String, userId: String, user: UserUpdateData) =
         handleApi { retrofitService.updateUser(token, userId, user) }
+
+    override suspend fun playgroundReview(playgroundReview: PlaygroundReviewResponse) =
+        handleApi { retrofitService.playgroundReview(playgroundReview) }
+
 
 }
 

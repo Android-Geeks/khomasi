@@ -10,11 +10,13 @@ import com.company.khomasi.domain.use_case.auth.GetVerificationCodeUseCase
 import com.company.khomasi.domain.use_case.auth.LoginUseCase
 import com.company.khomasi.domain.use_case.auth.RecoverAccountUseCase
 import com.company.khomasi.domain.use_case.auth.RegisterUseCase
+import com.company.khomasi.domain.use_case.remote_user.CancelBookingUseCase
 import com.company.khomasi.domain.use_case.remote_user.DeleteUserFavouriteUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetPlaygroundsUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetSpecificPlaygroundUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetUserBookingsUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetUserFavoritePlaygroundsUseCase
+import com.company.khomasi.domain.use_case.remote_user.PlaygroundReviewUseCase
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import com.company.khomasi.domain.use_case.remote_user.UpdateProfilePictureUseCase
 import com.company.khomasi.domain.use_case.remote_user.UpdateUserUseCase
@@ -91,6 +93,8 @@ object NetworkModule {
         userFavouriteUseCase = UserFavouriteUseCase(remoteUserRepository),
         getSpecificPlaygroundUseCase = GetSpecificPlaygroundUseCase(remoteUserRepository),
         updateProfilePictureUseCase = UpdateProfilePictureUseCase(remoteUserRepository),
-        updateUserUseCase = UpdateUserUseCase(remoteUserRepository)
+        updateUserUseCase = UpdateUserUseCase(remoteUserRepository),
+        cancelBookingUseCase = CancelBookingUseCase(remoteUserRepository),
+        playgroundReviewUseCase = PlaygroundReviewUseCase(remoteUserRepository)
     )
 }

@@ -4,6 +4,7 @@ import com.company.khomasi.domain.model.CancelBookingResponse
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
+import com.company.khomasi.domain.model.PlaygroundReviewResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.model.UserLoginResponse
@@ -106,4 +107,10 @@ interface RetrofitService {
         @Query("bookingID") bookingId: Int,
         @Query("isUser") isUser: Boolean
     ): Response<CancelBookingResponse>
+
+    @POST("Review/review")
+    suspend fun playgroundReview(
+        @Body playgroundReview: PlaygroundReviewResponse
+    ): Response<PlaygroundReviewResponse>
+
 }
