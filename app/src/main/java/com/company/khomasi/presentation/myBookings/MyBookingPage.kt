@@ -37,11 +37,17 @@ fun MyBookingPage(
     myBooking: StateFlow<DataState<MyBookingsResponse>>,
     onClickPlaygroundCard: (Int) -> Unit,
     myBookingPlaygrounds: () -> Unit,
+    playgroundReview: (Float) -> Unit,
+    cancelBooking: () -> Unit
+
 ) {
     val bookingUiState = uiState.collectAsState().value
     val myBooking = myBooking.collectAsState().value
     LaunchedEffect(key1 = Unit) {
         myBookingPlaygrounds()
+    }
+    LaunchedEffect(key1 = Unit) {
+        cancelBooking()
     }
 
     val list = listOf(TabItem.Current, TabItem.Expired)
@@ -57,6 +63,7 @@ fun MyBookingPage(
             pagerState = pagerState,
             uiState = uiState,
             onClickPlaygroundCard = onClickPlaygroundCard,
+            playgroundReview = playgroundReview
         )
     }
 }
@@ -108,10 +115,12 @@ fun TabContent(
     pagerState: PagerState,
     uiState: StateFlow<MyBookingUiState>,
     onClickPlaygroundCard: (Int) -> Unit,
+    playgroundReview: (Float) -> Unit
+
 ) {
     HorizontalPager(count = tabs.size, state = pagerState) { page ->
 
-        tabs[page].screens(uiState, onClickPlaygroundCard)
+        tabs[page].screens(uiState, onClickPlaygroundCard, playgroundReview)
     }
 }
 

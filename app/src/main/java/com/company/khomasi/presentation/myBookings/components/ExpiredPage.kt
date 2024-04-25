@@ -31,6 +31,7 @@ import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
+import com.company.khomasi.presentation.components.cards.RatingRow
 import com.company.khomasi.presentation.myBookings.MyBookingUiState
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -39,6 +40,8 @@ import kotlinx.coroutines.launch
 @Composable
 fun ExpiredPage(
     uiState: StateFlow<MyBookingUiState>,
+    playgroundReview: (Float) -> Unit,
+    onClickPlayground: (Int) -> Unit
 ) {
     val expiredState = uiState.collectAsState().value
     val scope = rememberCoroutineScope()
@@ -56,20 +59,23 @@ fun ExpiredPage(
                     style = MaterialTheme.typography.displayMedium,
                     modifier = Modifier.padding(top = 12.dp)
                 )
-                // RatingRow(rating = , onRatingChange = )
+                RatingRow(
+                    rating = expiredState.rating,
+                    onRatingChange = playgroundReview,
+                )
                 var text by remember { mutableStateOf(" ") }
                 MyTextField(
                     value = text,
                     onValueChange = { text = it },
                     label = R.string.your_comment,
-                    keyBoardType = KeyboardType.Text
+                    keyBoardType = KeyboardType.Text,
                 )
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End
                 ) {
                     MyButton(
-                        onClick = { },
+                        onClick = { onClickPlayground(expiredState.playgroundId) },
                         text = R.string.rate,
                         modifier = Modifier
                             .padding(16.dp)

@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.domain.model.BookingDetails
-import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
@@ -57,19 +56,23 @@ fun ConfirmBookingContent(
             bookingDetails = BookingDetails(
                 1,
                 playgroundId = bookingState.playgroundId,
-                name = bookingState.playgroundName,
-                address = "Nasr City",
+                playgroundName = bookingState.playgroundName,
+                playgroundAddress = "Nasr City",
                 bookingTime = "1/10/2024",
                 duration = bookingState.selectedDuration,
                 cost = bookingState.playgroundPrice,
                 confirmationCode = "2425",
-                isCanceled = false
+                isCanceled = false,
+                isFinished = true,
+                playgroundPicture = " "
             ),
-            playgroundPicture = PlaygroundPicture(
-                1, 1, " ", false
-            ),
-            bookingStatus = BookingStatus.PENDING,
-            showPendingButton = false,
+//            playgroundPicture = PlaygroundPicture(
+//                1, 1, " ", false
+//            ),
+            bookingStatus = BookingStatus.CANCEL,
+            // showPendingButton = false,
+            toRate = {},
+            onViewPlaygroundClick = {}
         )
 
         Spacer(modifier = Modifier.height(24.dp))

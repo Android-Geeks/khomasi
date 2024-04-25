@@ -10,21 +10,22 @@ sealed class TabItem(
     @StringRes val title: Int,
     val screens: @Composable (
         uiState: StateFlow<MyBookingUiState>,
-        onClickPlaygroundCard: ((Int) -> Unit)?,
+        onClickPlaygroundCard: (Int) -> Unit,
+        playgroundReview: ((Float) -> Unit)?
 
 
     ) -> Unit,
 ) {
     data object Current : TabItem(
         title = R.string.current,
-        screens = { uiState, onClick ->
-            CurrentPage(uiState, onClick ?: {})
+        screens = { uiState, onClick, _ ->
+            CurrentPage(uiState, onClick)
         }
     )
     data object Expired : TabItem(
         title = R.string.expired,
-        screens = { uiState, _ ->
-            ExpiredPage(uiState)
+        screens = { uiState, onClick, playgroundReview ->
+            ExpiredPage(uiState, playgroundReview ?: {}, onClick)
         }
     )
 }

@@ -107,7 +107,9 @@ object NetworkModule {
         updateProfilePictureUseCase = UpdateProfilePictureUseCase(remoteUserRepository),
         updateUserUseCase = UpdateUserUseCase(remoteUserRepository),
         sendFeedbackUseCase = SendFeedbackUseCase(remoteUserRepository),
-        getProfileImageUseCase = GetProfileImageUseCase(remoteUserRepository)
+        getProfileImageUseCase = GetProfileImageUseCase(remoteUserRepository),
+        cancelBookingUseCase = CancelBookingUseCase(remoteUserRepository),
+        playgroundReviewUseCase = PlaygroundReviewUseCase(remoteUserRepository)
     )
 
     @Provides
@@ -116,8 +118,5 @@ object NetworkModule {
         remotePlaygroundRepository: RemotePlaygroundRepository
     ): RemotePlaygroundUseCase = RemotePlaygroundUseCase(
         getFreeTimeSlotsUseCase = GetFreeTimeSlotsUseCase(remotePlaygroundRepository),
-        updateUserUseCase = UpdateUserUseCase(remoteUserRepository),
-        cancelBookingUseCase = CancelBookingUseCase(remoteUserRepository),
-        playgroundReviewUseCase = PlaygroundReviewUseCase(remoteUserRepository)
     )
 }

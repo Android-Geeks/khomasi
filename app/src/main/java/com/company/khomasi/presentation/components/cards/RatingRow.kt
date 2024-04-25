@@ -19,8 +19,7 @@ fun RatingRow(
     AndroidView(
         factory = { context ->
             RatingBar(context).apply {
-                stepSize = 1f
-
+                stepSize = 1F
             }
         },
         update = { ratingBar ->
