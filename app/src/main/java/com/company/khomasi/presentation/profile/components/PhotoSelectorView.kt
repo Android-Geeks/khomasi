@@ -40,7 +40,6 @@ import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.utils.convertToBitmap
 import com.company.khomasi.utils.createFileFromUri
 import com.company.khomasi.utils.createImageFile
-import com.theapache64.rebugger.Rebugger
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Objects
@@ -123,24 +122,6 @@ fun PhotoSelectorView(
             isDark = isSystemInDarkTheme()
         )
     }
-
-    Rebugger(
-        trackMap = mapOf(
-            "profileImage" to profileImage,
-            "onChangeProfileImage" to onChangeProfileImage,
-            "context" to context,
-            "file" to file,
-            "uri" to uri,
-            "scope" to scope,
-            "selectedImageUri" to selectedImageUri,
-            "capturedImageUri" to capturedImageUri,
-            "singlePhotoPickerLauncher" to singlePhotoPickerLauncher,
-            "cameraLauncher" to cameraLauncher,
-            "permissionLauncher" to permissionLauncher,
-            "showChooserSheet" to showChooserSheet,
-            "sheetState" to sheetState,
-        ),
-    )
 
     SubcomposeAsyncImage(
         model = ImageRequest
