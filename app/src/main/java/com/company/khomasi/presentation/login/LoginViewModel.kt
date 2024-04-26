@@ -50,7 +50,15 @@ class LoginViewModel @Inject constructor(
             ).collect {
                 _loginState.value = it
                 if (it is DataState.Success) {
+                    Log.d(
+                        "HI I AM HERE",
+                        "login: ${_uiState.value.email} ${_uiState.value.password}"
+                    )
                     onLoginSuccess()
+                    Log.d(
+                        "HI I AM HERE",
+                        "login: ${_uiState.value.email} ${_uiState.value.password}"
+                    )
                     localUserUseCases.saveLocalUser(
                         LocalUser(
                             userID = it.data.userLoginData.userID,

@@ -1,15 +1,21 @@
 package com.company.khomasi.presentation.navigation
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import com.company.khomasi.navigation.Routes
 import com.company.khomasi.navigation.Screens
+import com.company.khomasi.navigation.listOfNavItems
+import com.company.khomasi.presentation.navigation.components.BottomNavigationBar
 import com.company.khomasi.presentation.onboarding.OnBoardingScreen
 import com.company.khomasi.presentation.onboarding.OnboardingViewModel
 import com.company.khomasi.theme.KhomasiTheme
@@ -19,42 +25,40 @@ fun NavGraph(
     startDestination: String
 ) {
     val navController = rememberNavController()
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
-    ) {
-        // Navigation for onboarding
-        navigation(
-            startDestination = Screens.OnBoarding.name,
-            route = Routes.AppStartNavigation.name
-        ) {
-            composable(route = Screens.OnBoarding.name) {
-                val viewModel: OnboardingViewModel = hiltViewModel()
-                OnBoardingScreen(
-                    onSkipClick = { viewModel.onSkipClick() },
-                )
-            }
+    Scaffold(
+        bottomBar =
+        {
+            BottomNavigationBar(
+                navController = navController,
+                bottomBarState = navBackStackEntry?.destination?.route
+                        in listOfNavItems.map { it.route }
+            )
         }
-
-        // Navigation for Auth
-        navigation(
-            route = Routes.AuthNavigation.name,
-            startDestination = Screens.AuthNavigatorScreen.name
+    ) { paddingValues ->
+        NavHost(
+            navController = navController,
+            startDestination = startDestination,
+            modifier = Modifier.padding(paddingValues)
         ) {
-            composable(route = Screens.AuthNavigatorScreen.name) {
-                AuthNavigator()
+            // Navigation for onboarding
+            navigation(
+                startDestination = Screens.AppStartNavigation.OnBoarding.route,
+                route = Screens.AppStartNavigation.route
+            ) {
+                composable(route = Screens.AppStartNavigation.OnBoarding.route) {
+                    val viewModel: OnboardingViewModel = hiltViewModel()
+                    OnBoardingScreen(
+                        onSkipClick = viewModel::onSkipClick,
+                    )
+                }
             }
-        }
+            // Navigation for Auth
+            authNavigator(navController = navController)
 
-        // Navigation for Khomasi app
-        navigation(
-            route = Routes.KhomasiNavigation.name,
-            startDestination = Screens.KhomasiNavigatorScreen.name
-        ) {
-            composable(route = Screens.KhomasiNavigatorScreen.name) {
-                KhomasiNavigator()
-            }
+            // Navigation for Khomasi app
+            khomasiNavigator(navController = navController)
         }
     }
 }
@@ -65,7 +69,7 @@ fun NavGraph(
 fun DefaultPreview() {
     KhomasiTheme {
         NavGraph(
-            startDestination = Routes.KhomasiNavigation.name
+            startDestination = Screens.KhomasiNavigation.route
         )
     }
 }

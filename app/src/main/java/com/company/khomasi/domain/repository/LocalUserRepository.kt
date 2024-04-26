@@ -2,7 +2,7 @@ package com.company.khomasi.domain.repository
 
 
 import com.company.khomasi.domain.model.LocalUser
-import com.company.khomasi.navigation.Routes
+import com.company.khomasi.navigation.Screens
 import kotlinx.coroutines.flow.Flow
 
 interface LocalUserRepository {
@@ -10,7 +10,7 @@ interface LocalUserRepository {
     suspend fun saveLocalUser(localUser: LocalUser)
     suspend fun saveAppEntry()
     suspend fun saveIsLogin(isLogin: Boolean)
-    fun readAppEntry(): Flow<Routes>
+    fun readAppEntry(): Flow<Screens>
     fun getSearchHistory(): Flow<List<String>>
     suspend fun saveSearchHistory(searchQuery: String)
     suspend fun removeSearchHistory()
