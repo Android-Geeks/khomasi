@@ -61,10 +61,10 @@ import com.company.khomasi.theme.darkOverlay
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightOverlay
 import com.company.khomasi.theme.lightText
+import com.company.khomasi.utils.formatTime
+import com.company.khomasi.utils.parseTimestamp
 import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDateTime
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
@@ -372,21 +372,7 @@ fun calculateHourlyIntervalsList(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
-fun formatTime(localDateTime: LocalDateTime): String {
-    return localDateTime.format(DateTimeFormatter.ofPattern("hh:mm a"))
-}
 
-@RequiresApi(Build.VERSION_CODES.O)
-fun parseTimestamp(timestamp: String): LocalDateTime {
-    return try {
-        val offsetDateTime = OffsetDateTime.parse(timestamp)
-        offsetDateTime.toLocalDateTime()
-    } catch (e: Exception) {
-        // If parsing fails, assume timestamp is in UTC time
-        LocalDateTime.parse(timestamp)
-    }
-}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
