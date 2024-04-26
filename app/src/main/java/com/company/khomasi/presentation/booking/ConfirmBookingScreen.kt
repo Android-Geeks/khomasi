@@ -2,6 +2,8 @@ package com.company.khomasi.presentation.booking
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,7 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
-import com.company.khomasi.domain.model.BookingDetails
 import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.cards.BookingCard
@@ -36,6 +37,7 @@ import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ConfirmBookingContent(
     bookingState: BookingUiState,
@@ -51,25 +53,23 @@ fun ConfirmBookingContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         BookingCard(
-            modifier = Modifier
-                .width((screenWidth * 0.92).dp)
-                .height((screenHeight * 0.58).dp),
-            bookingDetails = BookingDetails(
-                1,
-                playgroundId = bookingState.playgroundId,
-                name = bookingState.playgroundName,
-                address = "Nasr City",
-                bookingTime = "1/10/2024",
-                duration = bookingState.selectedDuration,
-                cost = bookingState.playgroundPrice,
-                confirmationCode = "2425",
-                isCanceled = false
-            ),
+            playgroundName = bookingState.playgroundName,
+            playgroundAddress = bookingState.playgroundAddress,
+            playgroundBookingTime = bookingState.bookingTime,
+            playgroundPrice = bookingState.totalPrice,
+            confirmationCode = "",
+            isCanceled = false,
             playgroundPicture = PlaygroundPicture(
-                1, 1, " ", false
+                id = 1,
+                playgroundId = 1,
+                picture = " ",
+                isDocumentation = false
             ),
             bookingStatus = BookingStatus.PENDING,
             showPendingButton = false,
+            modifier = Modifier
+                .width((screenWidth * 0.92).dp)
+                .height((screenHeight * 0.58).dp),
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -142,6 +142,7 @@ fun ConfirmBookingBottomSheet(
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showSystemUi = true, locale = "en")
 @Composable
 fun ConfirmBookingScreenPreview() {

@@ -29,13 +29,7 @@ class MockBookingViewModel : ViewModel() {
             "+" -> {
                 _bookingUiState.update {
                     val updatedDuration = it.selectedDuration + 30
-                    if (updatedDuration > it.selectedSlots.size * 60) {
 
-                        val nextSlot = it.nextSlot
-                        if (nextSlot != null) {
-                            it.selectedSlots.add(nextSlot)
-                        }
-                    }
                     it.copy(
                         selectedDuration = updatedDuration,
                         selectedSlots = it.selectedSlots

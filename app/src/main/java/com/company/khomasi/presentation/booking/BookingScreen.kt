@@ -61,7 +61,7 @@ import com.company.khomasi.theme.darkOverlay
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightOverlay
 import com.company.khomasi.theme.lightText
-import com.company.khomasi.utils.formatTime
+import com.company.khomasi.utils.extractTimeFromTimestamp
 import com.company.khomasi.utils.parseTimestamp
 import kotlinx.coroutines.flow.StateFlow
 import java.time.LocalDateTime
@@ -138,7 +138,7 @@ fun BookingScreen(
                     when (bookingState.page) {
                         1 -> BookingBottomSheet(
                             sheetHeight = (screenHeight * 0.16).dp,
-                            playgroundPrice = bookingState.playgroundPrice,
+                            playgroundPrice = bookingState.totalPrice,
                             isDark = isDark,
                             context = context,
                             onNextClicked = onNextClicked,
@@ -147,7 +147,7 @@ fun BookingScreen(
 
                         2 -> ConfirmBookingBottomSheet(
                             sheetHeight = (screenHeight * 0.16).dp,
-                            playgroundPrice = bookingState.playgroundPrice,
+                            playgroundPrice = bookingState.totalPrice,
                             isDark = isDark,
                             context = context,
                             onContinueToPaymentClicked = { onNextClicked() }
@@ -256,7 +256,7 @@ fun BookingScreenContent(
                     val slotStart = hourlyIntervalsList[slot].first
                     val slotEnd = hourlyIntervalsList[slot].second
                     val isSelected =
-                        remember {
+                        remember(bookingUiState.selectedSlots) {
                             mutableStateOf(
                                 bookingUiState.selectedSlots.contains(
                                     Pair(
@@ -268,8 +268,8 @@ fun BookingScreenContent(
                         }
 
                     SlotItem(
-                        slotStart = formatTime(slotStart),
-                        slotEnd = formatTime(slotEnd),
+                        slotStart = extractTimeFromTimestamp(slotStart),
+                        slotEnd = extractTimeFromTimestamp(slotEnd),
                         isSelected = isSelected,
                         onClickSlot = { onSlotClicked(Pair(slotStart, slotEnd)) }
                     )
@@ -308,7 +308,6 @@ fun BookingBottomSheet(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-
         Text(
             text = context.getString(
                 R.string.fees_per_hour, playgroundPrice

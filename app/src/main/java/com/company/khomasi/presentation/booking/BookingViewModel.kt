@@ -10,6 +10,7 @@ import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.domain.use_case.local_user.LocalPlaygroundUseCase
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemotePlaygroundUseCase
+import com.company.khomasi.utils.extractTimeFromTimestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -127,20 +128,20 @@ class BookingViewModel @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun onSlotClicked(slot: Pair<LocalDateTime, LocalDateTime>) {
+
         _bookingUiState.update {
             addSlot(slot)
             it.copy(
                 selectedSlots = it.selectedSlots,
-//                selectedDuration = if (it.selectedSlots.size > 1) it.selectedSlots.size * 60 else 60
             )
         }
-
+        calculateTotalCost()
         Log.d(
             "booking",
             "selectedSlots ck: ${
                 (_bookingUiState.value.selectedSlots.map { pair ->
                     Pair(
-                        formatTime(pair.first), formatTime(pair.second)
+                        extractTimeFromTimestamp(pair.first), extractTimeFromTimestamp(pair.second)
                     )
                 })
             }"
@@ -164,16 +165,30 @@ class BookingViewModel @Inject constructor(
         return temp
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun calculateTotalCost() {
+        val bookingState = _bookingUiState.value
+        val durationInHours =
+            bookingState.selectedDuration / 60
+
+        val total =
+            (bookingState.selectedSlots.size) * bookingState.playgroundPrice * durationInHours
+        _bookingUiState.update {
+            it.copy(totalPrice = total)
+        }
+    }
+
     fun onBackClicked() {
         _bookingUiState.value = _bookingUiState.value.copy(page = _bookingUiState.value.page - 1)
     }
 
     fun onNextClicked() {
         _bookingUiState.update {
-            it.copy(page = it.page.plus(1))
+            it.copy(page = it.page.plus(if (it.page < 2) 1 else 0))
         }
 
     }
+
 }
 
 
