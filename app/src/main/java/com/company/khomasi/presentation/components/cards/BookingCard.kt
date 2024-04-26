@@ -3,7 +3,9 @@ package com.company.khomasi.presentation.components.cards
 import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
+import android.os.Build
 import androidx.annotation.DrawableRes
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -40,7 +42,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
-import com.company.khomasi.domain.model.BookingDetails
 import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
@@ -49,17 +50,29 @@ import com.company.khomasi.theme.darkSubText
 import com.company.khomasi.theme.darkWarningColor
 import com.company.khomasi.theme.lightSubText
 import com.company.khomasi.theme.lightWarningColor
+import com.company.khomasi.utils.extractDateFromTimestamp
+import com.company.khomasi.utils.extractTimeFromTimestamp
+import com.company.khomasi.utils.parseTimestamp
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BookingCard(
-    bookingDetails: BookingDetails,
+    playgroundName: String,
+    playgroundAddress: String,
     playgroundPicture: PlaygroundPicture,
+    playgroundPrice: Int,
+    playgroundBookingTime: String,
+    isCanceled: Boolean,
+    confirmationCode: String,
     modifier: Modifier = Modifier,
     isDark: Boolean = isSystemInDarkTheme(),
     bookingStatus: BookingStatus,
     showPendingButton: Boolean = true,
 ) {
+    val parsedBookingTime = parseTimestamp(playgroundBookingTime)
+    val bookingTime = extractTimeFromTimestamp(parsedBookingTime)
+    val bookingDate = extractDateFromTimestamp(parsedBookingTime)
     Card(
         modifier
             .height(
@@ -81,7 +94,14 @@ fun BookingCard(
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surface)
             )
             Column {
-                BookingCardDetails(bookingDetails, playgroundPicture)
+                BookingCardDetails(
+                    playgroundName = playgroundName,
+                    playgroundAddress = playgroundAddress,
+                    playgroundBookingDate = bookingDate,
+                    playgroundBookingTime = bookingTime,
+                    playgroundPrice = playgroundPrice,
+                    playgroundPicture = playgroundPicture,
+                )
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -126,7 +146,7 @@ fun BookingCard(
                                     Spacer(modifier = Modifier.weight(1f))
 
                                     Text(
-                                        text = bookingDetails.confirmationCode,
+                                        text = confirmationCode,
                                         style = MaterialTheme.typography.displayLarge,
                                         color = MaterialTheme.colorScheme.secondary,
                                         textAlign = TextAlign.End,
@@ -199,7 +219,11 @@ fun BookingCard(
 
 @Composable
 fun BookingCardDetails(
-    bookingDetails: BookingDetails,
+    playgroundName: String,
+    playgroundAddress: String,
+    playgroundBookingDate: String,
+    playgroundBookingTime: String,
+    playgroundPrice: Int,
     playgroundPicture: PlaygroundPicture,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current
@@ -232,24 +256,24 @@ fun BookingCardDetails(
         )
         {
             TextWithIcon(
-                text = bookingDetails.name,
+                text = playgroundName,
                 iconId = R.drawable.soccerball
             )
             TextWithIcon(
-                text = bookingDetails.address,
+                text = playgroundAddress,
                 iconId = R.drawable.mappin
             )
             TextWithIcon(
-                text = bookingDetails.bookingTime,
+                text = playgroundBookingDate,
                 iconId = R.drawable.calendar
             )
             TextWithIcon(
-                text = bookingDetails.bookingTime,
+                text = playgroundBookingTime,
                 iconId = R.drawable.clock
             )
             TextWithIcon(
                 text = context.getString(
-                    R.string.fees_per_hour, bookingDetails.cost
+                    R.string.fees_per_hour, playgroundPrice
                 ),
                 iconId = R.drawable.currencycircledollar
             )
@@ -288,28 +312,24 @@ fun TextWithIcon(
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview(name = "Night", uiMode = UI_MODE_NIGHT_YES)
 @Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO, locale = "ar")
 @Composable
 private fun BookingCardPreview() {
     KhomasiTheme {
         BookingCard(
-            bookingDetails = BookingDetails(
-                1,
-                1,
-                "Al Zamalek Club",
-                "Nasr City",
-                "1/10/2024",
-                7,
-                50,
-                "2425",
-                false
-            ),
+            playgroundName = "Al Zamalek Club",
+            playgroundAddress = "Nasr City",
+            playgroundBookingTime = "2024-04-23T12:00:00",
+            playgroundPrice = 50,
+            confirmationCode = "2425",
+            isCanceled = false,
             playgroundPicture = PlaygroundPicture(
-                1,
-                1,
-                " ",
-                false
+                id = 1,
+                playgroundId = 1,
+                picture = " ",
+                isDocumentation = false
             ),
             bookingStatus = BookingStatus.PENDING
         )
