@@ -24,5 +24,5 @@ fun extractTimeFromTimestamp(localDateTime: LocalDateTime): String {
 
 @RequiresApi(Build.VERSION_CODES.O)
 fun extractDateFromTimestamp(localDateTime: LocalDateTime): String {
-    return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    return localDateTime.format(DateTimeFormatter.ofPattern("dd-MM-yyyy"))
 }
