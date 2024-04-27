@@ -58,7 +58,9 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
             )
 
         }
+
         myBookingsNavigator(navController = navController)
+
         composable(route = Screens.KhomasiNavigation.Playgrounds.route) {
 
         }
