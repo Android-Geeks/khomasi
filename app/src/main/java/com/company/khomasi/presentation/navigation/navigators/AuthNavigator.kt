@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.navigation
+package com.company.khomasi.presentation.navigation.navigators
 
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -13,9 +13,11 @@ import com.company.khomasi.presentation.loginOrSignup.LoginOrRegisterScreen
 import com.company.khomasi.presentation.navigation.components.sharedViewModel
 import com.company.khomasi.presentation.otpScreen.OtpScreen
 import com.company.khomasi.presentation.otpScreen.OtpViewModel
-import com.company.khomasi.presentation.register.RegisterScreen
+import com.company.khomasi.presentation.register.RegisterEmailAndPassword
+import com.company.khomasi.presentation.register.RegisterNameAndPhone
 import com.company.khomasi.presentation.register.RegisterViewModel
-import com.company.khomasi.presentation.resetPassword.ResetPassword
+import com.company.khomasi.presentation.resetPassword.EmailVerification
+import com.company.khomasi.presentation.resetPassword.PasswordConfirmation
 import com.company.khomasi.presentation.resetPassword.ResetPasswordViewModel
 
 
@@ -41,6 +43,7 @@ fun NavGraphBuilder.authNavigator(navController: NavController) {
                 updatePassword = loginViewModel::updatePassword,
                 updateEmail = loginViewModel::updateEmail,
                 login = loginViewModel::login,
+                onLoginSuccess = { navController.navigate(Screens.KhomasiNavigation.route) },
                 loginWithGmail = loginViewModel::loginWithGmail,
                 privacyAndPolicy = loginViewModel::privacyAndPolicy,
                 helpAndSupport = loginViewModel::helpAndSupport,
@@ -79,31 +82,31 @@ fun NavGraphBuilder.register(navController: NavController) {
     ) {
         composable(route = Screens.AuthNavigation.Register.NameAndPhone.route) {
             val registerViewModel = it.sharedViewModel<RegisterViewModel>(navController)
-            RegisterScreen(
-                onLoginClick = { navController.navigate(Screens.AuthNavigation.Login.route) },
-                onDoneClick = { navController.navigate(Screens.AuthNavigation.OTP.route) },
-                onBackFromStack = { navController.popBackStack() },
-                onRegister = registerViewModel::onRegister,
-                uiState = registerViewModel.uiState.collectAsState(),
-                registerState = registerViewModel.registerState,
-                onFirstNameChange = registerViewModel::onFirstNameChange,
-                isValidNameAndPhoneNumber = registerViewModel::isValidNameAndPhoneNumber,
-                isValidEmailAndPassword = registerViewModel::isValidEmailAndPassword,
-                onNextClick = registerViewModel::onNextClick,
-                onLastNameChange = registerViewModel::onLastNameChange,
-                onEmailChange = registerViewModel::onEmailChange,
-                onPasswordChange = registerViewModel::onPasswordChange,
-                onConfirmPasswordChange = registerViewModel::onConfirmPasswordChange,
-                onPhoneNumberChange = registerViewModel::onPhoneNumberChange,
+            RegisterNameAndPhone(
+                uiState = registerViewModel.uiState,
                 updateLocation = registerViewModel::updateLocation,
-                onBack = registerViewModel::onBack
+                onFirstNameChange = registerViewModel::onFirstNameChange,
+                onLastNameChange = registerViewModel::onLastNameChange,
+                onPhoneNumberChange = registerViewModel::onPhoneNumberChange,
+                isValidNameAndPhoneNumber = registerViewModel::isValidNameAndPhoneNumber,
+                onLoginClick = { navController.navigate(Screens.AuthNavigation.Login.route) },
+                onNextClick = { navController.navigate(Screens.AuthNavigation.Register.EmailAndPassword.route) },
             )
         }
         composable(route = Screens.AuthNavigation.Register.EmailAndPassword.route) {
             val registerViewModel = it.sharedViewModel<RegisterViewModel>(navController)
-
+            RegisterEmailAndPassword(
+                uiState = registerViewModel.uiState,
+                registerState = registerViewModel.registerState,
+                onDoneClick = { navController.navigate(Screens.AuthNavigation.OTP.route) },
+                onRegister = registerViewModel::onRegister,
+                isValidEmailAndPassword = registerViewModel::isValidEmailAndPassword,
+                onEmailChange = registerViewModel::onEmailChange,
+                onPasswordChange = registerViewModel::onPasswordChange,
+                onConfirmPasswordChange = registerViewModel::onConfirmPasswordChange,
+                onLoginClick = { navController.navigate(Screens.AuthNavigation.Login.route) },
+            )
         }
-
     }
 }
 
@@ -115,26 +118,28 @@ fun NavGraphBuilder.resetPassword(navController: NavController) {
     ) {
         composable(route = Screens.AuthNavigation.ResetPassword.Email.route) {
             val resetPasswordViewModel = it.sharedViewModel<ResetPasswordViewModel>(navController)
-            ResetPassword(
-                onCancelClick = { navController.popBackStack() },
-                onBackToLogin = { navController.navigate(Screens.AuthNavigation.Login.route) },
-                uiState = resetPasswordViewModel.resetUiState.collectAsState(),
+            EmailVerification(
+                uiState = resetPasswordViewModel.resetUiState,
                 verificationRes = resetPasswordViewModel.verificationRes,
-                recoverResponse = resetPasswordViewModel.recoverResponse,
+                onCorrectCodeChange = resetPasswordViewModel::onCorrectCodeChange,
                 onUserEmailChange = resetPasswordViewModel::onUserEmailChange,
+                onCancelClick = { navController.popBackStack() },
                 onClickButtonScreen1 = resetPasswordViewModel::onClickButtonScreen1,
+                onSetPasswordClick = { navController.navigate(Screens.AuthNavigation.ResetPassword.Confirmation.route) }
+            )
+        }
+        composable(route = Screens.AuthNavigation.ResetPassword.Confirmation.route) {
+            val resetPasswordViewModel = it.sharedViewModel<ResetPasswordViewModel>(navController)
+            PasswordConfirmation(
+                uiState = resetPasswordViewModel.resetUiState,
+                onBackToLogin = { navController.navigate(Screens.AuthNavigation.Login.route) },
+                recoverResponse = resetPasswordViewModel.recoverResponse,
                 onEnteringVerificationCode = resetPasswordViewModel::onEnteringVerificationCode,
                 verifyVerificationCode = resetPasswordViewModel::verifyVerificationCode,
                 onEnteringPassword = resetPasswordViewModel::onEnteringPassword,
                 onReTypingPassword = resetPasswordViewModel::onReTypingPassword,
                 onButtonClickedScreen2 = resetPasswordViewModel::onButtonClickedScreen2,
-                onBack = resetPasswordViewModel::onBack,
-                onNextClick = resetPasswordViewModel::onNextClick,
             )
-        }
-        composable(route = Screens.AuthNavigation.ResetPassword.Confirmation.route) {
-            val resetPasswordViewModel = it.sharedViewModel<ResetPasswordViewModel>(navController)
-
         }
     }
 }

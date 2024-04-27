@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.login
 
-import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -42,7 +41,6 @@ class LoginViewModel @Inject constructor(
 
     fun login() {
         viewModelScope.launch {
-            Log.d("LoginViewModel", "login: ${_uiState.value.email} ${_uiState.value.password}")
             _loginState.value = DataState.Loading
             authUseCases.loginUseCase(
                 _uiState.value.email,
@@ -50,15 +48,7 @@ class LoginViewModel @Inject constructor(
             ).collect {
                 _loginState.value = it
                 if (it is DataState.Success) {
-                    Log.d(
-                        "HI I AM HERE",
-                        "login: ${_uiState.value.email} ${_uiState.value.password}"
-                    )
                     onLoginSuccess()
-                    Log.d(
-                        "HI I AM HERE",
-                        "login: ${_uiState.value.email} ${_uiState.value.password}"
-                    )
                     localUserUseCases.saveLocalUser(
                         LocalUser(
                             userID = it.data.userLoginData.userID,

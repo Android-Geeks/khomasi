@@ -211,6 +211,12 @@
     <string name="time_slot_validation">Please select one consecutive time period</string>
     <string name="continue_to_payment">Continue to payment</string>
     <string name="face_not_detected">No Face Detected</string>
+    <string name="verification_code_sent">Verification code sent</string>
+    <string name="user_not_found">User not found</string>
+    <string name="no_internet_connection">No internet connection</string>
+    <string name="invalid_verification_code">Invalid verification code</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="password_changed">Password changed</string>
 
 
 </resources>

@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.navigation
+package com.company.khomasi.presentation.navigation.navigators
 
 
 import androidx.hilt.navigation.compose.hiltViewModel

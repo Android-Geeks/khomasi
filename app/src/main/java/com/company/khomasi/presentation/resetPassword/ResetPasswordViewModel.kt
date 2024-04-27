@@ -10,7 +10,6 @@ import com.company.khomasi.utils.CheckInputValidation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,7 +20,7 @@ class ResetPasswordViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val _resetUiState = MutableStateFlow(ResetPasswordUiState())
-    val resetUiState: StateFlow<ResetPasswordUiState> = _resetUiState.asStateFlow()
+    val resetUiState: StateFlow<ResetPasswordUiState> = _resetUiState
 
     private val _verificationRes =
         MutableStateFlow<DataState<VerificationResponse>>(DataState.Empty)
@@ -35,6 +34,14 @@ class ResetPasswordViewModel @Inject constructor(
         _resetUiState.update {
             it.copy(
                 userEmail = email
+            )
+        }
+    }
+
+    fun onCorrectCodeChange(code: String) {
+        _resetUiState.update {
+            it.copy(
+                correctCode = code
             )
         }
     }
@@ -111,13 +118,5 @@ class ResetPasswordViewModel @Inject constructor(
                 }
             }
         }
-    }
-
-    fun onBack() {
-        _resetUiState.value = _resetUiState.value.copy(page = _resetUiState.value.page - 1)
-    }
-
-    fun onNextClick() {
-        _resetUiState.value = _resetUiState.value.copy(page = _resetUiState.value.page + 1)
     }
 }
