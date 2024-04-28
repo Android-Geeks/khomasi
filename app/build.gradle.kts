@@ -176,6 +176,8 @@ dependencies {
     testImplementation("com.squareup.okhttp3:mockwebserver:${okHttp}")
     testImplementation("com.squareup.okhttp3:okhttp:${okHttp}")
 
+    implementation("com.jakewharton.threetenabp:threetenabp:1.3.1")
+
     // Instrumentation tests
     androidTestImplementation("com.google.dagger:hilt-android-testing:2.50")
     kspAndroidTest("com.google.dagger:hilt-android-compiler:2.50")

@@ -5,6 +5,7 @@ import com.company.khomasi.domain.model.FeedbackRequest
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
+import com.company.khomasi.domain.model.PlaygroundReviewResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.model.ProfileImageResponse
@@ -126,4 +127,10 @@ interface RetrofitService {
         @Header("Authorization") token: String,
         @Query("userId") userId: String
     ): Response<ProfileImageResponse>
+
+    @GET("Review/playground-reviews")
+    suspend fun getPlaygroundReviews(
+        @Header("Authorization") token: String,
+        @Query("id") id: Int
+    ): Response<PlaygroundReviewResponse>
 }

@@ -25,10 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
-import com.company.khomasi.domain.model.BookingDetails
-import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.MyButton
-import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
 import com.company.khomasi.presentation.screenDimensions.getScreenHeight
 import com.company.khomasi.presentation.screenDimensions.getScreenWidth
@@ -50,26 +47,16 @@ fun ConfirmBookingContent(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        BookingCard(
+        PlaygroundBookingCard(
+            playgroundName = bookingState.playgroundName,
+            playgroundAddress = bookingState.playgroundAddress,
+            playgroundBookingTime = bookingState.bookingTime,
+            playgroundPrice = bookingState.totalPrice,
+            playgroundPicture = "",
+            bookingStatus = BookingStatus.PENDING,
             modifier = Modifier
                 .width((screenWidth * 0.92).dp)
                 .height((screenHeight * 0.58).dp),
-            bookingDetails = BookingDetails(
-                1,
-                playgroundId = bookingState.playgroundId,
-                name = bookingState.playgroundName,
-                address = "Nasr City",
-                bookingTime = "1/10/2024",
-                duration = bookingState.selectedDuration,
-                cost = bookingState.playgroundPrice,
-                confirmationCode = "2425",
-                isCanceled = false
-            ),
-            playgroundPicture = PlaygroundPicture(
-                1, 1, " ", false
-            ),
-            bookingStatus = BookingStatus.PENDING,
-            showPendingButton = false,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -140,7 +127,6 @@ fun ConfirmBookingBottomSheet(
 
     }
 }
-
 
 @Preview(showSystemUi = true, locale = "en")
 @Composable

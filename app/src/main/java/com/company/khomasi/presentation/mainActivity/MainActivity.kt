@@ -29,6 +29,11 @@ class MainActivity : ComponentActivity() {
                 Surface {
                     Log.d("ActivityMain", mainViewModel.startDestination.value)
                     NavGraph(mainViewModel.startDestination.value)
+//                    val vm: PlaygroundViewModel = hiltViewModel()
+//                    PlaygroundReviews(
+//                        getPlaygroundReviews = vm::getPlaygroundReviews,
+//                        reviewsState = vm.reviewsState
+//                    )
                 }
             }
         }
