@@ -1,12 +1,10 @@
 package com.company.khomasi.utils
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import java.time.LocalDateTime
-import java.time.OffsetDateTime
-import java.time.format.DateTimeFormatter
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.OffsetDateTime
+import org.threeten.bp.format.DateTimeFormatter
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 fun parseTimestamp(timestamp: String): LocalDateTime {
     return try {
         val offsetDateTime = OffsetDateTime.parse(timestamp)
@@ -17,12 +15,10 @@ fun parseTimestamp(timestamp: String): LocalDateTime {
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun extractTimeFromTimestamp(localDateTime: LocalDateTime): String {
     return localDateTime.format(DateTimeFormatter.ofPattern("hh:mm a"))
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun extractDateFromTimestamp(localDateTime: LocalDateTime, format: String = "dd-MM-yyyy"): String {
     return localDateTime.format(DateTimeFormatter.ofPattern(format))
 }
