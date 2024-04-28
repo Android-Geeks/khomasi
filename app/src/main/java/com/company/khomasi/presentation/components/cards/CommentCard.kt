@@ -1,6 +1,9 @@
 package com.company.khomasi.presentation.components.cards
 
-import androidx.compose.ui.unit.dp
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -19,18 +24,31 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import coil.compose.AsyncImage
+import androidx.compose.ui.unit.dp
+import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
-import androidx.compose.ui.text.style.TextAlign
+import com.company.khomasi.utils.convertToBitmap
+import com.company.khomasi.utils.extractDateFromTimestamp
+import com.company.khomasi.utils.parseTimestamp
 import com.gowtham.ratingbar.RatingBar
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun CommentCard(commentDetails: CommentDetails) {
+fun CommentCard(
+    userName: String,
+    userImageUrl: String,
+    comment: String,
+    dateTime: String,
+    rating: Float,
+) {
+    val date = extractDateFromTimestamp(parseTimestamp(dateTime), format = "dd MMMM yyyy")
     Card(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.background)
     ) {
         Column(
             modifier = Modifier
@@ -41,32 +59,35 @@ fun CommentCard(commentDetails: CommentDetails) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Start
             ) {
-                AsyncImage(
+                SubcomposeAsyncImage(
+                    model = ImageRequest.Builder(context = LocalContext.current)
+                        .data(userImageUrl.convertToBitmap()).crossfade(true).build(),
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop,
+                    loading = { CircularProgressIndicator() },
+                    error = {
+                        Image(
+                            painter = painterResource(id = R.drawable.user_img),
+                            contentDescription = null
+                        )
+                    },
                     modifier = Modifier
                         .size(50.dp)
-                        .clip(CircleShape),
-                    model = ImageRequest.Builder(context = LocalContext.current)
-                        .data(commentDetails.userImageUrl)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillWidth,
-//                    error = painterResource(id = R.drawable.ic_broken_image),
-                    placeholder = painterResource(id = R.drawable.user_img)
+                        .clip(CircleShape)
+                        .background(MaterialTheme.colorScheme.background)
                 )
 
                 Column(
-                    Modifier.padding(start = 4.dp),
-                    verticalArrangement = Arrangement.Top
+                    Modifier.padding(start = 4.dp), verticalArrangement = Arrangement.Top
                 ) {
                     Text(
-                        text = commentDetails.userName,
+                        text = userName,
                         style = MaterialTheme.typography.titleSmall,
                         modifier = Modifier
 
                     )
                     Text(
-                        text = commentDetails.date,
+                        text = date,
                         style = MaterialTheme.typography.labelMedium,
                         textAlign = TextAlign.Start
                     )
@@ -74,7 +95,7 @@ fun CommentCard(commentDetails: CommentDetails) {
 
                 Spacer(modifier = Modifier.weight(1f))
                 RatingBar(
-                    value = commentDetails.rating,
+                    value = rating,
                     size = 18.dp,
                     spaceBetween = 1.dp,
                     painterEmpty = painterResource(id = R.drawable.unfilled_star),
@@ -87,11 +108,10 @@ fun CommentCard(commentDetails: CommentDetails) {
                 )
             }
             Text(
-                text = commentDetails.comment,
+                text = comment,
                 style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Start,
-                modifier = Modifier
-                    .padding(top = 8.dp)
+                modifier = Modifier.padding(top = 8.dp)
             )
         }
 
@@ -99,19 +119,18 @@ fun CommentCard(commentDetails: CommentDetails) {
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun CommentCardPreview() {
     KhomasiTheme {
         CommentCard(
-            commentDetails = CommentDetails(
-                "Ali Gamal",
-                "",
-                "very good playground",
-                "19 May 2024",
-                "2",
-                3.7f
-            )
+            userName = "Ali Gamal",
+            userImageUrl = "",
+            comment = "very good playground",
+            dateTime = "2024-03-14T18:01:12.696",
+            rating = 3.7f
+
         )
     }
 }
