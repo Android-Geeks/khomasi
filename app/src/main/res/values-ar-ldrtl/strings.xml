@@ -210,4 +210,5 @@
     <string name="permission_denied">تم رفض الإذن</string>
     <string name="take_a_photo">التقاط صورة</string>
     <string name="choose_from_gallery">اختر من المعرض</string>
+    <string name="face_not_detected">لم يتم تحديد وجه</string>
 </resources>

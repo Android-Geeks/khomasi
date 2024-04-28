@@ -105,7 +105,7 @@ dependencies {
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3:1.2.0")
+    implementation("androidx.compose.material3:material3:1.2.1")
 
     val composeVersion = "1.6.1"
     //noinspection GradleDependency
@@ -151,14 +151,20 @@ dependencies {
     implementation("androidx.navigation:navigation-compose:2.7.7")
 
     //RatingBar
-    implementation ("com.github.a914-gowtham:compose-ratingbar:1.3.4")
+    implementation("com.github.a914-gowtham:compose-ratingbar:1.3.4")
 
     //Password meter
     implementation("com.nulab-inc:zxcvbn:1.5.2")
 
     //Pager
-    implementation ("com.google.accompanist:accompanist-pager:0.28.0")
-    implementation ("com.google.accompanist:accompanist-pager-indicators:0.28.0")
+    implementation("com.google.accompanist:accompanist-pager:0.28.0")
+    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
+
+    //Face Detection And Camera
+    implementation("com.google.mlkit:face-detection:16.1.6")
+
+    //Rebugger
+    implementation("io.github.theapache64:rebugger:1.0.0-rc03")
 
     // Local unit tests
     testImplementation("androidx.test:core:1.5.0")
