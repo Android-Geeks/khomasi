@@ -1,6 +1,7 @@
 package com.company.khomasi.presentation.booking
 
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
+
 
 data class BookingUiState(
     val playgroundId: Int = 1,

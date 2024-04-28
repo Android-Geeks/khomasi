@@ -2,8 +2,6 @@ package com.company.khomasi.presentation.booking
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,9 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
-import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.MyButton
-import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
 import com.company.khomasi.presentation.screenDimensions.getScreenHeight
 import com.company.khomasi.presentation.screenDimensions.getScreenWidth
@@ -37,7 +33,6 @@ import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun ConfirmBookingContent(
     bookingState: BookingUiState,
@@ -52,21 +47,13 @@ fun ConfirmBookingContent(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        BookingCard(
+        PlaygroundBookingCard(
             playgroundName = bookingState.playgroundName,
             playgroundAddress = bookingState.playgroundAddress,
             playgroundBookingTime = bookingState.bookingTime,
             playgroundPrice = bookingState.totalPrice,
-            confirmationCode = "",
-            isCanceled = false,
-            playgroundPicture = PlaygroundPicture(
-                id = 1,
-                playgroundId = 1,
-                picture = " ",
-                isDocumentation = false
-            ),
+            playgroundPicture = "",
             bookingStatus = BookingStatus.PENDING,
-            showPendingButton = false,
             modifier = Modifier
                 .width((screenWidth * 0.92).dp)
                 .height((screenHeight * 0.58).dp),
@@ -141,8 +128,6 @@ fun ConfirmBookingBottomSheet(
     }
 }
 
-
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showSystemUi = true, locale = "en")
 @Composable
 fun ConfirmBookingScreenPreview() {

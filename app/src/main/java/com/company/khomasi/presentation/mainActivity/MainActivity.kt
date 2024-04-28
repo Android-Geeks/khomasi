@@ -2,6 +2,7 @@ package com.company.khomasi.presentation.mainActivity
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -10,9 +11,7 @@ import androidx.annotation.RequiresApi
 import androidx.compose.material3.Surface
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.company.khomasi.presentation.playground.PlaygroundReviews
-import com.company.khomasi.presentation.playground.PlaygroundViewModel
+import com.company.khomasi.presentation.navigation.NavGraph
 import com.company.khomasi.theme.KhomasiTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -31,13 +30,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             KhomasiTheme {
                 Surface {
-//                    Log.d("TAG", mainViewModel.startDestination.value)
-//                    NavGraph(mainViewModel.startDestination.value)
-                    val vm: PlaygroundViewModel = hiltViewModel()
-                    PlaygroundReviews(
-                        getPlaygroundReviews = vm::getPlaygroundReviews,
-                        reviewsState = vm.reviewsState
-                    )
+                    Log.d("TAG", mainViewModel.startDestination.value)
+                    NavGraph(mainViewModel.startDestination.value)
+//                    val vm: PlaygroundViewModel = hiltViewModel()
+//                    PlaygroundReviews(
+//                        getPlaygroundReviews = vm::getPlaygroundReviews,
+//                        reviewsState = vm.reviewsState
+//                    )
                 }
             }
         }

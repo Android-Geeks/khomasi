@@ -1,7 +1,5 @@
 package com.company.khomasi.presentation.components.cards
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -36,7 +34,6 @@ import com.company.khomasi.utils.extractDateFromTimestamp
 import com.company.khomasi.utils.parseTimestamp
 import com.gowtham.ratingbar.RatingBar
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun CommentCard(
     userName: String,
@@ -119,7 +116,6 @@ fun CommentCard(
 }
 
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
 fun CommentCardPreview() {

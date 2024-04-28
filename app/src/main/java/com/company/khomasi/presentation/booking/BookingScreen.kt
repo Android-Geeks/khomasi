@@ -2,10 +2,8 @@ package com.company.khomasi.presentation.booking
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.BackHandler
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -64,11 +62,11 @@ import com.company.khomasi.theme.lightText
 import com.company.khomasi.utils.extractTimeFromTimestamp
 import com.company.khomasi.utils.parseTimestamp
 import kotlinx.coroutines.flow.StateFlow
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
+
 import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BookingScreen(
     bookingUiState: StateFlow<BookingUiState>,
@@ -159,7 +157,6 @@ fun BookingScreen(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BookingScreenContent(
     bookingUiState: BookingUiState,
@@ -338,7 +335,6 @@ fun BookingBottomSheet(
     }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 fun calculateHourlyIntervalsList(
     freeSlots: DataState<FessTimeSlotsResponse>,
     selectedDuration: Int
@@ -423,7 +419,6 @@ fun BookingTopBar(
 }
 
 @Preview(showSystemUi = true, locale = "en")
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun BookingScreenPreview() {
     val mockViewModel: MockBookingViewModel = viewModel()
