@@ -1,7 +1,5 @@
 package com.company.khomasi.presentation.components.cards
 
-import com.company.khomasi.domain.model.Playground
-
 //data class Playground(
 //    val name: String,
 //    val address: String,
@@ -22,17 +20,17 @@ import com.company.khomasi.domain.model.Playground
 //    val statusOfBooking: BookingStatus
 //)
 
-enum class BookingStatus{
+enum class BookingStatus {
     PENDING,
     CONFIRMED,
     EXPIRED
 }
 
-data class CommentDetails(
-    val userName: String,
-    val userImageUrl : String,
-    val comment : String,
-    val date: String,
-    val time: String,
-    val rating: Float,
-)
+//data class CommentDetails(
+//    val userName: String,
+//    val userImageUrl : String,
+//    val comment : String,
+//    val date: String,
+//    val time: String,
+//    val rating: Float,
+//)

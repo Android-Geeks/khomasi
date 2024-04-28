@@ -14,6 +14,7 @@ import com.company.khomasi.domain.use_case.auth.RecoverAccountUseCase
 import com.company.khomasi.domain.use_case.auth.RegisterUseCase
 import com.company.khomasi.domain.use_case.remote_user.DeleteUserFavouriteUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetFreeTimeSlotsUseCase
+import com.company.khomasi.domain.use_case.remote_user.GetPlaygroundReviewsUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetPlaygroundsUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetProfileImageUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetSpecificPlaygroundUseCase
@@ -114,5 +115,6 @@ object NetworkModule {
         remotePlaygroundRepository: RemotePlaygroundRepository
     ): RemotePlaygroundUseCase = RemotePlaygroundUseCase(
         getFreeTimeSlotsUseCase = GetFreeTimeSlotsUseCase(remotePlaygroundRepository),
+        getPlaygroundReviewsUseCase = GetPlaygroundReviewsUseCase(remotePlaygroundRepository)
     )
 }
