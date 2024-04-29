@@ -15,7 +15,8 @@ import com.company.khomasi.presentation.navigation.components.sharedViewModel
 import com.company.khomasi.presentation.profile.EditProfile
 import com.company.khomasi.presentation.profile.ProfileViewModel
 import com.company.khomasi.presentation.profile.ViewProfile
-import com.company.khomasi.presentation.search.SearchScreen
+import com.company.khomasi.presentation.search.SearchQuery
+import com.company.khomasi.presentation.search.SearchResult
 import com.company.khomasi.presentation.search.SearchViewModel
 
 
@@ -71,26 +72,9 @@ fun NavGraphBuilder.khomasiNavigator(
 
         }
 
-
-        composable(route = Screens.KhomasiNavigation.Search.route) {
-            val searchViewModel: SearchViewModel = hiltViewModel()
-            SearchScreen(
-                onBackClick = { navController.popBackStack() },
-                searchQuery = searchViewModel.searchQuery,
-                searchUiState = searchViewModel.uiState,
-                playgroundsState = searchViewModel.searchResults,
-                onQueryChange = searchViewModel::onSearchQueryChanged,
-                onSearchQuerySubmitted = searchViewModel::onSearchQuerySubmitted,
-                onSearchFilterChanged = searchViewModel::onSearchFilterChanged,
-                onClearHistory = searchViewModel::onClickRemoveSearchHistory,
-                navigateToPlaygroundDetails = {},
-                onBackPage = searchViewModel::onBackPage,
-                onNextPage = searchViewModel::onNextPage,
-            )
-        }
+        searchNavigator(navController)
 
         profileNavigator(navController)
-
     }
 }
 
@@ -108,9 +92,7 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.profileNavigator(
-    navController: NavController,
-) {
+fun NavGraphBuilder.profileNavigator(navController: NavController) {
     navigation(
         route = Screens.KhomasiNavigation.Profile.route,
         startDestination = Screens.KhomasiNavigation.Profile.ViewProfile.route
@@ -150,4 +132,40 @@ fun NavGraphBuilder.profileNavigator(
             )
         }
     }
+}
+
+fun NavGraphBuilder.searchNavigator(navController: NavController) {
+    navigation(
+        route = Screens.KhomasiNavigation.Search.route,
+        startDestination = Screens.KhomasiNavigation.Search.SearchQuery.route
+    ) {
+        composable(route = Screens.KhomasiNavigation.Search.SearchQuery.route) {
+            val searchViewModel = it.sharedViewModel<SearchViewModel>(navController = navController)
+            SearchQuery(
+                playgroundsState = searchViewModel.searchResults,
+                localUserState = searchViewModel.localUser,
+                searchQuery = searchViewModel.searchQuery,
+                searchUiState = searchViewModel.uiState,
+                getSearchData = searchViewModel::getSearchData,
+                onQueryChange = searchViewModel::onSearchQueryChanged,
+                onSearchQuerySubmitted = searchViewModel::onSearchQuerySubmitted,
+                onClearHistory = searchViewModel::onClickRemoveSearchHistory,
+                navigateToPlaygroundDetails = { playgroundId -> navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId") },
+                onBackClick = { navController.popBackStack() },
+                onNextPage = { navController.navigate(Screens.KhomasiNavigation.Search.SearchResults.route) },
+            )
+        }
+
+        composable(route = Screens.KhomasiNavigation.Search.SearchResults.route) {
+            val searchViewModel = it.sharedViewModel<SearchViewModel>(navController = navController)
+            SearchResult(
+                searchUiState = searchViewModel.uiState,
+                onBackClick = { navController.popBackStack() },
+                navigateToPlaygroundDetails = { playgroundId -> navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId") },
+                onSearchFilterChanged = searchViewModel::onSearchFilterChanged,
+                onBackPage = { navController.popBackStack() },
+            )
+        }
+    }
+
 }
