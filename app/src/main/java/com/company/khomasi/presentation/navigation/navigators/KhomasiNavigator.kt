@@ -86,10 +86,90 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
             )
         }
 
+        bookingPlaygroundNavigator(navController = navController)
+
         profileNavigator(navController)
 
     }
 }
+
+fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavController) {
+    navigation(
+        route = Screens.KhomasiNavigation.BookingPlayground.route + "/{playgroundId}",
+        startDestination = Screens.KhomasiNavigation.BookingPlayground.PlaygroundDetails.route
+    ) {
+        composable(route = Screens.KhomasiNavigation.BookingPlayground.PlaygroundDetails.route) { navBackStackEntry ->
+            val playgroundId = navBackStackEntry.arguments?.getString("playgroundId")
+            val playgroundViewModel =
+                navBackStackEntry.sharedViewModel<PlaygroundViewModel>(navController = navController)
+            PlaygroundScreen(
+                playgroundId = playgroundId?.toInt() ?: 1,
+                playgroundStateFlow = playgroundViewModel.playgroundState,
+                playgroundUiState = playgroundViewModel.uiState,
+                onViewRatingClicked = { navController.navigate(Screens.KhomasiNavigation.BookingPlayground.PlaygroundReviews.route) },
+                onClickBack = { navController.popBackStack() },
+                onClickShare = {},
+                onClickFav = { playgroundViewModel.onClickFavourite() },
+                onBookNowClicked = {
+                    navController.navigate(
+                        Screens.KhomasiNavigation.BookingPlayground.BookingDetails.route
+                    )
+                },
+                onClickDisplayOnMap = {},
+                getPlaygroundDetails = {
+                    playgroundViewModel.getPlaygroundDetails(it)
+                },
+            )
+        }
+
+        composable(
+            route = Screens.KhomasiNavigation.BookingPlayground.BookingDetails.route,
+        ) { navBackStackEntry ->
+            val bookingViewModel =
+                navBackStackEntry.sharedViewModel<PlaygroundViewModel>(navController = navController)
+            BookingScreen(bookingUiState = bookingViewModel.bookingUiState,
+                freeSlotsState = bookingViewModel.freeSlotsState,
+                onBackClicked = { navController.popBackStack() },
+                updateDuration = { bookingViewModel.updateDuration(it) },
+                getFreeSlots = {
+                    bookingViewModel.getFreeTimeSlots()
+                },
+                updateSelectedDay = { bookingViewModel.updateSelectedDay(it) },
+                onSlotClicked = { bookingViewModel.onSlotClicked(it) },
+                checkValidity = { bookingViewModel.checkSlotsConsecutive() },
+                onNextClicked = {
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.BookingConfirmation.route)
+                    bookingViewModel.updateBookingTime()
+                })
+        }
+
+        composable(route = Screens.KhomasiNavigation.BookingPlayground.BookingConfirmation.route) {
+
+            val bookingViewModel =
+                it.sharedViewModel<PlaygroundViewModel>(navController = navController)
+
+            ConfirmBookingScreen(
+                bookingUiState = bookingViewModel.bookingUiState,
+                onBackClicked = { navController.popBackStack() },
+                onNextClicked = { },
+            )
+        }
+
+        composable(route = Screens.KhomasiNavigation.BookingPlayground.PlaygroundReviews.route) {
+            val playgroundViewModel =
+                it.sharedViewModel<PlaygroundViewModel>(navController = navController)
+            PlaygroundReviews(
+                getPlaygroundReviews = { playgroundViewModel.getPlaygroundReviews() },
+                reviewsState = playgroundViewModel.reviewsState
+            )
+
+        }
+        composable(route = Screens.KhomasiNavigation.BookingPlayground.Payment.route) {
+
+        }
+    }
+}
+
 
 fun NavGraphBuilder.myBookingsNavigator(navController: NavController) {
     navigation(
