@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.profile.components.profile_content
+package com.company.khomasi.presentation.profile.components.content
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

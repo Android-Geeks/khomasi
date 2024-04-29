@@ -41,13 +41,13 @@ fun NavGraph(
             modifier = Modifier.padding(paddingValues)
         ) {
             // Navigation for onboarding
-            onboardingNavigator(navController)
+            onboardingNavigator()
 
             // Navigation for Auth
-            authNavigator(navController = navController)
+            authNavigator(navController)
 
             // Navigation for Khomasi app
-            khomasiNavigator(navController = navController)
+            khomasiNavigator(navController)
         }
     }
 }

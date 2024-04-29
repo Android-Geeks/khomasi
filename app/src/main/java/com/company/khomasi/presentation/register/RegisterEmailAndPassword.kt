@@ -40,6 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.UserRegisterResponse
@@ -69,7 +70,7 @@ fun RegisterEmailAndPassword(
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
     isDark: Boolean = isSystemInDarkTheme(),
 ) {
-    val userState = uiState.collectAsState().value
+    val userState = uiState.collectAsStateWithLifecycle().value
 
     val isErrorEmail = userState.validating2 && !CheckInputValidation.isEmailValid(userState.email)
     val isErrorPassword =

@@ -21,15 +21,25 @@ import com.company.khomasi.presentation.resetPassword.PasswordConfirmation
 import com.company.khomasi.presentation.resetPassword.ResetPasswordViewModel
 
 
-fun NavGraphBuilder.authNavigator(navController: NavController) {
+fun NavGraphBuilder.authNavigator(
+    navController: NavController,
+) {
     navigation(
         route = Screens.AuthNavigation.route,
         startDestination = Screens.AuthNavigation.LoginOrRegister.route
     ) {
         composable(route = Screens.AuthNavigation.LoginOrRegister.route) {
             LoginOrRegisterScreen(
-                onLoginClick = { navController.navigate(Screens.AuthNavigation.Login.route) },
-                onRegisterClick = { navController.navigate(Screens.AuthNavigation.Register.route) }
+                onLoginClick = {
+
+                    navController.navigate(Screens.AuthNavigation.Login.route)
+
+                },
+                onRegisterClick = {
+
+                    navController.navigate(Screens.AuthNavigation.Register.route)
+
+                }
             )
         }
 
@@ -43,7 +53,6 @@ fun NavGraphBuilder.authNavigator(navController: NavController) {
                 updatePassword = loginViewModel::updatePassword,
                 updateEmail = loginViewModel::updateEmail,
                 login = loginViewModel::login,
-                onLoginSuccess = { navController.navigate(Screens.KhomasiNavigation.route) },
                 loginWithGmail = loginViewModel::loginWithGmail,
                 privacyAndPolicy = loginViewModel::privacyAndPolicy,
                 helpAndSupport = loginViewModel::helpAndSupport,

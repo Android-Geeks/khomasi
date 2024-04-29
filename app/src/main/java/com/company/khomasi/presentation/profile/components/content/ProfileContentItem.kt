@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.profile.components.profile_content
+package com.company.khomasi.presentation.profile.components.content
 
 import android.content.res.Configuration
 import androidx.annotation.DrawableRes

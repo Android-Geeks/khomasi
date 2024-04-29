@@ -24,10 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusDirection
-import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -61,9 +59,9 @@ fun LoginDataPage(
     privacyAndPolicy: () -> Unit,
     helpAndSupport: () -> Unit,
     isValidEmailAndPassword: (String, String) -> Boolean,
-    localFocusManager: FocusManager = LocalFocusManager.current,
-    keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
+    keyboardController: SoftwareKeyboardController?,
 ) {
+    val localFocusManager = LocalFocusManager.current
     val keyboardActions = KeyboardActions(
         onNext = { localFocusManager.moveFocus(FocusDirection.Down) },
         onDone = {

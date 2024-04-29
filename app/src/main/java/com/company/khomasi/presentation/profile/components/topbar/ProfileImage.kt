@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.profile.components.profile_topbar
+package com.company.khomasi.presentation.profile.components.topbar
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

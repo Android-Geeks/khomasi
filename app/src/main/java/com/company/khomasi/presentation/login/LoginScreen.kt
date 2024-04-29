@@ -15,14 +15,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.UserLoginResponse
@@ -40,7 +41,6 @@ fun LoginScreen(
     updatePassword: (String) -> Unit,
     updateEmail: (String) -> Unit,
     login: () -> Unit,
-    onLoginSuccess: () -> Unit,
     loginWithGmail: () -> Unit,
     privacyAndPolicy: () -> Unit,
     helpAndSupport: () -> Unit,
@@ -48,17 +48,20 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     isDark: Boolean = isSystemInDarkTheme(),
 ) {
-    val loginStatus = loginState.collectAsState().value
+    val loginStatus = loginState.collectAsStateWithLifecycle().value
     var showLoading by remember { mutableStateOf(false) }
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+
     LaunchedEffect(key1 = loginStatus) {
         when (loginStatus) {
             is DataState.Loading -> {
                 showLoading = true
+                keyboardController?.hide()
             }
 
             is DataState.Success -> {
                 showLoading = false
-                onLoginSuccess()
                 Log.d("LoginScreen", "LoginScreen: ${loginStatus.data}")
             }
 
@@ -108,7 +111,8 @@ fun LoginScreen(
                     privacyAndPolicy = privacyAndPolicy,
                     helpAndSupport = helpAndSupport,
                     isValidEmailAndPassword = isValidEmailAndPassword,
-                    modifier = modifier.verticalScroll(rememberScrollState())
+                    modifier = modifier.verticalScroll(rememberScrollState()),
+                    keyboardController = keyboardController
                 )
             }
             if (showLoading) {
@@ -137,7 +141,6 @@ fun LoginPreview() {
             loginState = mockViewModel.loginState,
             onRegisterClick = {},
             onForgotPasswordClick = {},
-            onLoginSuccess = {},
         )
     }
 }

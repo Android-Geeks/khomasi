@@ -16,8 +16,6 @@ class MockProfileViewModel : ViewModel() {
 
 
     fun onLogout() {}
-    fun onEditProfile(isEdit: Boolean) {}
-    fun onSaveProfile() {}
 
 
 }

@@ -9,7 +9,6 @@ data class ProfileUiState(
     val oldProfileImage: String? = null,
     val feedback: String = "",
     val feedbackCategory: FeedbackCategory = FeedbackCategory.Suggestion,
-    val isEditPage: Boolean = false
 )
 
 enum class FeedbackCategory {

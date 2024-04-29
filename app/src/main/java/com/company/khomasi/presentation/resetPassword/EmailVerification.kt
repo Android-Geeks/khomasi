@@ -40,6 +40,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.VerificationResponse
@@ -62,7 +63,7 @@ fun EmailVerification(
     onClickButtonScreen1: () -> Unit,
     onSetPasswordClick: () -> Unit
 ) {
-    val resetUiState = uiState.collectAsState().value
+    val resetUiState = uiState.collectAsStateWithLifecycle().value
     val verificationStatus = verificationRes.collectAsState().value
     var showLoading by remember { mutableStateOf(false) }
 
