@@ -70,21 +70,24 @@ class PlaygroundViewModel @Inject constructor(
                     }
                 }
             }
-        }
-    }
 
-    fun getPlaygroundReviews() {
-        viewModelScope.launch {
-            val localUser = localUserUseCases.getLocalUser().first()
-            localUserUseCases.getPlaygroundId().collect { id ->
-                remotePlaygroundUseCase.getPlaygroundReviewsUseCase(
-                    token = "Bearer ${localUser.token}",
-                    id = 1
-                ).collect {
-                    _reviewsState.value = it
+            remotePlaygroundUseCase.getPlaygroundReviewsUseCase(
+                token = "Bearer ${localUser.token}",
+                id = playgroundId
+            ).collect { reviewRes ->
+                _reviewsState.value = reviewRes
+                if (reviewRes is DataState.Success) {
+                    _uiState.update {
+                        it.copy(reviewsCount = reviewRes.data.reviewList.size)
+                    }
                 }
             }
         }
+    }
+
+
+    fun updateShowReviews() {
+        _uiState.value = _uiState.value.copy(showReviews = !_uiState.value.showReviews)
     }
 
     fun onClickFavourite() {

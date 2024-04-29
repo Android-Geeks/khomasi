@@ -62,7 +62,6 @@ sealed class Screens(
             data object BookingDetails : Screens("BookingDetails")
             data object BookingConfirmation : Screens("BookingConfirmation")
             data object Payment : Screens("Payment")
-            data object PlaygroundReviews : Screens("PlaygroundReviews")
         }
 
     }

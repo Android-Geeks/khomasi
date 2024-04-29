@@ -16,7 +16,6 @@ import com.company.khomasi.presentation.playground.PlaygroundScreen
 import com.company.khomasi.presentation.playground.PlaygroundViewModel
 import com.company.khomasi.presentation.playground.booking.BookingScreen
 import com.company.khomasi.presentation.playground.booking.ConfirmBookingScreen
-import com.company.khomasi.presentation.playground.components.PlaygroundReviews
 import com.company.khomasi.presentation.profile.ProfileScreen
 import com.company.khomasi.presentation.profile.ProfileViewModel
 import com.company.khomasi.presentation.search.SearchScreen
@@ -118,7 +117,8 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavController) {
                 playgroundId = playgroundId?.toInt() ?: 1,
                 playgroundStateFlow = playgroundViewModel.playgroundState,
                 playgroundUiState = playgroundViewModel.uiState,
-                onViewRatingClicked = { navController.navigate(Screens.KhomasiNavigation.BookingPlayground.PlaygroundReviews.route) },
+                reviewsState = playgroundViewModel.reviewsState,
+                onViewRatingClicked = { playgroundViewModel.updateShowReviews() },
                 onClickBack = { navController.popBackStack() },
                 onClickShare = {},
                 onClickFav = { playgroundViewModel.onClickFavourite() },
@@ -131,6 +131,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavController) {
                 getPlaygroundDetails = {
                     playgroundViewModel.getPlaygroundDetails(it)
                 },
+                updateShowReview = { playgroundViewModel.updateShowReviews() }
             )
         }
 
@@ -167,15 +168,16 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavController) {
             )
         }
 
-        composable(route = Screens.KhomasiNavigation.BookingPlayground.PlaygroundReviews.route) {
-            val playgroundViewModel =
-                it.sharedViewModel<PlaygroundViewModel>(navController = navController)
-            PlaygroundReviews(
-                getPlaygroundReviews = { playgroundViewModel.getPlaygroundReviews() },
-                reviewsState = playgroundViewModel.reviewsState
-            )
-
-        }
+//        composable(route = Screens.KhomasiNavigation.BookingPlayground.PlaygroundReviews.route) {
+//            val playgroundViewModel =
+//                it.sharedViewModel<PlaygroundViewModel>(navController = navController)
+//            PlaygroundReviews(
+//                getPlaygroundReviews = { playgroundViewModel.getPlaygroundReviews() },
+//                reviewsState = playgroundViewModel.reviewsState,
+//                onClickCancel = { playgroundViewModel.updateShowReviews() }
+//            )
+//
+//        }
         composable(route = Screens.KhomasiNavigation.BookingPlayground.Payment.route) {
 
         }

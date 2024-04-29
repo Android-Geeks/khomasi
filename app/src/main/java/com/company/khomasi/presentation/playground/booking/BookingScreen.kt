@@ -3,7 +3,6 @@ package com.company.khomasi.presentation.playground.booking
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,6 +19,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -369,20 +369,21 @@ fun BookingTopBar(
                     textAlign = TextAlign.Start
                 )
             }, navigationIcon = {
-                Icon(
-                    painter = painterResource(id = R.drawable.back),
-                    contentDescription = null,
-                    Modifier
-                        .size(24.dp)
-                        .clickable { onBackClicked() }
-                        .then(
-                            if (currentLanguage == "en") {
-                                Modifier.rotate(180f)
-                            } else {
-                                Modifier
-                            }
-                        )
-                )
+                IconButton(onClick = { onBackClicked() }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.back),
+                        contentDescription = null,
+                        Modifier
+                            .size(24.dp)
+                            .then(
+                                if (currentLanguage == "en") {
+                                    Modifier.rotate(180f)
+                                } else {
+                                    Modifier
+                                }
+                            )
+                    )
+                }
             }, colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background)
             )
         }

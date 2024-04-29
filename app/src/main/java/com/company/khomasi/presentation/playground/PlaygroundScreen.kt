@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.PlaygroundReviewResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.MyButton
@@ -54,6 +55,7 @@ import com.company.khomasi.presentation.playground.components.PlaygroundDefiniti
 import com.company.khomasi.presentation.playground.components.PlaygroundDescription
 import com.company.khomasi.presentation.playground.components.PlaygroundFeatures
 import com.company.khomasi.presentation.playground.components.PlaygroundRates
+import com.company.khomasi.presentation.playground.components.PlaygroundReviews
 import com.company.khomasi.presentation.playground.components.PlaygroundRules
 import com.company.khomasi.presentation.playground.components.PlaygroundSize
 import com.company.khomasi.theme.KhomasiTheme
@@ -69,6 +71,7 @@ fun PlaygroundScreen(
     playgroundId: Int,
     playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
     playgroundUiState: StateFlow<PlaygroundUiState>,
+    reviewsState: StateFlow<DataState<PlaygroundReviewResponse>>,
     context: Context = LocalContext.current,
     onViewRatingClicked: () -> Unit,
     getPlaygroundDetails: (Int) -> Unit,
@@ -77,6 +80,7 @@ fun PlaygroundScreen(
     onClickFav: () -> Unit,
     onBookNowClicked: () -> Unit,
     onClickDisplayOnMap: () -> Unit,
+    updateShowReview: () -> Unit
 ) {
     var showLoading by remember { mutableStateOf(false) }
     val uiState = playgroundUiState.collectAsState().value
@@ -86,6 +90,7 @@ fun PlaygroundScreen(
     LaunchedEffect(Unit) {
         getPlaygroundDetails(playgroundId)
     }
+    val reviews = reviewsState.collectAsState().value
 
     LaunchedEffect(playgroundState) {
         showLoading = playgroundState is DataState.Loading
@@ -96,38 +101,47 @@ fun PlaygroundScreen(
     }
 
 
-    AuthSheet(sheetModifier = Modifier.fillMaxWidth(), screenContent = {
-        PlaygroundScreenContent(playgroundData = playgroundData,
-            uiState = uiState,
-            onViewRatingClicked = onViewRatingClicked,
-            onClickBack = onClickBack,
-            onClickShare = onClickShare,
-            onClickFav = { onClickFav() },
-            onClickDisplayOnMap = { onClickDisplayOnMap() })
-    }, sheetContent = {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .height(116.dp),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            Text(
-                text = context.getString(
-                    R.string.fees_per_hour, playgroundData?.playground?.feesForHour ?: 0
-                )
-            )
+    AuthSheet(
+        sheetModifier = Modifier.fillMaxWidth(),
+        screenContent = {
+            PlaygroundScreenContent(playgroundData = playgroundData,
+                uiState = uiState,
+                onViewRatingClicked = onViewRatingClicked,
+                onClickBack = onClickBack,
+                onClickShare = onClickShare,
+                onClickFav = { onClickFav() },
+                onClickDisplayOnMap = { onClickDisplayOnMap() })
+        },
+        sheetContent = {
+            if (uiState.showReviews) {
+                PlaygroundReviews(
+                    reviews = reviews,
+                    onClickCancel = { updateShowReview() })
+            } else {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(116.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = context.getString(
+                            R.string.fees_per_hour, playgroundData?.playground?.feesForHour ?: 0
+                        )
+                    )
 
-            MyButton(
-                text = R.string.book_now,
-                onClick = {
-                    onBookNowClicked()
-                },
-                modifier = Modifier.fillMaxWidth()
-            )
+                    MyButton(
+                        text = R.string.book_now,
+                        onClick = {
+                            onBookNowClicked()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
 
-        }
-    })
+                }
+            }
+        })
 
     if (showLoading) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -176,7 +190,7 @@ fun PlaygroundScreenContent(
 
         item {
             PlaygroundRates(
-                rateNum = "23",
+                rateNum = uiState.reviewsCount.toString(),
                 rate = playgroundData?.playground?.rating.toString(),
                 onViewRatingClicked = onViewRatingClicked
             )
@@ -287,6 +301,7 @@ fun PlaygroundScreenPreview() {
             playgroundId = 1,
             playgroundStateFlow = mockViewModel.playgroundState,
             playgroundUiState = mockViewModel.uiState,
+            reviewsState = mockViewModel.reviewsState,
             onViewRatingClicked = {},
             onClickShare = {},
             onClickBack = {},
@@ -294,6 +309,7 @@ fun PlaygroundScreenPreview() {
             onBookNowClicked = { mockViewModel.onBookNowClicked() },
             onClickDisplayOnMap = {},
             getPlaygroundDetails = { mockViewModel.getPlaygroundDetails(1) },
+            updateShowReview = {}
         )
     }
 
