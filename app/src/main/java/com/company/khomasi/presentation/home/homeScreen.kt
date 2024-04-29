@@ -28,7 +28,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,6 +44,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.company.khomasi.R
@@ -74,18 +74,14 @@ fun HomeScreen(
     onAdClicked: () -> Unit,
     onClickPlaygroundCard: (Int) -> Unit,
     onFavouriteClick: (Int) -> Unit,
-    getHomeScreenData: () -> Unit
+    getHomeScreenData: () -> Unit,
 ) {
-    val playgrounds = playgroundsState.collectAsState().value
-    val uiState = homeUiState.collectAsState().value
-    val localUser = localUserState.collectAsState().value
+    val localUser by localUserState.collectAsStateWithLifecycle()
+    val playgrounds by playgroundsState.collectAsStateWithLifecycle()
+    val uiState by homeUiState.collectAsStateWithLifecycle()
 
     var showLoading by remember { mutableStateOf(false) }
     var playgroundsData by remember { mutableStateOf(listOf<Playground>()) }
-
-    LaunchedEffect(Unit) {
-        getHomeScreenData()
-    }
 
     LaunchedEffect(playgrounds) {
         showLoading = playgrounds is DataState.Loading || playgrounds is DataState.Empty
@@ -95,6 +91,10 @@ fun HomeScreen(
             emptyList()
         }
         Log.d("HomeScreen", "HomeScreen: $playgrounds")
+    }
+
+    LaunchedEffect(localUser) {
+        getHomeScreenData()
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -326,6 +326,7 @@ fun HomeScreenPreview() {
         val mockViewModel: MockHomeViewModel = hiltViewModel()
         HomeScreen(
             playgroundsState = mockViewModel.playgroundState,
+            localUserState = MutableStateFlow(LocalUser()),
             homeUiState = mockViewModel.homeUiState,
             onClickUserImage = { },
             onClickBell = { },
@@ -337,7 +338,6 @@ fun HomeScreenPreview() {
             },
             onFavouriteClick = {},
             getHomeScreenData = {},
-            localUserState = MutableStateFlow(LocalUser())
         )
     }
 }

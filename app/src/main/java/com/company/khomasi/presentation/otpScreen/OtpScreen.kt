@@ -37,6 +37,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
@@ -63,8 +64,8 @@ fun OtpScreen(
     getRegisterOtp: () -> Unit,
 ) {
     val otpUiState = uiState.value
-    val otpStatus = otpState.collectAsState().value
-    val confirmEmailStatus = confirmEmailState.collectAsState().value
+    val otpStatus = otpState.collectAsStateWithLifecycle().value
+    val confirmEmailStatus = confirmEmailState.collectAsStateWithLifecycle().value
     var showLoading by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {

@@ -38,6 +38,7 @@ fun SearchResults(
     query: String,
     onQueryChange: (String) -> Unit,
     onSearchQuerySubmitted: (String) -> Unit,
+    navigateToPlaygroundDetails: (Int) -> Unit,
     onNextPage: () -> Unit,
     isDark: Boolean
 ) {
@@ -54,6 +55,7 @@ fun SearchResults(
                 onClick = {
                     onQueryChange(query)
                     onSearchQuerySubmitted(query)
+                    navigateToPlaygroundDetails(item.id)
                 },
                 isDark = isDark
             )

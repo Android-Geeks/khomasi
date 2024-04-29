@@ -10,6 +10,7 @@ import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -29,18 +30,23 @@ class SearchViewModel @Inject constructor(
 
     private val _playgrounds: MutableStateFlow<DataState<PlaygroundsResponse>> =
         MutableStateFlow(DataState.Empty)
+    val playgrounds: StateFlow<DataState<PlaygroundsResponse>> = _playgrounds
 
-    private var localUser = LocalUser()
+    val localUser = localUserUseCases.getLocalUser().stateIn(
+        viewModelScope, SharingStarted.WhileSubscribed(5_000), LocalUser()
+    )
 
-    init {
-        getSearchHistory()
-        getLocalUser()
-        if (localUser.token != null && localUser.userID != null) {
-            getPlaygrounds(localUser.token!!, localUser.userID!!)
-        } else {
-            Log.d("SearchViewModel", "token or userID is null")
+    fun getSearchData() {
+        viewModelScope.launch(IO) {
+            getSearchHistory()
+            if (localUser.value.token != null && localUser.value.userID != null) {
+                getPlaygrounds(localUser.value.token!!, localUser.value.userID!!)
+            } else {
+                Log.d("SearchViewModel", "token or userID is null")
+            }
         }
     }
+
 
     private val _searchQuery: MutableStateFlow<String> = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
@@ -106,26 +112,11 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    fun onBackPage() {
-        _uiState.value = _uiState.value.copy(page = 1)
-    }
-
-    fun onNextPage() {
-        _uiState.value = _uiState.value.copy(page = 2)
-    }
 
     private fun getPlaygrounds(token: String, userId: String) {
         viewModelScope.launch {
             remoteUserUseCase.getPlaygroundsUseCase("Bearer $token", userId).collect {
                 _playgrounds.value = it
-            }
-        }
-    }
-
-    private fun getLocalUser() {
-        viewModelScope.launch {
-            localUserUseCases.getLocalUser().collect {
-                localUser = it
             }
         }
     }
