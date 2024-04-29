@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.playground.booking
+package com.company.khomasi.presentation.playground.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row

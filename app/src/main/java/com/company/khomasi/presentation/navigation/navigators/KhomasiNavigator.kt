@@ -12,11 +12,11 @@ import com.company.khomasi.presentation.favorite.FavouriteViewModel
 import com.company.khomasi.presentation.home.HomeScreen
 import com.company.khomasi.presentation.home.HomeViewModel
 import com.company.khomasi.presentation.navigation.components.sharedViewModel
-import com.company.khomasi.presentation.playground.PlaygroundReviews
 import com.company.khomasi.presentation.playground.PlaygroundScreen
 import com.company.khomasi.presentation.playground.PlaygroundViewModel
 import com.company.khomasi.presentation.playground.booking.BookingScreen
 import com.company.khomasi.presentation.playground.booking.ConfirmBookingScreen
+import com.company.khomasi.presentation.playground.components.PlaygroundReviews
 import com.company.khomasi.presentation.profile.ProfileScreen
 import com.company.khomasi.presentation.profile.ProfileViewModel
 import com.company.khomasi.presentation.search.SearchScreen

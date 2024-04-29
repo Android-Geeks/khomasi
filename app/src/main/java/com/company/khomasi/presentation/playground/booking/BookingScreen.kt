@@ -51,6 +51,9 @@ import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.connectionStates.ThreeBounce
+import com.company.khomasi.presentation.playground.components.CalendarPager
+import com.company.khomasi.presentation.playground.components.DurationSelection
+import com.company.khomasi.presentation.playground.components.SlotItem
 import com.company.khomasi.presentation.screenDimensions.getScreenHeight
 import com.company.khomasi.presentation.screenDimensions.getScreenWidth
 import com.company.khomasi.theme.KhomasiTheme

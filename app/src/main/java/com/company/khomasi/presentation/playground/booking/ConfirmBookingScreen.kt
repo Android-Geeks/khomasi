@@ -32,6 +32,7 @@ import com.company.khomasi.R
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.cards.BookingStatus
+import com.company.khomasi.presentation.playground.components.PlaygroundBookingCard
 import com.company.khomasi.presentation.screenDimensions.getScreenHeight
 import com.company.khomasi.presentation.screenDimensions.getScreenWidth
 import com.company.khomasi.theme.KhomasiTheme

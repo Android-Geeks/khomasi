@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.home
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -49,6 +50,7 @@ import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.LocalUser
+import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.presentation.components.AdsContent
 import com.company.khomasi.presentation.components.AdsSlider
@@ -79,16 +81,21 @@ fun HomeScreen(
     val localUser = localUserState.collectAsState().value
 
     var showLoading by remember { mutableStateOf(false) }
+    var playgroundsData by remember { mutableStateOf(listOf<Playground>()) }
 
     LaunchedEffect(Unit) {
         getHomeScreenData()
     }
 
     LaunchedEffect(playgrounds) {
-        showLoading = playgrounds is DataState.Loading
+        showLoading = playgrounds is DataState.Loading || playgrounds is DataState.Empty
+        playgroundsData = if (playgrounds is DataState.Success) {
+            playgrounds.data.playgrounds
+        } else {
+            emptyList()
+        }
+        Log.d("HomeScreen", "HomeScreen: $playgrounds")
     }
-
-
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -113,7 +120,7 @@ fun HomeScreen(
 
             Box(modifier = Modifier.fillMaxSize()) {
                 HomeContent(
-                    playgroundState = playgrounds,
+                    playgroundsData = playgroundsData,
                     homeUiState = uiState,
                     onAdClicked = { onAdClicked() },
                     onClickViewAll = { onClickViewAll() },
@@ -138,13 +145,14 @@ fun HomeScreen(
 
 @Composable
 fun HomeContent(
-    playgroundState: DataState<PlaygroundsResponse>,
+    playgroundsData: List<Playground>,
     homeUiState: HomeUiState,
     onAdClicked: () -> Unit,
     onClickViewAll: () -> Unit,
     onClickPlaygroundCard: (Int) -> Unit,
     onFavouriteClick: (Int) -> Unit
 ) {
+
     //        -----------------Temporary-----------------           //
     val adsList = listOf(
         AdsContent(
@@ -160,62 +168,60 @@ fun HomeContent(
             contentText = " احجز اى ملعب صباحًا بخصم 30 %",
         ),
     )
-    if (playgroundState is DataState.Success) {
 
-        val playgrounds = playgroundState.data.playgrounds/*.sortedBy { it.id }*/
-        val visiblePlaygrounds =
-            if (homeUiState.viewAllSwitch) playgrounds else playgrounds.take(3)
+    val visiblePlaygrounds =
+        if (homeUiState.viewAllSwitch) playgroundsData else playgroundsData.take(3)
 
-        LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-        ) {
+    LazyColumn(
+        modifier = Modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
 
 //      ------------ Temporary until the booking page is completed   -----//
-            /*            if(true){
-                            item {
-                                RatingCard(
-                                    buttonText = R.string.rating,
-                                    mainText = "كانت مباراه حماسيه",
-                                    subText = "اليوم الساعه 9:00 م",
-                                    timeIcon = R.drawable.clock
-                                )
-                            }
-                        }*/
+        /*            if(true){
+                        item {
+                            RatingCard(
+                                buttonText = R.string.rating,
+                                mainText = "كانت مباراه حماسيه",
+                                subText = "اليوم الساعه 9:00 م",
+                                timeIcon = R.drawable.clock
+                            )
+                        }
+                    }*/
 //  -------------------------------------------------------------------//
 
-            item { AdsSlider(adsContent = adsList, onAdClicked = { onAdClicked() }) }
+        item { AdsSlider(adsContent = adsList, onAdClicked = { onAdClicked() }) }
 
-            item {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        text = stringResource(id = R.string.nearby_fields),
-                        style = MaterialTheme.typography.displayMedium
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = stringResource(id = R.string.view_all),
-                        style = MaterialTheme.typography.titleLarge,
-                        color = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.clickable { onClickViewAll() }
-                    )
-                }
-            }
-
-            items(visiblePlaygrounds) { playground ->
-                PlaygroundCard(
-                    playground = playground,
-                    onFavouriteClick = { onFavouriteClick(playground.id) },          // WILL BE IMPLEMENTED LATER
-                    onViewPlaygroundClick = {
-                        onClickPlaygroundCard(
-                            playground.id,
-                        )
-                    }
+        item {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                    text = stringResource(id = R.string.nearby_fields),
+                    style = MaterialTheme.typography.displayMedium
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(
+                    text = stringResource(id = R.string.view_all),
+                    style = MaterialTheme.typography.titleLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.clickable { onClickViewAll() }
                 )
             }
         }
+
+        items(visiblePlaygrounds) { playground ->
+            PlaygroundCard(
+                playground = playground,
+                onFavouriteClick = { onFavouriteClick(playground.id) },
+                onViewPlaygroundClick = {
+                    onClickPlaygroundCard(
+                        playground.id,
+                    )
+                }
+            )
+        }
     }
 }
+
 
 @Composable
 fun UserProfileSection(

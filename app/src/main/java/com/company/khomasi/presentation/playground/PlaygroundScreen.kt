@@ -49,6 +49,13 @@ import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.connectionStates.ThreeBounce
+import com.company.khomasi.presentation.playground.components.ImageSlider
+import com.company.khomasi.presentation.playground.components.PlaygroundDefinition
+import com.company.khomasi.presentation.playground.components.PlaygroundDescription
+import com.company.khomasi.presentation.playground.components.PlaygroundFeatures
+import com.company.khomasi.presentation.playground.components.PlaygroundRates
+import com.company.khomasi.presentation.playground.components.PlaygroundRules
+import com.company.khomasi.presentation.playground.components.PlaygroundSize
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkIcon
 import com.company.khomasi.theme.lightIcon
@@ -74,51 +81,54 @@ fun PlaygroundScreen(
     var showLoading by remember { mutableStateOf(false) }
     val uiState = playgroundUiState.collectAsState().value
     val playgroundState = playgroundStateFlow.collectAsState().value
+    var playgroundData by remember { mutableStateOf<PlaygroundScreenResponse?>(null) }
+
     LaunchedEffect(Unit) {
         getPlaygroundDetails(playgroundId)
     }
 
     LaunchedEffect(playgroundState) {
         showLoading = playgroundState is DataState.Loading
+        if (playgroundState is DataState.Success) {
+            playgroundData = playgroundState.data
+        }
         Log.d("PlaygroundScreen", "PlaygroundScreen: $playgroundState")
     }
 
-    if (playgroundState is DataState.Success) {
-        val playgroundData = playgroundState.data
-        AuthSheet(sheetModifier = Modifier.fillMaxWidth(), screenContent = {
-            PlaygroundScreenContent(playgroundData = playgroundData,
-                uiState = uiState,
-                onViewRatingClicked = onViewRatingClicked,
-                onClickBack = onClickBack,
-                onClickShare = onClickShare,
-                onClickFav = { onClickFav() },
-                onClickDisplayOnMap = { onClickDisplayOnMap() })
-        }) {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .height(116.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
 
-                Text(
-                    text = context.getString(
-                        R.string.fees_per_hour, playgroundData.playground.feesForHour
-                    )
+    AuthSheet(sheetModifier = Modifier.fillMaxWidth(), screenContent = {
+        PlaygroundScreenContent(playgroundData = playgroundData,
+            uiState = uiState,
+            onViewRatingClicked = onViewRatingClicked,
+            onClickBack = onClickBack,
+            onClickShare = onClickShare,
+            onClickFav = { onClickFav() },
+            onClickDisplayOnMap = { onClickDisplayOnMap() })
+    }, sheetContent = {
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .height(116.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Text(
+                text = context.getString(
+                    R.string.fees_per_hour, playgroundData?.playground?.feesForHour ?: 0
                 )
+            )
 
-                MyButton(
-                    text = R.string.book_now,
-                    onClick = {
-                        onBookNowClicked()
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
+            MyButton(
+                text = R.string.book_now,
+                onClick = {
+                    onBookNowClicked()
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
 
-            }
         }
-    }
+    })
+
     if (showLoading) {
         Box(modifier = Modifier.fillMaxSize()) {
             ThreeBounce(
@@ -134,7 +144,7 @@ fun PlaygroundScreen(
 
 @Composable
 fun PlaygroundScreenContent(
-    playgroundData: PlaygroundScreenResponse,
+    playgroundData: PlaygroundScreenResponse?,
     uiState: PlaygroundUiState,
     onViewRatingClicked: () -> Unit,
     onClickBack: () -> Unit,
@@ -148,7 +158,7 @@ fun PlaygroundScreenContent(
     ) {
 
         item {
-            ImageSlider(imageList = playgroundData.playgroundPictures,
+            ImageSlider(imageList = playgroundData?.playgroundPictures ?: emptyList(),
                 isFav = uiState.isFavourite,
                 onClickBack = { onClickBack() },
                 onClickShare = { onClickShare() },
@@ -156,9 +166,9 @@ fun PlaygroundScreenContent(
         }
 
         item {
-            PlaygroundDefinition(name = playgroundData.playground.name,
-                openingTime = playgroundData.playground.openingHours,
-                address = playgroundData.playground.address,
+            PlaygroundDefinition(name = playgroundData?.playground?.name ?: "",
+                openingTime = playgroundData?.playground?.openingHours ?: "",
+                address = playgroundData?.playground?.address ?: "",
                 onClickDisplayOnMap = { onClickDisplayOnMap() })
         }
 
@@ -167,7 +177,7 @@ fun PlaygroundScreenContent(
         item {
             PlaygroundRates(
                 rateNum = "23",
-                rate = playgroundData.playground.rating.toString(),
+                rate = playgroundData?.playground?.rating.toString(),
                 onViewRatingClicked = onViewRatingClicked
             )
         }
@@ -178,11 +188,19 @@ fun PlaygroundScreenContent(
 
         item { LineSpacer() }
 
-        item { PlaygroundDescription(description = playgroundData.playground.description) }
+        item { PlaygroundDescription(description = playgroundData?.playground?.description ?: "") }
 
         item { LineSpacer() }
 
-        item { PlaygroundFeatures(featureList = playgroundData.playground.advantages.split(",")) }
+        item {
+            playgroundData?.playground?.advantages?.let {
+                PlaygroundFeatures(
+                    featureList = it.split(
+                        ","
+                    )
+                )
+            }
+        }
 
         item { LineSpacer() }
 

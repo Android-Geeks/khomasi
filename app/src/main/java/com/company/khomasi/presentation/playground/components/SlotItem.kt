@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.playground.booking
+package com.company.khomasi.presentation.playground.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable

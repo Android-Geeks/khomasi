@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.playground
+package com.company.khomasi.presentation.playground.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
+import com.company.khomasi.presentation.playground.IconWithText
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
 

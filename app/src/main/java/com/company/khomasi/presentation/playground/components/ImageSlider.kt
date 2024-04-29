@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.playground
+package com.company.khomasi.presentation.playground.components
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -26,6 +26,7 @@ import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.presentation.components.iconButtons.FavoriteIcon
+import com.company.khomasi.presentation.playground.ButtonWithIcon
 import com.company.khomasi.utils.convertToBitmap
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager

@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.playground.booking
+package com.company.khomasi.presentation.playground.components
 
 
 import android.content.Context
