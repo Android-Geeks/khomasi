@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.profile.components.profile_topbar
+package com.company.khomasi.presentation.profile.components.topbar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -32,7 +32,7 @@ import com.company.khomasi.theme.lightIconMask
 fun ProfileTopBar(
     localUser: LocalUser,
     image: String?,
-    onEditProfile: (Boolean) -> Unit,
+    onEditProfile: () -> Unit,
     onBackClick: () -> Unit,
     isDark: Boolean
 ) {
@@ -70,7 +70,7 @@ fun ProfileTopBar(
                 )
             }
             IconButton(
-                onClick = { onEditProfile(true) },
+                onClick = onEditProfile,
                 modifier = Modifier
                     .size(44.dp)
                     .clip(
