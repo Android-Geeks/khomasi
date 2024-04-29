@@ -20,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,11 +51,15 @@ fun PhotoSelectorView(
     onChangeProfileImage: (File) -> Unit,
 ) {
     val context = LocalContext.current
-    val file = context.createImageFile()
-    val uri = FileProvider.getUriForFile(
-        Objects.requireNonNull(context),
-        BuildConfig.APPLICATION_ID + ".provider", file
-    )
+    val file by remember { mutableStateOf(context.createImageFile()) }
+    val uri by remember {
+        mutableStateOf(
+            FileProvider.getUriForFile(
+                Objects.requireNonNull(context),
+                BuildConfig.APPLICATION_ID + ".provider", file
+            )
+        )
+    }
     val scope = rememberCoroutineScope()
 
 
@@ -75,20 +80,23 @@ fun PhotoSelectorView(
     val cameraLauncher =
         rememberLauncherForActivityResult(
             contract = ActivityResultContracts.TakePicture(),
-            onResult = { capturedImageUri = uri }
+            onResult = { isPictureTaken ->
+                if (isPictureTaken) {
+                    capturedImageUri = uri
+                }
+            }
         )
     val permissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) {
         if (it) {
-            Toast.makeText(context, R.string.grant_permission, Toast.LENGTH_SHORT).show()
             cameraLauncher.launch(uri)
         } else {
             Toast.makeText(context, R.string.permission_denied, Toast.LENGTH_SHORT).show()
         }
     }
 
-    var showChooserSheet by remember { mutableStateOf(false) }
+    var showChooserSheet by rememberSaveable { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
     if (showChooserSheet) {
         UploadPhotoOptionsSheet(
@@ -114,7 +122,6 @@ fun PhotoSelectorView(
             isDark = isSystemInDarkTheme()
         )
     }
-
 
     SubcomposeAsyncImage(
         model = ImageRequest
@@ -157,12 +164,33 @@ fun PhotoSelectorView(
 
     LaunchedEffect(selectedImageUri, capturedImageUri) {
         if (selectedImageUri != null) {
-            val tempFile = selectedImageUri!!.createFileFromUri(context)
-            onChangeProfileImage(tempFile)
+            detectFace(context, selectedImageUri!!, { hasFace ->
+                if (hasFace) {
+                    val tempFile = selectedImageUri!!.createFileFromUri(context)
+                    onChangeProfileImage(tempFile)
+                } else {
+                    Toast.makeText(context, R.string.face_not_detected, Toast.LENGTH_SHORT).show()
+                    selectedImageUri = null
+                }
+            }, {
+                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+                selectedImageUri = null
+            })
         }
+
         if (capturedImageUri != Uri.EMPTY) {
-            val tempFile = capturedImageUri.createFileFromUri(context)
-            onChangeProfileImage(tempFile)
+            detectFace(context, capturedImageUri, { hasFace ->
+                if (hasFace) {
+                    val tempFile = capturedImageUri.createFileFromUri(context)
+                    onChangeProfileImage(tempFile)
+                } else {
+                    Toast.makeText(context, R.string.face_not_detected, Toast.LENGTH_SHORT).show()
+                    capturedImageUri = Uri.EMPTY
+                }
+            }, {
+                Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+                capturedImageUri = Uri.EMPTY
+            })
         }
     }
 }

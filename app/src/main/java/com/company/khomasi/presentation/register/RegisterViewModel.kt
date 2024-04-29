@@ -86,7 +86,6 @@ class RegisterViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(
             latitude = locationCoordinates.latitude,
             longitude = locationCoordinates.longitude,
-            locationPermission = true
         )
     }
 
@@ -111,13 +110,5 @@ class RegisterViewModel @Inject constructor(
         val isPasswordValid = CheckInputValidation.isPasswordValid(password)
         _uiState.value = _uiState.value.copy(validating2 = true)
         return isEmailValid && isPasswordValid && _uiState.value.password == _uiState.value.confirmPassword
-    }
-
-    fun onBack() {
-        _uiState.value = _uiState.value.copy(page = _uiState.value.page - 1)
-    }
-
-    fun onNextClick() {
-        _uiState.value = _uiState.value.copy(page = _uiState.value.page + 1)
     }
 }

@@ -48,7 +48,6 @@ class MockRegisterViewModel : ViewModel() {
         _uiState.value = _uiState.value.copy(
             latitude = locationCoordinates.latitude,
             longitude = locationCoordinates.longitude,
-            locationPermission = true
         )
     }
 
@@ -85,12 +84,5 @@ class MockRegisterViewModel : ViewModel() {
 
     fun isValidEmailAndPassword(email: String, password: String): Boolean {
         return email.isNotBlank() && password.isNotBlank() && password == _uiState.value.confirmPassword
-    }
-    fun onBack() {
-        _uiState.value = _uiState.value.copy(page = _uiState.value.page - 1)
-    }
-
-    fun onNextClick() {
-        _uiState.value = _uiState.value.copy(page = _uiState.value.page + 1)
     }
 }

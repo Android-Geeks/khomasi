@@ -142,4 +142,10 @@ interface RetrofitService {
         @Body playgroundReview: PlaygroundReviewResponse
     ): Response<PlaygroundReviewResponse>
 
+
+    @GET("Review/playground-reviews")
+    suspend fun getPlaygroundReviews(
+        @Header("Authorization") token: String,
+        @Query("id") id: Int
+    ): Response<PlaygroundReviewResponse>
 }

@@ -5,6 +5,7 @@ import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -39,6 +40,7 @@ fun LoginScreen(
     updatePassword: (String) -> Unit,
     updateEmail: (String) -> Unit,
     login: () -> Unit,
+    onLoginSuccess: () -> Unit,
     loginWithGmail: () -> Unit,
     privacyAndPolicy: () -> Unit,
     helpAndSupport: () -> Unit,
@@ -56,6 +58,7 @@ fun LoginScreen(
 
             is DataState.Success -> {
                 showLoading = false
+                onLoginSuccess()
                 Log.d("LoginScreen", "LoginScreen: ${loginStatus.data}")
             }
 
@@ -69,45 +72,50 @@ fun LoginScreen(
             }
         }
     }
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .imePadding()
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding()
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
         ) {
-        if (showLoading) {
-            Loading()
-        }
-        AuthSheet(
-            modifier = modifier,
-            screenContent = {
-                Image(
-                    painter =
-                    if (isSystemInDarkTheme())
-                        painterResource(id = R.drawable.dark_starting_player)
-                    else
-                        painterResource(id = R.drawable.light_starting_player),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
+            AuthSheet(
+                modifier = modifier,
+                screenContent = {
+                    Image(
+                        painter =
+                        if (isSystemInDarkTheme())
+                            painterResource(id = R.drawable.dark_starting_player)
+                        else
+                            painterResource(id = R.drawable.light_starting_player),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    )
+                },
+            ) {
+                LoginDataPage(
+                    isDark = isDark,
+                    onRegisterClick = onRegisterClick,
+                    onForgotPasswordClick = onForgotPasswordClick,
+                    loginUiState = uiState,
+                    updatePassword = updatePassword,
+                    updateEmail = updateEmail,
+                    login = login,
+                    loginWithGmail = loginWithGmail,
+                    privacyAndPolicy = privacyAndPolicy,
+                    helpAndSupport = helpAndSupport,
+                    isValidEmailAndPassword = isValidEmailAndPassword,
+                    modifier = modifier.verticalScroll(rememberScrollState())
                 )
-            },
-        ) {
-            LoginDataPage(
-                isDark = isDark,
-                onRegisterClick = onRegisterClick,
-                onForgotPasswordClick = onForgotPasswordClick,
-                loginUiState = uiState,
-                updatePassword = updatePassword,
-                updateEmail = updateEmail,
-                login = login,
-                loginWithGmail = loginWithGmail,
-                privacyAndPolicy = privacyAndPolicy,
-                helpAndSupport = helpAndSupport,
-                isValidEmailAndPassword = isValidEmailAndPassword,
-                modifier = modifier.verticalScroll(rememberScrollState())
-            )
+            }
+            if (showLoading) {
+                Loading()
+            }
         }
     }
-
 }
 
 
@@ -128,7 +136,8 @@ fun LoginPreview() {
             uiState = mockViewModel.uiState,
             loginState = mockViewModel.loginState,
             onRegisterClick = {},
-            onForgotPasswordClick = {}
+            onForgotPasswordClick = {},
+            onLoginSuccess = {},
         )
     }
 }

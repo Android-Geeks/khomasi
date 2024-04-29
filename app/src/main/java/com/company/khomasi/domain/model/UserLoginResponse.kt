@@ -34,8 +34,6 @@ data class UserLoginData(
     val longitude: Double,
     @SerialName("phoneNumber")
     val phoneNumber: String,
-    @SerialName("profilePicture")
-    val profilePicture: String?,
     @SerialName("rating")
     val rating: Double,
     @SerialName("userID")

@@ -1,7 +1,6 @@
 package com.company.khomasi.presentation.booking
 
-import android.os.Build
-import androidx.annotation.RequiresApi
+
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -41,12 +40,11 @@ import androidx.compose.ui.util.lerp
 import com.company.khomasi.presentation.screenDimensions.getScreenWidth
 import com.company.khomasi.theme.KhomasiTheme
 import kotlinx.coroutines.launch
-import java.time.LocalDate
-import java.time.format.TextStyle
+import org.threeten.bp.LocalDate
+import org.threeten.bp.format.TextStyle
 import java.util.Locale
 import kotlin.math.absoluteValue
 
-@RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
@@ -174,7 +172,6 @@ fun CalendarItem(
 
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview(showSystemUi = true)
 @Composable
 fun CalendarPreview() {

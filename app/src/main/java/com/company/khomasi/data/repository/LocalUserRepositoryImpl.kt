@@ -1,6 +1,7 @@
 package com.company.khomasi.data.repository
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -29,7 +30,7 @@ import com.company.khomasi.data.repository.PreferenceKeys.TOKEN
 import com.company.khomasi.data.repository.PreferenceKeys.USER_ID
 import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.repository.LocalUserRepository
-import com.company.khomasi.navigation.Routes
+import com.company.khomasi.navigation.Screens
 import com.company.khomasi.utils.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -88,16 +89,17 @@ class LocalUserRepositoryImpl(
         }
     }
 
-    override fun readAppEntry(): Flow<Routes> {
+    override fun readAppEntry(): Flow<Screens> {
         return context.dataStore.data.map { preferences ->
             val appEntry = preferences[IS_ONBOARDING] ?: false
             val isLogin = preferences[IS_LOGIN] ?: false
+            Log.d("ActivityMain", "readAppEntry: $appEntry $isLogin")
             if (!appEntry) {
-                Routes.AppStartNavigation
+                Screens.AppStartNavigation
             } else if (!isLogin) {
-                Routes.AuthNavigation
+                Screens.AuthNavigation
             } else {
-                Routes.KhomasiNavigation
+                Screens.KhomasiNavigation
             }
         }
     }

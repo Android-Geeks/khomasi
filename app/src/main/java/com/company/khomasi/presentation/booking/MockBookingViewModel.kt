@@ -1,15 +1,13 @@
 package com.company.khomasi.presentation.booking
 
 
-import android.os.Build
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import java.time.LocalDateTime
+import org.threeten.bp.LocalDateTime
 
 
 class MockBookingViewModel : ViewModel() {
@@ -29,13 +27,7 @@ class MockBookingViewModel : ViewModel() {
             "+" -> {
                 _bookingUiState.update {
                     val updatedDuration = it.selectedDuration + 30
-                    if (updatedDuration > it.selectedSlots.size * 60) {
 
-                        val nextSlot = it.nextSlot
-                        if (nextSlot != null) {
-                            it.selectedSlots.add(nextSlot)
-                        }
-                    }
                     it.copy(
                         selectedDuration = updatedDuration,
                         selectedSlots = it.selectedSlots
@@ -77,7 +69,6 @@ class MockBookingViewModel : ViewModel() {
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun checkSlotsConsecutive(): Boolean {
         val selectedTimes = _bookingUiState.value.selectedSlots
         var temp = true

@@ -110,10 +110,14 @@ class ProfileViewModel @Inject constructor(
 
     fun onSaveProfile() {
         viewModelScope.launch(IO) {
-            _profileUiState.value = _profileUiState.value.copy(
-                oldProfileImage = _profileUiState.value.profileImage.toBase64String()
-            )
+            if (_profileUiState.value.profileImage != null) {
+                _profileUiState.value = _profileUiState.value.copy(
+                    oldProfileImage = _profileUiState.value.profileImage?.toBase64String()
+                )
+            }
+
             localUserUseCases.saveLocalUser(_profileUiState.value.user)
+
             remoteUserUseCase.updateUserUseCase(
                 token = "Bearer ${_profileUiState.value.user.token ?: ""}",
                 userId = _profileUiState.value.user.userID ?: "",
@@ -131,8 +135,7 @@ class ProfileViewModel @Inject constructor(
 
 
             val imageFile = _profileUiState.value.profileImage
-            Log.d("ProfileViewModel", "onSaveProfile: File path: ${imageFile.absolutePath}")
-            if (imageFile.exists()) {
+            if (imageFile?.exists() == true) {
                 val requestFile = imageFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
                 val body =
                     MultipartBody.Part.createFormData("profilePicture", imageFile.name, requestFile)

@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.use_case.app_entry.AppEntryUseCases
-import com.company.khomasi.navigation.Routes
+import com.company.khomasi.navigation.Screens
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
@@ -20,16 +20,22 @@ class MainViewModel @Inject constructor(
     private val _splashCondition = mutableStateOf(true)
     val splashCondition: State<Boolean> = _splashCondition
 
-    private val _startDestination = mutableStateOf(Routes.AppStartNavigation.name)
+    private val _startDestination = mutableStateOf(Screens.AppStartNavigation.route)
     val startDestination: State<String> = _startDestination
 
     init {
         appEntryUseCases.readAppEntry().onEach { startingRoute ->
             when (startingRoute) {
-                Routes.KhomasiNavigation -> _startDestination.value = Routes.KhomasiNavigation.name
-                Routes.AuthNavigation -> _startDestination.value = Routes.AuthNavigation.name
-                Routes.AppStartNavigation -> _startDestination.value =
-                    Routes.AppStartNavigation.name
+                Screens.KhomasiNavigation -> _startDestination.value =
+                    Screens.KhomasiNavigation.route
+
+                Screens.AuthNavigation -> _startDestination.value = Screens.AuthNavigation.route
+                Screens.AppStartNavigation -> _startDestination.value =
+                    Screens.AppStartNavigation.route
+
+                else -> {
+                    _startDestination.value = Screens.AppStartNavigation.route
+                }
             }
             delay(300)
             _splashCondition.value = false

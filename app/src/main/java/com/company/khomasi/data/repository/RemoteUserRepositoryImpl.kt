@@ -12,6 +12,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import okhttp3.MultipartBody
 import retrofit2.HttpException
 import retrofit2.Response
@@ -93,7 +96,9 @@ suspend fun <T : Any> handleApi(
             if (response.isSuccessful && body != null) {
                 emit(DataState.Success(body))
             } else {
-                emit(DataState.Error(response.code(), response.message()))
+                val errorBody = response.errorBody()?.string()
+                val message = parseErrorBody(errorBody) ?: response.message()
+                emit(DataState.Error(response.code(), message))
             }
         } catch (e: HttpException) {
             emit(DataState.Error(e.code(), e.message()))
@@ -101,4 +106,14 @@ suspend fun <T : Any> handleApi(
             emit(DataState.Error(0, e.message ?: "Unknown Error"))
         }
     }.flowOn(Dispatchers.IO)
+}
+
+fun parseErrorBody(errorBody: String?): String? {
+    return try {
+        val jsonElement = Json.parseToJsonElement(errorBody ?: "")
+        val jsonObject = jsonElement.jsonObject
+        return jsonObject["message"]?.jsonPrimitive?.content
+    } catch (e: Exception) {
+        null
+    }
 }

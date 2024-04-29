@@ -211,4 +211,12 @@
     <string name="permission_denied">تم رفض الإذن</string>
     <string name="take_a_photo">التقاط صورة</string>
     <string name="choose_from_gallery">اختر من المعرض</string>
+    <string name="face_not_detected">لم يتم تحديد وجه</string>
+    <string name="verification_code_sent">تم إرسال رمز التحقق</string>
+    <string name="user_not_found">المستخدم غير موجود</string>
+    <string name="invalid_verification_code">رمز التحقق غير صحيح</string>
+    <string name="no_internet_connection">لا يوجد اتصال بالإنترنت</string>
+    <string name="something_went_wrong">حدث خطأ ما</string>
+    <string name="password_changed">تم تغيير كلمة المرور</string>
+
 </resources>
