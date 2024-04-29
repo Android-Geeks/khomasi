@@ -120,7 +120,7 @@ fun HomeScreen(
 
             Box(modifier = Modifier.fillMaxSize()) {
                 HomeContent(
-                    playgroundsData = playgroundsData,
+                    playgroundsData = playgroundsData.sortedBy { it.id },
                     homeUiState = uiState,
                     onAdClicked = { onAdClicked() },
                     onClickViewAll = { onClickViewAll() },
