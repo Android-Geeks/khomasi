@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.booking
+package com.company.khomasi.presentation.playground.booking
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -37,18 +37,19 @@ import com.company.khomasi.presentation.screenDimensions.getScreenWidth
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
+import com.company.khomasi.utils.extractTimeFromTimestamp
+import com.company.khomasi.utils.parseTimestamp
 import kotlinx.coroutines.flow.StateFlow
 
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
 @Composable
-fun ConfirmBookingContent(
+fun ConfirmBookingScreen(
     bookingUiState: StateFlow<BookingUiState>,
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme(),
     onBackClicked: () -> Unit,
     onNextClicked: () -> Unit,
-    onBackToBookingScreen: () -> Unit
 ) {
     val bookingState = bookingUiState.collectAsState().value
     val screenHeight = getScreenHeight()
@@ -90,7 +91,6 @@ fun ConfirmBookingContent(
                         sheetHeight = (screenHeight * 0.16).dp,
                         playgroundPrice = bookingState.totalPrice,
                         isDark = isDark,
-                        context = context,
                         onContinueToPaymentClicked = { onNextClicked() }
                     )
                 }
@@ -113,12 +113,23 @@ fun ConfirmBookingContent(
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val bookingDuration = if (bookingState.selectedSlots.size > 0) {
+            extractTimeFromTimestamp(parseTimestamp(bookingState.selectedSlots.minOf { it.first }
+                .toString())) +
+                    " ${stringResource(id = R.string.to)} " +
+                    extractTimeFromTimestamp(parseTimestamp(bookingState.selectedSlots.maxOf { it.second }
+                        .toString()))
+
+        } else {
+            ""
+        }
         PlaygroundBookingCard(
             playgroundName = bookingState.playgroundName,
             playgroundAddress = bookingState.playgroundAddress,
             playgroundBookingTime = bookingState.bookingTime,
+            bookingDuration = bookingDuration,
             playgroundPrice = bookingState.totalPrice,
-            playgroundPicture = "",
+            playgroundPicture = bookingState.playgroundMainPicture,
             bookingStatus = BookingStatus.PENDING,
             modifier = Modifier
                 .width((screenWidth * 0.92).dp)
@@ -152,7 +163,6 @@ fun ConfirmBookingContent(
 fun ConfirmBookingBottomSheet(
     sheetHeight: Dp,
     playgroundPrice: Int,
-    context: Context,
     isDark: Boolean,
     onContinueToPaymentClicked: () -> Unit
 ) {
@@ -176,9 +186,7 @@ fun ConfirmBookingBottomSheet(
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = context.getString(
-                    R.string.fees_per_hour, playgroundPrice
-                ),
+                text = "$playgroundPrice " + stringResource(id = R.string.price_egp),
                 style = MaterialTheme.typography.displayLarge,
                 color = if (isDark) darkText else lightText
             )

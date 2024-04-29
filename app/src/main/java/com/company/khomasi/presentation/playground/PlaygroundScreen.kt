@@ -59,23 +59,23 @@ import java.util.Locale
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun PlaygroundScreen(
+    playgroundId: Int,
     playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
     playgroundUiState: StateFlow<PlaygroundUiState>,
     context: Context = LocalContext.current,
     onViewRatingClicked: () -> Unit,
-    getPlaygroundDetails: () -> Unit,
+    getPlaygroundDetails: (Int) -> Unit,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
     onClickFav: () -> Unit,
     onBookNowClicked: () -> Unit,
-    onClickDisplayOnMap: () -> Unit
+    onClickDisplayOnMap: () -> Unit,
 ) {
     var showLoading by remember { mutableStateOf(false) }
     val uiState = playgroundUiState.collectAsState().value
     val playgroundState = playgroundStateFlow.collectAsState().value
-
     LaunchedEffect(Unit) {
-        getPlaygroundDetails()
+        getPlaygroundDetails(playgroundId)
     }
 
     LaunchedEffect(playgroundState) {
@@ -110,7 +110,9 @@ fun PlaygroundScreen(
 
                 MyButton(
                     text = R.string.book_now,
-                    onClick = { onBookNowClicked() },
+                    onClick = {
+                        onBookNowClicked()
+                    },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -264,17 +266,17 @@ fun PlaygroundScreenPreview() {
     val mockViewModel: MockPlaygroundViewModel = hiltViewModel()
     KhomasiTheme {
         PlaygroundScreen(
+            playgroundId = 1,
             playgroundStateFlow = mockViewModel.playgroundState,
             playgroundUiState = mockViewModel.uiState,
             onViewRatingClicked = {},
             onClickShare = {},
             onClickBack = {},
             onClickFav = {},
-            onBookNowClicked = {},
+            onBookNowClicked = { mockViewModel.onBookNowClicked() },
             onClickDisplayOnMap = {},
-            getPlaygroundDetails = {}
+            getPlaygroundDetails = { mockViewModel.getPlaygroundDetails(1) },
         )
-
     }
 
 }

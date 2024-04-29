@@ -70,7 +70,7 @@ fun HomeScreen(
     onSearchBarClicked: () -> Unit,
     onClickViewAll: () -> Unit,
     onAdClicked: () -> Unit,
-    onClickPlaygroundCard: (Int, String, Int) -> Unit,
+    onClickPlaygroundCard: (Int) -> Unit,
     onFavouriteClick: (Int) -> Unit,
     getHomeScreenData: () -> Unit
 ) {
@@ -117,8 +117,8 @@ fun HomeScreen(
                     homeUiState = uiState,
                     onAdClicked = { onAdClicked() },
                     onClickViewAll = { onClickViewAll() },
-                    onClickPlaygroundCard = { playgroundId, playgroundName, playgroundPrice ->
-                        onClickPlaygroundCard(playgroundId, playgroundName, playgroundPrice)
+                    onClickPlaygroundCard = { playgroundId ->
+                        onClickPlaygroundCard(playgroundId)
                     },
                     onFavouriteClick = { playgroundId -> onFavouriteClick(playgroundId) }
                 )
@@ -142,7 +142,7 @@ fun HomeContent(
     homeUiState: HomeUiState,
     onAdClicked: () -> Unit,
     onClickViewAll: () -> Unit,
-    onClickPlaygroundCard: (Int, String, Int) -> Unit,
+    onClickPlaygroundCard: (Int) -> Unit,
     onFavouriteClick: (Int) -> Unit
 ) {
     //        -----------------Temporary-----------------           //
@@ -209,8 +209,6 @@ fun HomeContent(
                     onViewPlaygroundClick = {
                         onClickPlaygroundCard(
                             playground.id,
-                            playground.name,
-                            playground.feesForHour
                         )
                     }
                 )
@@ -328,8 +326,8 @@ fun HomeScreenPreview() {
             onSearchBarClicked = {},
             onClickViewAll = { mockViewModel.onClickViewAll() },
             onAdClicked = { },
-            onClickPlaygroundCard = { playgroundId, playgroundName, playgroundPrice ->
-                mockViewModel.onClickPlaygroundCard(playgroundId, playgroundName, playgroundPrice)
+            onClickPlaygroundCard = {
+                mockViewModel.onClickPlaygroundCard(it)
             },
             onFavouriteClick = {},
             getHomeScreenData = {},

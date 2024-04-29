@@ -1,8 +1,6 @@
 package com.company.khomasi.presentation.playground
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +26,7 @@ import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
 import kotlinx.coroutines.flow.StateFlow
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 @Composable
 fun PlaygroundReviews(
     getPlaygroundReviews: () -> Unit,
@@ -73,10 +71,9 @@ fun PlaygroundReviews(
 
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Preview
 @Composable
-fun Ppp() {
+fun PlaygroundReviewsPreview() {
     KhomasiTheme {
         val vm: PlaygroundViewModel = hiltViewModel()
         PlaygroundReviews(

@@ -3,23 +3,12 @@ package com.company.khomasi.domain.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class PlaygroundScreenResponse(
-//    @SerialName("busyTimes")
-//    val busyTimes: List<BusyTime>,
     @SerialName("playground")
     val playground: PlaygroundX,
     @SerialName("playgroundPictures")
     val playgroundPictures: List<PlaygroundPicture>
-)
-
-@Serializable
-data class BusyTime(
-    @SerialName("bookingTime")
-    val bookingTime: String,
-    @SerialName("duration")
-    val duration: Int
 )
 
 @Serializable
@@ -71,4 +60,12 @@ data class PlaygroundX(
     val isBookable: Boolean,
     @SerialName("rules")
     val rules: String,
+)
+
+@Serializable
+data class BusyTime(
+    @SerialName("bookingTime")
+    val bookingTime: String,
+    @SerialName("duration")
+    val duration: Int
 )

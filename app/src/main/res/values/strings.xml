@@ -217,6 +217,7 @@
     <string name="invalid_verification_code">Invalid verification code</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="password_changed">Password changed</string>
+    <string name="to">to</string>
 
 
 </resources>

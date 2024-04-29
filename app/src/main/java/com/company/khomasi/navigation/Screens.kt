@@ -1,8 +1,6 @@
 package com.company.khomasi.navigation
 
 import androidx.navigation.NamedNavArgument
-import androidx.navigation.NavType
-import androidx.navigation.navArgument
 
 sealed class Screens(
     val route: String,
@@ -54,12 +52,17 @@ sealed class Screens(
 
         data object BookingPlayground : Screens(
             "BookingPlayground",
-            listOf(navArgument("playgroundId") { type = NavType.IntType })
+//            listOf(
+//                navArgument("playgroundId") { type = NavType.IntType },
+//                navArgument("playgroundName") { type = NavType.StringType },
+//                navArgument("playgroundPrice") { type = NavType.IntType }
+//            )
         ) {
             data object PlaygroundDetails : Screens("PlaygroundDetails")
             data object BookingDetails : Screens("BookingDetails")
             data object BookingConfirmation : Screens("BookingConfirmation")
             data object Payment : Screens("Payment")
+            data object PlaygroundReviews : Screens("PlaygroundReviews")
         }
 
     }

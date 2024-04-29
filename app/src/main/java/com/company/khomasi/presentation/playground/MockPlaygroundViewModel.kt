@@ -13,4 +13,11 @@ class MockPlaygroundViewModel : ViewModel() {
     private val _uiState: MutableStateFlow<PlaygroundUiState> =
         MutableStateFlow(PlaygroundUiState())
     val uiState: StateFlow<PlaygroundUiState> = _uiState
+    fun getPlaygroundDetails(playgroundId: Int) {
+
+    }
+
+    fun onBookNowClicked() {
+
+    }
 }

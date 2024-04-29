@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.booking
+package com.company.khomasi.presentation.playground.booking
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -78,7 +78,6 @@ fun BookingScreen(
     onSlotClicked: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
     checkValidity: () -> Boolean,
     onNextClicked: () -> Unit,
-    onBackToBookingScreen: () -> Unit
 ) {
     val bookingState = bookingUiState.collectAsState().value
     val freeSlots = freeSlotsState.collectAsState().value
@@ -405,7 +404,6 @@ fun BookingScreenPreview() {
             onSlotClicked = { mockViewModel.onSlotClicked(it) },
             checkValidity = { mockViewModel.checkSlotsConsecutive() },
             onNextClicked = { },
-            onBackToBookingScreen = { }
         )
     }
 }

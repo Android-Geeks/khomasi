@@ -217,5 +217,5 @@
     <string name="no_internet_connection">لا يوجد اتصال بالإنترنت</string>
     <string name="something_went_wrong">حدث خطأ ما</string>
     <string name="password_changed">تم تغيير كلمة المرور</string>
-
+    <string name="to">الى</string>
 </resources>

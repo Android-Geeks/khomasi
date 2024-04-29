@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.booking
+package com.company.khomasi.presentation.playground.booking
 
 
 import android.content.Context
@@ -45,7 +45,6 @@ import com.company.khomasi.theme.darkSubText
 import com.company.khomasi.theme.lightSubText
 import com.company.khomasi.utils.convertToBitmap
 import com.company.khomasi.utils.extractDateFromTimestamp
-import com.company.khomasi.utils.extractTimeFromTimestamp
 import com.company.khomasi.utils.parseTimestamp
 
 
@@ -56,11 +55,11 @@ fun PlaygroundBookingCard(
     playgroundPicture: String,
     playgroundPrice: Int,
     playgroundBookingTime: String,
+    bookingDuration: String,
     modifier: Modifier = Modifier,
     bookingStatus: BookingStatus,
 ) {
     val parsedBookingTime = parseTimestamp(playgroundBookingTime)
-    val bookingTime = extractTimeFromTimestamp(parsedBookingTime)
     val bookingDate = extractDateFromTimestamp(parsedBookingTime)
     Card(
         modifier
@@ -87,7 +86,7 @@ fun PlaygroundBookingCard(
                     playgroundName = playgroundName,
                     playgroundAddress = playgroundAddress,
                     playgroundBookingDate = bookingDate,
-                    playgroundBookingTime = bookingTime,
+                    playgroundBookingTime = bookingDuration,
                     playgroundPrice = playgroundPrice,
                     playgroundPicture = playgroundPicture,
                 )
@@ -122,12 +121,7 @@ fun PlaygroundBookingCardDetails(
             contentDescription = null,
             contentScale = ContentScale.Crop,
             loading = { CircularProgressIndicator() },
-            error = {
-                Image(
-                    painter = painterResource(id = R.drawable.user_img),
-                    contentDescription = null
-                )
-            },
+            error = {},
             modifier = Modifier
                 .fillMaxWidth()
                 .height(120.dp)
@@ -208,7 +202,8 @@ private fun BookingCardPreview() {
             playgroundBookingTime = "2024-04-23T12:00:00",
             playgroundPrice = 50,
             playgroundPicture = "",
-            bookingStatus = BookingStatus.PENDING
+            bookingStatus = BookingStatus.PENDING,
+            bookingDuration = ""
         )
     }
 }
