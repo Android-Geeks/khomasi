@@ -23,15 +23,18 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -49,6 +52,7 @@ import com.company.khomasi.domain.model.PlaygroundReviewResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.MyButton
+import com.company.khomasi.presentation.components.MyModalBottomSheet
 import com.company.khomasi.presentation.components.connectionStates.ThreeBounce
 import com.company.khomasi.presentation.playground.components.ImageSlider
 import com.company.khomasi.presentation.playground.components.PlaygroundDefinition
@@ -62,9 +66,11 @@ import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkIcon
 import com.company.khomasi.theme.lightIcon
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun PlaygroundScreen(
@@ -113,36 +119,55 @@ fun PlaygroundScreen(
                 onClickDisplayOnMap = { onClickDisplayOnMap() })
         },
         sheetContent = {
-            if (uiState.showReviews) {
-                PlaygroundReviews(
-                    reviews = reviews,
-                    onClickCancel = { updateShowReview() })
-            } else {
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .height(116.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = context.getString(
-                            R.string.fees_per_hour, playgroundData?.playground?.feesForHour ?: 0
-                        )
-                    )
 
-                    MyButton(
-                        text = R.string.book_now,
-                        onClick = {
-                            onBookNowClicked()
-                        },
-                        modifier = Modifier.fillMaxWidth()
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .height(116.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Text(
+                    text = context.getString(
+                        R.string.fees_per_hour, playgroundData?.playground?.feesForHour ?: 0
                     )
+                )
 
-                }
+                MyButton(
+                    text = R.string.book_now,
+                    onClick = {
+                        onBookNowClicked()
+                    },
+                    modifier = Modifier.fillMaxWidth()
+                )
+
             }
         })
+    val bottomSheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+    if (uiState.showReviews) {
+        MyModalBottomSheet(
+            sheetState = bottomSheetState,
+            onDismissRequest = {
+                scope.launch {
+                    bottomSheetState.hide()
+                    updateShowReview()
+                }
+            },
+            modifier = Modifier,
+            content = {
 
+                PlaygroundReviews(
+                    reviews = reviews,
+                    onClickCancel = {
+                        scope.launch {
+                            bottomSheetState.hide()
+                            updateShowReview()
+                        }
+                    })
+            }
+        )
+    }
     if (showLoading) {
         Box(modifier = Modifier.fillMaxSize()) {
             ThreeBounce(
