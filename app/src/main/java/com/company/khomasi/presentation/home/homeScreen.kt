@@ -85,11 +85,7 @@ fun HomeScreen(
 
     LaunchedEffect(playgrounds) {
         showLoading = playgrounds is DataState.Loading || playgrounds is DataState.Empty
-        playgroundsData = if (playgrounds is DataState.Success) {
-            playgrounds.data.playgrounds
-        } else {
-            emptyList()
-        }
+        playgroundsData = (playgrounds as? DataState.Success)?.data?.playgrounds ?: emptyList()
         Log.d("HomeScreen", "HomeScreen: $playgrounds")
     }
 
