@@ -21,6 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun CurrentPage(
     uiState: StateFlow<MyBookingUiState>,
     onClickPlaygroundCard: (Int) -> Unit,
+
 ) {
     val currentState = uiState.collectAsState().value
     Scaffold(
@@ -45,6 +46,7 @@ fun CurrentPage(
                             onViewPlaygroundClick = {
                                 onClickPlaygroundCard(it.playgroundId)
                             },
+                            onClickPlaygroundCard = {},
                             toRate = {}
                         )
                     }

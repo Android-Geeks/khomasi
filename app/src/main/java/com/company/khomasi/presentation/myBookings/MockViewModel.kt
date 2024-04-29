@@ -14,7 +14,5 @@ class MockViewModel : ViewModel() {
     private val _uiState: MutableStateFlow<MyBookingUiState> = MutableStateFlow(MyBookingUiState())
     val uiState:StateFlow<MyBookingUiState> =_uiState.asStateFlow()
 
-    fun myBookingPlaygrounds() {}
-    fun onClickPlayground(playgroundId: Int) {}
 
 }

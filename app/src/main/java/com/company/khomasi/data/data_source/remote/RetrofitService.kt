@@ -138,6 +138,7 @@ interface RetrofitService {
 
     @POST("Review/review")
     suspend fun playgroundReview(
+        @Header("Authorization") token: String,
         @Body playgroundReview: PlaygroundReviewResponse
     ): Response<PlaygroundReviewResponse>
 

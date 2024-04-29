@@ -53,7 +53,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConfirmationBottomSheet(
+fun ConfirmationPage(
 //    confirmState : StateFlow<DataState<BookingDetails>>,
     uiStateFlow: State<MyBookingUiState>,
     bookingDetails: BookingDetails?,
@@ -176,7 +176,8 @@ fun ConfirmationBottomSheet(
                         bookingDetails = bookingDetails,
                         bookingStatus = BookingStatus.CONFIRMED,
                         onViewPlaygroundClick = {},
-                        toRate = {}
+                        toRate = {},
+                        onClickPlaygroundCard = {}
                     )
                 }
                 }

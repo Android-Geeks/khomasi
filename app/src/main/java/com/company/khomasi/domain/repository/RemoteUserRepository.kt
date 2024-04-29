@@ -82,6 +82,7 @@ interface RemoteUserRepository {
     ): Flow<DataState<ProfileImageResponse>>
 
     suspend fun playgroundReview(
+        token: String,
         playgroundReview: PlaygroundReviewResponse
     ): Flow<DataState<PlaygroundReviewResponse>>
 }

@@ -7,6 +7,8 @@ class PlaygroundReviewUseCase(
     private val remoteUserRepository: RemoteUserRepository
 
 ) {
-    suspend operator fun invoke(playgroundReview: PlaygroundReviewResponse) =
-        remoteUserRepository.playgroundReview(playgroundReview)
+    suspend operator fun invoke(
+        playgroundReview: PlaygroundReviewResponse, token: String,
+    ) =
+        remoteUserRepository.playgroundReview(token, playgroundReview)
 }

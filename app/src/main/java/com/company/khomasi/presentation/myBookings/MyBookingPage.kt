@@ -19,7 +19,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.MyBookingsResponse
+import com.company.khomasi.domain.model.PlaygroundReviewResponse
 import com.company.khomasi.presentation.myBookings.components.TabItem
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
@@ -34,15 +34,19 @@ import kotlinx.coroutines.launch
 @Composable
 fun MyBookingPage(
     uiState: StateFlow<MyBookingUiState>,
-    myBooking: StateFlow<DataState<MyBookingsResponse>>,
+    //myBooking: StateFlow<DataState<BookingDetails>>,
     onClickPlaygroundCard: (Int) -> Unit,
     myBookingPlaygrounds: () -> Unit,
-    playgroundReview: (Float) -> Unit,
-    cancelBooking: () -> Unit
+    playgroundReview: () -> Unit,
+    cancelBooking: () -> Unit,
+    responseState: StateFlow<DataState<PlaygroundReviewResponse>>,
+    onCommentChange: (String) -> Unit,
+    onRatingChange: (Float) -> Unit,
 
-) {
+
+    ) {
     val bookingUiState = uiState.collectAsState().value
-    val myBooking = myBooking.collectAsState().value
+    // val myBooking = myBooking.collectAsState().value
     LaunchedEffect(key1 = Unit) {
         myBookingPlaygrounds()
     }
@@ -63,7 +67,11 @@ fun MyBookingPage(
             pagerState = pagerState,
             uiState = uiState,
             onClickPlaygroundCard = onClickPlaygroundCard,
-            playgroundReview = playgroundReview
+            playgroundReview = playgroundReview,
+            responseState = responseState,
+            onCommentChange = onCommentChange,
+            onRatingChange = onRatingChange,
+            // myBooking = myBooking
         )
     }
 }
@@ -114,13 +122,26 @@ fun TabContent(
     tabs: List<TabItem>,
     pagerState: PagerState,
     uiState: StateFlow<MyBookingUiState>,
+    //myBooking: StateFlow<DataState<BookingDetails>>,
     onClickPlaygroundCard: (Int) -> Unit,
-    playgroundReview: (Float) -> Unit
+    playgroundReview: () -> Unit,
+    responseState: StateFlow<DataState<PlaygroundReviewResponse>>,
+    onCommentChange: (String) -> Unit,
+    onRatingChange: (Float) -> Unit,
 
-) {
+
+    ) {
     HorizontalPager(count = tabs.size, state = pagerState) { page ->
 
-        tabs[page].screens(uiState, onClickPlaygroundCard, playgroundReview)
+        tabs[page].screens(
+            uiState,
+            onClickPlaygroundCard,
+            playgroundReview,
+            responseState,
+            onCommentChange,
+            onRatingChange,
+            //  myBooking
+        )
     }
 }
 

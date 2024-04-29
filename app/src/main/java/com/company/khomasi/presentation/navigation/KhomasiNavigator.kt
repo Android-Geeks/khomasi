@@ -96,9 +96,13 @@ fun KhomasiNavigator() {
                 MyBookingPage(
                     uiState = bookingViewModel.uiState,
                     myBookingPlaygrounds = bookingViewModel::myBookingPlaygrounds,
-                    myBooking = bookingViewModel.myBooking,
+                    //myBooking = bookingViewModel.myBooking,
                     onClickPlaygroundCard = bookingViewModel::onClickPlayground,
-                    // onBackClick = { navController.popBackStack() },
+                    playgroundReview = bookingViewModel::playgroundReview,
+                    cancelBooking = bookingViewModel::cancelBooking,
+                    responseState = bookingViewModel.reviewState,
+                    onRatingChange = bookingViewModel::onRatingChange,
+                    onCommentChange = bookingViewModel::onCommentChange,
                 )
 
             }

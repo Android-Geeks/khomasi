@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.components.cards
 
+import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
@@ -50,7 +51,6 @@ import com.company.khomasi.theme.lightErrorColor
 import com.company.khomasi.theme.lightSubText
 import com.company.khomasi.utils.convertToBitmap
 
-
 @Composable
 fun BookingCard(
     bookingDetails: BookingDetails,
@@ -58,8 +58,10 @@ fun BookingCard(
     onViewPlaygroundClick: () -> Unit,
     isDark: Boolean = isSystemInDarkTheme(),
     bookingStatus: BookingStatus,
-    toRate: (() -> Unit)
-) {
+    toRate: () -> Unit,
+    onClickPlaygroundCard: (Int) -> Unit,
+
+    ) {
     Card(
         modifier
             .height(
@@ -184,7 +186,10 @@ fun BookingCard(
 
                             MyOutlinedButton(
                                 text = R.string.rate_field,
-                                onClick = toRate,
+                                onClick = {
+                                    toRate()
+                                    onClickPlaygroundCard(bookingDetails.playgroundId)
+                                },
                                 icon = R.drawable.chatcircledots,
                                 modifier = Modifier
                                     .weight(1f),
@@ -202,7 +207,8 @@ fun BookingCard(
 @Composable
 fun BookingCardDetails(
     bookingDetails: BookingDetails,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    context: Context = LocalContext.current,
 ) {
     Column(
         modifier = modifier
@@ -247,7 +253,7 @@ fun BookingCardDetails(
                 iconId = R.drawable.clock
             )
             TextWithIcon(
-                text = "bookingDetails.playground.price",
+                text = context.getString(R.string.fees_per_hour, bookingDetails.cost),
                 iconId = R.drawable.currencycircledollar
             )
         }
@@ -307,7 +313,9 @@ private fun BookingCardPreview() {
 
             bookingStatus = BookingStatus.CONFIRMED,
             onViewPlaygroundClick = {},
-            toRate = {})
+            toRate = {},
+            onClickPlaygroundCard = {}
+        )
 
     }
 }

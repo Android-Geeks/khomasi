@@ -55,7 +55,7 @@ class MyBookingViewModel @Inject constructor(
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect { userData ->
                 remoteUserUseCase.cancelBookingUseCase(
-                    "Bearer${userData.token}",
+                    "Bearer ${userData.token}",
                     _uiState.value.playgroundId,
                     true
                 ).collect { dataState ->
@@ -70,34 +70,41 @@ class MyBookingViewModel @Inject constructor(
         }
     }
 
-    fun playgroundReview(review: Float) {
-        viewModelScope.launch {
-            localUserUseCases.getLocalUser().collect { userData ->
+    fun onRatingChange(rating: Float) {
+        _uiState.value = _uiState.value.copy(rating = rating)
+    }
 
-                remoteUserUseCase.playgroundReviewUseCase(
-                    PlaygroundReviewResponse(
-                        playgroundId = _uiState.value.playgroundId,
-                        userId = userData.userID ?: " ",
-                        comment = _uiState.value.comment,
-                        rating = _uiState.value.rating.toInt(),
-                        reviewTime = _uiState.value.reviewTime
-                    )
-                )
-                _uiState.value = _uiState.value.copy(
-                    rating = review,
-                    playgroundId = _uiState.value.playgroundId
-                )
-
-            }
-        }
+    fun onCommentChange(comment: String) {
+        _uiState.value = _uiState.value.copy(comment = comment)
     }
 
     fun onClickPlayground(playgroundId: Int) {
         viewModelScope.launch {
-            localUserUseCases.savePlaygroundId(playgroundId)
             _uiState.value = _uiState.value.copy(
-                playgroundId = _uiState.value.playgroundId
+                playgroundId = playgroundId
             )
         }
     }
+
+    fun playgroundReview() {
+        viewModelScope.launch {
+            localUserUseCases.getLocalUser().collect { userData ->
+                remoteUserUseCase.playgroundReviewUseCase(
+                    token = "Bearer ${userData.token}",
+                    playgroundReview = PlaygroundReviewResponse(
+                        playgroundId = _uiState.value.playgroundId,
+                        userId = userData.userID ?: " ",
+                        comment = _uiState.value.comment,
+                        rating = _uiState.value.rating.toInt(),
+                        reviewTime = "2024-04-23T12:00:00"
+                    )
+                ).collect {
+                    _reviewState.value = it
+
+                }
+            }
+        }
+        }
+
+
 }
