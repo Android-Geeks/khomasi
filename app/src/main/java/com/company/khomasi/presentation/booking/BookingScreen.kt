@@ -3,7 +3,6 @@ package com.company.khomasi.presentation.booking
 import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -63,7 +62,6 @@ import com.company.khomasi.utils.extractTimeFromTimestamp
 import com.company.khomasi.utils.parseTimestamp
 import kotlinx.coroutines.flow.StateFlow
 import org.threeten.bp.LocalDateTime
-
 import java.util.Locale
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
@@ -82,17 +80,9 @@ fun BookingScreen(
     onNextClicked: () -> Unit,
     onBackToBookingScreen: () -> Unit
 ) {
-
     val bookingState = bookingUiState.collectAsState().value
     val freeSlots = freeSlotsState.collectAsState().value
     val screenHeight = getScreenHeight()
-    BackHandler {
-        if (bookingState.page == 2) {
-            onBackToBookingScreen()
-        } else {
-            onBackClicked()
-        }
-    }
     Scaffold(
         topBar = {
             BookingTopBar(
@@ -114,43 +104,26 @@ fun BookingScreen(
                     .fillMaxSize(),
                 sheetModifier = Modifier.fillMaxWidth(),
                 screenContent = {
-                    when (bookingState.page) {
-                        1 -> BookingScreenContent(
-                            bookingUiState = bookingState,
-                            freeSlotsState = freeSlots,
-                            isDark = isDark,
-                            updateDuration = updateDuration,
-                            getFreeSlots = { getFreeSlots() },
-                            updateSelectedDay = updateSelectedDay,
-                            onSlotClicked = onSlotClicked,
-                            modifier = Modifier.padding(paddingValues)
-                        )
-
-                        2 -> ConfirmBookingContent(
-                            bookingState = bookingState,
-                            modifier = Modifier.padding(paddingValues),
-                        )
-                    }
+                    BookingScreenContent(
+                        bookingUiState = bookingState,
+                        freeSlotsState = freeSlots,
+                        isDark = isDark,
+                        updateDuration = updateDuration,
+                        getFreeSlots = { getFreeSlots() },
+                        updateSelectedDay = updateSelectedDay,
+                        onSlotClicked = onSlotClicked,
+                        modifier = Modifier.padding(paddingValues)
+                    )
                 },
                 sheetContent = {
-                    when (bookingState.page) {
-                        1 -> BookingBottomSheet(
-                            sheetHeight = (screenHeight * 0.16).dp,
-                            playgroundPrice = bookingState.totalPrice,
-                            isDark = isDark,
-                            context = context,
-                            onNextClicked = onNextClicked,
-                            checkValidity = checkValidity
-                        )
-
-                        2 -> ConfirmBookingBottomSheet(
-                            sheetHeight = (screenHeight * 0.16).dp,
-                            playgroundPrice = bookingState.totalPrice,
-                            isDark = isDark,
-                            context = context,
-                            onContinueToPaymentClicked = { onNextClicked() }
-                        )
-                    }
+                    BookingBottomSheet(
+                        sheetHeight = (screenHeight * 0.16).dp,
+                        playgroundPrice = bookingState.totalPrice,
+                        isDark = isDark,
+                        context = context,
+                        onNextClicked = onNextClicked,
+                        checkValidity = checkValidity
+                    )
                 }
             )
         }
@@ -366,7 +339,6 @@ fun calculateHourlyIntervalsList(
         emptyList()
     }
 }
-
 
 
 @OptIn(ExperimentalMaterial3Api::class)

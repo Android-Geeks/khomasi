@@ -3,6 +3,7 @@ package com.company.khomasi.presentation.booking
 import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,11 +14,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
@@ -25,6 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
+import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.cards.BookingStatus
 import com.company.khomasi.presentation.screenDimensions.getScreenHeight
@@ -32,6 +37,67 @@ import com.company.khomasi.presentation.screenDimensions.getScreenWidth
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
+import kotlinx.coroutines.flow.StateFlow
+
+
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
+@Composable
+fun ConfirmBookingContent(
+    bookingUiState: StateFlow<BookingUiState>,
+    context: Context = LocalContext.current,
+    isDark: Boolean = isSystemInDarkTheme(),
+    onBackClicked: () -> Unit,
+    onNextClicked: () -> Unit,
+    onBackToBookingScreen: () -> Unit
+) {
+    val bookingState = bookingUiState.collectAsState().value
+    val screenHeight = getScreenHeight()
+//    BackHandler {
+//        if (bookingState.page == 2) {
+//            onBackToBookingScreen()
+//        } else {
+//            onBackClicked()
+//        }
+//    }
+    Scaffold(
+        topBar = {
+            BookingTopBar(
+                playgroundName = bookingState.playgroundName,
+                onBackClicked = { onBackClicked() },
+                context = context
+            )
+        },
+        modifier = Modifier.fillMaxSize(),
+
+        ) { paddingValues ->
+        Surface(
+            modifier = Modifier
+                .fillMaxSize(),
+            color = MaterialTheme.colorScheme.background,
+        ) {
+            AuthSheet(
+                modifier = Modifier
+                    .fillMaxSize(),
+                sheetModifier = Modifier.fillMaxWidth(),
+                screenContent = {
+                    ConfirmBookingContent(
+                        bookingState = bookingState,
+                        modifier = Modifier.padding(paddingValues),
+                    )
+                },
+                sheetContent = {
+                    ConfirmBookingBottomSheet(
+                        sheetHeight = (screenHeight * 0.16).dp,
+                        playgroundPrice = bookingState.totalPrice,
+                        isDark = isDark,
+                        context = context,
+                        onContinueToPaymentClicked = { onNextClicked() }
+                    )
+                }
+            )
+        }
+    }
+}
 
 @Composable
 fun ConfirmBookingContent(

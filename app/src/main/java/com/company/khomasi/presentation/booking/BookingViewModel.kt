@@ -1,8 +1,6 @@
 package com.company.khomasi.presentation.booking
 
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
@@ -85,7 +83,6 @@ class BookingViewModel @Inject constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     fun updateDuration(type: String) {
         when (type) {
             "+" -> {
@@ -126,7 +123,7 @@ class BookingViewModel @Inject constructor(
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     fun onSlotClicked(slot: Pair<LocalDateTime, LocalDateTime>) {
 
         _bookingUiState.update {
@@ -148,7 +145,7 @@ class BookingViewModel @Inject constructor(
         )
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     fun checkSlotsConsecutive(): Boolean {
         val selectedTimes = _bookingUiState.value.selectedSlots.sortedBy { it.first }
         var temp = true
@@ -165,7 +162,6 @@ class BookingViewModel @Inject constructor(
         return temp
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun calculateTotalCost() {
         val bookingState = _bookingUiState.value
         val durationInHours =
@@ -179,21 +175,19 @@ class BookingViewModel @Inject constructor(
     }
 
     fun onBackClicked() {
-        _bookingUiState.value = _bookingUiState.value.copy(page = _bookingUiState.value.page - 1)
+//        _bookingUiState.value = _bookingUiState.value.copy(page = _bookingUiState.value.page - 1)
     }
 
     fun onNextClicked() {
-        _bookingUiState.update {
-            it.copy(page = it.page.plus(if (it.page < 2) 1 else 0))
-        }
-
+//        _bookingUiState.update {
+//            it.copy(page = it.page.plus(if (it.page < 2) 1 else 0))
+//        }
     }
 
 }
 
 
 /*
-@RequiresApi(Build.VERSION_CODES.O)
 fun updateDuration(type: String) {
     when (type) {
         "+" -> {
@@ -265,7 +259,7 @@ fun updateDuration(type: String) {
 }
 }
 
-@RequiresApi(Build.VERSION_CODES.O)
+
 fun updateNextSlot(
     nextSlot: Pair<LocalDateTime, LocalDateTime>,
     current: Pair<LocalDateTime, LocalDateTime>

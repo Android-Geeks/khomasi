@@ -13,5 +13,4 @@ data class BookingUiState(
     val selectedDuration: Int = 60,
     val selectedDay: Int = 0,
     val selectedSlots: MutableList<Pair<LocalDateTime, LocalDateTime>> = mutableListOf(),
-    val page: Int = 1
 )
