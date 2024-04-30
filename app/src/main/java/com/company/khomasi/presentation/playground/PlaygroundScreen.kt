@@ -26,11 +26,11 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -46,6 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.PlaygroundReviewResponse
@@ -65,6 +66,7 @@ import com.company.khomasi.presentation.playground.components.PlaygroundSize
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkIcon
 import com.company.khomasi.theme.lightIcon
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.util.Locale
@@ -89,81 +91,91 @@ fun PlaygroundScreen(
     updateShowReview: () -> Unit
 ) {
     var showLoading by remember { mutableStateOf(false) }
-    val uiState = playgroundUiState.collectAsState().value
-    val playgroundState = playgroundStateFlow.collectAsState().value
-    var playgroundData by remember { mutableStateOf<PlaygroundScreenResponse?>(null) }
+    val uiState by playgroundUiState.collectAsStateWithLifecycle()
+    val playgroundState by playgroundStateFlow.collectAsStateWithLifecycle()
+//    var playgroundData by remember { mutableStateOf<PlaygroundScreenResponse?>(null) }
+    val reviews by reviewsState.collectAsStateWithLifecycle()
+    val bottomSheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         getPlaygroundDetails(playgroundId)
-    }
-    val reviews = reviewsState.collectAsState().value
-
-    LaunchedEffect(playgroundState) {
-        showLoading = playgroundState is DataState.Loading
-        if (playgroundState is DataState.Success) {
-            playgroundData = playgroundState.data
-        }
-        Log.d("PlaygroundScreen", "PlaygroundScreen: $playgroundState")
+        Log.d("lol", "getPlaygroundDetails called")
     }
 
-
-    AuthSheet(
-        sheetModifier = Modifier.fillMaxWidth(),
-        screenContent = {
-            PlaygroundScreenContent(playgroundData = playgroundData,
-                uiState = uiState,
-                onViewRatingClicked = onViewRatingClicked,
-                onClickBack = onClickBack,
-                onClickShare = onClickShare,
-                onClickFav = { onClickFav() },
-                onClickDisplayOnMap = { onClickDisplayOnMap() })
-        },
-        sheetContent = {
-
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .height(116.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = context.getString(
-                        R.string.fees_per_hour, playgroundData?.playground?.feesForHour ?: 0
-                    )
-                )
-
-                MyButton(
-                    text = R.string.book_now,
-                    onClick = {
-                        onBookNowClicked()
-                    },
-                    modifier = Modifier.fillMaxWidth()
-                )
-
+    playgroundState.let { state ->
+        when (state) {
+            is DataState.Loading -> {
+                showLoading = true
             }
-        })
-    val bottomSheetState = rememberModalBottomSheetState()
-    val scope = rememberCoroutineScope()
+
+            is DataState.Success -> {
+                showLoading = false
+            }
+
+            is DataState.Error -> {
+                showLoading = false
+                // handle error
+            }
+
+            is DataState.Empty -> {
+                showLoading = false
+            }
+        }
+    }
+    if (playgroundState is DataState.Success) {
+        val playgroundData = (playgroundState as DataState.Success<PlaygroundScreenResponse>).data
+        AuthSheet(
+            sheetModifier = Modifier.fillMaxWidth(),
+            screenContent = {
+//            Log.d("lol", "AuthSheet recomposed")
+
+                PlaygroundScreenContent(
+                    playgroundData = playgroundData,
+                    uiState = uiState,
+                    onViewRatingClicked = onViewRatingClicked,
+                    onClickBack = onClickBack,
+                    onClickShare = onClickShare,
+                    onClickFav = { onClickFav() },
+                    onClickDisplayOnMap = { onClickDisplayOnMap() })
+            },
+            sheetContent = {
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .height(116.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text(
+                        text = context.getString(
+                            R.string.fees_per_hour, playgroundData.playground.feesForHour ?: 0
+                        )
+                    )
+
+                    MyButton(
+                        text = R.string.book_now,
+                        onClick = {
+                            onBookNowClicked()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                }
+            })
+    }
     if (uiState.showReviews) {
         MyModalBottomSheet(
             sheetState = bottomSheetState,
             onDismissRequest = {
-                scope.launch {
-                    bottomSheetState.hide()
-                    updateShowReview()
-                }
+                dismissBottomSheet(bottomSheetState, scope, updateShowReview)
             },
             modifier = Modifier,
             content = {
-
                 PlaygroundReviews(
                     reviews = reviews,
                     onClickCancel = {
-                        scope.launch {
-                            bottomSheetState.hide()
-                            updateShowReview()
-                        }
+                        dismissBottomSheet(bottomSheetState, scope, updateShowReview)
                     })
             }
         )
@@ -181,9 +193,21 @@ fun PlaygroundScreen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+fun dismissBottomSheet(
+    bottomSheetState: SheetState,
+    scope: CoroutineScope,
+    updateShowReview: () -> Unit
+) {
+    scope.launch {
+        bottomSheetState.hide()
+        updateShowReview()
+    }
+}
+
 @Composable
 fun PlaygroundScreenContent(
-    playgroundData: PlaygroundScreenResponse?,
+    playgroundData: PlaygroundScreenResponse,
     uiState: PlaygroundUiState,
     onViewRatingClicked: () -> Unit,
     onClickBack: () -> Unit,
@@ -191,13 +215,14 @@ fun PlaygroundScreenContent(
     onClickFav: () -> Unit,
     onClickDisplayOnMap: () -> Unit
 ) {
-
+//    Log.d("lol", "PlaygroundScreenContent recomposed")
     LazyColumn(
         Modifier.fillMaxSize()
     ) {
 
         item {
-            ImageSlider(imageList = playgroundData?.playgroundPictures ?: emptyList(),
+//            Log.d("lol", "imgSlider recomposed")
+            ImageSlider(imageList = playgroundData.playgroundPictures ?: emptyList(),
                 isFav = uiState.isFavourite,
                 onClickBack = { onClickBack() },
                 onClickShare = { onClickShare() },
@@ -205,9 +230,10 @@ fun PlaygroundScreenContent(
         }
 
         item {
-            PlaygroundDefinition(name = playgroundData?.playground?.name ?: "",
-                openingTime = playgroundData?.playground?.openingHours ?: "",
-                address = playgroundData?.playground?.address ?: "",
+//            Log.d("lol", "PlaygroundDefinition recomposed")
+            PlaygroundDefinition(name = playgroundData.playground.name ?: "",
+                openingTime = playgroundData.playground.openingHours ?: "",
+                address = playgroundData.playground.address ?: "",
                 onClickDisplayOnMap = { onClickDisplayOnMap() })
         }
 
@@ -216,7 +242,7 @@ fun PlaygroundScreenContent(
         item {
             PlaygroundRates(
                 rateNum = uiState.reviewsCount.toString(),
-                rate = playgroundData?.playground?.rating.toString(),
+                rate = playgroundData.playground.rating.toString(),
                 onViewRatingClicked = onViewRatingClicked
             )
         }
@@ -227,12 +253,12 @@ fun PlaygroundScreenContent(
 
         item { LineSpacer() }
 
-        item { PlaygroundDescription(description = playgroundData?.playground?.description ?: "") }
+        item { PlaygroundDescription(description = playgroundData.playground.description ?: "") }
 
         item { LineSpacer() }
 
         item {
-            playgroundData?.playground?.advantages?.let {
+            playgroundData.playground.advantages.let {
                 PlaygroundFeatures(
                     featureList = it.split(
                         ","

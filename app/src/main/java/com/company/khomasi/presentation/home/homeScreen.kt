@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.home
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -86,11 +85,12 @@ fun HomeScreen(
     LaunchedEffect(playgrounds) {
         showLoading = playgrounds is DataState.Loading || playgrounds is DataState.Empty
         playgroundsData = (playgrounds as? DataState.Success)?.data?.playgrounds ?: emptyList()
-        Log.d("HomeScreen", "HomeScreen: $playgrounds")
+//        Log.d("HomeScreen", "HomeScreen: $playgrounds")
     }
 
     LaunchedEffect(localUser) {
         getHomeScreenData()
+//        Log.d("HomeScreen", "localUser recomposed")
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
