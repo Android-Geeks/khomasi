@@ -91,7 +91,7 @@ class PlaygroundViewModel @Inject constructor(
     }
 
     fun onClickFavourite() {
-        _uiState.value = _uiState.value.copy(isFavourite = !_uiState.value.isFavourite)
+
     }
 
 

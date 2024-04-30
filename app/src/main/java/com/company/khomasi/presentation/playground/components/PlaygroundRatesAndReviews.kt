@@ -20,7 +20,7 @@ import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyOutlinedButton
 
 @Composable
-fun PlaygroundRates(
+fun PlaygroundRatesAndReviews(
     rateNum: String, rate: String, onViewRatingClicked: () -> Unit
 ) {
     Box {
