@@ -1,8 +1,11 @@
 package com.company.khomasi.presentation.myBookings
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.BookingDetails
 import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundReviewResponse
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
@@ -22,6 +25,9 @@ class MyBookingViewModel @Inject constructor(
     private val _myBooking =
         MutableStateFlow<DataState<MyBookingsResponse>>(DataState.Empty)
     val myBooking: StateFlow<DataState<MyBookingsResponse>> = _myBooking.asStateFlow()
+
+    private val _details = MutableStateFlow<DataState<BookingDetails>>(DataState.Empty)
+    val details: StateFlow<DataState<BookingDetails>> = _details
 
     private val _reviewState =
         MutableStateFlow<DataState<PlaygroundReviewResponse>>(DataState.Empty)
@@ -80,9 +86,7 @@ class MyBookingViewModel @Inject constructor(
 
     fun onClickPlayground(playgroundId: Int) {
         viewModelScope.launch {
-            _uiState.value = _uiState.value.copy(
-                playgroundId = playgroundId
-            )
+            localUserUseCases.savePlaygroundId(playgroundId)
         }
     }
 

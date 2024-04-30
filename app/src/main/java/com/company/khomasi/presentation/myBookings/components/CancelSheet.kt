@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+
 import androidx.compose.material.Scaffold
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,7 +24,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,27 +40,26 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.company.khomasi.R
+import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.BookingDetails
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
 import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
-import com.company.khomasi.presentation.myBookings.MyBookingUiState
 import com.company.khomasi.theme.Cairo
 import com.company.khomasi.theme.darkIcon
 import com.company.khomasi.theme.lightIcon
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ConfirmationPage(
-//    confirmState : StateFlow<DataState<BookingDetails>>,
-    uiStateFlow: State<MyBookingUiState>,
-    bookingDetails: BookingDetails?,
+fun CancelSheet(
+    bookingDetails: StateFlow<DataState<BookingDetails>>,
     onBackClick: () -> Unit,
 ) {
-    // val confirmUiState = confirmState.collectAsState().value
+    val details = bookingDetails.collectAsState().value
     val scope = rememberCoroutineScope()
     val scaffoldState = rememberBottomSheetScaffoldState()
     BottomSheetScaffold(
@@ -137,11 +137,10 @@ fun ConfirmationPage(
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background),
             ) {
-//                if (confirmUiState is DataState.Success) {
-//                    val bookingDetails = confirmUiState.data
-                TopAppBar(
-                    title = {
-                        if (bookingDetails != null) {
+                if (details is DataState.Success) {
+                    val bookingDetails = details.data
+                    TopAppBar(
+                        title = {
                             Text(
                                 text = bookingDetails.playgroundName,
                                 style = MaterialTheme.typography.displayMedium,
@@ -150,28 +149,27 @@ fun ConfirmationPage(
                                     .wrapContentSize(Alignment.CenterStart)
                                     .padding(it)
                             )
+
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
+                        navigationIcon = {
+                            IconButton(
+                                onClick = onBackClick,
+                            ) {
+                                Icon(
+                                    painter = painterResource(id = R.drawable.back),
+                                    modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier.rotate(
+                                        180f
+                                    ) else Modifier,
+                                    contentDescription = null,
+                                    tint = if (isSystemInDarkTheme()) darkIcon else lightIcon
+                                )
+                            }
                         }
-                    },
-                    colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
-                    navigationIcon = {
-                        IconButton(
-                            onClick = onBackClick,
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.back),
-                                modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier.rotate(
-                                    180f
-                                ) else Modifier,
-                                contentDescription = null,
-                                tint = if (isSystemInDarkTheme()) darkIcon else lightIcon
-                            )
-                        }
-                    }
-                )
-                HorizontalDivider(
-                    modifier = Modifier.fillMaxWidth(), thickness = 1.dp
-                )
-                if (bookingDetails != null) {
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier.fillMaxWidth(), thickness = 1.dp
+                    )
                     BookingCard(
                         bookingDetails = bookingDetails,
                         bookingStatus = BookingStatus.CONFIRMED,
@@ -180,20 +178,20 @@ fun ConfirmationPage(
                         onClickPlaygroundCard = {}
                     )
                 }
-                }
-            Spacer(modifier = Modifier.height(141.dp))
-            MyButton(
-                text = R.string.booking_cancelled,
-                onClick = {
-                    scope.launch {
-                        scaffoldState.bottomSheetState.expand()
-                    }
-                },
-                //modifier = Modifier.align(Alignment.BottomCenter)
-            )
+                Spacer(modifier = Modifier.height(141.dp))
+                MyButton(
+                    text = R.string.booking_cancelled,
+                    onClick = {
+                        scope.launch {
+                            scaffoldState.bottomSheetState.expand()
+                        }
+                    },
+                    //modifier = Modifier.align(Alignment.BottomCenter)
+                )
 
-            //   }
-            Spacer(modifier = Modifier.height(56.dp))
+                //   }
+                Spacer(modifier = Modifier.height(56.dp))
+            }
         }
     }
 }
