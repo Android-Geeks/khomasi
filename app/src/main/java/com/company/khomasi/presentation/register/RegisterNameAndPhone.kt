@@ -20,7 +20,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -33,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.LatandLong
@@ -57,7 +57,7 @@ fun RegisterNameAndPhone(
     onNextClick: () -> Unit,
     isDark: Boolean = isSystemInDarkTheme(),
 ) {
-    val userState = uiState.collectAsState().value
+    val userState = uiState.collectAsStateWithLifecycle().value
 
     val context = LocalContext.current
     val localFocusManager = LocalFocusManager.current

@@ -77,9 +77,6 @@ class ProfileViewModel @Inject constructor(
         _profileUiState.value = _profileUiState.value.copy(feedback = feedback)
     }
 
-    fun onEditProfile(isEdit: Boolean) {
-        _profileUiState.value = _profileUiState.value.copy(isEditPage = isEdit)
-    }
 
     fun onFirstNameChanged(firstName: String) {
         _profileUiState.value = _profileUiState.value.copy(
@@ -150,7 +147,6 @@ class ProfileViewModel @Inject constructor(
             } else {
                 Log.d("ProfileViewModel", "onSaveProfile: File does not exist")
             }
-            _profileUiState.value = _profileUiState.value.copy(isEditPage = false)
         }
     }
 

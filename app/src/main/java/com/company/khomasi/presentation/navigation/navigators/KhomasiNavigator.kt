@@ -15,13 +15,17 @@ import com.company.khomasi.presentation.myBookings.MyBookingPage
 import com.company.khomasi.presentation.myBookings.MyBookingViewModel
 import com.company.khomasi.presentation.myBookings.components.CancelSheet
 import com.company.khomasi.presentation.navigation.components.sharedViewModel
-import com.company.khomasi.presentation.profile.ProfileScreen
+import com.company.khomasi.presentation.profile.EditProfile
 import com.company.khomasi.presentation.profile.ProfileViewModel
-import com.company.khomasi.presentation.search.SearchScreen
+import com.company.khomasi.presentation.profile.ViewProfile
+import com.company.khomasi.presentation.search.SearchQuery
+import com.company.khomasi.presentation.search.SearchResult
 import com.company.khomasi.presentation.search.SearchViewModel
 
 
-fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
+fun NavGraphBuilder.khomasiNavigator(
+    navController: NavController
+) {
     navigation(
         route = Screens.KhomasiNavigation.route,
         startDestination = Screens.KhomasiNavigation.Home.route
@@ -32,7 +36,9 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
                 playgroundsState = homeViewModel.playgroundState,
                 homeUiState = homeViewModel.homeUiState,
                 localUserState = homeViewModel.localUser,
-                onClickUserImage = { navController.navigate(Screens.KhomasiNavigation.Profile.route) },
+                onClickUserImage = {
+                    navController.navigate(Screens.KhomasiNavigation.Profile.route)
+                },
                 onClickPlaygroundCard = { playgroundId, playgroundName, playgroundPrice ->
                     homeViewModel.onClickPlayground(
                         playgroundId,
@@ -73,42 +79,9 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
 
         }
 
-        composable(route = Screens.KhomasiNavigation.Search.route) {
-            val searchViewModel: SearchViewModel = hiltViewModel()
-            SearchScreen(
-                onBackClick = { navController.popBackStack() },
-                searchQuery = searchViewModel.searchQuery,
-                searchUiState = searchViewModel.uiState,
-                playgroundsState = searchViewModel.searchResults,
-                onQueryChange = searchViewModel::onSearchQueryChanged,
-                onSearchQuerySubmitted = searchViewModel::onSearchQuerySubmitted,
-                onSearchFilterChanged = searchViewModel::onSearchFilterChanged,
-                onClearHistory = searchViewModel::onClickRemoveSearchHistory,
-                navigateToPlaygroundDetails = {},
-                onBackPage = searchViewModel::onBackPage,
-                onNextPage = searchViewModel::onNextPage,
-            )
-        }
-        composable(route = Screens.KhomasiNavigation.Profile.route) {
-            val profileViewModel: ProfileViewModel = hiltViewModel()
-            ProfileScreen(
-                profileUiState = profileViewModel.profileUiState,
-                localUserUiState = profileViewModel.localUser,
-                getProfileImage = profileViewModel::getProfileImage,
-                onEditProfile = profileViewModel::onEditProfile,
-                onSaveProfile = profileViewModel::onSaveProfile,
-                onFeedbackCategorySelected = profileViewModel::onFeedbackCategorySelected,
-                onFeedbackChanged = profileViewModel::onFeedbackChanged,
-                onLogout = profileViewModel::onLogout,
-                updateUserData = profileViewModel::updateUserData,
-                onFirstNameChanged = profileViewModel::onFirstNameChanged,
-                onLastNameChanged = profileViewModel::onLastNameChanged,
-                onPhoneChanged = profileViewModel::onPhoneChanged,
-                onBackClick = { navController.popBackStack() },
-                onChangeProfileImage = profileViewModel::onChangeProfileImage,
-                sendFeedback = profileViewModel::sendFeedback
-            )
-        }
+        searchNavigator(navController)
+
+        profileNavigator(navController)
     }
 }
 
@@ -151,28 +124,72 @@ fun NavGraphBuilder.profileNavigator(navController: NavController) {
         composable(route = Screens.KhomasiNavigation.Profile.ViewProfile.route) {
             val profileViewModel =
                 it.sharedViewModel<ProfileViewModel>(navController = navController)
-            ProfileScreen(
+            ViewProfile(
                 profileUiState = profileViewModel.profileUiState,
                 localUserUiState = profileViewModel.localUser,
                 getProfileImage = profileViewModel::getProfileImage,
-                onEditProfile = profileViewModel::onEditProfile,
-                onSaveProfile = profileViewModel::onSaveProfile,
+                onEditProfile = {
+                    navController.navigate(Screens.KhomasiNavigation.Profile.EditProfile.route)
+                },
                 onFeedbackCategorySelected = profileViewModel::onFeedbackCategorySelected,
                 onFeedbackChanged = profileViewModel::onFeedbackChanged,
                 onLogout = profileViewModel::onLogout,
                 updateUserData = profileViewModel::updateUserData,
-                onFirstNameChanged = profileViewModel::onFirstNameChanged,
-                onLastNameChanged = profileViewModel::onLastNameChanged,
-                onPhoneChanged = profileViewModel::onPhoneChanged,
                 onBackClick = { navController.popBackStack() },
-                onChangeProfileImage = profileViewModel::onChangeProfileImage,
                 sendFeedback = profileViewModel::sendFeedback
             )
         }
         composable(route = Screens.KhomasiNavigation.Profile.EditProfile.route) {
             val profileViewModel =
                 it.sharedViewModel<ProfileViewModel>(navController = navController)
-
+            EditProfile(
+                editProfileUiState = profileViewModel.profileUiState,
+                onSaveProfile = {
+                    profileViewModel.onSaveProfile()
+                    navController.popBackStack()
+                },
+                onFirstNameChange = profileViewModel::onFirstNameChanged,
+                onLastNameChange = profileViewModel::onLastNameChanged,
+                onPhoneChange = profileViewModel::onPhoneChanged,
+                onChangeProfileImage = profileViewModel::onChangeProfileImage,
+                onBackClick = { navController.popBackStack() }
+            )
         }
     }
+}
+
+fun NavGraphBuilder.searchNavigator(navController: NavController) {
+    navigation(
+        route = Screens.KhomasiNavigation.Search.route,
+        startDestination = Screens.KhomasiNavigation.Search.SearchQuery.route
+    ) {
+        composable(route = Screens.KhomasiNavigation.Search.SearchQuery.route) {
+            val searchViewModel = it.sharedViewModel<SearchViewModel>(navController = navController)
+            SearchQuery(
+                playgroundsState = searchViewModel.searchResults,
+                localUserState = searchViewModel.localUser,
+                searchQuery = searchViewModel.searchQuery,
+                searchUiState = searchViewModel.uiState,
+                getSearchData = searchViewModel::getSearchData,
+                onQueryChange = searchViewModel::onSearchQueryChanged,
+                onSearchQuerySubmitted = searchViewModel::onSearchQuerySubmitted,
+                onClearHistory = searchViewModel::onClickRemoveSearchHistory,
+                navigateToPlaygroundDetails = { playgroundId -> navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId") },
+                onBackClick = { navController.popBackStack() },
+                onNextPage = { navController.navigate(Screens.KhomasiNavigation.Search.SearchResults.route) },
+            )
+        }
+
+        composable(route = Screens.KhomasiNavigation.Search.SearchResults.route) {
+            val searchViewModel = it.sharedViewModel<SearchViewModel>(navController = navController)
+            SearchResult(
+                searchUiState = searchViewModel.uiState,
+                onBackClick = { navController.popBackStack() },
+                navigateToPlaygroundDetails = { playgroundId -> navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId") },
+                onSearchFilterChanged = searchViewModel::onSearchFilterChanged,
+                onBackPage = { navController.popBackStack() },
+            )
+        }
+    }
+
 }

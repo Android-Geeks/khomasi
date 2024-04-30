@@ -9,6 +9,7 @@ import com.company.khomasi.domain.use_case.local_user.LocalPlaygroundUseCase
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -38,7 +39,13 @@ class HomeViewModel @Inject constructor(
 
 
     fun getHomeScreenData() {
-        viewModelScope.launch {
+        viewModelScope.launch(IO) {
+            remoteUserUseCase.getPlaygroundsUseCase(
+                token = "Bearer ${_localUser.value.token ?: ""}",
+                userId = _localUser.value.userID ?: ""
+            ).collect { playgroundsRes ->
+                _playgroundState.value = playgroundsRes
+            }
             remoteUserUseCase.getProfileImageUseCase(
                 token = "Bearer ${_localUser.value.token ?: ""}",
                 userId = _localUser.value.userID ?: ""
@@ -50,12 +57,6 @@ class HomeViewModel @Inject constructor(
                         )
                     }
                 }
-            }
-            remoteUserUseCase.getPlaygroundsUseCase(
-                token = "Bearer ${_localUser.value.token ?: ""}",
-                userId = _localUser.value.userID ?: ""
-            ).collect { playgroundsRes ->
-                _playgroundState.value = playgroundsRes
             }
         }
     }
@@ -70,7 +71,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onClickPlayground(playgroundId: Int, playgroundName: String, playgroundPrice: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(IO) {
             localUserUseCases.savePlaygroundId(playgroundId)
             getPlaygroundData(playgroundName, playgroundPrice)
         }
@@ -78,7 +79,7 @@ class HomeViewModel @Inject constructor(
 
     // --------    Until locate playground id into LocalPlaygroundUseCases -------------
     private fun getPlaygroundData(playgroundName: String, playgroundPrice: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(IO) {
             localPlaygroundUseCase.apply {
                 this.savePlaygroundName(playgroundName)
                 this.savePlaygroundPrice(playgroundPrice)
