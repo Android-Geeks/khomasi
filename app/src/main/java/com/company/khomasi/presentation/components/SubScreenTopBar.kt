@@ -2,6 +2,7 @@ package com.company.khomasi.presentation.components
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -25,7 +26,22 @@ import com.company.khomasi.R
 @Composable
 fun SubScreenTopBar(
     @StringRes title: Int,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
+    navigationIcon: @Composable () -> Unit = {
+        IconButton(
+            onClick = onBackClick,
+        ) {
+            Icon(
+                painter = painterResource(id = R.drawable.back),
+                modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier.rotate(
+                    180f
+                ) else Modifier,
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.onSurface
+            )
+        }
+    },
+    actions: @Composable RowScope.() -> Unit = {}
 ) {
     Column {
         TopAppBar(
@@ -38,20 +54,8 @@ fun SubScreenTopBar(
                 )
             },
             colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
-            navigationIcon = {
-                IconButton(
-                    onClick = onBackClick,
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.back),
-                        modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier.rotate(
-                            180f
-                        ) else Modifier,
-                        contentDescription = null,
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
+            navigationIcon = navigationIcon,
+            actions = actions
         )
         HorizontalDivider(
             modifier = Modifier.fillMaxWidth(), thickness = 1.dp

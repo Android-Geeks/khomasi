@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.search.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -41,6 +42,7 @@ fun SearchTopAppBar(
 ) {
     Column {
         MyTopAppBar(
+            title = R.string.search_for_field,
             onBackClick = onBackClick,
             isDark = isDark,
             layoutDirection = layoutDirection
@@ -67,14 +69,15 @@ fun SearchTopAppBar(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MyTopAppBar(
+    @StringRes title: Int,
     onBackClick: () -> Unit,
-    isDark: Boolean,
     layoutDirection: LayoutDirection = LocalLayoutDirection.current,
+    isDark: Boolean,
     actions: @Composable RowScope.() -> Unit = {}
 ) {
     TopAppBar(title = {
         Text(
-            text = stringResource(id = R.string.search_for_field),
+            text = stringResource(id = title),
             color = if (isDark) darkText else lightText,
             style = MaterialTheme.typography.displayMedium
         )

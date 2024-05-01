@@ -218,6 +218,7 @@
     <string name="something_went_wrong">Something went wrong</string>
     <string name="password_changed">Password changed</string>
     <string name="to">to</string>
+    <string name="browse_results">Browse Results</string>
 
 
 </resources>
