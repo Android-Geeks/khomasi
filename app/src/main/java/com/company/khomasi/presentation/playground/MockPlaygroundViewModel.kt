@@ -3,7 +3,7 @@ package com.company.khomasi.presentation.playground
 import androidx.lifecycle.ViewModel
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.PlaygroundPicture
-import com.company.khomasi.domain.model.PlaygroundReviewResponse
+import com.company.khomasi.domain.model.PlaygroundReviewsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,9 +15,9 @@ class MockPlaygroundViewModel : ViewModel() {
     private val _uiState: MutableStateFlow<PlaygroundUiState> =
         MutableStateFlow(PlaygroundUiState())
     val uiState: StateFlow<PlaygroundUiState> = _uiState
-    private val _reviewsState: MutableStateFlow<DataState<PlaygroundReviewResponse>> =
+    private val _reviewsState: MutableStateFlow<DataState<PlaygroundReviewsResponse>> =
         MutableStateFlow(DataState.Empty)
-    val reviewsState: StateFlow<DataState<PlaygroundReviewResponse>> = _reviewsState
+    val reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>> = _reviewsState
     fun getPlaygroundDetails(playgroundId: Int) {
 
     }

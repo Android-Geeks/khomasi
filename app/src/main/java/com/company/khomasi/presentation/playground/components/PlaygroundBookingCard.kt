@@ -202,7 +202,7 @@ private fun BookingCardPreview() {
             playgroundBookingTime = "2024-04-23T12:00:00",
             playgroundPrice = 50,
             playgroundPicture = "",
-            bookingStatus = BookingStatus.PENDING,
+            bookingStatus = BookingStatus.CONFIRMED,
             bookingDuration = ""
         )
     }

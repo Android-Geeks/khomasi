@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
-import com.company.khomasi.domain.model.PlaygroundReviewResponse
+import com.company.khomasi.domain.model.PlaygroundReviewsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemotePlaygroundUseCase
@@ -43,9 +43,9 @@ class PlaygroundViewModel @Inject constructor(
         MutableStateFlow(DataState.Empty)
     val freeSlotsState: StateFlow<DataState<FessTimeSlotsResponse>> = _freeSlotsState
 
-    private val _reviewsState: MutableStateFlow<DataState<PlaygroundReviewResponse>> =
+    private val _reviewsState: MutableStateFlow<DataState<PlaygroundReviewsResponse>> =
         MutableStateFlow(DataState.Empty)
-    val reviewsState: StateFlow<DataState<PlaygroundReviewResponse>> = _reviewsState
+    val reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>> = _reviewsState
 
     fun getPlaygroundDetails(playgroundId: Int) {
         viewModelScope.launch {

@@ -131,7 +131,7 @@ fun ConfirmBookingContent(
             bookingDuration = bookingDuration,
             playgroundPrice = bookingState.totalPrice,
             playgroundPicture = bookingState.playgroundMainPicture,
-            bookingStatus = BookingStatus.PENDING,
+            bookingStatus = BookingStatus.CONFIRMED,
             modifier = Modifier
                 .width((screenWidth * 0.92).dp)
                 .height((screenHeight * 0.58).dp),

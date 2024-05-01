@@ -8,6 +8,7 @@ import com.company.khomasi.domain.model.FilteredPlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundReviewResponse
+import com.company.khomasi.domain.model.PlaygroundReviewsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.domain.model.PlaygroundsResponse
 import com.company.khomasi.domain.model.ProfileImageResponse
@@ -149,7 +150,7 @@ interface RetrofitService {
     suspend fun getPlaygroundReviews(
         @Header("Authorization") token: String,
         @Query("id") id: Int
-    ): Response<PlaygroundReviewResponse>
+    ): Response<PlaygroundReviewsResponse>
 
     @GET("User/filtered-playgrounds")
     suspend fun getFilteredPlaygrounds(

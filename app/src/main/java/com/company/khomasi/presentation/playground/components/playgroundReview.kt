@@ -26,7 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.PlaygroundReviewResponse
+import com.company.khomasi.domain.model.PlaygroundReviewsResponse
 import com.company.khomasi.domain.model.Review
 import com.company.khomasi.presentation.components.cards.CommentCard
 import com.company.khomasi.presentation.playground.MockPlaygroundViewModel
@@ -37,7 +37,7 @@ import com.company.khomasi.theme.lightText
 
 @Composable
 fun PlaygroundReviews(
-    reviews: DataState<PlaygroundReviewResponse>,
+    reviews: DataState<PlaygroundReviewsResponse>,
     onClickCancel: () -> Unit
 ) {
     val reviewsList = remember { mutableStateOf<List<Review>>(emptyList()) }

@@ -45,7 +45,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.PlaygroundReviewResponse
+import com.company.khomasi.domain.model.PlaygroundReviewsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.presentation.components.AuthSheet
 import com.company.khomasi.presentation.components.MyButton
@@ -74,7 +74,7 @@ fun PlaygroundScreen(
     playgroundId: Int,
     playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
     playgroundUiState: StateFlow<PlaygroundUiState>,
-    reviewsState: StateFlow<DataState<PlaygroundReviewResponse>>,
+    reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>>,
     context: Context = LocalContext.current,
     onViewRatingClicked: () -> Unit,
     getPlaygroundDetails: (Int) -> Unit,
@@ -164,7 +164,7 @@ fun ShowBottomSheet(
     playgroundUiState: StateFlow<PlaygroundUiState>,
     bottomSheetState: SheetState,
     scope: CoroutineScope,
-    reviews: DataState<PlaygroundReviewResponse>,
+    reviews: DataState<PlaygroundReviewsResponse>,
     updateShowReview: () -> Unit
 ) {
     val uiState by playgroundUiState.collectAsStateWithLifecycle()
