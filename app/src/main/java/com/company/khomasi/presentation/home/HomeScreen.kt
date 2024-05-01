@@ -226,6 +226,9 @@ fun UserProfileSection(
     onClickUserImage: () -> Unit,
     onClickBell: () -> Unit
 ) {
+    val imageRequest = remember(profileImage) {
+        profileImage?.convertToBitmap() ?: ""
+    }
     Row {
         SubcomposeAsyncImage(
             modifier = Modifier
@@ -234,7 +237,7 @@ fun UserProfileSection(
                 .background(MaterialTheme.colorScheme.surface)
                 .clickable { onClickUserImage() },
             model = ImageRequest.Builder(context = LocalContext.current)
-                .data(profileImage?.convertToBitmap())
+                .data(imageRequest)
                 .crossfade(true).build(),
             loading = {
                 CircularProgressIndicator()

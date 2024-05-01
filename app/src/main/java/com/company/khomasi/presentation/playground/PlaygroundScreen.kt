@@ -88,55 +88,33 @@ fun PlaygroundScreen(
     onClickFav: () -> Unit,
     onBookNowClicked: () -> Unit,
     onClickDisplayOnMap: () -> Unit,
-    updateShowReview: () -> Unit
+    updateShowReview: () -> Unit,
 ) {
-    var showLoading by remember { mutableStateOf(false) }
+    val showLoading by remember { mutableStateOf(false) }
 //    val uiState by playgroundUiState.collectAsStateWithLifecycle()
-    val playgroundState by playgroundStateFlow.collectAsStateWithLifecycle()
-    var playgroundData by remember { mutableStateOf<PlaygroundScreenResponse?>(null) }
+
     val reviews by reviewsState.collectAsStateWithLifecycle()
     val bottomSheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         getPlaygroundDetails(playgroundId)
-        Log.d("lol", "getPlaygroundDetails called")
     }
+    Log.d("lol", "PPPPPPPPPPPPPlaygroundScreen recomposed")
 
-    playgroundState.let { state ->
-        when (state) {
-            is DataState.Loading -> {
-                showLoading = true
-            }
 
-            is DataState.Success -> {
-                showLoading = false
-                playgroundData = state.data
-            }
-
-            is DataState.Error -> {
-                showLoading = false
-                // handle error
-            }
-
-            is DataState.Empty -> {
-                showLoading = false
-            }
-        }
-    }
     AuthSheet(
         sheetModifier = Modifier.fillMaxWidth(),
         screenContent = {
-//            Log.d("lol", "AuthSheet recomposed")
-
             PlaygroundScreenContent(
-                playgroundData = playgroundData,
+                playgroundStateFlow = playgroundStateFlow,
                 uiState = playgroundUiState,
                 onViewRatingClicked = onViewRatingClicked,
                 onClickBack = onClickBack,
                 onClickShare = onClickShare,
                 onClickFav = { onClickFav() },
-                onClickDisplayOnMap = { onClickDisplayOnMap() })
+                onClickDisplayOnMap = { onClickDisplayOnMap() }
+            )
         },
         sheetContent = {
             Column(
@@ -148,7 +126,7 @@ fun PlaygroundScreen(
             ) {
                 Text(
                     text = context.getString(
-                        R.string.fees_per_hour, playgroundData?.playground?.feesForHour ?: 0
+                        R.string.fees_per_hour, /*playgroundData?.playground?.feesForHour ?:*/ 0
                     )
                 )
 
@@ -225,46 +203,51 @@ fun dismissBottomSheet(
     }
 }
 
+//  recompose more than one at the start
 @Composable
 fun PlaygroundScreenContent(
-    playgroundData: PlaygroundScreenResponse?,
+    playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
     uiState: StateFlow<PlaygroundUiState>,
     onViewRatingClicked: () -> Unit,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
     onClickFav: () -> Unit,
-    onClickDisplayOnMap: () -> Unit
+    onClickDisplayOnMap: () -> Unit,
 ) {
-//    Log.d("lol", "PlaygroundScreenContent recomposed")
+    Log.d("lol", "PlaygroundScreenContent recomposed")
     LazyColumn(
         Modifier.fillMaxSize()
     ) {
 
         item {
-//            Log.d("lol", "imgSlider recomposed")
+            val playgroundState by playgroundStateFlow.collectAsStateWithLifecycle()
+            var playgroundData by remember { mutableStateOf<PlaygroundScreenResponse?>(null) }
+
+            LaunchedEffect(playgroundState) {
+                if (playgroundState is DataState.Success) {
+                    playgroundData = (playgroundState as DataState.Success).data
+                }
+            }
             ImageSlider(
                 imageList = playgroundData?.playgroundPictures ?: emptyList(),
-                isFav = false,
+                uiState = uiState,
                 onClickBack = { onClickBack() },
                 onClickShare = { onClickShare() },
                 onClickFav = { onClickFav() })
         }
 
         item {
-//            Log.d("lol", "PlaygroundDefinition recomposed")
-            PlaygroundDefinition(name = playgroundData?.playground?.name ?: "",
-                openingTime = playgroundData?.playground?.openingHours ?: "",
-                address = playgroundData?.playground?.address ?: "",
+            PlaygroundDefinition(
+                playgroundStateFlow = playgroundStateFlow,
                 onClickDisplayOnMap = { onClickDisplayOnMap() })
         }
 
         item { LineSpacer() }
 
         item {
-            val ui = uiState.collectAsStateWithLifecycle().value.reviewsCount
             PlaygroundRatesAndReviews(
-                rateNum = ui.toString(),
-                rate = playgroundData?.playground?.rating.toString(),
+                uiState = uiState,
+                playgroundStateFlow = playgroundStateFlow,
                 onViewRatingClicked = onViewRatingClicked
             )
         }
@@ -275,27 +258,27 @@ fun PlaygroundScreenContent(
 
         item { LineSpacer() }
 
-        item { PlaygroundDescription(description = playgroundData?.playground?.description ?: "") }
-
-        item { LineSpacer() }
-
         item {
-            playgroundData?.playground?.advantages.let {
-                if (it != null) {
-                    PlaygroundFeatures(
-                        featureList = it.split(
-                            ","
-                        )
-                    )
-                }
-            }
+            PlaygroundDescription(
+                playgroundStateFlow = playgroundStateFlow,
+            )
         }
 
         item { LineSpacer() }
 
+        item {
+
+            PlaygroundFeatures(
+                playgroundStateFlow = playgroundStateFlow,
+            )
+
+
+        }
+
+        item { LineSpacer() }
 
         item {
-            PlaygroundRules(rulesList = "playgroundData.playground.rules".split(","))
+            PlaygroundRules(playgroundStateFlow = playgroundStateFlow)
         }
 
         item { Spacer(modifier = Modifier.height(146.dp)) }
@@ -384,7 +367,7 @@ fun PlaygroundScreenPreview() {
             onBookNowClicked = { mockViewModel.onBookNowClicked() },
             onClickDisplayOnMap = {},
             getPlaygroundDetails = { mockViewModel.getPlaygroundDetails(1) },
-            updateShowReview = {}
+            updateShowReview = {},
         )
     }
 

@@ -2,6 +2,7 @@ package com.company.khomasi.presentation.playground
 
 import androidx.lifecycle.ViewModel
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.domain.model.PlaygroundReviewResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,7 +26,7 @@ class MockPlaygroundViewModel : ViewModel() {
 
     }
 
-    fun getPlaygroundReviews(i: Int) {
-
+    fun getPlaygroundImages(): List<PlaygroundPicture> {
+        return emptyList()
     }
 }

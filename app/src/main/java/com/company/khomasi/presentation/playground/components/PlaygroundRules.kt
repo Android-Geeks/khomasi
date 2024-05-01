@@ -9,38 +9,55 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.khomasi.R
+import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
+import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun PlaygroundRules(
-    rulesList: List<String>
+    playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
 ) {
-    val myHeight = (30.dp * rulesList.size).coerceAtLeast(40.dp)
+    val playgroundState by playgroundStateFlow.collectAsStateWithLifecycle()
+    var playgroundData by remember { mutableStateOf<PlaygroundScreenResponse?>(null) }
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(myHeight)
-            .padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
-        Text(
-            text = stringResource(id = R.string.field_instructions),
-            style = MaterialTheme.typography.titleLarge,
-            color = if (isSystemInDarkTheme()) darkText else lightText
-        )
+    if (playgroundState is DataState.Success) {
+        playgroundData = (playgroundState as DataState.Success).data
+    }
 
-        for (i in rulesList.indices.take(6)) {
+    if (playgroundData != null) {
+        val rulesList = playgroundData!!.playground.rules.split(",")
+        val myHeight = (30.dp * rulesList.size).coerceAtLeast(40.dp)
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(myHeight)
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             Text(
-                text = " ${i + 1}. ${rulesList[i]}",
-                style = MaterialTheme.typography.titleSmall,
-                color = MaterialTheme.colorScheme.tertiary,
+                text = stringResource(id = R.string.field_instructions),
+                style = MaterialTheme.typography.titleLarge,
+                color = if (isSystemInDarkTheme()) darkText else lightText
             )
+
+            for (i in rulesList.indices.take(6)) {
+                Text(
+                    text = " ${i + 1}. ${rulesList[i]}",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.tertiary,
+                )
+            }
         }
     }
 }

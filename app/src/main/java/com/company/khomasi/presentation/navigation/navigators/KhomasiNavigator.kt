@@ -44,7 +44,8 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
                 onClickViewAll = { homeViewModel.onClickViewAll() },
                 onSearchBarClicked = { navController.navigate(Screens.KhomasiNavigation.Search.route) },
                 onAdClicked = {},
-                onFavouriteClick = homeViewModel::onFavouriteClicked,
+                onFavouriteClick = homeViewModel::onFavouriteClicked
+
             )
         }
 

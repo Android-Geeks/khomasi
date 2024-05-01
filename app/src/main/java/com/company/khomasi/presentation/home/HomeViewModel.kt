@@ -68,42 +68,23 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-/*
-    fun onClickPlayground(playgroundId: Int, playgroundName: String, playgroundPrice: Int) {
-        viewModelScope.launch(IO) {
-            localUserUseCases.savePlaygroundId(playgroundId)
-            getPlaygroundData(playgroundName, playgroundPrice)
-        }
-    }
-
-
-    // --------    Until locate playground id into LocalPlaygroundUseCases -------------
-    private fun getPlaygroundData(playgroundName: String, playgroundPrice: Int) {
-        viewModelScope.launch(IO) {
-            localPlaygroundUseCase.apply {
-                this.savePlaygroundName(playgroundName)
-                this.savePlaygroundPrice(playgroundPrice)
+    fun onFavouriteClicked(playgroundId: Int) {
+        if (_playgroundState.value is DataState.Success) {
+            val playgrounds = (_playgroundState.value as DataState.Success).data.playgrounds
+            val playground = playgrounds.find { it.id == playgroundId }
+            if (playground != null) {
+                _playgroundState.value =
+                    DataState.Success(
+                        (_playgroundState.value as DataState.Success).data.copy(
+                            playgrounds = playgrounds.map {
+                                if (it.id == playgroundId) {
+                                    it.copy(isFavourite = !it.isFavourite)
+                                } else {
+                                    it
+                                }
+                            })
+                    )
             }
         }
     }
-    */
-fun onFavouriteClicked(playgroundId: Int) {
-    if (_playgroundState.value is DataState.Success) {
-        val playgrounds = (_playgroundState.value as DataState.Success).data.playgrounds
-        val playground = playgrounds.find { it.id == playgroundId }
-        if (playground != null) {
-            _playgroundState.value =
-                DataState.Success(
-                    (_playgroundState.value as DataState.Success).data.copy(
-                        playgrounds = playgrounds.map {
-                            if (it.id == playgroundId) {
-                                it.copy(isFavourite = !it.isFavourite)
-                            } else {
-                                it
-                            }
-                        })
-                )
-        }
-    }
-}
 }
