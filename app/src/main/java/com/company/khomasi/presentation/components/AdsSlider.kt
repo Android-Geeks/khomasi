@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.components
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -49,7 +48,6 @@ fun AdsSlider(
     adsContent: List<AdsContent>,
     onAdClicked: () -> Unit = {}
 ) {
-    Log.d("lol", "AdsSlider recomposed")
 
     val pagerState = rememberPagerState(initialPage = 0)
     val imageSlider = remember { adsContent.map { it.imageSlider } }

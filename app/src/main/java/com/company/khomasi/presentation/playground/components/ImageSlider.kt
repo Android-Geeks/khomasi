@@ -154,7 +154,7 @@ fun ImageSlider(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         FavoriteIcon(
-                            onFavoriteClick = { onClickFav() },
+                            onFavoriteClick = onClickFav,
                             isFavorite = uiState.isFavourite,
                             modifier = Modifier.size(24.dp),
                             inactiveColor = Color.Black

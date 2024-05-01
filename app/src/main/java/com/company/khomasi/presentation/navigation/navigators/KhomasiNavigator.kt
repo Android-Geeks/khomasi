@@ -94,20 +94,18 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavController) {
                 playgroundStateFlow = playgroundViewModel.playgroundState,
                 playgroundUiState = playgroundViewModel.uiState,
                 reviewsState = playgroundViewModel.reviewsState,
-                onViewRatingClicked = { playgroundViewModel.updateShowReviews() },
+                onViewRatingClicked = playgroundViewModel::updateShowReviews,
                 onClickBack = { navController.popBackStack() },
                 onClickShare = {},
-                onClickFav = { playgroundViewModel.onClickFavourite() },
+                onClickFav = playgroundViewModel::onClickFavourite,
                 onBookNowClicked = {
                     navController.navigate(
                         Screens.KhomasiNavigation.BookingPlayground.BookingDetails.route
                     )
                 },
                 onClickDisplayOnMap = {},
-                getPlaygroundDetails = {
-                    playgroundViewModel.getPlaygroundDetails(it)
-                },
-                updateShowReview = { playgroundViewModel.updateShowReviews() }
+                getPlaygroundDetails = playgroundViewModel::getPlaygroundDetails,
+                updateShowReview = playgroundViewModel::updateShowReviews
             )
         }
 
@@ -119,13 +117,13 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavController) {
             BookingScreen(bookingUiState = bookingViewModel.bookingUiState,
                 freeSlotsState = bookingViewModel.freeSlotsState,
                 onBackClicked = { navController.popBackStack() },
-                updateDuration = { bookingViewModel.updateDuration(it) },
+                updateDuration = bookingViewModel::updateDuration,
                 getFreeSlots = {
                     bookingViewModel.getFreeTimeSlots()
                 },
-                updateSelectedDay = { bookingViewModel.updateSelectedDay(it) },
-                onSlotClicked = { bookingViewModel.onSlotClicked(it) },
-                checkValidity = { bookingViewModel.checkSlotsConsecutive() },
+                updateSelectedDay = bookingViewModel::updateSelectedDay,
+                onSlotClicked = bookingViewModel::onSlotClicked,
+                checkValidity = bookingViewModel::checkSlotsConsecutive,
                 onNextClicked = {
                     navController.navigate(Screens.KhomasiNavigation.BookingPlayground.BookingConfirmation.route)
                     bookingViewModel.updateBookingTime()

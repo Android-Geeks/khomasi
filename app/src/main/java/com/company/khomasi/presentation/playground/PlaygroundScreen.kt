@@ -4,7 +4,6 @@ package com.company.khomasi.presentation.playground
 //noinspection UsingMaterialAndMaterial3Libraries
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -108,11 +107,12 @@ fun PlaygroundScreen(
                 onViewRatingClicked = onViewRatingClicked,
                 onClickBack = onClickBack,
                 onClickShare = onClickShare,
-                onClickFav = { onClickFav() },
-                onClickDisplayOnMap = { onClickDisplayOnMap() }
+                onClickFav = onClickFav,
+                onClickDisplayOnMap = onClickDisplayOnMap
             )
         },
         sheetContent = {
+            val playgroundData = playgroundStateFlow.collectAsStateWithLifecycle().value
             Column(
                 Modifier
                     .fillMaxWidth()
@@ -122,7 +122,10 @@ fun PlaygroundScreen(
             ) {
                 Text(
                     text = context.getString(
-                        R.string.fees_per_hour, /*playgroundData?.playground?.feesForHour ?:*/ 0
+                        R.string.fees_per_hour,
+                        if (playgroundData is DataState.Success) playgroundData.data.playground.feesForHour else {
+                            0
+                        }
                     )
                 )
 
@@ -210,8 +213,6 @@ fun PlaygroundScreenContent(
     onClickFav: () -> Unit,
     onClickDisplayOnMap: () -> Unit,
 ) {
-    Log.d("lol", "PlaygroundScreenContent recomposed")
-
     LazyColumn(
         Modifier.fillMaxSize()
     ) {
@@ -220,15 +221,17 @@ fun PlaygroundScreenContent(
             ImageSlider(
                 playgroundStateFlow = playgroundStateFlow,
                 playgroundState = uiState,
-                onClickBack = { onClickBack() },
-                onClickShare = { onClickShare() },
-                onClickFav = { onClickFav() })
+                onClickBack = onClickBack,
+                onClickShare = onClickShare,
+                onClickFav = onClickFav
+            )
         }
 
         item {
             PlaygroundDefinition(
                 playgroundStateFlow = playgroundStateFlow,
-                onClickDisplayOnMap = { onClickDisplayOnMap() })
+                onClickDisplayOnMap = onClickDisplayOnMap
+            )
         }
 
         item { LineSpacer() }

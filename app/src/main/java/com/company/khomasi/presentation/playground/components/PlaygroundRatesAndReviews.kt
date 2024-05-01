@@ -80,7 +80,7 @@ fun PlaygroundRatesAndReviews(
 
             MyOutlinedButton(
                 text = R.string.view_ratings,
-                onClick = { onViewRatingClicked() },
+                onClick = onViewRatingClicked,
                 modifier = Modifier
                     .fillMaxWidth()
                     .align(Alignment.CenterHorizontally)
