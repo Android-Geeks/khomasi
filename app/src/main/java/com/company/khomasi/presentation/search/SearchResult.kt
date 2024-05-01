@@ -72,7 +72,11 @@ fun SearchResult(
     }
     Scaffold(
         topBar = {
-            MyTopAppBar(onBackClick = onBackPage, isDark = isDark) {
+            MyTopAppBar(
+                title = R.string.search_for_field,
+                onBackClick = onBackPage,
+                isDark = isDark
+            ) {
                 IconButton(
                     onClick = {
                         scope.launch {
