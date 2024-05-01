@@ -8,7 +8,6 @@ data class MyBookingUiState(
     val playgroundId: Int = 1,
     val rating: Float = 0f,
     val comment: String = " ",
-    val reviewTime: String = " ",
     val isCanceled: Boolean = false,
     val cancelBookingDetails: BookingDetails = BookingDetails(
         bookingNumber = 0,
