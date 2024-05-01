@@ -41,7 +41,9 @@ fun CurrentPage(
                         bookingDetails = it,
                         bookingStatus = if (!currentState.currentBookings[index].isCanceled) BookingStatus.CONFIRMED else BookingStatus.CANCEL,
                         onViewPlaygroundClick = {
-                            onClickPlaygroundCard(it)
+                            if (!currentState.currentBookings[index].isCanceled) {
+                                onClickPlaygroundCard(it)
+                            }
                         },
                         toRate = {},
                         reBook = {}
