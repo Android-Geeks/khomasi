@@ -65,7 +65,8 @@ class PlaygroundViewModel @Inject constructor(
                             playgroundName = playground.name,
                             playgroundAddress = playground.address,
                             playgroundPrice = playground.feesForHour,
-                            playgroundMainPicture = if (pictureList.isNotEmpty()) pictureList[0].picture else ""
+                            playgroundMainPicture = if (pictureList.isNotEmpty()) pictureList[0].picture else "",
+                            totalPrice = 0
                         )
                     }
                 }
@@ -110,8 +111,12 @@ class PlaygroundViewModel @Inject constructor(
                 id = _bookingUiState.value.playgroundId,
                 dayDiff = _bookingUiState.value.selectedDay
             ).collect { freeSlotsRes ->
-//                delay(350)
                 _freeSlotsState.value = freeSlotsRes
+                _bookingUiState.update {
+                    it.copy(
+                        totalPrice = 0
+                    )
+                }
             }
         }
     }
