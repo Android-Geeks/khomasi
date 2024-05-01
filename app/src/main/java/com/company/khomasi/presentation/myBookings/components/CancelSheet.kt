@@ -11,9 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-
 import androidx.compose.material.Scaffold
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -22,10 +20,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -40,32 +41,31 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.company.khomasi.R
-import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.BookingDetails
 import com.company.khomasi.presentation.components.MyButton
+import com.company.khomasi.presentation.components.MyModalBottomSheet
 import com.company.khomasi.presentation.components.MyOutlinedButton
 import com.company.khomasi.presentation.components.cards.BookingCard
 import com.company.khomasi.presentation.components.cards.BookingStatus
+import com.company.khomasi.presentation.myBookings.MyBookingUiState
 import com.company.khomasi.theme.Cairo
 import com.company.khomasi.theme.darkIcon
 import com.company.khomasi.theme.lightIcon
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CancelSheet(
-    bookingDetails: StateFlow<DataState<BookingDetails>>,
+    uiState: StateFlow<MyBookingUiState>,
     onBackClick: () -> Unit,
+    cancelBooking: (Int) -> Unit,
 ) {
-    val details = bookingDetails.collectAsState().value
-    val scope = rememberCoroutineScope()
-    val scaffoldState = rememberBottomSheetScaffoldState()
-    BottomSheetScaffold(
-        scaffoldState = scaffoldState,
-        containerColor = MaterialTheme.colorScheme.background,
-        sheetContent = {
+    val details = uiState.collectAsState().value.cancelBookingDetails
+    val sheetState = rememberModalBottomSheetState()
+    var isOpen by remember { mutableStateOf(false) }
+
+    if (isOpen) {
+        MyModalBottomSheet(sheetState = sheetState, onDismissRequest = { isOpen = false }) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -110,11 +110,14 @@ fun CancelSheet(
                     horizontalArrangement = Arrangement.End
                 ) {
                     MyOutlinedButton(
-                        onClick = { }, text = R.string.back,
+                        onClick = { isOpen = false }, text = R.string.back,
                         modifier = Modifier.weight(1f)
                     )
                     MyButton(
-                        onClick = { },
+                        onClick = {
+                            isOpen = false
+                            cancelBooking(details.bookingNumber)
+                        },
                         text = R.string.cancel_booking,
                         modifier = Modifier
                             .padding(start = 16.dp)
@@ -122,10 +125,9 @@ fun CancelSheet(
                     )
                 }
             }
-        },
-        sheetPeekHeight = 0.dp
+        }
+    }
 
-    ) {
         Scaffold(
             modifier = Modifier
                 .fillMaxSize()
@@ -137,12 +139,12 @@ fun CancelSheet(
                     .fillMaxSize()
                     .background(MaterialTheme.colorScheme.background),
             ) {
-                if (details is DataState.Success) {
-                    val bookingDetails = details.data
+//                if (details is DataState.Success) {
+//                    val details = details.data
                     TopAppBar(
                         title = {
                             Text(
-                                text = bookingDetails.playgroundName,
+                                text = details.playgroundName,
                                 style = MaterialTheme.typography.displayMedium,
                                 modifier = Modifier
                                     .fillMaxSize()
@@ -171,27 +173,22 @@ fun CancelSheet(
                         modifier = Modifier.fillMaxWidth(), thickness = 1.dp
                     )
                     BookingCard(
-                        bookingDetails = bookingDetails,
+                        bookingDetails = details,
                         bookingStatus = BookingStatus.CONFIRMED,
-                        onViewPlaygroundClick = {},
+                        onViewPlaygroundClick = { details.playgroundId },
                         toRate = {},
-                        onClickPlaygroundCard = {}
+                        reBook = {}
                     )
-                }
+                //   }
                 Spacer(modifier = Modifier.height(141.dp))
                 MyButton(
                     text = R.string.booking_cancelled,
                     onClick = {
-                        scope.launch {
-                            scaffoldState.bottomSheetState.expand()
-                        }
+                        isOpen = true
                     },
-                    //modifier = Modifier.align(Alignment.BottomCenter)
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
-
-                //   }
                 Spacer(modifier = Modifier.height(56.dp))
             }
         }
     }
-}

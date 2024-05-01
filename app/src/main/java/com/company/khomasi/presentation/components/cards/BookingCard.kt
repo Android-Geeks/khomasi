@@ -59,7 +59,7 @@ fun BookingCard(
     isDark: Boolean = isSystemInDarkTheme(),
     bookingStatus: BookingStatus,
     toRate: () -> Unit,
-    onClickPlaygroundCard: (Int) -> Unit,
+    reBook: () -> Unit,
 
     ) {
     Card(
@@ -174,7 +174,9 @@ fun BookingCard(
                         BookingStatus.EXPIRED -> {
                             MyButton(
                                 text = R.string.rebook,
-                                onClick = { },
+                                onClick = {
+                                    reBook()
+                                },
                                 shape = MaterialTheme.shapes.medium,
                                 icon = R.drawable.arrowscounterclockwise,
                                 modifier = Modifier
@@ -188,7 +190,6 @@ fun BookingCard(
                                 text = R.string.rate_field,
                                 onClick = {
                                     toRate()
-                                    onClickPlaygroundCard(bookingDetails.playgroundId)
                                 },
                                 icon = R.drawable.chatcircledots,
                                 modifier = Modifier
@@ -314,7 +315,7 @@ private fun BookingCardPreview() {
             bookingStatus = BookingStatus.CONFIRMED,
             onViewPlaygroundClick = {},
             toRate = {},
-            onClickPlaygroundCard = {}
+            reBook = {}
         )
 
     }

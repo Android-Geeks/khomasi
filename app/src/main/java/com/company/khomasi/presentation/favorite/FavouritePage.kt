@@ -39,8 +39,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
-import com.company.khomasi.domain.DataState
-import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.cards.PlaygroundCard
@@ -51,7 +49,7 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun FavouritePage(
     uiState: StateFlow<FavouriteUiState>,
-    favState: StateFlow<DataState<FavouritePlaygroundResponse>>,
+    // favState: StateFlow<DataState<FavouritePlaygroundResponse>>,
     onFavouriteClick: (Int) -> Unit,
     onPlaygroundClick: (Int) -> Unit,
     getFavoritePlaygrounds: () -> Unit
@@ -60,7 +58,7 @@ fun FavouritePage(
         getFavoritePlaygrounds()
     }
     val favUiState = uiState.collectAsState().value
-    val response = favState.collectAsState().value
+    // val response = favState.collectAsState().value
     Scaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = { TopBar() },
@@ -99,7 +97,6 @@ fun FavouritePage(
                                     onViewPlaygroundClick = { onPlaygroundClick(playground.id) },
                                     onFavouriteClick = {
                                         onFavouriteClick(playground.id)
-
                                         deletedList.add(playground)
                                     },
                                 )
@@ -184,7 +181,7 @@ fun FavouritePagePreview() {
             onFavouriteClick = { },
             onPlaygroundClick = {},
             getFavoritePlaygrounds = {},
-            favState = mockViewModel.favState
+            //favState = mockViewModel.favState
         )
     }
 }

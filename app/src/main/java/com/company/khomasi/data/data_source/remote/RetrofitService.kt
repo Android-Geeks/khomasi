@@ -129,7 +129,7 @@ interface RetrofitService {
         @Query("userId") userId: String
     ): Response<ProfileImageResponse>
 
-    @DELETE("Playground/cancel-booking")
+    @PUT("Playground/cancel-booking")
     suspend fun cancelBooking(
         @Header("Authorization") token: String,
         @Query("bookingID") bookingId: Int,

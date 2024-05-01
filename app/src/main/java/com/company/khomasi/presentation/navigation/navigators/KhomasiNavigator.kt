@@ -60,7 +60,7 @@ fun NavGraphBuilder.khomasiNavigator(
                     val favouriteViewModel: FavouriteViewModel = hiltViewModel()
                     FavouritePage(
                         uiState = favouriteViewModel.uiState,
-                        favState = favouriteViewModel.favState,
+
                         getFavoritePlaygrounds = favouriteViewModel::getFavoritePlaygrounds,
                         onFavouriteClick = favouriteViewModel::onFavouriteClicked,
                         onPlaygroundClick =
@@ -78,7 +78,6 @@ fun NavGraphBuilder.khomasiNavigator(
         composable(route = Screens.KhomasiNavigation.Playgrounds.route) {
 
         }
-
         searchNavigator(navController)
 
         profileNavigator(navController)
@@ -97,20 +96,24 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavController) {
                 myBookingPlaygrounds = bookingViewModel::myBookingPlaygrounds,
                 onClickPlaygroundCard = { playgroundId ->
                     bookingViewModel.onClickPlayground(playgroundId)
-                    navController.navigate(Screens.KhomasiNavigation.MyBookings.CancelBooking.route + "/$playgroundId")
+                    navController.navigate(Screens.KhomasiNavigation.MyBookings.CancelBooking.route)
                                         },
                 playgroundReview = bookingViewModel::playgroundReview,
                 cancelBooking = bookingViewModel::cancelBooking,
-                responseState = bookingViewModel.reviewState,
                 onRatingChange = bookingViewModel::onRatingChange,
                 onCommentChange = bookingViewModel::onCommentChange,
+                reBook = { playgroundId ->
+                    bookingViewModel.reBook(playgroundId)
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.BookingDetails.route + "/$playgroundId")
+                }
             )
         }
         composable(route = Screens.KhomasiNavigation.MyBookings.CancelBooking.route) {
             val myBookingViewModel = it.sharedViewModel<MyBookingViewModel>(navController = navController)
              CancelSheet(
                  onBackClick = { navController.popBackStack() },
-                 bookingDetails = myBookingViewModel.details
+                 uiState = myBookingViewModel.uiState,
+                 cancelBooking = myBookingViewModel::cancelBooking
              )
         }
     }

@@ -1,8 +1,6 @@
 package com.company.khomasi.presentation.myBookings
 
 import com.company.khomasi.domain.model.BookingDetails
-import java.text.SimpleDateFormat
-import java.util.Calendar
 
 data class MyBookingUiState(
     val currentBookings: List<BookingDetails> = listOf(),
@@ -10,11 +8,21 @@ data class MyBookingUiState(
     val playgroundId: Int = 1,
     val rating: Float = 0f,
     val comment: String = " ",
-    val reviewTime: String = getCurrentDateTime(),
-    val isCanceled: Boolean = false
+    val reviewTime: String = " ",
+    val isCanceled: Boolean = false,
+    val cancelBookingDetails: BookingDetails = BookingDetails(
+        bookingNumber = 0,
+        playgroundId = 0,
+        playgroundName = "",
+        playgroundAddress = "",
+        playgroundPicture = "",
+        bookingTime = "",
+        duration = 0,
+        cost = 0,
+        confirmationCode = "",
+        isCanceled = true,
+        isFinished = true
+    )
 )
 
-private fun getCurrentDateTime(): String {
-    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-    return dateFormat.format(Calendar.getInstance().time)
-}
+

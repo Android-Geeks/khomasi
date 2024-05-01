@@ -1,12 +1,9 @@
 package com.company.khomasi.presentation.myBookings
 
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.State
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.BookingDetails
-import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundReviewResponse
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
@@ -22,19 +19,14 @@ class MyBookingViewModel @Inject constructor(
     private val remoteUserUseCase: RemoteUserUseCase,
     private val localUserUseCases: LocalUserUseCases,
 ): ViewModel()  {
-    private val _myBooking =
-        MutableStateFlow<DataState<MyBookingsResponse>>(DataState.Empty)
-    val myBooking: StateFlow<DataState<MyBookingsResponse>> = _myBooking.asStateFlow()
-
-    private val _details = MutableStateFlow<DataState<BookingDetails>>(DataState.Empty)
-    val details: StateFlow<DataState<BookingDetails>> = _details
-
     private val _reviewState =
         MutableStateFlow<DataState<PlaygroundReviewResponse>>(DataState.Empty)
     val reviewState: StateFlow<DataState<PlaygroundReviewResponse>> = _reviewState
 
     private val _uiState: MutableStateFlow<MyBookingUiState> = MutableStateFlow(MyBookingUiState())
     val uiState:StateFlow<MyBookingUiState> =_uiState.asStateFlow()
+
+
     fun myBookingPlaygrounds() {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect { userData ->
@@ -57,21 +49,17 @@ class MyBookingViewModel @Inject constructor(
         }
     }
 
-    fun cancelBooking() {
+    fun cancelBooking(bookingId: Int) {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect { userData ->
                 remoteUserUseCase.cancelBookingUseCase(
                     "Bearer ${userData.token}",
-                    _uiState.value.playgroundId,
+                    bookingId,
                     true
-                ).collect { dataState ->
-                    if (dataState is DataState.Success) {
-                        _uiState.value = _uiState.value.copy(
-                            isCanceled = dataState.data.isCanceled
-                        )
-                    }
+                ).collect {
 
                 }
+
             }
         }
     }
@@ -84,7 +72,13 @@ class MyBookingViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(comment = comment)
     }
 
-    fun onClickPlayground(playgroundId: Int) {
+    fun onClickPlayground(bookingDetails: BookingDetails) {
+        _uiState.value = _uiState.value.copy(
+            cancelBookingDetails = bookingDetails
+        )
+    }
+
+    fun reBook(playgroundId: Int) {
         viewModelScope.launch {
             localUserUseCases.savePlaygroundId(playgroundId)
         }
@@ -100,7 +94,6 @@ class MyBookingViewModel @Inject constructor(
                         userId = userData.userID ?: " ",
                         comment = _uiState.value.comment,
                         rating = _uiState.value.rating.toInt(),
-                        reviewTime = "2024-04-23T12:00:00"
                     )
                 ).collect {
                     _reviewState.value = it

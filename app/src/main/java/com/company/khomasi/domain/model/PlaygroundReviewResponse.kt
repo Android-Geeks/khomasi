@@ -14,6 +14,4 @@ data class PlaygroundReviewResponse(
     val comment: String,
     @SerialName("rating")
     val rating: Int,
-    @SerialName("reviewTime")
-    val reviewTime: String
 )
