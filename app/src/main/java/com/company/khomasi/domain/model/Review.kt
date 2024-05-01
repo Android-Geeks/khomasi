@@ -17,5 +17,5 @@ data class Review(
     @SerialName("userName")
     val userName: String,
     @SerialName("userPicture")
-    val userPicture: String
+    val userPicture: String?
 )

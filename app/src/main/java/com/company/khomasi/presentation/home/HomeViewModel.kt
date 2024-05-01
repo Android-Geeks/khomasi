@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.PlaygroundsResponse
-import com.company.khomasi.domain.use_case.local_user.LocalPlaygroundUseCase
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,7 +21,6 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val remoteUserUseCase: RemoteUserUseCase,
     private val localUserUseCases: LocalUserUseCases,
-    private val localPlaygroundUseCase: LocalPlaygroundUseCase
 ) : ViewModel() {
 
     private val _playgroundState: MutableStateFlow<DataState<PlaygroundsResponse>> =
@@ -67,23 +65,6 @@ class HomeViewModel @Inject constructor(
             it.copy(
                 viewAllSwitch = true
             )
-        }
-    }
-
-    fun onClickPlayground(playgroundId: Int, playgroundName: String, playgroundPrice: Int) {
-        viewModelScope.launch(IO) {
-            localUserUseCases.savePlaygroundId(playgroundId)
-            getPlaygroundData(playgroundName, playgroundPrice)
-        }
-    }
-
-    // --------    Until locate playground id into LocalPlaygroundUseCases -------------
-    private fun getPlaygroundData(playgroundName: String, playgroundPrice: Int) {
-        viewModelScope.launch(IO) {
-            localPlaygroundUseCase.apply {
-                this.savePlaygroundName(playgroundName)
-                this.savePlaygroundPrice(playgroundPrice)
-            }
         }
     }
 

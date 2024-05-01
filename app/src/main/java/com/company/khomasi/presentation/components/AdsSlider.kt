@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -47,9 +48,10 @@ fun AdsSlider(
     adsContent: List<AdsContent>,
     onAdClicked: () -> Unit = {}
 ) {
+
     val pagerState = rememberPagerState(initialPage = 0)
-    val imageSlider = adsContent.map { it.imageSlider }
-    val contentSlider = adsContent.map { it.contentText }
+    val imageSlider = remember { adsContent.map { it.imageSlider } }
+    val contentSlider = remember { adsContent.map { it.contentText } }
     LaunchedEffect(Unit) {
         while (true) {
             yield()
@@ -60,7 +62,7 @@ fun AdsSlider(
         }
     }
 
-    Column{
+    Column {
         HorizontalPager(
             count = adsContent.size,
             state = pagerState,

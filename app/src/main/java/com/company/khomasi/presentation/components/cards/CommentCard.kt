@@ -37,7 +37,7 @@ import com.gowtham.ratingbar.RatingBar
 @Composable
 fun CommentCard(
     userName: String,
-    userImageUrl: String,
+    userImageUrl: String?,
     comment: String,
     dateTime: String,
     rating: Float,
@@ -58,7 +58,7 @@ fun CommentCard(
             ) {
                 SubcomposeAsyncImage(
                     model = ImageRequest.Builder(context = LocalContext.current)
-                        .data(userImageUrl.convertToBitmap()).crossfade(true).build(),
+                        .data(userImageUrl?.convertToBitmap() ?: "").crossfade(true).build(),
                     contentDescription = null,
                     contentScale = ContentScale.Crop,
                     loading = { CircularProgressIndicator() },
