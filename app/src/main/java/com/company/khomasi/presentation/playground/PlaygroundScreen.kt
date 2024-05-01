@@ -2,7 +2,6 @@ package com.company.khomasi.presentation.playground
 
 
 //noinspection UsingMaterialAndMaterial3Libraries
-import android.annotation.SuppressLint
 import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.border
@@ -71,7 +70,6 @@ import java.util.Locale
 
 
 @OptIn(ExperimentalMaterial3Api::class)
-@SuppressLint("StateFlowValueCalledInComposition")
 @Composable
 fun PlaygroundScreen(
     playgroundId: Int,
