@@ -35,7 +35,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -92,7 +91,6 @@ fun PlaygroundScreen(
 ) {
     val showLoading by remember { mutableStateOf(false) }
 //    val uiState by playgroundUiState.collectAsStateWithLifecycle()
-
     val reviews by reviewsState.collectAsStateWithLifecycle()
     val bottomSheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
@@ -100,8 +98,6 @@ fun PlaygroundScreen(
     LaunchedEffect(Unit) {
         getPlaygroundDetails(playgroundId)
     }
-    Log.d("lol", "PPPPPPPPPPPPPlaygroundScreen recomposed")
-
 
     AuthSheet(
         sheetModifier = Modifier.fillMaxWidth(),
@@ -215,22 +211,15 @@ fun PlaygroundScreenContent(
     onClickDisplayOnMap: () -> Unit,
 ) {
     Log.d("lol", "PlaygroundScreenContent recomposed")
+
     LazyColumn(
         Modifier.fillMaxSize()
     ) {
 
         item {
-            val playgroundState by playgroundStateFlow.collectAsStateWithLifecycle()
-            var playgroundData by remember { mutableStateOf<PlaygroundScreenResponse?>(null) }
-
-            LaunchedEffect(playgroundState) {
-                if (playgroundState is DataState.Success) {
-                    playgroundData = (playgroundState as DataState.Success).data
-                }
-            }
             ImageSlider(
-                imageList = playgroundData?.playgroundPictures ?: emptyList(),
-                uiState = uiState,
+                playgroundStateFlow = playgroundStateFlow,
+                playgroundState = uiState,
                 onClickBack = { onClickBack() },
                 onClickShare = { onClickShare() },
                 onClickFav = { onClickFav() })
