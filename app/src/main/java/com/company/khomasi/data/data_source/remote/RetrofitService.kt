@@ -1,6 +1,5 @@
 package com.company.khomasi.data.data_source.remote
 
-import com.company.khomasi.domain.model.CancelBookingResponse
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.FeedbackRequest
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
@@ -137,7 +136,7 @@ interface RetrofitService {
         @Header("Authorization") token: String,
         @Query("bookingID") bookingId: Int,
         @Query("isUser") isUser: Boolean
-    ): Response<CancelBookingResponse>
+    ): Response<MessageResponse>
 
     @POST("Review/review")
     suspend fun playgroundReview(

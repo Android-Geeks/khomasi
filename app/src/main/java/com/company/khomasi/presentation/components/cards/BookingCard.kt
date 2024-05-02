@@ -60,8 +60,7 @@ fun BookingCard(
     bookingStatus: BookingStatus,
     toRate: () -> Unit,
     reBook: () -> Unit,
-
-    ) {
+) {
     Card(
         modifier
             .height(
@@ -72,7 +71,7 @@ fun BookingCard(
                 onViewPlaygroundClick()
             },
         shape = RoundedCornerShape(topStart = 8.dp, topEnd = 8.dp),
-        colors = CardDefaults.cardColors(Color.Unspecified),
+        colors = CardDefaults.cardColors(Color.Transparent),
         elevation = CardDefaults.cardElevation(1.dp)
     ) {
         Box(
@@ -87,7 +86,10 @@ fun BookingCard(
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.surface)
             )
             Column {
-                BookingCardDetails(bookingDetails)
+                BookingCardDetails(
+                    bookingDetails = bookingDetails,
+                    isDark = isDark
+                )
 
                 Spacer(modifier = Modifier.weight(1f))
 
@@ -197,12 +199,10 @@ fun BookingCard(
                             )
                         }
                     }
-
                 }
             }
         }
     }
-
 }
 
 @Composable
@@ -210,6 +210,7 @@ fun BookingCardDetails(
     bookingDetails: BookingDetails,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
+    isDark: Boolean
 ) {
     Column(
         modifier = modifier
@@ -239,23 +240,28 @@ fun BookingCardDetails(
         {
             TextWithIcon(
                 text = bookingDetails.playgroundName,
-                iconId = R.drawable.soccerball
+                iconId = R.drawable.soccerball,
+                isDark = isDark
             )
             TextWithIcon(
                 text = bookingDetails.playgroundAddress,
-                iconId = R.drawable.mappin
+                iconId = R.drawable.mappin,
+                isDark = isDark
             )
             TextWithIcon(
                 text = bookingDetails.bookingTime,
-                iconId = R.drawable.calendar
+                iconId = R.drawable.calendar,
+                isDark = isDark
             )
             TextWithIcon(
                 text = bookingDetails.bookingTime,
-                iconId = R.drawable.clock
+                iconId = R.drawable.clock,
+                isDark = isDark
             )
             TextWithIcon(
                 text = context.getString(R.string.fees_per_hour, bookingDetails.cost),
-                iconId = R.drawable.currencycircledollar
+                iconId = R.drawable.currencycircledollar,
+                isDark = isDark
             )
         }
     }
@@ -265,7 +271,7 @@ fun BookingCardDetails(
 fun TextWithIcon(
     text: String,
     @DrawableRes iconId: Int,
-    isDark: Boolean = isSystemInDarkTheme()
+    isDark: Boolean
 ) {
     Row(
         modifier = Modifier
@@ -309,9 +315,8 @@ private fun BookingCardPreview() {
                 2425,
                 "false",
                 false,
-                false
+                isFinished = false
             ),
-
             bookingStatus = BookingStatus.CONFIRMED,
             onViewPlaygroundClick = {},
             toRate = {},

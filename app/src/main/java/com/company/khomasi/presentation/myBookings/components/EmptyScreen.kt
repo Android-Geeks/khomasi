@@ -21,6 +21,7 @@ import com.company.khomasi.presentation.components.MyButton
 
 @Composable
 fun EmptyScreen(
+    onClickBookField: () -> Unit,
     modifier: Modifier = Modifier,
     isDark: Boolean = isSystemInDarkTheme()
 ) {
@@ -44,7 +45,7 @@ fun EmptyScreen(
         Spacer(modifier = Modifier.height(108.dp))
         MyButton(
             text = R.string.book_field,
-            onClick = { },
+            onClick = onClickBookField,
             modifier = Modifier.fillMaxWidth()
         )
     }

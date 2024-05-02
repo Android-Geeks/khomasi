@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun CurrentPage(
     uiState: StateFlow<MyBookingUiState>,
     onClickPlaygroundCard: (BookingDetails) -> Unit,
-
+    onClickBookField: () -> Unit
 ) {
     val currentState = uiState.collectAsState().value
     Scaffold(
@@ -50,7 +50,11 @@ fun CurrentPage(
                     )
                 }
             } else {
-                item { EmptyScreen() }
+                item {
+                    EmptyScreen(
+                        onClickBookField = onClickBookField
+                    )
+                }
             }
         }
     }

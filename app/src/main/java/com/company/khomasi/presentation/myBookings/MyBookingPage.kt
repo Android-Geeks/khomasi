@@ -4,10 +4,9 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.TabRow
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
-import androidx.compose.material3.TabRowDefaults.SecondaryIndicator
+import androidx.compose.material3.TabRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -22,7 +21,6 @@ import com.company.khomasi.presentation.myBookings.components.TabItem
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -38,9 +36,9 @@ fun MyBookingPage(
     onCommentChange: (String) -> Unit,
     onRatingChange: (Float) -> Unit,
     reBook: (Int) -> Unit,
-    cancelBooking: (Int) -> Unit
+    onClickBookField: () -> Unit,
 ) {
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(Unit) {
         myBookingPlaygrounds()
     }
     val list = listOf(TabItem.Current, TabItem.Expired)
@@ -48,8 +46,10 @@ fun MyBookingPage(
     Column(modifier = Modifier.fillMaxSize()) {
         Tabs(tabs = list, pagerState = pagerState)
         Image(
-            painter = painterResource(R.drawable.view_pager_group), contentDescription = null,
-            contentScale = ContentScale.FillWidth, modifier = Modifier.fillMaxWidth()
+            painter = painterResource(R.drawable.view_pager_group),
+            contentDescription = null,
+            contentScale = ContentScale.FillWidth,
+            modifier = Modifier.fillMaxWidth()
         )
         TabContent(
             tabs = list,
@@ -59,29 +59,24 @@ fun MyBookingPage(
             playgroundReview = playgroundReview,
             onCommentChange = onCommentChange,
             onRatingChange = onRatingChange,
-            reBook = reBook
+            reBook = reBook,
+            onClickBookField = onClickBookField
         )
     }
 }
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
     val scope = rememberCoroutineScope()
     TabRow(
         selectedTabIndex = pagerState.currentPage,
-        backgroundColor = MaterialTheme.colorScheme.background,
+        containerColor = MaterialTheme.colorScheme.background,
         contentColor = MaterialTheme.colorScheme.background,
-        indicator = { tabPositions ->
-            SecondaryIndicator(
-                modifier = Modifier
-                    .pagerTabIndicatorOffset(pagerState, tabPositions)
-                    .fillMaxWidth(),
-                color = MaterialTheme.colorScheme.background
-            )
-        }
+        indicator = @Composable {},
+        divider = @Composable {},
     ) {
         tabs.forEachIndexed { index, tabItem ->
-
             Tab(
                 selected = pagerState.currentPage == index,
                 onClick = {
@@ -99,11 +94,10 @@ fun Tabs(tabs: List<TabItem>, pagerState: PagerState) {
                 unselectedContentColor = MaterialTheme.colorScheme.tertiary,
                 enabled = true
             )
-
         }
-
     }
 }
+
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun TabContent(
@@ -114,17 +108,18 @@ fun TabContent(
     playgroundReview: () -> Unit,
     onCommentChange: (String) -> Unit,
     onRatingChange: (Float) -> Unit,
+    onClickBookField: () -> Unit,
     reBook: (Int) -> Unit,
-    ) {
+) {
     HorizontalPager(count = tabs.size, state = pagerState) { page ->
-
         tabs[page].screens(
             uiState,
             onClickPlaygroundCard,
             playgroundReview,
             onCommentChange,
             onRatingChange,
-            reBook
+            reBook,
+            onClickBookField
         )
     }
 }

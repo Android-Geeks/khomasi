@@ -160,15 +160,15 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavController) {
                 onClickPlaygroundCard = { playgroundId ->
                     bookingViewModel.onClickPlayground(playgroundId)
                     navController.navigate(Screens.KhomasiNavigation.MyBookings.CancelBooking.route)
-                                        },
+                },
                 playgroundReview = bookingViewModel::playgroundReview,
-                cancelBooking = bookingViewModel::cancelBooking,
                 onRatingChange = bookingViewModel::onRatingChange,
                 onCommentChange = bookingViewModel::onCommentChange,
                 reBook = { playgroundId ->
                     bookingViewModel.reBook(playgroundId)
                     navController.navigate(Screens.KhomasiNavigation.BookingPlayground.BookingDetails.route + "/$playgroundId")
-                }
+                },
+                onClickBookField = { navController.navigate(Screens.KhomasiNavigation.Playgrounds.route) }
             )
         }
         composable(route = Screens.KhomasiNavigation.MyBookings.CancelBooking.route) {

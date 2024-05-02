@@ -46,7 +46,7 @@ fun ExpiredPage(
     onCommentChange: (String) -> Unit,
     onRatingChange: (Float) -> Unit,
     reBook: (Int) -> Unit,
-
+    onClickBookField: () -> Unit
 ) {
     val expiredState = uiState.collectAsState().value
     val sheetState = rememberModalBottomSheetState()
@@ -116,28 +116,32 @@ fun ExpiredPage(
             .fillMaxSize()
             .padding(all = 16.dp),
         containerColor = MaterialTheme.colorScheme.background,
+    ) {
+        LazyColumn(
+            contentPadding = it,
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-                    LazyColumn(
-                        contentPadding = it,
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
-                    ) {
-                        if (expiredState.expiredBookings.isNotEmpty()) {
-                            items(expiredState.expiredBookings) {
-                            BookingCard(
-                                bookingDetails = it,
-                                bookingStatus = BookingStatus.EXPIRED,
-                                onViewPlaygroundClick = {},
-                                toRate = {
-                                    isOpen = true
-                                    it.playgroundId
-                                },
-                                reBook = { reBook(it.playgroundId) }
-                            )
-                        }
-                    } else {
-                            item { EmptyScreen() }
-                        }
+            if (expiredState.expiredBookings.isNotEmpty()) {
+                items(expiredState.expiredBookings) { bookingDetails ->
+                    BookingCard(
+                        bookingDetails = bookingDetails,
+                        bookingStatus = BookingStatus.EXPIRED,
+                        onViewPlaygroundClick = {},
+                        toRate = {
+                            isOpen = true
+                            bookingDetails.playgroundId
+                        },
+                        reBook = { reBook(bookingDetails.playgroundId) }
+                    )
+                }
+            } else {
+                item {
+                    EmptyScreen(
+                        onClickBookField = onClickBookField
+                    )
                 }
             }
         }
+    }
+}
 
