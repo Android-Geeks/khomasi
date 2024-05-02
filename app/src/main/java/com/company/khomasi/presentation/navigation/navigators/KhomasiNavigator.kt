@@ -48,7 +48,6 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
                 onSearchBarClicked = { navController.navigate(Screens.KhomasiNavigation.Search.route) },
                 onAdClicked = {},
                 onFavouriteClick = homeViewModel::onFavouriteClicked
-
             )
         }
 
@@ -63,7 +62,6 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
                     navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
                 }
             )
-
         }
 
 
@@ -121,9 +119,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavController) {
                 freeSlotsState = bookingViewModel.freeSlotsState,
                 onBackClicked = { navController.popBackStack() },
                 updateDuration = bookingViewModel::updateDuration,
-                getFreeSlots = {
-                    bookingViewModel.getFreeTimeSlots()
-                },
+                getFreeSlots = bookingViewModel::getFreeTimeSlots,
                 updateSelectedDay = bookingViewModel::updateSelectedDay,
                 onSlotClicked = bookingViewModel::onSlotClicked,
                 checkValidity = bookingViewModel::checkSlotsConsecutive,
@@ -215,10 +211,7 @@ fun NavGraphBuilder.profileNavigator(navController: NavController) {
                 it.sharedViewModel<ProfileViewModel>(navController = navController)
             EditProfile(
                 editProfileUiState = profileViewModel.profileUiState,
-                onSaveProfile = {
-                    profileViewModel.onSaveProfile()
-                    navController.popBackStack()
-                },
+                onSaveProfile = profileViewModel::onSaveProfile,
                 onFirstNameChange = profileViewModel::onFirstNameChanged,
                 onLastNameChange = profileViewModel::onLastNameChanged,
                 onPhoneChange = profileViewModel::onPhoneChanged,
