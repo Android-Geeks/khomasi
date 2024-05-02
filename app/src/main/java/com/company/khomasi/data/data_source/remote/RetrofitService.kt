@@ -1,9 +1,11 @@
 package com.company.khomasi.data.data_source.remote
 
+import com.company.khomasi.domain.model.BookingPlaygroundResponse
+import com.company.khomasi.domain.model.BookingRequest
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.FeedbackRequest
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
-import com.company.khomasi.domain.model.FilteredPlaygroundResponse
+import com.company.khomasi.domain.model.FilteredPlaygroundResponse2
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundReviewResponse
@@ -17,7 +19,6 @@ import com.company.khomasi.domain.model.UserRegisterResponse
 import com.company.khomasi.domain.model.UserUpdateData
 import com.company.khomasi.domain.model.VerificationResponse
 import okhttp3.MultipartBody
-import org.threeten.bp.LocalDateTime
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -156,7 +157,14 @@ interface RetrofitService {
         @Header("Authorization") token: String,
         @Query("id") id: String,
         @Query("price") price: Int,
-        @Query("bookingTime") bookingTime: LocalDateTime,
+        @Query("bookingTime") bookingTime: String,
         @Query("duration") duration: Double
-    ): Response<FilteredPlaygroundResponse>
+    ): Response<FilteredPlaygroundResponse2>
+
+
+    @POST("Playground/booking")
+    suspend fun bookingPlayground(
+        @Header("Authorization") token: String,
+        @Body body: BookingRequest
+    ): Response<BookingPlaygroundResponse>
 }
