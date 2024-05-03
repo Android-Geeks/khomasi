@@ -98,7 +98,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavController) {
                 onViewRatingClicked = playgroundViewModel::updateShowReviews,
                 onClickBack = { navController.popBackStack() },
                 onClickShare = {},
-                onClickFav = playgroundViewModel::onClickFavourite,
+                onClickFav = playgroundViewModel::updateUserFavourite,
                 onBookNowClicked = {
                     navController.navigate(
                         Screens.KhomasiNavigation.BookingPlayground.BookingDetails.route

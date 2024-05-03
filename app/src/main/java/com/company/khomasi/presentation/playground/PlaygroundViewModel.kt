@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.playground
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
@@ -91,13 +92,13 @@ class PlaygroundViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(showReviews = !_uiState.value.showReviews)
     }
 
-    fun onClickFavourite() {
-        _uiState.update {
-            it.copy(
-                isFavourite = !it.isFavourite
-            )
-        }
-    }
+//    fun onClickFavourite() {
+//        _uiState.update {
+//            it.copy(
+//                isFavourite = !it.isFavourite
+//            )
+//        }
+//    }
 
 
     //---------------------------------------BookingViewModel---------------------------------------
@@ -214,6 +215,31 @@ class PlaygroundViewModel @Inject constructor(
             it.copy(
                 bookingTime = it.selectedSlots.first().first.toString()
             )
+        }
+    }
+
+    fun updateUserFavourite(playgroundId: String, isFavourite: Boolean) {
+        viewModelScope.launch {
+            localUserUseCases.getLocalUser().collect { localUser ->
+                Log.d("PlaygroundCardViewModel", "updateUserFavourite: $isFavourite")
+                if (isFavourite) {
+                    remoteUserUseCase.deleteUserFavoriteUseCase(
+                        token = "Bearer ${localUser.token ?: ""}",
+                        userId = localUser.userID ?: "",
+                        playgroundId = playgroundId,
+                    ).collect {
+                        Log.d("PlaygroundCardViewModel", "updateUserFavourite: $it")
+                    }
+                } else {
+                    remoteUserUseCase.userFavouriteUseCase(
+                        token = "Bearer ${localUser.token ?: ""}",
+                        userId = localUser.userID ?: "",
+                        playgroundId = playgroundId,
+                    ).collect {
+                        Log.d("PlaygroundCardViewModel", "updateUserFavourite: $it")
+                    }
+                }
+            }
         }
     }
 

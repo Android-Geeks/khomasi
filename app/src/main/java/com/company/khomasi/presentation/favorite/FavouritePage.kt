@@ -70,23 +70,22 @@ fun FavouritePage(
                 .padding(all = 16.dp),
             color = MaterialTheme.colorScheme.background,
         ) {
+
+            val deletedList = remember {
+                mutableStateListOf<Playground>()
+            }
             if (favUiState.playgrounds.isNotEmpty())
                 LazyColumn(
                     contentPadding = it,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-
                     itemsIndexed(
                         items = favUiState.playgrounds,
-                        itemContent = { index, playground ->
-
-                            val deletedList = remember {
-                                mutableStateListOf<Playground>(favUiState.playgrounds[index])
-                            }
+                        itemContent = { _, playground ->
                             AnimatedVisibility(
-                                visible = deletedList.contains(element = playground),
+                                visible = !deletedList.contains(element = playground),
                                 enter = expandVertically(),
-                                exit = shrinkVertically(animationSpec = tween(durationMillis = 1000))
+                                exit = shrinkVertically(animationSpec = tween(durationMillis = 500))
                             ) {
 
                                 PlaygroundCard(
