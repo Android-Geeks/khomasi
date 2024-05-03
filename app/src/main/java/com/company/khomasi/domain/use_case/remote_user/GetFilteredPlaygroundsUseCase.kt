@@ -1,7 +1,6 @@
 package com.company.khomasi.domain.use_case.remote_user
 
 import com.company.khomasi.domain.repository.RemotePlaygroundRepository
-import org.threeten.bp.LocalDateTime
 
 class GetFilteredPlaygroundsUseCase(
     private val remotePlaygroundRepository: RemotePlaygroundRepository
@@ -10,13 +9,15 @@ class GetFilteredPlaygroundsUseCase(
         token: String,
         id: String,
         price: Int,
-        bookingTime: LocalDateTime,
+        type: Int,
+        bookingTime: String,
         duration: Double
     ) = remotePlaygroundRepository.getFilteredPlaygrounds(
-        token,
-        id,
-        price,
-        bookingTime,
-        duration
+        token = token,
+        id = id,
+        price = price,
+        type = type,
+        bookingTime = bookingTime,
+        duration = duration
     )
 }

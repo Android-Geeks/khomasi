@@ -219,7 +219,8 @@
     <string name="something_went_wrong">حدث خطأ ما</string>
     <string name="password_changed">تم تغيير كلمة المرور</string>
     <string name="browse_results">تصفح النتائج</string>
-
+    <string name="select_date">اختر التاريخ</string>
+    <string name="start_time">اختر الوقت</string>
 
     <string name="to">الى</string>
 </resources>

@@ -4,7 +4,7 @@ import com.company.khomasi.data.data_source.remote.RetrofitService
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.BookingPlaygroundResponse
 import com.company.khomasi.domain.model.BookingRequest
-import com.company.khomasi.domain.model.FilteredPlaygroundResponse2
+import com.company.khomasi.domain.model.FilteredPlaygroundResponse
 import com.company.khomasi.domain.model.PlaygroundReviewsResponse
 import com.company.khomasi.domain.repository.RemotePlaygroundRepository
 import kotlinx.coroutines.flow.Flow
@@ -25,14 +25,16 @@ class RemotePlaygroundRepositoryImpl(
         token: String,
         id: String,
         price: Int,
+        type: Int,
         bookingTime: String,
         duration: Double
-    ): Flow<DataState<FilteredPlaygroundResponse2>> =
+    ): Flow<DataState<FilteredPlaygroundResponse>> =
         handleApi {
             retrofitService.getFilteredPlaygrounds(
                 token,
                 id,
                 price,
+                type,
                 bookingTime,
                 duration
             )

@@ -1,11 +1,14 @@
 package com.company.khomasi.presentation.playground
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.BookingRequest
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.domain.model.PlaygroundReviewsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
+import com.company.khomasi.domain.repository.RemotePlaygroundRepository
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemotePlaygroundUseCase
 import com.company.khomasi.domain.use_case.remote_user.RemoteUserUseCase
@@ -24,7 +27,8 @@ import javax.inject.Inject
 class PlaygroundViewModel @Inject constructor(
     private val remoteUserUseCase: RemoteUserUseCase,
     private val remotePlaygroundUseCase: RemotePlaygroundUseCase,
-    private val localUserUseCases: LocalUserUseCases
+    private val localUserUseCases: LocalUserUseCases,
+    private val remotePlaygroundRepository: RemotePlaygroundRepository
 ) : ViewModel() {
 
     private val _playgroundState: MutableStateFlow<DataState<PlaygroundScreenResponse>> =
@@ -46,6 +50,7 @@ class PlaygroundViewModel @Inject constructor(
     private val _reviewsState: MutableStateFlow<DataState<PlaygroundReviewsResponse>> =
         MutableStateFlow(DataState.Empty)
     val reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>> = _reviewsState
+
 
     fun getPlaygroundDetails(playgroundId: Int) {
         viewModelScope.launch {
@@ -217,6 +222,28 @@ class PlaygroundViewModel @Inject constructor(
         }
     }
 
+    init {
+        bookingPlayground()
+    }
+
+    private fun bookingPlayground() {
+        viewModelScope.launch {
+            val localUser = localUserUseCases.getLocalUser().first()
+
+            remotePlaygroundRepository.bookingPlayground(
+                token = "Bearer ${localUser.token}",
+                body = BookingRequest(
+                    playgroundId = 2,
+                    userId = "7c6fa4dc-a314-4cbc-a4cc-5e6110020491",
+                    bookingTime = "2024-05-21",
+                    duration = 2.0
+                )
+            ).collect { bookingRes ->
+                Log.d("playgroundsssspllay", "bookingPlayground: $bookingRes")
+            }
+
+        }
+    }
 }
 
 

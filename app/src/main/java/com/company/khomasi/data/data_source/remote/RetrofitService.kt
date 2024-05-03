@@ -5,7 +5,7 @@ import com.company.khomasi.domain.model.BookingRequest
 import com.company.khomasi.domain.model.FavouritePlaygroundResponse
 import com.company.khomasi.domain.model.FeedbackRequest
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
-import com.company.khomasi.domain.model.FilteredPlaygroundResponse2
+import com.company.khomasi.domain.model.FilteredPlaygroundResponse
 import com.company.khomasi.domain.model.MessageResponse
 import com.company.khomasi.domain.model.MyBookingsResponse
 import com.company.khomasi.domain.model.PlaygroundReviewResponse
@@ -157,9 +157,10 @@ interface RetrofitService {
         @Header("Authorization") token: String,
         @Query("id") id: String,
         @Query("price") price: Int,
+        @Query("type") type: Int,
         @Query("bookingTime") bookingTime: String,
         @Query("duration") duration: Double
-    ): Response<FilteredPlaygroundResponse2>
+    ): Response<FilteredPlaygroundResponse>
 
 
     @POST("Playground/booking")

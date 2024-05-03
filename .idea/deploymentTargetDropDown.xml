@@ -2,12 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="AllDaysOfMonth">
-        <State />
-      </entry>
-      <entry key="Calendar">
-        <State />
-      </entry>
       <entry key="app">
         <State>
           <targetSelectedWithDropDown>
@@ -23,6 +17,9 @@
           </targetSelectedWithDropDown>
           <timeTargetWasSelectedWithDropDown value="2024-02-15T01:53:29.992637700Z" />
         </State>
+      </entry>
+      <entry key="pp">
+        <State />
       </entry>
     </value>
   </component>

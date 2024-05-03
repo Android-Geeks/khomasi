@@ -49,6 +49,7 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.3"
     }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -67,10 +68,7 @@ android {
     }
 }
 
-
-
 dependencies {
-
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -98,7 +96,7 @@ dependencies {
     implementation("androidx.compose.foundation:foundation:1.6.6")
 
     //Accompanist
-    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
 
     // Compose dependencies
     implementation("androidx.activity:activity-compose:1.9.0")
@@ -169,6 +167,9 @@ dependencies {
 
     //LocalDateTime
     implementation("com.jakewharton.threetenabp:threetenabp:1.3.1")
+
+    //Compose Colorful Sliders
+    implementation("com.github.SmartToolFactory:Compose-Colorful-Sliders:1.2.2")
 
     // Local unit tests
     testImplementation("androidx.test:core:1.5.0")

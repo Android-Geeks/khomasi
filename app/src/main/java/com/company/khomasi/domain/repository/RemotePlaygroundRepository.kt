@@ -4,7 +4,7 @@ import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.BookingPlaygroundResponse
 import com.company.khomasi.domain.model.BookingRequest
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
-import com.company.khomasi.domain.model.FilteredPlaygroundResponse2
+import com.company.khomasi.domain.model.FilteredPlaygroundResponse
 import com.company.khomasi.domain.model.PlaygroundReviewsResponse
 import kotlinx.coroutines.flow.Flow
 
@@ -24,9 +24,10 @@ interface RemotePlaygroundRepository {
         token: String,
         id: String,
         price: Int,
+        type: Int,
         bookingTime: String,
         duration: Double
-    ): Flow<DataState<FilteredPlaygroundResponse2>>
+    ): Flow<DataState<FilteredPlaygroundResponse>>
 
     suspend fun bookingPlayground(
         token: String,
