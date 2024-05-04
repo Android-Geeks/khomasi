@@ -27,6 +27,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FilteredPlaygroundResponse
+import com.company.khomasi.domain.model.LocalUser
 import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.presentation.components.SubScreenTopBar
 import com.company.khomasi.presentation.components.cards.PlaygroundCard
@@ -36,17 +37,19 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun BrowseResults(
+    localUser: StateFlow<LocalUser>,
     filteredPlayground: StateFlow<DataState<FilteredPlaygroundResponse>>,
     getFilteredPlaygrounds: () -> Unit,
     onFilterClick: () -> Unit,
     onFavouriteClicked: (Int) -> Unit,
     onClickPlaygroundCard: (Int) -> Unit
 ) {
+    val user by localUser.collectAsStateWithLifecycle()
     val filteredPlaygrounds by filteredPlayground.collectAsStateWithLifecycle()
     var showLoading by remember { mutableStateOf(false) }
     val filteredPlaygroundsList = remember { mutableStateOf<List<Playground>?>(null) }
 
-    LaunchedEffect(filteredPlaygrounds) {
+    LaunchedEffect(filteredPlaygrounds, user) {
         getFilteredPlaygrounds()
 
         when (val state = filteredPlaygrounds) {
@@ -117,6 +120,7 @@ fun BrowsePreview() {
     KhomasiTheme {
         val mockBrowseViewModel = MockBrowseViewModel()
         BrowseResults(
+            localUser = mockBrowseViewModel.localUser,
             filteredPlayground = mockBrowseViewModel.filteredPlaygrounds,
             getFilteredPlaygrounds = { mockBrowseViewModel.getPlaygrounds() },
             onFilterClick = { },

@@ -27,6 +27,7 @@ import androidx.compose.material3.TimePicker
 import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberDatePickerState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
@@ -48,6 +49,7 @@ import com.company.khomasi.presentation.components.SubScreenTopBar
 import com.company.khomasi.presentation.playground.components.DurationSelection
 import com.company.khomasi.presentation.screenDimensions.getScreenHeight
 import com.company.khomasi.presentation.screenDimensions.getScreenWidth
+import com.company.khomasi.presentation.venues.component.BottomSheetWarning
 import com.company.khomasi.presentation.venues.component.MyTimePickerDialog
 import com.company.khomasi.presentation.venues.component.PlaygroundsFilterSelection
 import com.company.khomasi.presentation.venues.component.PriceSlider
@@ -74,9 +76,11 @@ fun FilterPlaygrounds(
     setPrice: (Int) -> Unit,
     setBookingTime: (String) -> Unit
 ) {
+    val uiState by filteredUiState.collectAsStateWithLifecycle()
     val screenWidth = getScreenWidth()
     val screenHeight = getScreenHeight()
-    val uiState by filteredUiState.collectAsStateWithLifecycle()
+    val sheetState = rememberModalBottomSheetState()
+    var showResetSheet by remember { mutableStateOf(false) }
 
     val date = remember {
         Calendar.getInstance().apply {
@@ -127,7 +131,14 @@ fun FilterPlaygrounds(
             } else {
                 timePickerState.hour.toString()
             }
-        }:${timePickerState.minute}"
+        }:${
+            if (timePickerState.minute < 10
+            ) {
+                "0" + timePickerState.minute.toString()
+            } else {
+                timePickerState.minute.toString()
+            }
+        }"
 
     var showTimePicker by remember { mutableStateOf(false) }
 
@@ -235,10 +246,9 @@ fun FilterPlaygrounds(
                 choice = choice.intValue,
                 onChoiceChange = { choice.intValue = it },
                 onShowFiltersClicked = onShowFiltersClicked,
-                onResetFilters = onResetFilters,
+                onResetFilters = { showResetSheet = true },
                 bookingTime = uiState.bookingTime
             )
-
 
             if (showDatePicker) {
                 DatePickerDialog(
@@ -318,9 +328,19 @@ fun FilterPlaygrounds(
                     )
                 }
             }
+
+            if (showResetSheet) {
+                BottomSheetWarning(
+                    sheetState = sheetState,
+                    hideSheet = { showResetSheet = false },
+                    onClickReset = {
+                        onResetFilters()
+                    })
+            }
         }
     }
 }
+
 
 @Composable
 fun MyDialogButton(

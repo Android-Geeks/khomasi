@@ -112,7 +112,7 @@ class BrowsePlaygroundsViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(
             playgrounds = playgrounds,
             playgroundsResult = when (_uiState.value.selectedFilter) {
-                SelectedFilter.Rating -> playgrounds.sortedBy { it.rating }
+                SelectedFilter.Rating -> playgrounds.sortedByDescending { it.rating }
                 SelectedFilter.Nearest -> playgrounds.sortedBy { it.distance }
                 SelectedFilter.Bookable -> playgrounds.filter { it.isBookable }
             }

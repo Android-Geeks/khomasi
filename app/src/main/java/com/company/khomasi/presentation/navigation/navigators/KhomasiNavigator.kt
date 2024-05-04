@@ -94,6 +94,7 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavController) {
             val browsePlaygroundsViewModel =
                 it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
             BrowseResults(
+                localUser = browsePlaygroundsViewModel.localUser,
                 filteredPlayground = browsePlaygroundsViewModel.filteredPlaygrounds,
                 getFilteredPlaygrounds = { browsePlaygroundsViewModel.getPlaygrounds() },
                 onFilterClick = { navController.navigate(Screens.KhomasiNavigation.Playgrounds.FilterPlaygrounds.route) },
