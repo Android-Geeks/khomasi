@@ -25,10 +25,10 @@ import com.company.khomasi.presentation.profile.ViewProfile
 import com.company.khomasi.presentation.search.SearchQuery
 import com.company.khomasi.presentation.search.SearchResult
 import com.company.khomasi.presentation.search.SearchViewModel
+import com.company.khomasi.presentation.venues.BrowsePlaygrounds
 import com.company.khomasi.presentation.venues.BrowsePlaygroundsViewModel
 import com.company.khomasi.presentation.venues.BrowseResults
-import com.company.khomasi.presentation.venues.FilterPlaygrounds
-import com.company.khomasi.presentation.venues.ResultOfFiltering
+import com.company.khomasi.presentation.venues.FilterResults
 
 
 fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
@@ -93,7 +93,7 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavController) {
         composable(route = Screens.KhomasiNavigation.Playgrounds.BrowsePlaygrounds.route) {
             val browsePlaygroundsViewModel =
                 it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
-            BrowseResults(
+            BrowsePlaygrounds(
                 localUser = browsePlaygroundsViewModel.localUser,
                 filteredPlayground = browsePlaygroundsViewModel.filteredPlaygrounds,
                 getFilteredPlaygrounds = { browsePlaygroundsViewModel.getPlaygrounds() },
@@ -108,7 +108,7 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavController) {
         composable(route = Screens.KhomasiNavigation.Playgrounds.FilterPlaygrounds.route) {
             val browsePlaygroundsViewModel =
                 it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
-            FilterPlaygrounds(
+            FilterResults(
                 filteredUiState = browsePlaygroundsViewModel.uiState,
                 onBackClick = { navController.popBackStack() },
                 onShowFiltersClicked = { s, d ->
@@ -124,7 +124,9 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavController) {
         composable(route = Screens.KhomasiNavigation.Playgrounds.ResultPlaygrounds.route) {
             val browsePlaygroundsViewModel =
                 it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
-            ResultOfFiltering(browseUiState = browsePlaygroundsViewModel.uiState)
+            BrowseResults(
+                browseUiState = browsePlaygroundsViewModel.uiState,
+                onBackClicked = { navController.popBackStack() })
         }
     }
 }

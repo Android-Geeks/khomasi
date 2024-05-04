@@ -66,7 +66,7 @@ import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FilterPlaygrounds(
+fun FilterResults(
     filteredUiState: StateFlow<BrowseUiState>,
     onBackClick: () -> Unit,
     isDark: Boolean = isSystemInDarkTheme(),
@@ -145,7 +145,7 @@ fun FilterPlaygrounds(
     Scaffold(
         topBar = {
             SubScreenTopBar(
-                title = R.string.browse_results,
+                title = R.string.filter_results,
                 onBackClick = onBackClick,
             )
         }
@@ -402,7 +402,7 @@ fun ColumnWithText(
 fun FilteredPlaygroundPreview() {
     val mockViewModel = MockBrowseViewModel()
     KhomasiTheme {
-        FilterPlaygrounds(
+        FilterResults(
             filteredUiState = mockViewModel.uiState,
             onBackClick = {},
             updateDuration = {},
