@@ -86,7 +86,8 @@ fun CancelSheet(
                                 style = SpanStyle(
                                     fontFamily = Cairo,
                                     fontWeight = FontWeight(500),
-                                    fontSize = 16.sp
+                                    fontSize = 16.sp,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer
                                 )
                             )
                             {
@@ -96,7 +97,8 @@ fun CancelSheet(
                                 style = SpanStyle(
                                     fontFamily = Cairo,
                                     fontWeight = FontWeight(500),
-                                    fontSize = 14.sp
+                                    fontSize = 14.sp,
+                                    color = MaterialTheme.colorScheme.tertiary
                                 )
                             ) {
                                 append(stringResource(id = R.string.action_will_cancel_booking))
