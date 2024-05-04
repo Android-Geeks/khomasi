@@ -2,7 +2,6 @@ package com.company.khomasi.presentation.venues
 
 
 import android.util.Log
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -44,8 +43,6 @@ fun BrowseResults(
     localUser: StateFlow<LocalUser>,
     getFilteredPlaygrounds: () -> Unit,
     onFilterClick: () -> Unit,
-    onBackClick: () -> Unit,
-    isDark: Boolean = isSystemInDarkTheme(),
 ) {
     val user = localUser.collectAsStateWithLifecycle()
     val uiState by browseUiState.collectAsStateWithLifecycle()
@@ -138,7 +135,6 @@ fun BrowsePreview() {
             localUser = mockBrowseViewModel.localUser,
             getFilteredPlaygrounds = { mockBrowseViewModel.getPlaygrounds() },
             onFilterClick = { },
-            onBackClick = { },
         )
     }
 }

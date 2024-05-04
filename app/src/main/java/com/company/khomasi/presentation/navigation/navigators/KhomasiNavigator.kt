@@ -25,6 +25,10 @@ import com.company.khomasi.presentation.profile.ViewProfile
 import com.company.khomasi.presentation.search.SearchQuery
 import com.company.khomasi.presentation.search.SearchResult
 import com.company.khomasi.presentation.search.SearchViewModel
+import com.company.khomasi.presentation.venues.BrowsePlaygroundsViewModel
+import com.company.khomasi.presentation.venues.BrowseResults
+import com.company.khomasi.presentation.venues.FilterPlaygrounds
+import com.company.khomasi.presentation.venues.ResultOfFiltering
 
 
 fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
@@ -75,9 +79,49 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
 
         profileNavigator(navController)
 
-
+        playgroundsNavigator(navController)
         bookingPlaygroundNavigator(navController = navController)
 
+    }
+}
+
+fun NavGraphBuilder.playgroundsNavigator(navController: NavController) {
+    navigation(
+        route = Screens.KhomasiNavigation.Playgrounds.route,
+        startDestination = Screens.KhomasiNavigation.Playgrounds.BrowsePlaygrounds.route
+    ) {
+        composable(route = Screens.KhomasiNavigation.Playgrounds.BrowsePlaygrounds.route) {
+            val browsePlaygroundsViewModel =
+                it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
+            BrowseResults(
+                browseUiState = browsePlaygroundsViewModel.uiState,
+                filteredPlayground = browsePlaygroundsViewModel.filteredPlaygrounds,
+                localUser = browsePlaygroundsViewModel.localUser,
+                getFilteredPlaygrounds = { browsePlaygroundsViewModel.getPlaygrounds() },
+                onFilterClick = { navController.navigate(Screens.KhomasiNavigation.Playgrounds.FilterPlaygrounds.route) },
+            )
+        }
+
+        composable(route = Screens.KhomasiNavigation.Playgrounds.FilterPlaygrounds.route) {
+            val browsePlaygroundsViewModel =
+                it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
+            FilterPlaygrounds(
+                filteredUiState = browsePlaygroundsViewModel.uiState,
+                onBackClick = { navController.popBackStack() },
+                onShowFiltersClicked = { s, d ->
+                    browsePlaygroundsViewModel.onShowFiltersClicked(s, d)
+                    navController.navigate(Screens.KhomasiNavigation.Playgrounds.ResultPlaygrounds.route)
+                },
+                onResetFilters = browsePlaygroundsViewModel::onResetFilters,
+                updateDuration = browsePlaygroundsViewModel::updateDuration,
+                setPrice = browsePlaygroundsViewModel::setPrice,
+            )
+        }
+        composable(route = Screens.KhomasiNavigation.Playgrounds.ResultPlaygrounds.route) {
+            val browsePlaygroundsViewModel =
+                it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
+            ResultOfFiltering(browseUiState = browsePlaygroundsViewModel.uiState)
+        }
     }
 }
 
@@ -153,7 +197,8 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavController) {
         startDestination = Screens.KhomasiNavigation.MyBookings.BookingHistory.route
     ) {
         composable(route = Screens.KhomasiNavigation.MyBookings.BookingHistory.route) {
-            val bookingViewModel = it.sharedViewModel<MyBookingViewModel>(navController = navController)
+            val bookingViewModel =
+                it.sharedViewModel<MyBookingViewModel>(navController = navController)
             MyBookingPage(
                 uiState = bookingViewModel.uiState,
                 myBookingPlaygrounds = bookingViewModel::myBookingPlaygrounds,
@@ -172,12 +217,13 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavController) {
             )
         }
         composable(route = Screens.KhomasiNavigation.MyBookings.CancelBooking.route) {
-            val myBookingViewModel = it.sharedViewModel<MyBookingViewModel>(navController = navController)
-             CancelSheet(
-                 onBackClick = { navController.popBackStack() },
-                 uiState = myBookingViewModel.uiState,
-                 cancelBooking = myBookingViewModel::cancelBooking
-             )
+            val myBookingViewModel =
+                it.sharedViewModel<MyBookingViewModel>(navController = navController)
+            CancelSheet(
+                onBackClick = { navController.popBackStack() },
+                uiState = myBookingViewModel.uiState,
+                cancelBooking = myBookingViewModel::cancelBooking
+            )
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.company.khomasi.presentation.venues
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
@@ -36,34 +37,46 @@ class BrowsePlaygroundsViewModel @Inject constructor(
     val filteredPlaygrounds: StateFlow<DataState<FilteredPlaygroundResponse>> = _filteredPlaygrounds
 
     fun getPlaygrounds() {
+//        Log.d("kkkok", "I AM HEREEEEEREERRERE")
         viewModelScope.launch(IO) {
             remotePlaygroundUseCase.getFilteredPlaygroundsUseCase(
-                token = "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWxsQGdtYWlsLmNvbSIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlVzZXIiLCJleHAiOjE3MTU5MTI2MTYsImlzcyI6IldlYkFQSURlbW8iLCJhdWQiOiJXZWJBUElEZW1vIn0.tpVcE0wWXn3lTzoqJ8aWnjgjcd0c315UVZDMveB4CFM",
-                id = "c35eb9c6-92ff-4d23-99ad-66c98812e836",
+                token = "Bearer ${localUser.value.token ?: ""}",
+                id = localUser.value.userID ?: "",
                 type = 5,
-                price = 50,
-                bookingTime = "2024-05-03T16:00:00",
-                duration = 2.0,
-            ).collect {
-                _filteredPlaygrounds.value = it
+                price = _uiState.value.price,
+                bookingTime = _uiState.value.bookingTime,
+                duration = _uiState.value.duration,
+            ).collect { filteredRes ->
+                _filteredPlaygrounds.value = filteredRes
+                if (filteredRes is DataState.Success) {
+                    _uiState.update {
+                        it.copy(
+                            playgroundsResult = filteredRes.data.filteredPlaygrounds
+                        )
+                    }
+                }
+                if (filteredRes is DataState.Error) {
+                    _uiState.update {
+                        it.copy(
+                            playgroundsResult = listOf()
+                        )
+                    }
+                }
             }
         }
     }
 
     fun setPrice(price: Int) {
         _uiState.value = _uiState.value.copy(price = price)
+        Log.d("kkkok", "setPrice: ${_uiState.value.price}")
     }
 
-    fun setBookingTime(bookingTime: String) {
+    private fun setBookingTime(bookingTime: String) {
         _uiState.value = _uiState.value.copy(bookingTime = bookingTime)
     }
 
     fun setDuration(duration: Double) {
         _uiState.value = _uiState.value.copy(duration = duration)
-    }
-
-    fun resetFilteredPlaygrounds() {
-        _uiState.value = BrowseUiState()
     }
 
     fun updateDuration(type: String) {
@@ -88,6 +101,33 @@ class BrowsePlaygroundsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun onFilterChanged(filter: SelectedFilter) {
+        getPlaygrounds()
+        _uiState.value = _uiState.value.copy(
+            selectedFilter = filter,
+            playgroundsResult22 = when (filter) {
+                SelectedFilter.Rating -> _uiState.value.playgroundsResult.take(1)/*.sortedBy { it.rating }*/
+                SelectedFilter.Nearest -> _uiState.value.playgroundsResult.sortedBy { it.distance }
+                SelectedFilter.Bookable -> _uiState.value.playgroundsResult.filter { it.isBookable }
+            }
+        )
+        Log.d(
+            "kkkok",
+            "onShowFiltersClicked: ${_uiState.value.playgroundsResult}"
+        )
+        Log.d("kkkok", "setPrice: ${_uiState.value.price}")
+        Log.d("kkkok", "bookingTime: ${_uiState.value.bookingTime}")
+    }
+
+    fun onShowFiltersClicked(filter: SelectedFilter, bookingTime: String) {
+        setBookingTime(bookingTime)
+        onFilterChanged(filter)
+    }
+
+    fun onResetFilters() {
+        _uiState.value = BrowseUiState()
     }
 
     fun onFavouriteClicked(playgroundId: Int) {

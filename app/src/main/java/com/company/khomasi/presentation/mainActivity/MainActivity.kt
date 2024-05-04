@@ -1,6 +1,7 @@
 package com.company.khomasi.presentation.mainActivity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -8,9 +9,7 @@ import androidx.activity.viewModels
 import androidx.compose.material3.Surface
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.company.khomasi.presentation.venues.BrowsePlaygroundsViewModel
-import com.company.khomasi.presentation.venues.BrowseResults
+import com.company.khomasi.presentation.navigation.NavGraph
 import com.company.khomasi.theme.KhomasiTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -28,17 +27,24 @@ class MainActivity : ComponentActivity() {
         setContent {
             KhomasiTheme {
                 Surface {
-//                    Log.d("ActivityMain", mainViewModel.startDestination.value)
-//                    NavGraph(mainViewModel.startDestination.value)
-                    val vm: BrowsePlaygroundsViewModel = hiltViewModel()
-                    BrowseResults(
-                        browseUiState = vm.uiState,
-                        filteredPlayground = vm.filteredPlaygrounds,
-                        localUser = vm.localUser,
-                        getFilteredPlaygrounds = { vm.getPlaygrounds() },
-                        onFilterClick = { },
-                        onBackClick = { },
-                    )
+                    Log.d("ActivityMain", mainViewModel.startDestination.value)
+                    NavGraph(mainViewModel.startDestination.value)
+//                    val vm: BrowsePlaygroundsViewModel = hiltViewModel()
+//                    BrowseResults(
+//                        browseUiState = vm.uiState,
+//                        filteredPlayground = vm.filteredPlaygrounds,
+//                        localUser = vm.localUser,
+//                        getFilteredPlaygrounds = { vm.getPlaygrounds() },
+//                        onFilterClick = { },
+//                        onBackClick = { },
+//                    )
+//                    FilterPlaygrounds(
+//                        filteredUiState = vm.uiState,
+//                        onBackClick = { },
+//                        onClickSelectDate = { },
+//                        onClickStartTime = {  },
+//                        updateDuration ={}
+//                    )
                 }
             }
         }

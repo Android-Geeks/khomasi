@@ -39,6 +39,7 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
     }
     kotlinOptions {
         jvmTarget = "17"
@@ -170,6 +171,10 @@ dependencies {
 
     //Compose Colorful Sliders
     implementation("com.github.SmartToolFactory:Compose-Colorful-Sliders:1.2.2")
+
+//    Calender and Time Pickers
+    implementation("io.github.vanpra.compose-material-dialogs:datetime:0.9.0")
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
     // Local unit tests
     testImplementation("androidx.test:core:1.5.0")
