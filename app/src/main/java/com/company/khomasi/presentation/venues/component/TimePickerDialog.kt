@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.venues
+package com.company.khomasi.presentation.venues.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column

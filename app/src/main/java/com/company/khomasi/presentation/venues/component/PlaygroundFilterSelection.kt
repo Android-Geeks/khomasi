@@ -1,6 +1,5 @@
-package com.company.khomasi.presentation.venues
+package com.company.khomasi.presentation.venues.component
 
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyOutlinedButton
+import com.company.khomasi.presentation.venues.SelectedFilter
 
 
 @Composable
@@ -86,7 +86,6 @@ fun PlaygroundsFilterSelection(
             text = R.string.show_results,
             onClick = {
                 onShowFiltersClicked(SelectedFilter.entries[choice], bookingTime)
-                Log.d("kkkok", "SelectedFilter :${SelectedFilter.entries[choice]}")
             },
             modifier = Modifier
                 .fillMaxWidth()

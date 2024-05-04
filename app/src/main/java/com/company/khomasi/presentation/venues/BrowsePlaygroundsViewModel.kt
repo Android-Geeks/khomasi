@@ -1,12 +1,12 @@
 package com.company.khomasi.presentation.venues
 
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FilteredPlaygroundResponse
 import com.company.khomasi.domain.model.LocalUser
+import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.domain.use_case.local_user.LocalUserUseCases
 import com.company.khomasi.domain.use_case.remote_user.RemotePlaygroundUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,47 +37,44 @@ class BrowsePlaygroundsViewModel @Inject constructor(
     val filteredPlaygrounds: StateFlow<DataState<FilteredPlaygroundResponse>> = _filteredPlaygrounds
 
     fun getPlaygrounds() {
-//        Log.d("kkkok", "I AM HEREEEEEREERRERE")
         viewModelScope.launch(IO) {
+            var playgrounds: List<Playground> = listOf()
+
             remotePlaygroundUseCase.getFilteredPlaygroundsUseCase(
                 token = "Bearer ${localUser.value.token ?: ""}",
                 id = localUser.value.userID ?: "",
-                type = 5,
+                type = _uiState.value.type,
                 price = _uiState.value.price,
                 bookingTime = _uiState.value.bookingTime,
                 duration = _uiState.value.duration,
             ).collect { filteredRes ->
                 _filteredPlaygrounds.value = filteredRes
                 if (filteredRes is DataState.Success) {
-                    _uiState.update {
-                        it.copy(
-                            playgroundsResult = filteredRes.data.filteredPlaygrounds
-                        )
-                    }
+                    playgrounds = filteredRes.data.filteredPlaygrounds
+
+//                    _uiState.update {             ////        WILL BE IMPLEMENTED WHEN THE API HAS PRICES MORE THAN 50/////
+//                        it.copy(
+//                            maxValue = filteredRes.data.filteredPlaygrounds.maxOf { p -> p.feesForHour }
+//                                .toFloat()
+//                        )
+//                    }
                 }
                 if (filteredRes is DataState.Error) {
-                    _uiState.update {
-                        it.copy(
-                            playgroundsResult = listOf()
-                        )
-                    }
+                    playgrounds = listOf()
                 }
+                onFilterChanged(playgrounds)
             }
         }
     }
 
     fun setPrice(price: Int) {
         _uiState.value = _uiState.value.copy(price = price)
-        Log.d("kkkok", "setPrice: ${_uiState.value.price}")
     }
 
-    private fun setBookingTime(bookingTime: String) {
+    fun setBookingTime(bookingTime: String) {
         _uiState.value = _uiState.value.copy(bookingTime = bookingTime)
     }
 
-    fun setDuration(duration: Double) {
-        _uiState.value = _uiState.value.copy(duration = duration)
-    }
 
     fun updateDuration(type: String) {
         when (type) {
@@ -103,27 +100,29 @@ class BrowsePlaygroundsViewModel @Inject constructor(
         }
     }
 
-    private fun onFilterChanged(filter: SelectedFilter) {
-        getPlaygrounds()
+    private fun updateFilter(filter: SelectedFilter) {
         _uiState.value = _uiState.value.copy(
-            selectedFilter = filter,
-            playgroundsResult22 = when (filter) {
-                SelectedFilter.Rating -> _uiState.value.playgroundsResult.take(1)/*.sortedBy { it.rating }*/
-                SelectedFilter.Nearest -> _uiState.value.playgroundsResult.sortedBy { it.distance }
-                SelectedFilter.Bookable -> _uiState.value.playgroundsResult.filter { it.isBookable }
+            selectedFilter = filter
+        )
+    }
+
+    private fun onFilterChanged(
+        playgrounds: List<Playground>,
+    ) {
+        _uiState.value = _uiState.value.copy(
+            playgrounds = playgrounds,
+            playgroundsResult = when (_uiState.value.selectedFilter) {
+                SelectedFilter.Rating -> playgrounds.sortedBy { it.rating }
+                SelectedFilter.Nearest -> playgrounds.sortedBy { it.distance }
+                SelectedFilter.Bookable -> playgrounds.filter { it.isBookable }
             }
         )
-        Log.d(
-            "kkkok",
-            "onShowFiltersClicked: ${_uiState.value.playgroundsResult}"
-        )
-        Log.d("kkkok", "setPrice: ${_uiState.value.price}")
-        Log.d("kkkok", "bookingTime: ${_uiState.value.bookingTime}")
     }
 
     fun onShowFiltersClicked(filter: SelectedFilter, bookingTime: String) {
+        updateFilter(filter)
         setBookingTime(bookingTime)
-        onFilterChanged(filter)
+        getPlaygrounds()
     }
 
     fun onResetFilters() {
@@ -131,27 +130,27 @@ class BrowsePlaygroundsViewModel @Inject constructor(
     }
 
     fun onFavouriteClicked(playgroundId: Int) {
-//        if (_filteredPlaygrounds.value is DataState.Success) {
-//            val playgrounds =
-//                (_filteredPlaygrounds.value as DataState.Success).data.filteredPlaygrounds
-//            val playground = playgrounds.find { it.id == playgroundId }
-//            if (playground != null) {
-//                _filteredPlaygrounds.value =
-//                    DataState.Success(
-//                        (_filteredPlaygrounds.value as DataState.Success).data.copy(
-//                            filteredPlaygrounds = playgrounds.map {
-//                                if (it.id == playgroundId) {
-//                                    it.copy(
-//                                        isFav = !it.isFav
-//                                    )
-//                                } else {
-//                                    it
-//                                }
-//                            }
-//                        )
-//                    )
-//            }
-//        }
+        if (_filteredPlaygrounds.value is DataState.Success) {
+            val playgrounds =
+                (_filteredPlaygrounds.value as DataState.Success).data.filteredPlaygrounds
+            val playground = playgrounds.find { it.id == playgroundId }
+            if (playground != null) {
+                _filteredPlaygrounds.value =
+                    DataState.Success(
+                        (_filteredPlaygrounds.value as DataState.Success).data.copy(
+                            filteredPlaygrounds = playgrounds.map {
+                                if (it.id == playgroundId) {
+                                    it.copy(
+                                        isFavourite = !it.isFavourite
+                                    )
+                                } else {
+                                    it
+                                }
+                            }
+                        )
+                    )
+            }
+        }
     }
 
 }

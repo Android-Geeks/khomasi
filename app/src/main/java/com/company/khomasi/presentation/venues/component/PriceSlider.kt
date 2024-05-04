@@ -1,4 +1,4 @@
-package com.company.khomasi.presentation.venues
+package com.company.khomasi.presentation.venues.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -21,35 +22,35 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.khomasi.R
-import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.presentation.venues.BrowseUiState
 import com.smarttoolfactory.slider.LabelPosition
 import com.smarttoolfactory.slider.MaterialSliderDefaults
 import com.smarttoolfactory.slider.SliderBrushColor
 import com.smarttoolfactory.slider.SliderWithLabel
+import kotlinx.coroutines.flow.StateFlow
 import kotlin.math.roundToInt
 
 @Composable
 fun PriceSlider(
-    initValue: Float = 20f,
-    maxValue: Float = 100f,
+    filteredUiState: StateFlow<BrowseUiState>,
     setPrice: (Int) -> Unit
 ) {
+    val uiState by filteredUiState.collectAsStateWithLifecycle()
     val labelProgress = remember {
-        mutableFloatStateOf(initValue)
+        mutableFloatStateOf(uiState.price.toFloat())
     }
     LaunchedEffect(labelProgress.floatValue) {
         setPrice(labelProgress.floatValue.roundToInt())
-//        Log.d("pooop", "PriceSlider: ${labelProgress.floatValue.roundToInt()}")
     }
     SliderWithLabel(
         value = labelProgress.floatValue,
         onValueChange = { labelProgress.floatValue = it },
         thumbRadius = 5.dp,
         trackHeight = 10.dp,
-        valueRange = 30f..maxValue,
+        valueRange = 30f..uiState.maxValue,
         colors = MaterialSliderDefaults.materialColors(
             activeTrackColor = SliderBrushColor(MaterialTheme.colorScheme.primary),
             inactiveTrackColor = SliderBrushColor(MaterialTheme.colorScheme.onPrimaryContainer)
@@ -58,8 +59,7 @@ fun PriceSlider(
         yOffset = (18).dp,
         label = {
             SliderItem(thumbContent = labelProgress.floatValue.roundToInt())
-        },
-        coerceThumbInTrack = true
+        }
     )
 }
 
@@ -104,13 +104,5 @@ fun SliderItem(thumbContent: Int) {
             contentDescription = null
         )
 
-    }
-}
-
-@Preview
-@Composable
-fun PriceSliderPreview() {
-    KhomasiTheme {
-        PriceSlider(initValue = 50f, maxValue = 100f, setPrice = {})
     }
 }

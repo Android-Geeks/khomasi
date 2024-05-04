@@ -94,11 +94,13 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavController) {
             val browsePlaygroundsViewModel =
                 it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
             BrowseResults(
-                browseUiState = browsePlaygroundsViewModel.uiState,
                 filteredPlayground = browsePlaygroundsViewModel.filteredPlaygrounds,
-                localUser = browsePlaygroundsViewModel.localUser,
                 getFilteredPlaygrounds = { browsePlaygroundsViewModel.getPlaygrounds() },
                 onFilterClick = { navController.navigate(Screens.KhomasiNavigation.Playgrounds.FilterPlaygrounds.route) },
+                onFavouriteClicked = browsePlaygroundsViewModel::onFavouriteClicked,
+                onClickPlaygroundCard = { playgroundId ->
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
+                }
             )
         }
 
@@ -115,6 +117,7 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavController) {
                 onResetFilters = browsePlaygroundsViewModel::onResetFilters,
                 updateDuration = browsePlaygroundsViewModel::updateDuration,
                 setPrice = browsePlaygroundsViewModel::setPrice,
+                setBookingTime = browsePlaygroundsViewModel::setBookingTime,
             )
         }
         composable(route = Screens.KhomasiNavigation.Playgrounds.ResultPlaygrounds.route) {

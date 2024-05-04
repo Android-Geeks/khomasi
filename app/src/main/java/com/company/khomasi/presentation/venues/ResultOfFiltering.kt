@@ -24,7 +24,7 @@ fun ResultOfFiltering(
 ) {
     val uiState by browseUiState.collectAsStateWithLifecycle()
     LaunchedEffect(uiState) {
-        Log.d("BrowsePlaygroundsViewModel", "onShowFiltersClicked: ${uiState.playgroundsResult22}")
+        Log.d("BrowsePlaygroundsViewModel", "onShowFiltersClicked: ${uiState.playgroundsResult}")
 
     }
     LazyColumn(
@@ -34,7 +34,7 @@ fun ResultOfFiltering(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        items(uiState.playgroundsResult22) { playground ->
+        items(uiState.playgroundsResult) { playground ->
             PlaygroundCard(
                 playground = playground,
                 onFavouriteClick = {},
