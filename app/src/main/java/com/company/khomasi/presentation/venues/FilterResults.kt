@@ -306,7 +306,7 @@ fun FilterResults(
 
             }
 
-            if (showTimePicker) {
+            if (!showTimePicker) {
                 MyTimePickerDialog(onDismissRequest = { showTimePicker = false }, confirmButton = {
                     MyDialogButton(text = stringResource(id = R.string.ok), onClick = {
                         showTimePicker = false
@@ -317,7 +317,8 @@ fun FilterResults(
                         onClick = { showTimePicker = false })
                 }) {
                     TimePicker(
-                        state = timePickerState, colors = TimePickerDefaults.colors(
+                        state = timePickerState,
+                        colors = TimePickerDefaults.colors(
                             clockDialColor = MaterialTheme.colorScheme.tertiary.copy(0.03f),
                             clockDialSelectedContentColor = MaterialTheme.colorScheme.background,
                             clockDialUnselectedContentColor = MaterialTheme.colorScheme.outline,
