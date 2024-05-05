@@ -5,7 +5,7 @@ import com.company.khomasi.domain.model.Playground
 
 data class BrowseUiState(
     val price: Int = 50,
-    val maxValue: Float = 100f,
+    val maxValue: Float = 500f,
     val type: Int = 5,
     val bookingTime: String = "2024-10-01T09:00:00Z",
     val duration: Double = 1.0,

@@ -96,6 +96,7 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavController) {
             BrowsePlaygrounds(
                 localUser = browsePlaygroundsViewModel.localUser,
                 filteredPlayground = browsePlaygroundsViewModel.filteredPlaygrounds,
+                browseUiState = browsePlaygroundsViewModel.uiState,
                 getFilteredPlaygrounds = { browsePlaygroundsViewModel.getPlaygrounds() },
                 onFilterClick = { navController.navigate(Screens.KhomasiNavigation.Playgrounds.FilterPlaygrounds.route) },
                 onFavouriteClicked = browsePlaygroundsViewModel::onFavouriteClicked,
@@ -126,7 +127,11 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavController) {
                 it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
             BrowseResults(
                 browseUiState = browsePlaygroundsViewModel.uiState,
-                onBackClicked = { navController.popBackStack() })
+                onBackClicked = { navController.popBackStack() },
+                onFavClicked = browsePlaygroundsViewModel::onFavouriteClicked,
+                onClickPlayground = { playgroundId ->
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
+                })
         }
     }
 }

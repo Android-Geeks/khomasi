@@ -38,8 +38,8 @@ class BrowsePlaygroundsViewModel @Inject constructor(
 
     fun getPlaygrounds() {
         viewModelScope.launch(IO) {
+            _filteredPlaygrounds.value = DataState.Loading
             var playgrounds: List<Playground> = listOf()
-
             remotePlaygroundUseCase.getFilteredPlaygroundsUseCase(
                 token = "Bearer ${localUser.value.token ?: ""}",
                 id = localUser.value.userID ?: "",

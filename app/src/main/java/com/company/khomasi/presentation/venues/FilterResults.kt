@@ -81,7 +81,7 @@ fun FilterResults(
     val screenHeight = getScreenHeight()
     val sheetState = rememberModalBottomSheetState()
     var showResetSheet by remember { mutableStateOf(false) }
-
+    val choice = remember { mutableIntStateOf(0) }
     val date = remember {
         Calendar.getInstance().apply {
             set(Calendar.YEAR, LocalDate.now().year)
@@ -161,12 +161,12 @@ fun FilterResults(
             Column(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = 16.dp, end = 16.dp)
+                    .padding(start = 16.dp, end = 16.dp),
+                verticalArrangement = Arrangement.spacedBy((-10).dp)
             ) {
                 HeaderText(
                     content = R.string.price_per_hour,
                 )
-
                 PriceSlider(
                     filteredUiState = filteredUiState,
                     setPrice = setPrice
@@ -209,7 +209,7 @@ fun FilterResults(
 
                     VerticalDivider(
                         modifier = Modifier
-                            .height(screenHeight.dp * 0.15f),
+                            .height(screenHeight.dp * 0.12f),
                         color = if (isDark) darkOverlay else lightOverlay,
                         thickness = 1.dp
                     )
@@ -221,7 +221,6 @@ fun FilterResults(
                     )
 
                 }
-
             }
             Spacer(modifier = Modifier.height(8.dp))
             HorizontalDivider(
@@ -229,19 +228,24 @@ fun FilterResults(
                 thickness = 1.dp,
                 color = if (isDark) darkOverlay else lightOverlay
             )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(id = R.string.duration),
+                style = MaterialTheme.typography.displayMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+            )
             DurationSelection(
                 updateDuration = updateDuration,
                 duration = uiState.selectedDuration,
-                modifier = Modifier.padding(vertical = 30.dp)
+                modifier = Modifier.padding(bottom = 16.dp)
             )
             HorizontalDivider(
                 modifier = Modifier.fillMaxWidth(),
                 thickness = 1.dp,
-                color = if (isDark) darkOverlay else lightOverlay
+                color = MaterialTheme.colorScheme.outline
             )
-            val choice = remember {
-                mutableIntStateOf(0)
-            }
             PlaygroundsFilterSelection(
                 choice = choice.intValue,
                 onChoiceChange = { choice.intValue = it },
@@ -383,7 +387,7 @@ fun ColumnWithText(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .padding(top = 30.dp, bottom = 45.dp)
+            .padding(top = 10.dp, bottom = 15.dp)
     ) {
         HeaderText(content = header)
         Text(
