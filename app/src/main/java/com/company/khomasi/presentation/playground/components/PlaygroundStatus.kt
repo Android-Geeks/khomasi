@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -38,6 +39,8 @@ fun PlaygroundStatus(
                     text = status,
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.displayMedium,
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 3.dp),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
         }

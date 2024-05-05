@@ -66,7 +66,7 @@ fun PlaygroundDefinition(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 PlaygroundStatus(
-                    status = "مفتوح الأن"
+                    status = stringResource(id = R.string.open_now)
                 )
             }
         }

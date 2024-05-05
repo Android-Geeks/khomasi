@@ -1,10 +1,8 @@
 package com.company.khomasi.presentation.playground
 
 
-//noinspection UsingMaterialAndMaterial3Libraries
 import android.content.Context
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -22,6 +20,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetState
@@ -329,16 +328,14 @@ fun IconWithText(
 
 @Composable
 fun LineSpacer() {
-    Spacer(
-        modifier = Modifier
-            .padding(vertical = 8.dp)
-            .fillMaxWidth()
-            .height(0.5.dp)
-            .border(width = 0.5.dp, color = MaterialTheme.colorScheme.outline)
+    HorizontalDivider(
+        thickness = 1.dp,
+        color = MaterialTheme.colorScheme.outline,
+        modifier = Modifier.padding(vertical = 8.dp)
     )
 }
 
-@Preview(locale = "ar", showSystemUi = true)
+@Preview(showSystemUi = true)
 @Composable
 fun PlaygroundScreenPreview() {
     val mockViewModel: MockPlaygroundViewModel = hiltViewModel()
