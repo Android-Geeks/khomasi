@@ -46,7 +46,7 @@ val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = Cairo,
         fontWeight = FontWeight(700),
-        fontSize = 14.sp,
+        fontSize = 15.sp,
     ),
     bodyMedium = TextStyle(
         fontFamily = Cairo,
