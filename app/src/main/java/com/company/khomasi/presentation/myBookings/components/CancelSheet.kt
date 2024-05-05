@@ -109,20 +109,20 @@ fun CancelSheet(
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     MyOutlinedButton(
-                        onClick = { isOpen = false }, text = R.string.back,
+                        onClick = { isOpen = false },
+                        text = R.string.back,
                         modifier = Modifier.weight(1f)
                     )
                     MyButton(
+                        text = R.string.cancel_booking,
                         onClick = {
                             isOpen = false
                             cancelBooking(details.bookingNumber)
                         },
-                        text = R.string.cancel_booking,
                         modifier = Modifier
-                            .padding(start = 16.dp)
                             .weight(1f)
                     )
                 }
@@ -130,67 +130,67 @@ fun CancelSheet(
         }
     }
 
-        Scaffold(
+    Scaffold(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+
+        ) {
+        Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(16.dp),
-
-            ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colorScheme.background),
-            ) {
+                .background(MaterialTheme.colorScheme.background),
+        ) {
 //                if (details is DataState.Success) {
 //                    val details = details.data
-                    TopAppBar(
-                        title = {
-                            Text(
-                                text = details.playgroundName,
-                                style = MaterialTheme.typography.displayMedium,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .wrapContentSize(Alignment.CenterStart)
-                                    .padding(it)
-                            )
+            TopAppBar(
+                title = {
+                    Text(
+                        text = details.playgroundName,
+                        style = MaterialTheme.typography.displayMedium,
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .wrapContentSize(Alignment.CenterStart)
+                            .padding(it)
+                    )
 
-                        },
-                        colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
-                        navigationIcon = {
-                            IconButton(
-                                onClick = onBackClick,
-                            ) {
-                                Icon(
-                                    painter = painterResource(id = R.drawable.back),
-                                    modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier.rotate(
-                                        180f
-                                    ) else Modifier,
-                                    contentDescription = null,
-                                    tint = if (isSystemInDarkTheme()) darkIcon else lightIcon
-                                )
-                            }
-                        }
-                    )
-                    HorizontalDivider(
-                        modifier = Modifier.fillMaxWidth(), thickness = 1.dp
-                    )
-                    BookingCard(
-                        bookingDetails = details,
-                        bookingStatus = BookingStatus.CONFIRMED,
-                        onViewPlaygroundClick = { details.playgroundId },
-                        toRate = {},
-                        reBook = {}
-                    )
-                //   }
-                Spacer(modifier = Modifier.height(141.dp))
-                MyButton(
-                    text = R.string.booking_cancelled,
-                    onClick = {
-                        isOpen = true
-                    },
-                    modifier = Modifier.align(Alignment.CenterHorizontally)
-                )
-                Spacer(modifier = Modifier.height(56.dp))
-            }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background),
+                navigationIcon = {
+                    IconButton(
+                        onClick = onBackClick,
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.back),
+                            modifier = if (LocalLayoutDirection.current == LayoutDirection.Ltr) Modifier.rotate(
+                                180f
+                            ) else Modifier,
+                            contentDescription = null,
+                            tint = if (isSystemInDarkTheme()) darkIcon else lightIcon
+                        )
+                    }
+                }
+            )
+            HorizontalDivider(
+                modifier = Modifier.fillMaxWidth(), thickness = 1.dp
+            )
+            BookingCard(
+                bookingDetails = details,
+                bookingStatus = BookingStatus.CONFIRMED,
+                onViewPlaygroundClick = { details.playgroundId },
+                toRate = {},
+                reBook = {}
+            )
+            //   }
+            Spacer(modifier = Modifier.height(141.dp))
+            MyButton(
+                text = R.string.booking_cancelled,
+                onClick = {
+                    isOpen = true
+                },
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Spacer(modifier = Modifier.height(56.dp))
         }
     }
+}

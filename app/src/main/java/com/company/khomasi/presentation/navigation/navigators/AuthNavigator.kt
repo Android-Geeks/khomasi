@@ -2,8 +2,8 @@ package com.company.khomasi.presentation.navigation.navigators
 
 import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.company.khomasi.navigation.Screens
@@ -22,7 +22,7 @@ import com.company.khomasi.presentation.resetPassword.ResetPasswordViewModel
 
 
 fun NavGraphBuilder.authNavigator(
-    navController: NavController,
+    navController: NavHostController,
 ) {
     navigation(
         route = Screens.AuthNavigation.route,
@@ -84,7 +84,7 @@ fun NavGraphBuilder.authNavigator(
 }
 
 
-fun NavGraphBuilder.register(navController: NavController) {
+fun NavGraphBuilder.register(navController: NavHostController) {
     navigation(
         route = Screens.AuthNavigation.Register.route,
         startDestination = Screens.AuthNavigation.Register.NameAndPhone.route
@@ -120,7 +120,7 @@ fun NavGraphBuilder.register(navController: NavController) {
 }
 
 
-fun NavGraphBuilder.resetPassword(navController: NavController) {
+fun NavGraphBuilder.resetPassword(navController: NavHostController) {
     navigation(
         route = Screens.AuthNavigation.ResetPassword.route,
         startDestination = Screens.AuthNavigation.ResetPassword.Email.route

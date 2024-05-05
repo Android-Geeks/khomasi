@@ -84,20 +84,20 @@ fun BottomSheetWarning(
             Spacer(modifier = Modifier.height(16.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 MyOutlinedButton(
-                    onClick = { hideSheet() }, text = R.string.back,
+                    text = R.string.back,
+                    onClick = hideSheet,
                     modifier = Modifier.weight(1f)
                 )
                 MyButton(
+                    text = R.string.reset,
                     onClick = {
                         onClickReset()
                         hideSheet()
                     },
-                    text = R.string.reset,
                     modifier = Modifier
-                        .padding(start = 16.dp)
                         .weight(1f)
                 )
             }

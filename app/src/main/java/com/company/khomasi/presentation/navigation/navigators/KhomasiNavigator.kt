@@ -2,8 +2,8 @@ package com.company.khomasi.presentation.navigation.navigators
 
 
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.company.khomasi.navigation.Screens
@@ -31,7 +31,7 @@ import com.company.khomasi.presentation.venues.BrowseResults
 import com.company.khomasi.presentation.venues.FilterResults
 
 
-fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
+fun NavGraphBuilder.khomasiNavigator(navController: NavHostController) {
     navigation(
         route = Screens.KhomasiNavigation.route,
         startDestination = Screens.KhomasiNavigation.Home.route
@@ -85,7 +85,7 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.playgroundsNavigator(navController: NavController) {
+fun NavGraphBuilder.playgroundsNavigator(navController: NavHostController) {
     navigation(
         route = Screens.KhomasiNavigation.Playgrounds.route,
         startDestination = Screens.KhomasiNavigation.Playgrounds.BrowsePlaygrounds.route
@@ -137,7 +137,7 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavController) {
+fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController) {
     navigation(
         route = Screens.KhomasiNavigation.BookingPlayground.route + "/{playgroundId}",
         startDestination = Screens.KhomasiNavigation.BookingPlayground.PlaygroundDetails.route
@@ -203,7 +203,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.myBookingsNavigator(navController: NavController) {
+fun NavGraphBuilder.myBookingsNavigator(navController: NavHostController) {
     navigation(
         route = Screens.KhomasiNavigation.MyBookings.route,
         startDestination = Screens.KhomasiNavigation.MyBookings.BookingHistory.route
@@ -241,7 +241,7 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavController) {
 }
 
 
-fun NavGraphBuilder.profileNavigator(navController: NavController) {
+fun NavGraphBuilder.profileNavigator(navController: NavHostController) {
     navigation(
         route = Screens.KhomasiNavigation.Profile.route,
         startDestination = Screens.KhomasiNavigation.Profile.ViewProfile.route
@@ -280,7 +280,7 @@ fun NavGraphBuilder.profileNavigator(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.searchNavigator(navController: NavController) {
+fun NavGraphBuilder.searchNavigator(navController: NavHostController) {
     navigation(
         route = Screens.KhomasiNavigation.Search.route,
         startDestination = Screens.KhomasiNavigation.Search.SearchQuery.route
