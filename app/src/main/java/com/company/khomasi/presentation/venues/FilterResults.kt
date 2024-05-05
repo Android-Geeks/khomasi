@@ -306,7 +306,7 @@ fun FilterResults(
 
             }
 
-            if (!showTimePicker) {
+            if (showTimePicker) {
                 MyTimePickerDialog(onDismissRequest = { showTimePicker = false }, confirmButton = {
                     MyDialogButton(text = stringResource(id = R.string.ok), onClick = {
                         showTimePicker = false
