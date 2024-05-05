@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.venues
 
+import android.annotation.SuppressLint
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -12,6 +13,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.DatePicker
@@ -32,7 +35,6 @@ import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -53,6 +55,7 @@ import com.company.khomasi.presentation.venues.component.BottomSheetWarning
 import com.company.khomasi.presentation.venues.component.MyTimePickerDialog
 import com.company.khomasi.presentation.venues.component.PlaygroundsFilterSelection
 import com.company.khomasi.presentation.venues.component.PriceSlider
+import com.company.khomasi.presentation.venues.component.TypeCard
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkOverlay
 import com.company.khomasi.theme.lightOverlay
@@ -64,6 +67,7 @@ import java.time.ZoneOffset
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
+@SuppressLint("UnrememberedMutableState")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FilterResults(
@@ -74,14 +78,15 @@ fun FilterResults(
     onResetFilters: () -> Unit,
     updateDuration: (String) -> Unit,
     setPrice: (Int) -> Unit,
-    setBookingTime: (String) -> Unit
+    setBookingTime: (String) -> Unit,
+    updateType: (Int) -> Unit
 ) {
     val uiState by filteredUiState.collectAsStateWithLifecycle()
     val screenWidth = getScreenWidth()
     val screenHeight = getScreenHeight()
     val sheetState = rememberModalBottomSheetState()
     var showResetSheet by remember { mutableStateOf(false) }
-    val choice = remember { mutableIntStateOf(0) }
+
     val date = remember {
         Calendar.getInstance().apply {
             set(Calendar.YEAR, LocalDate.now().year)
@@ -109,47 +114,39 @@ fun FilterResults(
     }
     val formattedDate by remember {
         derivedStateOf {
-            DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                .format(
-                    pickedDate.time.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-                )
+            DateTimeFormatter.ofPattern("yyyy-MM-dd").format(
+                pickedDate.time.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+            )
         }
     }
 //--------------------------------------------------------------------------
 
     val timePickerState = rememberTimePickerState(
-        initialHour = LocalTime.NOON.hour,
-        initialMinute = 30,
-        is24Hour = false
+        initialHour = LocalTime.NOON.hour, initialMinute = 30, is24Hour = false
     )
 
-    val pickedTime =
-        "${
-            if (timePickerState.hour < 10
-            ) {
-                "0" + timePickerState.hour.toString()
-            } else {
-                timePickerState.hour.toString()
-            }
-        }:${
-            if (timePickerState.minute < 10
-            ) {
-                "0" + timePickerState.minute.toString()
-            } else {
-                timePickerState.minute.toString()
-            }
-        }"
+    val pickedTime = "${
+        if (timePickerState.hour < 10) {
+            "0" + timePickerState.hour.toString()
+        } else {
+            timePickerState.hour.toString()
+        }
+    }:${
+        if (timePickerState.minute < 10) {
+            "0" + timePickerState.minute.toString()
+        } else {
+            timePickerState.minute.toString()
+        }
+    }"
 
     var showTimePicker by remember { mutableStateOf(false) }
 
-    Scaffold(
-        topBar = {
-            SubScreenTopBar(
-                title = R.string.filter_results,
-                onBackClick = onBackClick,
-            )
-        }
-    ) { paddingValues ->
+    Scaffold(topBar = {
+        SubScreenTopBar(
+            title = R.string.filter_results,
+            onBackClick = onBackClick,
+        )
+    }) { paddingValues ->
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
@@ -168,8 +165,7 @@ fun FilterResults(
                     content = R.string.price_per_hour,
                 )
                 PriceSlider(
-                    filteredUiState = filteredUiState,
-                    setPrice = setPrice
+                    filteredUiState = filteredUiState, setPrice = setPrice
                 )
             }
             HorizontalDivider(
@@ -200,25 +196,20 @@ fun FilterResults(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.Top
                 ) {
-                    ColumnWithText(
-                        header = R.string.select_date,
+                    ColumnWithText(header = R.string.select_date,
                         text = uiState.bookingTime.split('T')[0],
                         modifier = Modifier.weight(1f),
-                        onClickText = { showDatePicker = true }
-                    )
+                        onClickText = { showDatePicker = true })
 
                     VerticalDivider(
-                        modifier = Modifier
-                            .height(screenHeight.dp * 0.12f),
+                        modifier = Modifier.height(screenHeight.dp * 0.12f),
                         color = if (isDark) darkOverlay else lightOverlay,
                         thickness = 1.dp
                     )
-                    ColumnWithText(
-                        header = R.string.start_time,
+                    ColumnWithText(header = R.string.start_time,
                         text = uiState.bookingTime.split('T')[1].substring(0, 5),
                         modifier = Modifier.weight(1f),
-                        onClickText = { showTimePicker = true }
-                    )
+                        onClickText = { showTimePicker = true })
 
                 }
             }
@@ -246,34 +237,63 @@ fun FilterResults(
                 thickness = 1.dp,
                 color = MaterialTheme.colorScheme.outline
             )
+            Spacer(modifier = Modifier.height(16.dp))
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 16.dp)
+            ) {
+                HeaderText(content = R.string.field_size)
+
+                Spacer(modifier = Modifier.height(8.dp))
+                LazyRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    items(uiState.listOfTypes) { type ->
+                        TypeCard(
+                            type = type,
+                            onClickCard = {
+                                uiState.selectedType.apply {
+                                    if (contains(type)) {
+                                        remove(type)
+                                    } else {
+                                        uiState.selectedType.clear()
+                                        add(type)
+                                        updateType(type)
+                                    }
+                                }
+                            }, isSelected = mutableStateOf(uiState.selectedType.contains(type))
+                        )
+                    }
+                }
+                Spacer(modifier = Modifier.height(16.dp))
+                HorizontalDivider(
+                    modifier = Modifier.fillMaxWidth(),
+                    thickness = 1.dp,
+                    color = MaterialTheme.colorScheme.outline
+                )
+            }
             PlaygroundsFilterSelection(
-                choice = choice.intValue,
-                onChoiceChange = { choice.intValue = it },
+                choice = uiState.choice.intValue,
+                onChoiceChange = { uiState.choice.intValue = it },
                 onShowFiltersClicked = onShowFiltersClicked,
                 onResetFilters = { showResetSheet = true },
                 bookingTime = uiState.bookingTime
             )
 
             if (showDatePicker) {
-                DatePickerDialog(
-                    onDismissRequest = { showDatePicker = false },
-                    confirmButton = {
-                        MyDialogButton(
-                            text = stringResource(id = R.string.ok),
-                            onClick = {
-                                showDatePicker = false
-                                setBookingTime(formattedDate + "T" + pickedTime + ":00")
-                            })
-                    },
-                    dismissButton = {
-                        MyDialogButton(
-                            text = stringResource(id = R.string.cancel),
-                            onClick = { showDatePicker = false }
-                        )
-                    },
-                    colors = androidx.compose.material3.DatePickerDefaults.colors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                    )
+                DatePickerDialog(onDismissRequest = { showDatePicker = false }, confirmButton = {
+                    MyDialogButton(text = stringResource(id = R.string.ok), onClick = {
+                        showDatePicker = false
+                        setBookingTime(formattedDate + "T" + pickedTime + ":00")
+                    })
+                }, dismissButton = {
+                    MyDialogButton(text = stringResource(id = R.string.cancel),
+                        onClick = { showDatePicker = false })
+                }, colors = androidx.compose.material3.DatePickerDefaults.colors(
+                    containerColor = MaterialTheme.colorScheme.surface,
+                )
                 ) {
                     DatePicker(
                         state = datePickerState,
@@ -287,27 +307,17 @@ fun FilterResults(
             }
 
             if (showTimePicker) {
-                MyTimePickerDialog(
-                    onDismissRequest = { showTimePicker = false },
-                    confirmButton = {
-                        MyDialogButton(
-                            text = stringResource(id = R.string.ok),
-                            onClick = {
-                                showTimePicker = false
-                                setBookingTime(formattedDate + "T" + pickedTime + ":00")
-                            }
-                        )
-                    },
-                    dismissButton = {
-                        MyDialogButton(
-                            text = stringResource(id = R.string.cancel),
-                            onClick = { showTimePicker = false }
-                        )
-                    }
-                ) {
+                MyTimePickerDialog(onDismissRequest = { showTimePicker = false }, confirmButton = {
+                    MyDialogButton(text = stringResource(id = R.string.ok), onClick = {
+                        showTimePicker = false
+                        setBookingTime(formattedDate + "T" + pickedTime + ":00")
+                    })
+                }, dismissButton = {
+                    MyDialogButton(text = stringResource(id = R.string.cancel),
+                        onClick = { showTimePicker = false })
+                }) {
                     TimePicker(
-                        state = timePickerState,
-                        colors = TimePickerDefaults.colors(
+                        state = timePickerState, colors = TimePickerDefaults.colors(
                             clockDialColor = MaterialTheme.colorScheme.tertiary.copy(0.03f),
                             clockDialSelectedContentColor = MaterialTheme.colorScheme.background,
                             clockDialUnselectedContentColor = MaterialTheme.colorScheme.outline,
@@ -334,8 +344,7 @@ fun FilterResults(
             }
 
             if (showResetSheet) {
-                BottomSheetWarning(
-                    sheetState = sheetState,
+                BottomSheetWarning(sheetState = sheetState,
                     hideSheet = { showResetSheet = false },
                     onClickReset = {
                         onResetFilters()
@@ -364,22 +373,22 @@ fun MyDialogButton(
 
 @Composable
 fun HeaderText(
-    @StringRes content: Int,
-    modifier: Modifier = Modifier
+    @StringRes content: Int, modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Start,
 ) {
     Text(
         text = stringResource(id = content),
         color = MaterialTheme.colorScheme.onPrimaryContainer,
         style = MaterialTheme.typography.displayMedium,
-        modifier = modifier,
-        textAlign = TextAlign.Start
+        textAlign = textAlign,
+        modifier = modifier
+            .fillMaxWidth()
     )
 }
 
 @Composable
 fun ColumnWithText(
-    @StringRes header: Int,
-    text: String,
+    @StringRes header: Int, text: String,
     modifier: Modifier = Modifier,
     onClickText: () -> Unit
 ) {
@@ -387,16 +396,18 @@ fun ColumnWithText(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
+            .clickable { onClickText() }
             .padding(top = 10.dp, bottom = 15.dp)
     ) {
-        HeaderText(content = header)
+        HeaderText(
+            content = header, textAlign = TextAlign.Center,
+        )
         Text(
             text = text,
             style = MaterialTheme.typography.titleMedium,
             color = MaterialTheme.colorScheme.tertiary,
-            modifier = Modifier
-                .padding(top = 4.dp)
-                .clickable { onClickText() }
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 4.dp)
         )
     }
 }
@@ -406,14 +417,13 @@ fun ColumnWithText(
 fun FilteredPlaygroundPreview() {
     val mockViewModel = MockBrowseViewModel()
     KhomasiTheme {
-        FilterResults(
-            filteredUiState = mockViewModel.uiState,
+        FilterResults(filteredUiState = mockViewModel.uiState,
             onBackClick = {},
             updateDuration = {},
             onShowFiltersClicked = { _, _ -> },
             setPrice = mockViewModel::setPrice,
             onResetFilters = mockViewModel::resetFilteredPlaygrounds,
-            setBookingTime = {}
-        )
+            setBookingTime = {},
+            updateType = {})
     }
 }

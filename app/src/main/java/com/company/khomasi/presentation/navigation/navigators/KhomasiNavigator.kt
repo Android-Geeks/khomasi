@@ -120,6 +120,7 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavController) {
                 updateDuration = browsePlaygroundsViewModel::updateDuration,
                 setPrice = browsePlaygroundsViewModel::setPrice,
                 setBookingTime = browsePlaygroundsViewModel::setBookingTime,
+                updateType = browsePlaygroundsViewModel::updateType,
             )
         }
         composable(route = Screens.KhomasiNavigation.Playgrounds.ResultPlaygrounds.route) {

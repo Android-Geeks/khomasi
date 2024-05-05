@@ -1,5 +1,9 @@
 package com.company.khomasi.presentation.venues
 
+import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.company.khomasi.domain.model.Playground
 
 
@@ -13,6 +17,10 @@ data class BrowseUiState(
     val selectedFilter: SelectedFilter = SelectedFilter.Rating,
     val playgrounds: List<Playground> = listOf(),
     val playgroundsResult: List<Playground> = listOf(),
+    val choice: MutableIntState = mutableIntStateOf(0),
+    val listOfTypes: List<Int> = listOf(5, 8, 11),
+    val selectedType: SnapshotStateList<Int> = mutableStateListOf(5)
+
 )
 
 enum class SelectedFilter {

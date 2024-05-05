@@ -48,7 +48,7 @@ fun PriceSlider(
     SliderWithLabel(
         value = labelProgress.floatValue,
         onValueChange = { labelProgress.floatValue = it },
-        thumbRadius = 5.dp,
+        thumbRadius = 0.dp,
         trackHeight = 10.dp,
         valueRange = 30f..uiState.maxValue,
         colors = MaterialSliderDefaults.materialColors(

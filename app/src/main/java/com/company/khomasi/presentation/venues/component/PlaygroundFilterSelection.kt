@@ -34,9 +34,9 @@ fun PlaygroundsFilterSelection(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val choices = listOf(
-        stringResource(id = R.string.rating),
+        stringResource(id = R.string.top_rating),
         stringResource(id = R.string.nearest_to_me),
-        stringResource(id = R.string.bookable)
+        stringResource(id = R.string.available_for_booking)
     )
     Column(
         modifier = Modifier

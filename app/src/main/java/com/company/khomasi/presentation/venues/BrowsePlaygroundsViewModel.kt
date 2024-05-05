@@ -38,7 +38,7 @@ class BrowsePlaygroundsViewModel @Inject constructor(
 
     fun getPlaygrounds() {
         viewModelScope.launch(IO) {
-            _filteredPlaygrounds.value = DataState.Loading
+//            _filteredPlaygrounds.value = DataState.Loading
             var playgrounds: List<Playground> = listOf()
             remotePlaygroundUseCase.getFilteredPlaygroundsUseCase(
                 token = "Bearer ${localUser.value.token ?: ""}",
@@ -52,19 +52,23 @@ class BrowsePlaygroundsViewModel @Inject constructor(
                 if (filteredRes is DataState.Success) {
                     playgrounds = filteredRes.data.filteredPlaygrounds
 
-//                    _uiState.update {             ////        WILL BE IMPLEMENTED WHEN THE API HAS PRICES MORE THAN 50/////
-//                        it.copy(
-//                            maxValue = filteredRes.data.filteredPlaygrounds.maxOf { p -> p.feesForHour }
-//                                .toFloat()
-//                        )
-//                    }
+                    /*                    _uiState.update {             ////        WILL BE IMPLEMENTED WHEN THE API HAS PRICES MORE THAN 50/////
+                        it.copy(
+                            maxValue = filteredRes.data.filteredPlaygrounds.maxOf { p -> p.feesForHour }
+                                .toFloat()
+                        )
+                    }*/
                 }
                 if (filteredRes is DataState.Error) {
                     playgrounds = listOf()
                 }
-                onFilterChanged(playgrounds)
             }
+            updatePlaygroundContent(playgrounds)
         }
+    }
+
+    fun updateType(type: Int) {
+        _uiState.value = _uiState.value.copy(type = type)
     }
 
     fun setPrice(price: Int) {
@@ -106,7 +110,7 @@ class BrowsePlaygroundsViewModel @Inject constructor(
         )
     }
 
-    private fun onFilterChanged(
+    private fun updatePlaygroundContent(
         playgrounds: List<Playground>,
     ) {
         _uiState.value = _uiState.value.copy(
@@ -130,27 +134,29 @@ class BrowsePlaygroundsViewModel @Inject constructor(
     }
 
     fun onFavouriteClicked(playgroundId: Int) {
+        var updatedPlaygrounds: List<Playground> = listOf()
         if (_filteredPlaygrounds.value is DataState.Success) {
             val playgrounds =
                 (_filteredPlaygrounds.value as DataState.Success).data.filteredPlaygrounds
             val playground = playgrounds.find { it.id == playgroundId }
             if (playground != null) {
+                updatedPlaygrounds = playgrounds.map {
+                    if (it.id == playgroundId) {
+                        it.copy(
+                            isFavourite = !it.isFavourite
+                        )
+                    } else {
+                        it
+                    }
+                }
                 _filteredPlaygrounds.value =
                     DataState.Success(
                         (_filteredPlaygrounds.value as DataState.Success).data.copy(
-                            filteredPlaygrounds = playgrounds.map {
-                                if (it.id == playgroundId) {
-                                    it.copy(
-                                        isFavourite = !it.isFavourite
-                                    )
-                                } else {
-                                    it
-                                }
-                            }
+                            filteredPlaygrounds = updatedPlaygrounds
                         )
                     )
             }
+            updatePlaygroundContent(updatedPlaygrounds)
         }
     }
-
 }

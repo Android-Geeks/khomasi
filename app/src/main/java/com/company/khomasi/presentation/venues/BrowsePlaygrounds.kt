@@ -83,7 +83,9 @@ fun BrowsePlaygrounds(
                 items(uiState.playgrounds) { playground ->
                     PlaygroundCard(
                         playground = playground,
-                        onFavouriteClick = { onFavouriteClicked(playground.id) },
+                        onFavouriteClick = {
+                            onFavouriteClicked(playground.id)
+                        },
                         onViewPlaygroundClick = { onClickPlaygroundCard(playground.id) },
                     )
                     Spacer(modifier = Modifier.height(16.dp))
