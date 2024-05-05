@@ -202,7 +202,9 @@ fun FilterResults(
                         onClickText = { showDatePicker = true })
 
                     VerticalDivider(
-                        modifier = Modifier.height(screenHeight.dp * 0.12f),
+                        modifier = Modifier
+                            .padding(bottom = 8.dp)
+                            .height(screenHeight.dp * 0.12f),
                         color = if (isDark) darkOverlay else lightOverlay,
                         thickness = 1.dp
                     )
@@ -213,7 +215,6 @@ fun FilterResults(
 
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
             HorizontalDivider(
                 modifier = Modifier.width(screenWidth.dp * 0.66f),
                 thickness = 1.dp,
@@ -252,8 +253,7 @@ fun FilterResults(
                 ) {
                     items(uiState.listOfTypes) { type ->
                         TypeCard(
-                            type = type,
-                            onClickCard = {
+                            type = type, onClickCard = {
                                 uiState.selectedType.apply {
                                     if (contains(type)) {
                                         remove(type)
@@ -268,12 +268,12 @@ fun FilterResults(
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                HorizontalDivider(
-                    modifier = Modifier.fillMaxWidth(),
-                    thickness = 1.dp,
-                    color = MaterialTheme.colorScheme.outline
-                )
             }
+            HorizontalDivider(
+                modifier = Modifier.fillMaxWidth(),
+                thickness = 1.dp,
+                color = MaterialTheme.colorScheme.outline
+            )
             PlaygroundsFilterSelection(
                 choice = uiState.choice.intValue,
                 onChoiceChange = { uiState.choice.intValue = it },
@@ -307,18 +307,20 @@ fun FilterResults(
             }
 
             if (showTimePicker) {
-                MyTimePickerDialog(onDismissRequest = { showTimePicker = false }, confirmButton = {
-                    MyDialogButton(text = stringResource(id = R.string.ok), onClick = {
-                        showTimePicker = false
-                        setBookingTime(formattedDate + "T" + pickedTime + ":00")
-                    })
-                }, dismissButton = {
-                    MyDialogButton(text = stringResource(id = R.string.cancel),
-                        onClick = { showTimePicker = false })
-                }) {
+                MyTimePickerDialog(title = stringResource(id = R.string.start_time),
+                    onDismissRequest = { showTimePicker = false },
+                    confirmButton = {
+                        MyDialogButton(text = stringResource(id = R.string.ok), onClick = {
+                            showTimePicker = false
+                            setBookingTime(formattedDate + "T" + pickedTime + ":00")
+                        })
+                    },
+                    dismissButton = {
+                        MyDialogButton(text = stringResource(id = R.string.cancel),
+                            onClick = { showTimePicker = false })
+                    }) {
                     TimePicker(
-                        state = timePickerState,
-                        colors = TimePickerDefaults.colors(
+                        state = timePickerState, colors = TimePickerDefaults.colors(
                             clockDialColor = MaterialTheme.colorScheme.tertiary.copy(0.03f),
                             clockDialSelectedContentColor = MaterialTheme.colorScheme.background,
                             clockDialUnselectedContentColor = MaterialTheme.colorScheme.outline,
@@ -382,24 +384,19 @@ fun HeaderText(
         color = MaterialTheme.colorScheme.onPrimaryContainer,
         style = MaterialTheme.typography.displayMedium,
         textAlign = textAlign,
-        modifier = modifier
-            .fillMaxWidth()
+        modifier = modifier.fillMaxWidth()
     )
 }
 
 @Composable
 fun ColumnWithText(
-    @StringRes header: Int, text: String,
-    modifier: Modifier = Modifier,
-    onClickText: () -> Unit
+    @StringRes header: Int, text: String, modifier: Modifier = Modifier, onClickText: () -> Unit
 ) {
-    Column(
-        verticalArrangement = Arrangement.Center,
+    Column(verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .clickable { onClickText() }
-            .padding(top = 10.dp, bottom = 15.dp)
-    ) {
+            .padding(top = 10.dp, bottom = 15.dp)) {
         HeaderText(
             content = header, textAlign = TextAlign.Center,
         )
@@ -410,7 +407,9 @@ fun ColumnWithText(
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 4.dp)
         )
+        Spacer(modifier = Modifier.height(8.dp))
     }
+
 }
 
 @Preview(showSystemUi = true)
