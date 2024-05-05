@@ -29,22 +29,6 @@ class MainActivity : ComponentActivity() {
                 Surface {
                     Log.d("ActivityMain", mainViewModel.startDestination.value)
                     NavGraph(mainViewModel.startDestination.value)
-//                    val vm: BrowsePlaygroundsViewModel = hiltViewModel()
-//                    BrowseResults(
-//                        browseUiState = vm.uiState,
-//                        filteredPlayground = vm.filteredPlaygrounds,
-//                        localUser = vm.localUser,
-//                        getFilteredPlaygrounds = { vm.getPlaygrounds() },
-//                        onFilterClick = { },
-//                        onBackClick = { },
-//                    )
-//                    FilterPlaygrounds(
-//                        filteredUiState = vm.uiState,
-//                        onBackClick = { },
-//                        onClickSelectDate = { },
-//                        onClickStartTime = {  },
-//                        updateDuration ={}
-//                    )
                 }
             }
         }
