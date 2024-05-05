@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -278,9 +279,12 @@ fun ButtonWithIcon(
     iconId: Int, onClick: () -> Unit
 ) {
     val currentLanguage = Locale.getDefault().language
-    Card(shape = CircleShape, modifier = Modifier
-        .size(44.dp)
-        .clickable { onClick() }) {
+    Card(
+        shape = CircleShape, modifier = Modifier
+            .size(44.dp)
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface)
+    ) {
         Column(
             Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -339,7 +343,7 @@ fun LineSpacer() {
 @Composable
 fun PlaygroundScreenPreview() {
     val mockViewModel: MockPlaygroundViewModel = hiltViewModel()
-    KhomasiTheme {
+    KhomasiTheme(darkTheme = false) {
         PlaygroundScreen(
             playgroundId = 1,
             playgroundStateFlow = mockViewModel.playgroundState,

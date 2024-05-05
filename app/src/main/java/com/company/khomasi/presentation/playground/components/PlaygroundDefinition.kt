@@ -2,7 +2,6 @@ package com.company.khomasi.presentation.playground.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,8 +33,6 @@ import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.presentation.playground.IconWithText
-import com.company.khomasi.theme.darkText
-import com.company.khomasi.theme.lightText
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -94,7 +91,7 @@ fun PlaygroundDefinition(
                         .fillMaxSize()
                         .padding(start = 93.dp, end = 109.dp)
                         .clickable { onClickDisplayOnMap() },
-                    colors = CardDefaults.cardColors(if (isSystemInDarkTheme()) darkText else lightText)
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimaryContainer),
                 ) {
                     Row(
                         Modifier.fillMaxWidth(),
@@ -111,7 +108,8 @@ fun PlaygroundDefinition(
                             text = stringResource(R.string.Show_on_map),
                             style = MaterialTheme.typography.bodySmall,
                             color = MaterialTheme.colorScheme.background,
-                            textAlign = TextAlign.Center
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(vertical = 3.dp)
                         )
                     }
                 }

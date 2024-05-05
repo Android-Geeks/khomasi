@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -146,7 +147,8 @@ fun ImageSlider(
                 ButtonWithIcon(iconId = R.drawable.sharenetwork) { onClickShare() }
                 Spacer(modifier = Modifier.width(8.dp))
                 Card(
-                    shape = CircleShape, modifier = Modifier.size(44.dp)
+                    shape = CircleShape, modifier = Modifier.size(44.dp),
+                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface)
                 ) {
                     Column(
                         Modifier.fillMaxSize(),
