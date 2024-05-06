@@ -26,9 +26,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             KhomasiTheme {
-                Surface {
-                    Log.d("ActivityMain", mainViewModel.startDestination.value)
-                    NavGraph(mainViewModel.startDestination.value)
+                if (!mainViewModel.splashCondition.value) {
+                    Surface {
+                        Log.d("ActivityMain", mainViewModel.startDestination.value)
+                        NavGraph(mainViewModel.startDestination.value)
+                    }
                 }
             }
         }
