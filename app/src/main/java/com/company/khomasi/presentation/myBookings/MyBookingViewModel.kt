@@ -78,6 +78,12 @@ class MyBookingViewModel @Inject constructor(
         )
     }
 
+    fun cancelDetails(playgroundId: Int) {
+        viewModelScope.launch {
+            localUserUseCases.savePlaygroundId(playgroundId)
+        }
+    }
+
     fun reBook(playgroundId: Int) {
         viewModelScope.launch {
             localUserUseCases.savePlaygroundId(playgroundId)

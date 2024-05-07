@@ -5,6 +5,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -26,7 +27,9 @@ fun EmptyScreen(
     isDark: Boolean = isSystemInDarkTheme()
 ) {
     Column(
-        modifier = modifier.padding(vertical = 24.dp, horizontal = 24.dp),
+        modifier = modifier
+            .padding(start = 24.dp, end = 24.dp, top = 130.dp)
+            .fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -50,3 +53,4 @@ fun EmptyScreen(
         )
     }
 }
+

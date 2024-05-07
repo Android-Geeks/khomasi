@@ -21,7 +21,9 @@ import kotlinx.coroutines.flow.StateFlow
 fun CurrentPage(
     uiState: StateFlow<MyBookingUiState>,
     onClickPlaygroundCard: (BookingDetails) -> Unit,
-    onClickBookField: () -> Unit
+    onClickBookField: () -> Unit,
+    cancelDetails: (Int) -> Unit
+
 ) {
     val currentState = uiState.collectAsState().value
     Scaffold(
@@ -43,7 +45,8 @@ fun CurrentPage(
                         onViewPlaygroundClick = {
                             if (!currentState.currentBookings[index].isCanceled) {
                                 onClickPlaygroundCard(it)
-                            }
+                            } else
+                                cancelDetails(index)
                         },
                         toRate = {},
                         reBook = {}

@@ -17,17 +17,18 @@ sealed class TabItem(
         onRatingChange: (Float) -> Unit,
         reBook: (Int) -> Unit,
         onClickBookField: () -> Unit,
+        cancelDetails: (Int) -> Unit
     ) -> Unit,
 ) {
     data object Current : TabItem(
         title = R.string.current,
-        screens = { uiState, onClick, _, _, _, _, onClickBookField ->
-            CurrentPage(uiState, onClick, onClickBookField)
+        screens = { uiState, onClick, _, _, _, _, onClickBookField, cancelDetails ->
+            CurrentPage(uiState, onClick, onClickBookField, cancelDetails)
         }
     )
     data object Expired : TabItem(
         title = R.string.expired,
-        screens = { uiState, _, playgroundReview, onCommentChange, onRatingChange, reBook, onClickBookField ->
+        screens = { uiState, _, playgroundReview, onCommentChange, onRatingChange, reBook, onClickBookField, _ ->
             ExpiredPage(
                 uiState,
                 playgroundReview,

@@ -219,7 +219,8 @@
     <string name="something_went_wrong">حدث خطأ ما</string>
     <string name="password_changed">تم تغيير كلمة المرور</string>
     <string name="browse_results">تصفح النتائج</string>
-
-
     <string name="to">الى</string>
+    <string name="rating_sent">تم ارسال التصنيف</string>
+    <string name="rate_not_found">لم يتم العثور علي المعدل</string>
+
 </resources>

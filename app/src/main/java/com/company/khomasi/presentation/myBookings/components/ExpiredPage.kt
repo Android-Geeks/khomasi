@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.myBookings.components
 
+import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -46,14 +48,15 @@ fun ExpiredPage(
     onCommentChange: (String) -> Unit,
     onRatingChange: (Float) -> Unit,
     reBook: (Int) -> Unit,
-    onClickBookField: () -> Unit
+    onClickBookField: () -> Unit,
 ) {
     val expiredState = uiState.collectAsState().value
     val sheetState = rememberModalBottomSheetState()
     var isOpen by remember { mutableStateOf(false) }
     val imeState = rememberImeState()
     val scrollState = rememberScrollState()
-
+    val context = LocalContext.current
+    var rate by remember { mutableStateOf(false) }
     LaunchedEffect(key1 = imeState.value) {
         if (imeState.value) {
             scrollState.animateScrollTo(scrollState.maxValue, tween(300))
@@ -82,7 +85,10 @@ fun ExpiredPage(
                 )
                 RatingRow(
                     rating = expiredState.rating,
-                    onRatingChange = onRatingChange,
+                    onRatingChange = {
+                        onRatingChange
+                        rate = true
+                    },
                 )
 
                 MyTextField(
@@ -98,10 +104,24 @@ fun ExpiredPage(
             ) {
                 MyButton(
                     onClick = {
-                        playgroundReview()
-                        onCommentChange(" ")
-                        onRatingChange(0f)
-                        isOpen = false
+                        if (rate) {
+                            playgroundReview()
+                            onCommentChange(" ")
+                            onRatingChange(0f)
+                            isOpen = false
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.rating_sent), Toast.LENGTH_SHORT
+                            ).show()
+
+                        } else {
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.rate_not_found), Toast.LENGTH_SHORT
+                            ).show()
+                            isOpen = true
+
+                        }
                     },
                     text = R.string.rate,
                     modifier = Modifier

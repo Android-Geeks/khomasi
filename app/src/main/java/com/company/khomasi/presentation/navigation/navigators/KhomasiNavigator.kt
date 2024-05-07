@@ -166,9 +166,13 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavController) {
                 onCommentChange = bookingViewModel::onCommentChange,
                 reBook = { playgroundId ->
                     bookingViewModel.reBook(playgroundId)
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.BookingDetails.route + "/$playgroundId")
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
                 },
-                onClickBookField = { navController.navigate(Screens.KhomasiNavigation.Playgrounds.route) }
+                onClickBookField = { navController.navigate(Screens.KhomasiNavigation.Playgrounds.route) },
+                cancelDetails = { playgroundId ->
+                    bookingViewModel.cancelDetails(playgroundId)
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
+                }
             )
         }
         composable(route = Screens.KhomasiNavigation.MyBookings.CancelBooking.route) {

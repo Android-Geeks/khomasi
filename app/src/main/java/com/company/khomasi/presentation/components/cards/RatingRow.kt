@@ -16,7 +16,7 @@ import com.company.khomasi.theme.KhomasiTheme
 fun RatingRow(
     rating: Float,
     onRatingChange: (Float) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     AndroidView(
         modifier = modifier
