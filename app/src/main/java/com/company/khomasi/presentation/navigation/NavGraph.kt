@@ -38,11 +38,11 @@ fun NavGraph(
     Scaffold(
         bottomBar =
         {
-            BottomNavigationBar(
-                navController = navController,
-                bottomBarState = navBackStackEntry?.destination?.route
-                        in listOfNavItems.map { it.route }
-            )
+            if (navBackStackEntry?.destination?.route in listOfNavItems.map { it.route }) {
+                BottomNavigationBar(
+                    navController = navController,
+                )
+            }
         }
     ) { paddingValues ->
         NavHost(
