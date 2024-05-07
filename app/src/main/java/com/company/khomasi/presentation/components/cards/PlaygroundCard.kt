@@ -196,7 +196,7 @@ fun PlaygroundCard(
                 Spacer(modifier = Modifier.weight(1f))
                 MyButton(
                     text = R.string.view_playground,
-                    onClick = { onViewPlaygroundClick() },
+                    onClick = onViewPlaygroundClick,
                     modifier = Modifier
                         .weight(3f)
                         .height(48.dp)
