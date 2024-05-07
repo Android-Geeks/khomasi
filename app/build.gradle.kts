@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId = "com.company.khomasi"
-        minSdk = 23
+        minSdk = 24
         //noinspection EditedTargetSdkVersion
         targetSdk = 34
         versionCode = 1
@@ -71,7 +71,7 @@ android {
 
 dependencies {
 
-    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.core:core-ktx:1.13.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
