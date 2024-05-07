@@ -31,14 +31,10 @@ fun NavGraphBuilder.authNavigator(
         composable(route = Screens.AuthNavigation.LoginOrRegister.route) {
             LoginOrRegisterScreen(
                 onLoginClick = {
-
                     navController.navigate(Screens.AuthNavigation.Login.route)
-
                 },
                 onRegisterClick = {
-
                     navController.navigate(Screens.AuthNavigation.Register.route)
-
                 }
             )
         }

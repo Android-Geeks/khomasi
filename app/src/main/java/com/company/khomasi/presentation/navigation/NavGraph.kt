@@ -1,7 +1,6 @@
 package com.company.khomasi.presentation.navigation
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
@@ -29,7 +28,6 @@ fun NavGraph(
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
-    Log.d("NavGraph", "isNetworkAvailable: $isNetworkAvailable")
     if (isNetworkAvailable == ConnectivityObserver.Status.Unavailable ||
         isNetworkAvailable == ConnectivityObserver.Status.Lost
     ) {
