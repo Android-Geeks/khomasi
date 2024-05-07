@@ -49,6 +49,7 @@ fun ExpiredPage(
     onRatingChange: (Float) -> Unit,
     reBook: (Int) -> Unit,
     onClickBookField: () -> Unit,
+    toRate: (Int) -> Unit,
 ) {
     val expiredState = uiState.collectAsState().value
     val sheetState = rememberModalBottomSheetState()
@@ -148,8 +149,8 @@ fun ExpiredPage(
                         bookingStatus = BookingStatus.EXPIRED,
                         onViewPlaygroundClick = {},
                         toRate = {
+                            toRate(bookingDetails.playgroundId)
                             isOpen = true
-                            bookingDetails.playgroundId
                         },
                         reBook = { reBook(bookingDetails.playgroundId) }
                     )

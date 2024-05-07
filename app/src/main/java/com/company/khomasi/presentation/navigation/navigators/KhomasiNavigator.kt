@@ -172,7 +172,8 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavController) {
                 cancelDetails = { playgroundId ->
                     bookingViewModel.cancelDetails(playgroundId)
                     navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
-                }
+                },
+                toRate = bookingViewModel::toRate
             )
         }
         composable(route = Screens.KhomasiNavigation.MyBookings.CancelBooking.route) {

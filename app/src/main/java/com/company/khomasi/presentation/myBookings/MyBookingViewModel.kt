@@ -78,6 +78,12 @@ class MyBookingViewModel @Inject constructor(
         )
     }
 
+    fun toRate(playgroundId: Int) {
+        viewModelScope.launch {
+            localUserUseCases.savePlaygroundId(playgroundId)
+        }
+    }
+
     fun cancelDetails(playgroundId: Int) {
         viewModelScope.launch {
             localUserUseCases.savePlaygroundId(playgroundId)
