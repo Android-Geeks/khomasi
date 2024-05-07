@@ -22,24 +22,20 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
-import com.company.khomasi.domain.model.Playground
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.cards.PlaygroundCard
 import com.company.khomasi.theme.KhomasiTheme
@@ -49,7 +45,6 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun FavouritePage(
     uiState: StateFlow<FavouriteUiState>,
-    // favState: StateFlow<DataState<FavouritePlaygroundResponse>>,
     onFavouriteClick: (Int) -> Unit,
     onPlaygroundClick: (Int) -> Unit,
     getFavoritePlaygrounds: () -> Unit
@@ -57,61 +52,56 @@ fun FavouritePage(
     LaunchedEffect(Unit) {
         getFavoritePlaygrounds()
     }
-    val favUiState = uiState.collectAsState().value
-    // val response = favState.collectAsState().value
+    val favUiState = uiState.collectAsStateWithLifecycle().value
+    val filteredPlaygrounds = favUiState.playgrounds.filter { playground ->
+        !favUiState.deletedPlaygroundIds.contains(playground.id)
+    }
     Scaffold(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(all = 16.dp),
         topBar = { TopBar() },
+        containerColor = MaterialTheme.colorScheme.background,
 
-        ) {
-        Surface(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(all = 16.dp),
-            color = MaterialTheme.colorScheme.background,
-        ) {
-
-            val deletedList = remember {
-                mutableStateListOf<Playground>()
-            }
-            if (favUiState.playgrounds.isNotEmpty())
-                LazyColumn(
+        )
+    {
+//            favUiState.deletedPlaygroundIds = remember {
+//                mutableStateListOf<Playground>()
+//            }
+        LazyColumn(
                     contentPadding = it,
                     verticalArrangement = Arrangement.spacedBy(16.dp)
                 ) {
-                    itemsIndexed(
-                        items = favUiState.playgrounds,
-                        itemContent = { _, playground ->
-                            AnimatedVisibility(
-                                visible = !deletedList.contains(element = playground),
-                                enter = expandVertically(),
-                                exit = shrinkVertically(animationSpec = tween(durationMillis = 500))
-                            ) {
-
-                                PlaygroundCard(
-                                    playground = playground,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .animateItemPlacement(),
-                                    onViewPlaygroundClick = { onPlaygroundClick(playground.id) },
-                                    onFavouriteClick = {
-                                        onFavouriteClick(playground.id)
-                                        deletedList.add(playground)
-                                    },
-                                )
-                            }
+            if (favUiState.playgrounds.isNotEmpty()) {
+                itemsIndexed(
+                    items = filteredPlaygrounds,
+                    itemContent = { _, playground ->
+                        AnimatedVisibility(
+                            visible = !favUiState.deletedPlaygroundIds.contains(playground.id),
+                            enter = expandVertically(),
+                            exit = shrinkVertically(animationSpec = tween(durationMillis = 1000))
+                        ) {
+                            PlaygroundCard(
+                                playground = playground,
+                                modifier = Modifier
+                                    .fillMaxWidth(),
+                                onViewPlaygroundClick = { onPlaygroundClick(playground.id) },
+                                onFavouriteClick = {
+                                    //deletedList.add(playground)
+                                    onFavouriteClick(playground.id)
+                                },
+                            )
                         }
-                    )
-
-                } else {
-                EmptyScreen()
+                    }
+                )
+            } else {
+                item { EmptyScreen() }
             }
+
         }
+
     }
-    }
-
-
-
+}
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -180,7 +170,6 @@ fun FavouritePagePreview() {
             onFavouriteClick = { },
             onPlaygroundClick = {},
             getFavoritePlaygrounds = {},
-            //favState = mockViewModel.favState
         )
     }
 }

@@ -15,7 +15,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,7 +35,8 @@ fun RoundedFavoriteIcon(
             .width(44.dp)
             .height(44.dp)
             .background(
-                color = if (isFavorite) Color.Red else MaterialTheme.colorScheme.surface,
+                color = if (isFavorite) MaterialTheme.colorScheme.error
+                else MaterialTheme.colorScheme.surface,
                 shape = CircleShape
             )
             .clickable {

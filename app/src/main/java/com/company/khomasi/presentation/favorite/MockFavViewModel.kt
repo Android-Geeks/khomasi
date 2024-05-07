@@ -14,11 +14,4 @@ class MockFavViewModel : ViewModel() {
     private val _favState: MutableStateFlow<DataState<FavouritePlaygroundResponse>> =
         MutableStateFlow(DataState.Empty)
     val favState: StateFlow<DataState<FavouritePlaygroundResponse>> = _favState
-
-
-
-
-
-
-
 }

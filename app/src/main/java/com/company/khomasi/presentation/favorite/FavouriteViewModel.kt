@@ -52,9 +52,15 @@ class FavouriteViewModel @Inject constructor(
     }
 
     fun onFavouriteClicked(playgroundId: Int) {
-        _uiState.value = _uiState.value.copy(
-            playgrounds = _uiState.value.playgrounds.filterNot { it.id == playgroundId },
-        )
+        val updatedPlaygrounds = uiState.value.playgrounds.filterNot { it.id == playgroundId }
+        _uiState.value = uiState.value.copy(playgrounds = updatedPlaygrounds)
     }
+//    fun onFavouriteClicked(playgroundId: Int) {
+//        val newDeletedIds = _uiState.value.deletedPlaygroundIds.toMutableSet().apply { add(playgroundId) }
+//        _uiState.value = _uiState.value.copy(deletedPlaygroundIds = newDeletedIds)
+//    }
+
+
 }
+
 
