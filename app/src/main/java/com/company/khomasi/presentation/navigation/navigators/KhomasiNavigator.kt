@@ -111,7 +111,10 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavHostController) {
                 it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
             FilterResults(
                 filteredUiState = browsePlaygroundsViewModel.uiState,
-                onBackClick = { navController.popBackStack() },
+                onBackClick = {
+                    navController.popBackStack()
+                    browsePlaygroundsViewModel.onResetFilters()
+                },
                 onShowFiltersClicked = { s, d ->
                     browsePlaygroundsViewModel.onShowFiltersClicked(s, d)
                     navController.navigate(Screens.KhomasiNavigation.Playgrounds.ResultPlaygrounds.route)
