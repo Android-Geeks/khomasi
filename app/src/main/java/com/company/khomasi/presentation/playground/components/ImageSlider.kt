@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -105,23 +104,8 @@ fun ImageSlider(
                 contentDescription = null,
                 contentScale = ContentScale.FillBounds,
             )
-
-            Column(
-                Modifier.fillMaxSize(), verticalArrangement = Arrangement.Bottom
-            ) {
-                HorizontalPagerIndicator(
-                    pagerState = pagerState,
-                    inactiveColor = Color.White.copy(alpha = 0.3f),
-                    activeColor = Color.White,
-                    indicatorWidth = 15.dp,
-                    indicatorHeight = 15.dp,
-                    modifier = Modifier
-                        .align(Alignment.CenterHorizontally)
-                        .padding(bottom = 8.dp)
-                )
-
-            }
         }
+
 
         Column(
             modifier = Modifier.fillMaxSize()
@@ -136,18 +120,39 @@ fun ImageSlider(
             }
 
             Spacer(modifier = Modifier.weight(1f))
+
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 16.dp),
-                horizontalArrangement = Arrangement.End
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
             ) {
-                ButtonWithIcon(iconId = R.drawable.sharenetwork) { onClickShare() }
-                Spacer(modifier = Modifier.width(8.dp))
-                RoundedFavoriteIcon(
-                    onFavoriteClick = { onClickFav(favState.id.toString(), favState.isFavourite) },
-                    isFavorite = uiState.isFavourite,
+                Spacer(modifier = Modifier.weight(1f))
+                HorizontalPagerIndicator(
+                    pagerState = pagerState,
+                    inactiveColor = Color.White.copy(0.3f),
+                    activeColor = Color.White,
+                    spacing = 4.dp,
+                    indicatorWidth = 15.dp,
+                    indicatorHeight = 15.dp
                 )
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(end = 16.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    ButtonWithIcon(iconId = R.drawable.sharenetwork) { onClickShare() }
+                    Spacer(modifier = Modifier.padding(4.dp))
+                    RoundedFavoriteIcon(
+                        onFavoriteClick = {
+                            onClickFav(
+                                favState.id.toString(),
+                                favState.isFavourite
+                            )
+                        },
+                        isFavorite = uiState.isFavourite,
+                    )
+                }
             }
         }
     }

@@ -3,7 +3,6 @@ package com.company.khomasi.presentation.playground
 
 import android.content.Context
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -17,12 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
@@ -37,9 +35,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -65,7 +65,6 @@ import com.company.khomasi.theme.lightIcon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import java.util.Locale
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -127,9 +126,7 @@ fun PlaygroundScreen(
 
                 MyButton(
                     text = R.string.book_now,
-                    onClick = {
-                        onBookNowClicked()
-                    },
+                    onClick = onBookNowClicked,
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -278,34 +275,29 @@ fun PlaygroundScreenContent(
 fun ButtonWithIcon(
     iconId: Int, onClick: () -> Unit
 ) {
-    val currentLanguage = Locale.getDefault().language
-    Card(
-        shape = CircleShape,
+    val currentLanguage = LocalLayoutDirection.current
+    IconButton(
+        onClick = onClick,
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = MaterialTheme.colorScheme.surface
+        ),
         modifier = Modifier
             .size(44.dp)
-            .clickable { onClick() },
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface)
     ) {
-        Column(
-            Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Icon(
-                painter = painterResource(id = iconId),
-                contentDescription = null,
-                tint = if (isSystemInDarkTheme()) darkIcon else lightIcon,
-                modifier = Modifier
-                    .size(24.dp)
-                    .then(
-                        if (currentLanguage == "en") {
-                            Modifier.rotate(180f)
-                        } else {
-                            Modifier
-                        }
-                    )
-            )
-        }
+        Icon(
+            painter = painterResource(id = iconId),
+            contentDescription = null,
+            tint = if (isSystemInDarkTheme()) darkIcon else lightIcon,
+            modifier = Modifier
+                .size(24.dp)
+                .then(
+                    if (currentLanguage == LayoutDirection.Ltr) {
+                        Modifier.rotate(180f)
+                    } else {
+                        Modifier
+                    }
+                )
+        )
     }
 }
 
