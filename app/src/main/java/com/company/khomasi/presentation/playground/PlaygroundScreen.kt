@@ -71,6 +71,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PlaygroundScreen(
     playgroundId: Int,
+    isFavourite: Boolean,
     playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
     playgroundUiState: StateFlow<PlaygroundUiState>,
     reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>>,
@@ -339,6 +340,7 @@ fun PlaygroundScreenPreview() {
     KhomasiTheme(darkTheme = false) {
         PlaygroundScreen(
             playgroundId = 1,
+            isFavourite = true,
             playgroundStateFlow = mockViewModel.playgroundState,
             playgroundUiState = mockViewModel.uiState,
             reviewsState = mockViewModel.reviewsState,

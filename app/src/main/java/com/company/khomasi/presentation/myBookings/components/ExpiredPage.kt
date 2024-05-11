@@ -47,7 +47,7 @@ fun ExpiredPage(
     playgroundReview: () -> Unit,
     onCommentChange: (String) -> Unit,
     onRatingChange: (Float) -> Unit,
-    reBook: (Int) -> Unit,
+    reBook: (Int, Boolean) -> Unit,
     onClickBookField: () -> Unit,
     toRate: (Int) -> Unit,
 ) {
@@ -87,7 +87,7 @@ fun ExpiredPage(
                 RatingRow(
                     rating = expiredState.rating,
                     onRatingChange = {
-                        onRatingChange
+                        onRatingChange(it)
                         rate = true
                     },
                 )
@@ -107,7 +107,7 @@ fun ExpiredPage(
                     onClick = {
                         if (rate) {
                             playgroundReview()
-                            onCommentChange(" ")
+                            onCommentChange("")
                             onRatingChange(0f)
                             isOpen = false
                             Toast.makeText(
@@ -142,8 +142,8 @@ fun ExpiredPage(
             contentPadding = it,
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            if (expiredState.expiredBookings.isNotEmpty()) {
-                items(expiredState.expiredBookings) { bookingDetails ->
+            items(expiredState.expiredBookings) { bookingDetails ->
+                if (expiredState.expiredBookings.isNotEmpty()) {
                     BookingCard(
                         bookingDetails = bookingDetails,
                         bookingStatus = BookingStatus.EXPIRED,
@@ -152,11 +152,9 @@ fun ExpiredPage(
                             toRate(bookingDetails.playgroundId)
                             isOpen = true
                         },
-                        reBook = { reBook(bookingDetails.playgroundId) }
+                        reBook = { reBook(bookingDetails.playgroundId, false) }
                     )
-                }
-            } else {
-                item {
+                } else {
                     EmptyScreen(
                         onClickBookField = onClickBookField
                     )
@@ -165,4 +163,3 @@ fun ExpiredPage(
         }
     }
 }
-

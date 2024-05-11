@@ -32,7 +32,7 @@ fun BrowseResults(
     browseUiState: StateFlow<BrowseUiState>,
     onBackClicked: () -> Unit,
     onFavClicked: (Int) -> Unit,
-    onClickPlayground: (Int) -> Unit,
+    onClickPlayground: (Int, Boolean) -> Unit,
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme()
 ) {
@@ -72,7 +72,12 @@ fun BrowseResults(
                     PlaygroundCard(
                         playground = playground,
                         onFavouriteClick = { onFavClicked(playground.id) },
-                        onViewPlaygroundClick = { onClickPlayground(playground.id) },
+                        onViewPlaygroundClick = {
+                            onClickPlayground(
+                                playground.id,
+                                playground.isFavourite
+                            )
+                        },
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                 }

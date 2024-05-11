@@ -35,7 +35,7 @@ fun MyBookingPage(
     playgroundReview: () -> Unit,
     onCommentChange: (String) -> Unit,
     onRatingChange: (Float) -> Unit,
-    reBook: (Int) -> Unit,
+    reBook: (Int, Boolean) -> Unit,
     onClickBookField: () -> Unit,
     cancelDetails: (Int) -> Unit,
     toRate: (Int) -> Unit,
@@ -113,7 +113,7 @@ fun TabContent(
     onCommentChange: (String) -> Unit,
     onRatingChange: (Float) -> Unit,
     onClickBookField: () -> Unit,
-    reBook: (Int) -> Unit,
+    reBook: (Int, Boolean) -> Unit,
     cancelDetails: (Int) -> Unit,
     toRate: (Int) -> Unit,
 ) {

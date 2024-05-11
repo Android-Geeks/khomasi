@@ -15,7 +15,7 @@ sealed class TabItem(
         playgroundReview: () -> Unit,
         onCommentChange: (String) -> Unit,
         onRatingChange: (Float) -> Unit,
-        reBook: (Int) -> Unit,
+        reBook: (Int, Boolean) -> Unit,
         onClickBookField: () -> Unit,
         cancelDetails: (Int) -> Unit,
         toRate: (Int) -> Unit,
