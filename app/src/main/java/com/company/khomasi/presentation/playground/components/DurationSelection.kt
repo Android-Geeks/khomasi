@@ -15,9 +15,13 @@ import androidx.compose.ui.res.stringResource
 import com.company.khomasi.R
 
 @Composable
-fun DurationSelection(updateDuration: (String) -> Unit, duration: Int) {
+fun DurationSelection(
+    updateDuration: (String) -> Unit,
+    duration: Int,
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.Center
     ) {

@@ -2,8 +2,8 @@ package com.company.khomasi.presentation.navigation.navigators
 
 
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.company.khomasi.navigation.Screens
@@ -25,9 +25,13 @@ import com.company.khomasi.presentation.profile.ViewProfile
 import com.company.khomasi.presentation.search.SearchQuery
 import com.company.khomasi.presentation.search.SearchResult
 import com.company.khomasi.presentation.search.SearchViewModel
+import com.company.khomasi.presentation.venues.BrowsePlaygrounds
+import com.company.khomasi.presentation.venues.BrowsePlaygroundsViewModel
+import com.company.khomasi.presentation.venues.BrowseResults
+import com.company.khomasi.presentation.venues.FilterResults
 
 
-fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
+fun NavGraphBuilder.khomasiNavigator(navController: NavHostController) {
     navigation(
         route = Screens.KhomasiNavigation.route,
         startDestination = Screens.KhomasiNavigation.Home.route
@@ -75,13 +79,68 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavController) {
 
         profileNavigator(navController)
 
-
+        playgroundsNavigator(navController)
         bookingPlaygroundNavigator(navController = navController)
 
     }
 }
 
-fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavController) {
+fun NavGraphBuilder.playgroundsNavigator(navController: NavHostController) {
+    navigation(
+        route = Screens.KhomasiNavigation.Playgrounds.route,
+        startDestination = Screens.KhomasiNavigation.Playgrounds.BrowsePlaygrounds.route
+    ) {
+        composable(route = Screens.KhomasiNavigation.Playgrounds.BrowsePlaygrounds.route) {
+            val browsePlaygroundsViewModel =
+                it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
+            BrowsePlaygrounds(
+                localUser = browsePlaygroundsViewModel.localUser,
+                filteredPlayground = browsePlaygroundsViewModel.filteredPlaygrounds,
+                browseUiState = browsePlaygroundsViewModel.uiState,
+                getFilteredPlaygrounds = { browsePlaygroundsViewModel.getPlaygrounds() },
+                onFilterClick = { navController.navigate(Screens.KhomasiNavigation.Playgrounds.FilterPlaygrounds.route) },
+                onFavouriteClicked = browsePlaygroundsViewModel::onFavouriteClicked,
+                onClickPlaygroundCard = { playgroundId ->
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
+                }
+            )
+        }
+
+        composable(route = Screens.KhomasiNavigation.Playgrounds.FilterPlaygrounds.route) {
+            val browsePlaygroundsViewModel =
+                it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
+            FilterResults(
+                filteredUiState = browsePlaygroundsViewModel.uiState,
+                onBackClick = {
+                    navController.popBackStack()
+                    browsePlaygroundsViewModel.onResetFilters()
+                },
+                onShowFiltersClicked = { s, d ->
+                    browsePlaygroundsViewModel.onShowFiltersClicked(s, d)
+                    navController.navigate(Screens.KhomasiNavigation.Playgrounds.ResultPlaygrounds.route)
+                },
+                onResetFilters = browsePlaygroundsViewModel::onResetFilters,
+                updateDuration = browsePlaygroundsViewModel::updateDuration,
+                setPrice = browsePlaygroundsViewModel::setPrice,
+                setBookingTime = browsePlaygroundsViewModel::setBookingTime,
+                updateType = browsePlaygroundsViewModel::updateType,
+            )
+        }
+        composable(route = Screens.KhomasiNavigation.Playgrounds.ResultPlaygrounds.route) {
+            val browsePlaygroundsViewModel =
+                it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
+            BrowseResults(
+                browseUiState = browsePlaygroundsViewModel.uiState,
+                onBackClicked = { navController.popBackStack() },
+                onFavClicked = browsePlaygroundsViewModel::onFavouriteClicked,
+                onClickPlayground = { playgroundId ->
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
+                })
+        }
+    }
+}
+
+fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController) {
     navigation(
         route = Screens.KhomasiNavigation.BookingPlayground.route + "/{playgroundId}",
         startDestination = Screens.KhomasiNavigation.BookingPlayground.PlaygroundDetails.route
@@ -147,13 +206,14 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.myBookingsNavigator(navController: NavController) {
+fun NavGraphBuilder.myBookingsNavigator(navController: NavHostController) {
     navigation(
         route = Screens.KhomasiNavigation.MyBookings.route,
         startDestination = Screens.KhomasiNavigation.MyBookings.BookingHistory.route
     ) {
         composable(route = Screens.KhomasiNavigation.MyBookings.BookingHistory.route) {
-            val bookingViewModel = it.sharedViewModel<MyBookingViewModel>(navController = navController)
+            val bookingViewModel =
+                it.sharedViewModel<MyBookingViewModel>(navController = navController)
             MyBookingPage(
                 uiState = bookingViewModel.uiState,
                 myBookingPlaygrounds = bookingViewModel::myBookingPlaygrounds,
@@ -172,18 +232,19 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavController) {
             )
         }
         composable(route = Screens.KhomasiNavigation.MyBookings.CancelBooking.route) {
-            val myBookingViewModel = it.sharedViewModel<MyBookingViewModel>(navController = navController)
-             CancelSheet(
-                 onBackClick = { navController.popBackStack() },
-                 uiState = myBookingViewModel.uiState,
-                 cancelBooking = myBookingViewModel::cancelBooking
-             )
+            val myBookingViewModel =
+                it.sharedViewModel<MyBookingViewModel>(navController = navController)
+            CancelSheet(
+                onBackClick = { navController.popBackStack() },
+                uiState = myBookingViewModel.uiState,
+                cancelBooking = myBookingViewModel::cancelBooking
+            )
         }
     }
 }
 
 
-fun NavGraphBuilder.profileNavigator(navController: NavController) {
+fun NavGraphBuilder.profileNavigator(navController: NavHostController) {
     navigation(
         route = Screens.KhomasiNavigation.Profile.route,
         startDestination = Screens.KhomasiNavigation.Profile.ViewProfile.route
@@ -222,7 +283,7 @@ fun NavGraphBuilder.profileNavigator(navController: NavController) {
     }
 }
 
-fun NavGraphBuilder.searchNavigator(navController: NavController) {
+fun NavGraphBuilder.searchNavigator(navController: NavHostController) {
     navigation(
         route = Screens.KhomasiNavigation.Search.route,
         startDestination = Screens.KhomasiNavigation.Search.SearchQuery.route

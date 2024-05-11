@@ -118,8 +118,8 @@ fun HomeScreen(
                 HomeContent(
                     playgroundsData = playgroundsData.sortedBy { it.id },
                     homeUiState = uiState,
-                    onAdClicked = { onAdClicked() },
-                    onClickViewAll = { onClickViewAll() },
+                    onAdClicked = onAdClicked,
+                    onClickViewAll = onClickViewAll,
                     onClickPlaygroundCard = { playgroundId ->
                         onClickPlaygroundCard(playgroundId)
                     },
@@ -186,13 +186,14 @@ fun HomeContent(
                     }*/
 //  -------------------------------------------------------------------//
 
-        item { AdsSlider(adsContent = adsList, onAdClicked = { onAdClicked() }) }
+        item { AdsSlider(adsContent = adsList, onAdClicked = onAdClicked) }
 
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     text = stringResource(id = R.string.nearby_fields),
-                    style = MaterialTheme.typography.displayMedium
+                    style = MaterialTheme.typography.displayMedium,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 Spacer(modifier = Modifier.weight(1f))
                 Text(
@@ -256,23 +257,25 @@ fun UserProfileSection(
 
         Column {
             Text(
-                text = "${stringResource(id = R.string.hello)} ${
-                    userData.firstName
-                }",
+                text = "${stringResource(id = R.string.hello)} ${userData.firstName}",
                 style = MaterialTheme.typography.bodyMedium,
-
-                )
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
 
             Text(
                 text = stringResource(id = R.string.welcome_message),
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+
             )
         }
         Spacer(modifier = Modifier.weight(1f))
 
-        IconButton(onClick = { onClickBell() }) {
+        IconButton(onClick = onClickBell) {
             Icon(
-                painter = painterResource(id = R.drawable.bell), contentDescription = null
+                painter = painterResource(id = R.drawable.bell),
+                tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                contentDescription = null
             )
         }
     }

@@ -66,7 +66,7 @@ fun PlaygroundSize(
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "$playgroundData X $playgroundData",
+                        text = "$playgroundData ${stringResource(id = R.string.field_size_mul)} $playgroundData",
                         style = MaterialTheme.typography.displayMedium,
                         color = MaterialTheme.colorScheme.tertiary
                     )

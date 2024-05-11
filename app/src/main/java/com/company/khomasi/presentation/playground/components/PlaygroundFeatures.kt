@@ -53,7 +53,7 @@ fun PlaygroundFeatures(
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Text(
-                    text = stringResource(id = R.string.field_features),
+                    text = stringResource(id = R.string.features),
                     style = MaterialTheme.typography.titleLarge
                 )
                 LazyVerticalGrid(

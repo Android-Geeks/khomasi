@@ -144,27 +144,10 @@ fun ImageSlider(
             ) {
                 ButtonWithIcon(iconId = R.drawable.sharenetwork) { onClickShare() }
                 Spacer(modifier = Modifier.width(8.dp))
-//                Card(
-//                    shape = CircleShape, modifier = Modifier.size(44.dp)
-//                ) {
-//                    Column(
-//                        Modifier.fillMaxSize(),
-//                        verticalArrangement = Arrangement.Center,
-//                        horizontalAlignment = Alignment.CenterHorizontally
-//                    ) {
-//                        FavoriteIcon(
-//                            onFavoriteClick = onClickFav,
-//                            isFavorite = uiState.isFavourite,
-//                            modifier = Modifier.size(24.dp),
-//                        )
-//
-//                    }
-//                }
                 RoundedFavoriteIcon(
                     onFavoriteClick = { onClickFav(favState.id.toString(), favState.isFavourite) },
                     isFavorite = uiState.isFavourite,
                 )
-
             }
         }
     }
