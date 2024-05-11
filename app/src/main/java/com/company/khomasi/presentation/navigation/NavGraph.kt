@@ -12,27 +12,37 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.company.khomasi.navigation.Screens
 import com.company.khomasi.navigation.listOfNavItems
+import com.company.khomasi.presentation.components.connectionStates.LossConnection
 import com.company.khomasi.presentation.navigation.components.BottomNavigationBar
 import com.company.khomasi.presentation.navigation.navigators.authNavigator
 import com.company.khomasi.presentation.navigation.navigators.khomasiNavigator
 import com.company.khomasi.presentation.navigation.navigators.onboardingNavigator
 import com.company.khomasi.theme.KhomasiTheme
+import com.company.khomasi.utils.ConnectivityObserver
 
 @Composable
 fun NavGraph(
-    startDestination: String
+    startDestination: String,
+    isNetworkAvailable: ConnectivityObserver.Status
 ) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
+    if (isNetworkAvailable == ConnectivityObserver.Status.Unavailable ||
+        isNetworkAvailable == ConnectivityObserver.Status.Lost
+    ) {
+        LossConnection()
+        return
+    }
+
     Scaffold(
         bottomBar =
         {
-            BottomNavigationBar(
-                navController = navController,
-                bottomBarState = navBackStackEntry?.destination?.route
-                        in listOfNavItems.map { it.route }
-            )
+            if (navBackStackEntry?.destination?.route in listOfNavItems.map { it.route }) {
+                BottomNavigationBar(
+                    navController = navController,
+                )
+            }
         }
     ) { paddingValues ->
         NavHost(
@@ -58,7 +68,8 @@ fun NavGraph(
 fun DefaultPreview() {
     KhomasiTheme {
         NavGraph(
-            startDestination = Screens.KhomasiNavigation.route
+            startDestination = Screens.KhomasiNavigation.route,
+            isNetworkAvailable = ConnectivityObserver.Status.Unavailable
         )
     }
 }

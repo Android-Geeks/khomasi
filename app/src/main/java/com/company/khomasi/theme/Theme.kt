@@ -14,21 +14,25 @@ import androidx.compose.ui.platform.LocalContext
 private val lightThemeColors = lightColorScheme(
     primary = lightPrimary,
     onPrimary = lightBackground,
+    onPrimaryContainer = lightText,
     secondary = lightSecondary,
     background = lightBackground,
     surface = lightCard,
     tertiary = lightSubText,
     outline = lightHint,
+    error = lightErrorColor,
 )
 
 private val darkThemeColors = darkColorScheme(
     primary = darkPrimary,
     onPrimary = darkBackground,
+    onPrimaryContainer = darkText,
     secondary = darkSecondary,
     background = darkBackground,
     surface = darkCard,
     tertiary = darkSubText,
     outline = darkHint,
+    error = darkErrorColor
 )
 
 @Composable

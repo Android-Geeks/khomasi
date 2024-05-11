@@ -1,10 +1,8 @@
 package com.company.khomasi.presentation.playground
 
 
-//noinspection UsingMaterialAndMaterial3Libraries
 import android.content.Context
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -21,7 +19,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetState
@@ -80,7 +80,7 @@ fun PlaygroundScreen(
     getPlaygroundDetails: (Int) -> Unit,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
-    onClickFav: () -> Unit,
+    onClickFav: (String, Boolean) -> Unit,
     onBookNowClicked: () -> Unit,
     onClickDisplayOnMap: () -> Unit,
     updateShowReview: () -> Unit,
@@ -206,7 +206,7 @@ fun PlaygroundScreenContent(
     onViewRatingClicked: () -> Unit,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
-    onClickFav: () -> Unit,
+    onClickFav: (String, Boolean) -> Unit,
     onClickDisplayOnMap: () -> Unit,
 ) {
     LazyColumn(
@@ -279,9 +279,13 @@ fun ButtonWithIcon(
     iconId: Int, onClick: () -> Unit
 ) {
     val currentLanguage = Locale.getDefault().language
-    Card(shape = CircleShape, modifier = Modifier
-        .size(44.dp)
-        .clickable { onClick() }) {
+    Card(
+        shape = CircleShape,
+        modifier = Modifier
+            .size(44.dp)
+            .clickable { onClick() },
+        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface)
+    ) {
         Column(
             Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
@@ -329,20 +333,18 @@ fun IconWithText(
 
 @Composable
 fun LineSpacer() {
-    Spacer(
-        modifier = Modifier
-            .padding(vertical = 8.dp)
-            .fillMaxWidth()
-            .height(0.5.dp)
-            .border(width = 0.5.dp, color = MaterialTheme.colorScheme.outline)
+    HorizontalDivider(
+        thickness = 1.dp,
+        color = MaterialTheme.colorScheme.outline,
+        modifier = Modifier.padding(vertical = 8.dp)
     )
 }
 
-@Preview(locale = "ar", showSystemUi = true)
+@Preview(showSystemUi = true)
 @Composable
 fun PlaygroundScreenPreview() {
     val mockViewModel: MockPlaygroundViewModel = hiltViewModel()
-    KhomasiTheme {
+    KhomasiTheme(darkTheme = false) {
         PlaygroundScreen(
             playgroundId = 1,
             playgroundStateFlow = mockViewModel.playgroundState,
@@ -351,7 +353,7 @@ fun PlaygroundScreenPreview() {
             onViewRatingClicked = {},
             onClickShare = {},
             onClickBack = {},
-            onClickFav = {},
+            onClickFav = mockViewModel::updateUserFavourite,
             onBookNowClicked = { mockViewModel.onBookNowClicked() },
             onClickDisplayOnMap = {},
             getPlaygroundDetails = { mockViewModel.getPlaygroundDetails(1) },

@@ -46,7 +46,7 @@ val Typography = Typography(
     bodyLarge = TextStyle(
         fontFamily = Cairo,
         fontWeight = FontWeight(700),
-        fontSize = 14.sp,
+        fontSize = 15.sp,
     ),
     bodyMedium = TextStyle(
         fontFamily = Cairo,
@@ -71,6 +71,13 @@ val Typography = Typography(
 )
 
 /*
+****
+ TextStyle(
+        fontFamily = Cairo,
+        fontWeight = FontWeight(500),
+        fontSize = 40.sp
+    )
+*****
 Display
     As the largest text on the screen, display styles are reserved for short, important text or numerals. They work best on large screens.
 

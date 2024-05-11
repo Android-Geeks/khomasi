@@ -54,9 +54,9 @@ object NetworkModule {
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             addInterceptor(loggingInterceptor)
-            connectTimeout(1, TimeUnit.MINUTES) // connect timeout
+            connectTimeout(20, TimeUnit.SECONDS) // connect timeout
             readTimeout(30, TimeUnit.SECONDS) // socket timeout
-            writeTimeout(15, TimeUnit.SECONDS) // write timeout
+            writeTimeout(20, TimeUnit.SECONDS) // write timeout
         }.build()
     }
 

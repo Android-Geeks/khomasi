@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.playground
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
@@ -24,7 +25,7 @@ import javax.inject.Inject
 class PlaygroundViewModel @Inject constructor(
     private val remoteUserUseCase: RemoteUserUseCase,
     private val remotePlaygroundUseCase: RemotePlaygroundUseCase,
-    private val localUserUseCases: LocalUserUseCases
+    private val localUserUseCases: LocalUserUseCases,
 ) : ViewModel() {
 
     private val _playgroundState: MutableStateFlow<DataState<PlaygroundScreenResponse>> =
@@ -46,6 +47,7 @@ class PlaygroundViewModel @Inject constructor(
     private val _reviewsState: MutableStateFlow<DataState<PlaygroundReviewsResponse>> =
         MutableStateFlow(DataState.Empty)
     val reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>> = _reviewsState
+
 
     fun getPlaygroundDetails(playgroundId: Int) {
         viewModelScope.launch {
@@ -89,14 +91,6 @@ class PlaygroundViewModel @Inject constructor(
 
     fun updateShowReviews() {
         _uiState.value = _uiState.value.copy(showReviews = !_uiState.value.showReviews)
-    }
-
-    fun onClickFavourite() {
-        _uiState.update {
-            it.copy(
-                isFavourite = !it.isFavourite
-            )
-        }
     }
 
 
@@ -217,6 +211,30 @@ class PlaygroundViewModel @Inject constructor(
         }
     }
 
+    fun updateUserFavourite(playgroundId: String, isFavourite: Boolean) {
+        viewModelScope.launch {
+            localUserUseCases.getLocalUser().collect { localUser ->
+                Log.d("PlaygroundCardViewModel", "updateUserFavourite: $isFavourite")
+                if (isFavourite) {
+                    remoteUserUseCase.deleteUserFavoriteUseCase(
+                        token = "Bearer ${localUser.token ?: ""}",
+                        userId = localUser.userID ?: "",
+                        playgroundId = playgroundId,
+                    ).collect {
+                        Log.d("PlaygroundCardViewModel", "updateUserFavourite: $it")
+                    }
+                } else {
+                    remoteUserUseCase.userFavouriteUseCase(
+                        token = "Bearer ${localUser.token ?: ""}",
+                        userId = localUser.userID ?: "",
+                        playgroundId = playgroundId,
+                    ).collect {
+                        Log.d("PlaygroundCardViewModel", "updateUserFavourite: $it")
+                    }
+                }
+            }
+        }
+    }
 }
 
 

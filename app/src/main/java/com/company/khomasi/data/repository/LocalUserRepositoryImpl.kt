@@ -1,7 +1,6 @@
 package com.company.khomasi.data.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -93,7 +92,6 @@ class LocalUserRepositoryImpl(
         return context.dataStore.data.map { preferences ->
             val appEntry = preferences[IS_ONBOARDING] ?: false
             val isLogin = preferences[IS_LOGIN] ?: false
-            Log.d("ActivityMain", "readAppEntry: $appEntry $isLogin")
             if (!appEntry) {
                 Screens.AppStartNavigation
             } else if (!isLogin) {

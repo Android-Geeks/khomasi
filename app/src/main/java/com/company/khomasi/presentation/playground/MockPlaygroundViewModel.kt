@@ -19,9 +19,7 @@ class MockPlaygroundViewModel : ViewModel() {
         MutableStateFlow(DataState.Empty)
     val reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>> = _reviewsState
     fun getPlaygroundDetails(playgroundId: Int) {
-
     }
-
     fun onBookNowClicked() {
 
     }
@@ -29,4 +27,6 @@ class MockPlaygroundViewModel : ViewModel() {
     fun getPlaygroundImages(): List<PlaygroundPicture> {
         return emptyList()
     }
+
+    fun updateUserFavourite(playgroundId: String, isFavourite: Boolean) {}
 }

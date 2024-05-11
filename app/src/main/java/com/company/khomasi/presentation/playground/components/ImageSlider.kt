@@ -11,10 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,7 +35,7 @@ import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.PlaygroundPicture
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.presentation.components.connectionStates.ThreeBounce
-import com.company.khomasi.presentation.components.iconButtons.FavoriteIcon
+import com.company.khomasi.presentation.components.iconButtons.RoundedFavoriteIcon
 import com.company.khomasi.presentation.playground.ButtonWithIcon
 import com.company.khomasi.presentation.playground.PlaygroundUiState
 import com.company.khomasi.utils.convertToBitmap
@@ -56,11 +53,13 @@ fun ImageSlider(
     playgroundState: StateFlow<PlaygroundUiState>,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
-    onClickFav: () -> Unit
+    onClickFav: (String, Boolean) -> Unit,
 ) {
     val uiState by playgroundState.collectAsStateWithLifecycle()
 
     val playgroundState1 by playgroundStateFlow.collectAsStateWithLifecycle()
+    val favState = uiState.favPlayground
+
     var playgroundData by remember { mutableStateOf<List<PlaygroundPicture>?>(null) }
 
     LaunchedEffect(playgroundState1) {
@@ -145,22 +144,10 @@ fun ImageSlider(
             ) {
                 ButtonWithIcon(iconId = R.drawable.sharenetwork) { onClickShare() }
                 Spacer(modifier = Modifier.width(8.dp))
-                Card(
-                    shape = CircleShape, modifier = Modifier.size(44.dp)
-                ) {
-                    Column(
-                        Modifier.fillMaxSize(),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        FavoriteIcon(
-                            onFavoriteClick = onClickFav,
-                            isFavorite = uiState.isFavourite,
-                            modifier = Modifier.size(24.dp),
-                            inactiveColor = Color.Black
-                        )
-                    }
-                }
+                RoundedFavoriteIcon(
+                    onFavoriteClick = { onClickFav(favState.id.toString(), favState.isFavourite) },
+                    isFavorite = uiState.isFavourite,
+                )
             }
         }
     }
