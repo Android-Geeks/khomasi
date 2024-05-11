@@ -15,8 +15,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyModalBottomSheet
-import com.company.khomasi.theme.darkText
-import com.company.khomasi.theme.lightText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -25,7 +23,6 @@ fun UploadPhotoOptionsSheet(
     onDismissRequest: () -> Unit,
     onTakePhoto: () -> Unit,
     onChooseFromGallery: () -> Unit,
-    isDark: Boolean
 ) {
     MyModalBottomSheet(
         sheetState = bottomSheetState,
@@ -48,7 +45,6 @@ fun UploadPhotoOptionsSheet(
                 Text(
                     text = stringResource(id = R.string.take_a_photo),
                     style = MaterialTheme.typography.titleLarge,
-                    color = if (isDark) darkText else lightText
                 )
             }
             Button(
@@ -62,7 +58,6 @@ fun UploadPhotoOptionsSheet(
                 Text(
                     text = stringResource(id = R.string.choose_from_gallery),
                     style = MaterialTheme.typography.titleLarge,
-                    color = if (isDark) darkText else lightText
                 )
             }
         }
