@@ -92,7 +92,8 @@ fun ProfileTopBar(
             name = localUser.firstName + " " + localUser.lastName,
             image = image,
             rating = localUser.rating ?: 0.0,
-            isDark = isDark
+            isDark = isDark,
+            coins = localUser.coins ?: 0.0
         )
     }
 }

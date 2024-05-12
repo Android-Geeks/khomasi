@@ -116,7 +116,7 @@ fun MyTextField(
             supportingText = supportingText,
             modifier = modifier
                 .fillMaxWidth(),
-            placeholder = { Text(text = placeholder) },
+            placeholder = { Text(text = placeholder, color = MaterialTheme.colorScheme.outline) },
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyBoardType,
                 imeAction = imeAction

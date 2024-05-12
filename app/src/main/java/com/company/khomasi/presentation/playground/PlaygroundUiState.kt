@@ -7,6 +7,9 @@ data class PlaygroundUiState(
     val isFavourite: Boolean = false,
     val showReviews: Boolean = false,
     val reviewsCount: Int = 0,
+    val cardNumber: String = "",
+    val cardValidationDate: String = "",
+    val cardCvv: String = "",
     val favPlayground: Playground = Playground
         (
         id = 20,
@@ -20,3 +23,10 @@ data class PlaygroundUiState(
         playgroundPicture = null
     )
 )
+
+enum class PaymentType {
+    Fawry,
+    Card,
+    Coins,
+    Empty
+}

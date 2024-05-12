@@ -44,7 +44,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
@@ -396,7 +395,7 @@ fun BookingTopBar(
 @Preview(showSystemUi = true, locale = "en")
 @Composable
 fun BookingScreenPreview() {
-    val mockViewModel: MockBookingViewModel = viewModel()
+    val mockViewModel = MockBookingViewModel()
     KhomasiTheme {
         BookingScreen(bookingUiState
         = mockViewModel.bookingUiState,

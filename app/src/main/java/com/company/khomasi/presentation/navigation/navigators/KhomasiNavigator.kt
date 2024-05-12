@@ -163,7 +163,6 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
                         Screens.KhomasiNavigation.BookingPlayground.BookingDetails.route
                     )
                 },
-                onClickDisplayOnMap = {},
                 getPlaygroundDetails = playgroundViewModel::getPlaygroundDetails,
                 updateShowReview = playgroundViewModel::updateShowReviews
             )

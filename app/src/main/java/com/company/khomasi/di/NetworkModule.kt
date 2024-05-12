@@ -12,6 +12,7 @@ import com.company.khomasi.domain.use_case.auth.GetVerificationCodeUseCase
 import com.company.khomasi.domain.use_case.auth.LoginUseCase
 import com.company.khomasi.domain.use_case.auth.RecoverAccountUseCase
 import com.company.khomasi.domain.use_case.auth.RegisterUseCase
+import com.company.khomasi.domain.use_case.remote_user.BookingPlaygroundUseCase
 import com.company.khomasi.domain.use_case.remote_user.CancelBookingUseCase
 import com.company.khomasi.domain.use_case.remote_user.DeleteUserFavouriteUseCase
 import com.company.khomasi.domain.use_case.remote_user.GetFilteredPlaygroundsUseCase
@@ -121,6 +122,7 @@ object NetworkModule {
     ): RemotePlaygroundUseCase = RemotePlaygroundUseCase(
         getFreeTimeSlotsUseCase = GetFreeTimeSlotsUseCase(remotePlaygroundRepository),
         getPlaygroundReviewsUseCase = GetPlaygroundReviewsUseCase(remotePlaygroundRepository),
-        getFilteredPlaygroundsUseCase = GetFilteredPlaygroundsUseCase(remotePlaygroundRepository)
+        getFilteredPlaygroundsUseCase = GetFilteredPlaygroundsUseCase(remotePlaygroundRepository),
+        bookingPlayground = BookingPlaygroundUseCase(remotePlaygroundRepository)
     )
 }

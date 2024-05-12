@@ -65,6 +65,8 @@
     <string name="total_amount_label">المبلغ الاجمالي:</string>
     <string name="select_payment_method">حدد طريقة الدفع</string>
     <string name="cash">كاش</string>
+    <string name="visa">ڤيزا</string>
+    <string name="coins">عملات</string>
     <string name="vodafone_cash">فودافون كاش</string>
     <string name="all_ratings">جميع التقييمات</string>
     <string name="confirm_reset_filter">هل أنت متأكد أنك تريد إعادة تعيين الفلتر؟</string>
@@ -207,6 +209,7 @@
     <string name="available_times">الاوقات المتاحة:</string>
     <string name="time_slot_validation">الرجاء تحديد فترة زمنية واحدة متتالية</string>
     <string name="continue_to_payment">المتابعة للدفع</string>
+    <string name="pay">أدفع</string>
     <string name="grant_permission">تم منح الإذن</string>
     <string name="permission_denied">تم رفض الإذن</string>
     <string name="take_a_photo">التقاط صورة</string>
@@ -225,4 +228,10 @@
     <string name="rating_sent">تم ارسال التصنيف</string>
     <string name="rate_not_found">لم يتم العثور علي المعدل</string>
     <string name="ok">تم</string>
+    <string name="fawry">فورى</string>
+    <string name="card_number">رقم البطاقه</string>
+    <string name="card_date">MM / YY</string>
+    <string name="validation_date">تاريخ الصلاحيه</string>
+    <string name="card_cvv">CVV رمز ال</string>
+    <string name="xxxx_xxxx">xxxx xxxx xxxx xxxx</string>
 </resources>

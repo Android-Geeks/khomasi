@@ -5,8 +5,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -35,7 +37,8 @@ fun ProfileImage(
     name: String,
     image: String?,
     rating: Double,
-    isDark: Boolean
+    isDark: Boolean,
+    coins: Double
 ) {
     val profileImage by remember(image) {
         mutableStateOf(image)
@@ -83,7 +86,17 @@ fun ProfileImage(
                 style = MaterialTheme.typography.displayMedium,
                 color = MaterialTheme.colorScheme.tertiary
             )
+            Spacer(modifier = Modifier.width(10.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.currencycircledollar),
+                contentDescription = null,
+                tint = MaterialTheme.colorScheme.tertiary
+            )
+            Text(
+                text = String.format("%d", coins.toLong()),
+                style = MaterialTheme.typography.displayMedium,
+                color = MaterialTheme.colorScheme.tertiary
+            )
         }
-
     }
 }

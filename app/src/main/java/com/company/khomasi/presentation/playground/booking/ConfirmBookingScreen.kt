@@ -54,13 +54,7 @@ fun ConfirmBookingScreen(
 ) {
     val bookingState = bookingUiState.collectAsState().value
     val screenHeight = getScreenHeight()
-//    BackHandler {
-//        if (bookingState.page == 2) {
-//            onBackToBookingScreen()
-//        } else {
-//            onBackClicked()
-//        }
-//    }
+
     Scaffold(
         topBar = {
             BookingTopBar(
@@ -96,6 +90,8 @@ fun ConfirmBookingScreen(
                     )
                 }
             )
+
+
         }
     }
 }

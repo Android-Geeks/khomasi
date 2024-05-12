@@ -211,6 +211,24 @@ class PlaygroundViewModel @Inject constructor(
         }
     }
 
+    fun updateCardNumber(cardNumber: String) {
+        _uiState.update {
+            it.copy(cardNumber = cardNumber)
+        }
+    }
+
+    fun updateCardValidationDate(cardValidationDate: String) {
+        _uiState.update {
+            it.copy(cardValidationDate = cardValidationDate)
+        }
+    }
+
+    fun updateCardCvv(cardCvv: String) {
+        _uiState.update {
+            it.copy(cardCvv = cardCvv)
+        }
+    }
+
     fun updateUserFavourite(playgroundId: String, isFavourite: Boolean) {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect { localUser ->

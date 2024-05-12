@@ -81,7 +81,6 @@ fun PlaygroundScreen(
     onClickShare: () -> Unit,
     onClickFav: (String, Boolean) -> Unit,
     onBookNowClicked: () -> Unit,
-    onClickDisplayOnMap: () -> Unit,
     updateShowReview: () -> Unit,
 ) {
     val showLoading by remember { mutableStateOf(false) }
@@ -103,7 +102,6 @@ fun PlaygroundScreen(
                 onClickBack = onClickBack,
                 onClickShare = onClickShare,
                 onClickFav = onClickFav,
-                onClickDisplayOnMap = onClickDisplayOnMap
             )
         },
         sheetContent = {
@@ -204,7 +202,6 @@ fun PlaygroundScreenContent(
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
     onClickFav: (String, Boolean) -> Unit,
-    onClickDisplayOnMap: () -> Unit,
 ) {
     LazyColumn(
         Modifier.fillMaxSize()
@@ -223,7 +220,6 @@ fun PlaygroundScreenContent(
         item {
             PlaygroundDefinition(
                 playgroundStateFlow = playgroundStateFlow,
-                onClickDisplayOnMap = onClickDisplayOnMap
             )
         }
 
@@ -347,7 +343,6 @@ fun PlaygroundScreenPreview() {
             onClickBack = {},
             onClickFav = mockViewModel::updateUserFavourite,
             onBookNowClicked = { mockViewModel.onBookNowClicked() },
-            onClickDisplayOnMap = {},
             getPlaygroundDetails = { mockViewModel.getPlaygroundDetails(1) },
             updateShowReview = {},
         )
