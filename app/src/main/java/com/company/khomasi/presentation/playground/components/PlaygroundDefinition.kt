@@ -1,5 +1,6 @@
 package com.company.khomasi.presentation.playground.components
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,6 +25,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -33,12 +35,14 @@ import com.company.khomasi.R
 import com.company.khomasi.domain.DataState
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
 import com.company.khomasi.presentation.playground.IconWithText
+import com.company.khomasi.utils.navigateToMaps
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun PlaygroundDefinition(
     playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
-    onClickDisplayOnMap: () -> Unit
+    context: Context = LocalContext.current
+
 ) {
     val playgroundState by playgroundStateFlow.collectAsStateWithLifecycle()
     var playgroundData by remember { mutableStateOf<PlaygroundScreenResponse?>(null) }
@@ -90,7 +94,13 @@ fun PlaygroundDefinition(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(start = 93.dp, end = 109.dp)
-                        .clickable { onClickDisplayOnMap() },
+                        .clickable {
+                            navigateToMaps(
+                                context = context,
+                                lat = playgroundData?.playground?.latitude ?: 0.0,
+                                long = playgroundData?.playground?.longitude ?: 0.0
+                            )
+                        },
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimaryContainer),
                 ) {
                     Row(
