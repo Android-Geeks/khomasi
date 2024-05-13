@@ -2,7 +2,7 @@ package com.company.khomasi.presentation.components
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.safeContent
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
@@ -25,7 +25,7 @@ fun MyModalBottomSheet(
         sheetState = sheetState,
         dragHandle = { BottomSheetDefaults.DragHandle() },
         modifier = modifier,
-        windowInsets = WindowInsets.ime,
+        windowInsets = WindowInsets.safeContent,
         containerColor = if (isSystemInDarkTheme()) darkOverlay else lightOverlay
     ) {
         content()
