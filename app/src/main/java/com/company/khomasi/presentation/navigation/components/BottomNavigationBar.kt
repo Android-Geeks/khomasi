@@ -1,11 +1,14 @@
 package com.company.khomasi.presentation.navigation.components
 
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavDestination.Companion.hierarchy
@@ -18,10 +21,11 @@ import com.company.khomasi.navigation.listOfNavItems
 fun BottomNavigationBar(
     navController: NavHostController,
 ) {
-    NavigationBar {
+    NavigationBar(
+        containerColor = Color.White
+    ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
-
         listOfNavItems.forEach { navItem ->
             NavigationBarItem(
                 selected = currentDestination?.hierarchy?.any { it.route == navItem.route } == true,
@@ -44,7 +48,12 @@ fun BottomNavigationBar(
                 },
                 label = {
                     Text(text = stringResource(id = navItem.label))
-                }
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.primary,
+                    selectedTextColor = MaterialTheme.colorScheme.primary,
+                    indicatorColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f),
+                )
             )
         }
     }
