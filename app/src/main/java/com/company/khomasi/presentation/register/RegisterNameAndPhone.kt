@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -100,6 +101,7 @@ fun RegisterNameAndPhone(
                     .fillMaxWidth()
             )
         },
+        modifier = Modifier.safeContentPadding(),
         sheetContent = {
             Column(
                 modifier = Modifier
