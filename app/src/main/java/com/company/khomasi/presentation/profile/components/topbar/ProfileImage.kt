@@ -45,7 +45,7 @@ fun ProfileImage(
     }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.padding(16.dp)
+        modifier = Modifier.padding(30.dp)
     ) {
         SubcomposeAsyncImage(
             model = ImageRequest

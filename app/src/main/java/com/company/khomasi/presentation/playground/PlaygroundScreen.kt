@@ -210,7 +210,6 @@ fun PlaygroundScreenContent(
     LazyColumn(
         Modifier.fillMaxSize()
     ) {
-
         item {
             ImageSlider(
                 playgroundStateFlow = playgroundStateFlow,

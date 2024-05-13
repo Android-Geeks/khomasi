@@ -42,10 +42,10 @@ fun ProfileTopBar(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(120.dp)
+                .height(160.dp)
                 .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
                 .background(if (isDark) darkIconMask else lightIconMask)
-                .padding(16.dp),
+                .padding(start = 16.dp, end = 16.dp, top = 30.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top
         ) {

@@ -22,8 +22,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var connectivityObserver: ConnectivityObserver
 
     private val mainViewModel by viewModels<MainViewModel>()
-
-
+    
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         connectivityObserver = NetworkConnectivityObserver(applicationContext)

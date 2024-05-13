@@ -1,7 +1,5 @@
 package com.company.khomasi.presentation.playground
 
-import com.company.khomasi.domain.model.Playground
-
 
 data class PlaygroundUiState(
     val isFavourite: Boolean = false,

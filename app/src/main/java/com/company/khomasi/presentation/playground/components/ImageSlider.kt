@@ -69,14 +69,14 @@ fun ImageSlider(
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .height(246.dp)
+            .height(266.dp)
     ) {
         HorizontalPager(
             count = playgroundData?.size ?: 0,
             state = pagerState,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(226.dp)
+                .height(246.dp)
         ) { page ->
             SubcomposeAsyncImage(
                 modifier = Modifier.fillMaxSize(),
@@ -94,7 +94,7 @@ fun ImageSlider(
                 },
                 error = {
                     Image(
-                        painter = painterResource(id = R.drawable.user_img),
+                        painter = painterResource(id = R.drawable.playground),
                         contentDescription = null
                     )
                 },
@@ -110,7 +110,7 @@ fun ImageSlider(
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(top = 12.dp, start = 16.dp),
+                    .padding(top = 24.dp, start = 16.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 ButtonWithIcon(R.drawable.back) { onClickBack() }
