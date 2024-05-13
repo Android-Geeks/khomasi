@@ -80,10 +80,11 @@ fun PlaygroundScreen(
     getPlaygroundDetails: (Int) -> Unit,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
-    onClickFav: (String, Boolean) -> Unit,
+    onClickFav: (Boolean) -> Unit,
     onBookNowClicked: () -> Unit,
     onClickDisplayOnMap: () -> Unit,
     updateShowReview: () -> Unit,
+    updateFavouriteAndPlaygroundId: (Boolean, Int) -> Unit,
 ) {
     val showLoading by remember { mutableStateOf(false) }
     val reviews by reviewsState.collectAsStateWithLifecycle()
@@ -91,6 +92,7 @@ fun PlaygroundScreen(
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
+        updateFavouriteAndPlaygroundId(isFavourite, playgroundId)
         getPlaygroundDetails(playgroundId)
     }
 
@@ -178,7 +180,8 @@ fun ShowBottomSheet(
                     reviews = reviews,
                     onClickCancel = {
                         dismissBottomSheet(bottomSheetState, scope, updateShowReview)
-                    })
+                    }
+                )
             }
         )
     }
@@ -204,7 +207,7 @@ fun PlaygroundScreenContent(
     onViewRatingClicked: () -> Unit,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
-    onClickFav: (String, Boolean) -> Unit,
+    onClickFav: (Boolean) -> Unit,
     onClickDisplayOnMap: () -> Unit,
 ) {
     LazyColumn(
@@ -253,12 +256,9 @@ fun PlaygroundScreenContent(
         item { LineSpacer() }
 
         item {
-
             PlaygroundFeatures(
                 playgroundStateFlow = playgroundStateFlow,
             )
-
-
         }
 
         item { LineSpacer() }
@@ -345,13 +345,14 @@ fun PlaygroundScreenPreview() {
             playgroundUiState = mockViewModel.uiState,
             reviewsState = mockViewModel.reviewsState,
             onViewRatingClicked = {},
-            onClickShare = {},
+            getPlaygroundDetails = { mockViewModel.getPlaygroundDetails(1) },
             onClickBack = {},
-            onClickFav = mockViewModel::updateUserFavourite,
+            onClickShare = {},
+            onClickFav = { _ -> },
             onBookNowClicked = { mockViewModel.onBookNowClicked() },
             onClickDisplayOnMap = {},
-            getPlaygroundDetails = { mockViewModel.getPlaygroundDetails(1) },
             updateShowReview = {},
+            updateFavouriteAndPlaygroundId = { _, _ -> }
         )
     }
 

@@ -152,7 +152,7 @@ fun ExpiredPage(
                             toRate(bookingDetails.playgroundId)
                             isOpen = true
                         },
-                        reBook = { reBook(bookingDetails.playgroundId, false) }
+                        reBook = { reBook(bookingDetails.playgroundId, bookingDetails.isFavorite) }
                     )
                 } else {
                     EmptyScreen(

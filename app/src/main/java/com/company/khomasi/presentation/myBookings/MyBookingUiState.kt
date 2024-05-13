@@ -20,7 +20,8 @@ data class MyBookingUiState(
         cost = 0,
         confirmationCode = "",
         isCanceled = true,
-        isFinished = true
+        isFinished = true,
+        isFavorite = false
     )
 )
 

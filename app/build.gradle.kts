@@ -33,6 +33,7 @@ android {
         create("dev") {
             dimension = "default"
             resourceConfigurations.add("en")
+            resourceConfigurations.add("ar-ldrtl")
             resourceConfigurations.add("xxhdpi")
         }
     }

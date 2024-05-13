@@ -158,6 +158,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
                 playgroundUiState = playgroundViewModel.uiState,
                 reviewsState = playgroundViewModel.reviewsState,
                 onViewRatingClicked = playgroundViewModel::updateShowReviews,
+                updateFavouriteAndPlaygroundId = playgroundViewModel::updateFavouriteAndPlaygroundId,
                 onClickBack = { navController.popBackStack() },
                 onClickShare = {},
                 onClickFav = playgroundViewModel::updateUserFavourite,
@@ -232,8 +233,8 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavHostController) {
                     navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 },
                 onClickBookField = { navController.navigate(Screens.KhomasiNavigation.Playgrounds.route) },
-                cancelDetails = { playgroundId ->
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
+                cancelDetails = { playgroundId, isFavourite ->
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 },
                 toRate = bookingViewModel::toRate
             )

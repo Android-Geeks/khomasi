@@ -46,13 +46,13 @@ class RemoteUserRepositoryImpl(
     override suspend fun getUserBookings(token: String, id: String) =
         handleApi { retrofitService.getUserBookings(token, id) }
 
-    override suspend fun deleteUserFavourite(token: String, userId: String, playgroundId: String) =
+    override suspend fun deleteUserFavourite(token: String, userId: String, playgroundId: Int) =
         handleApi { retrofitService.deleteUserFavourite(token, userId, playgroundId) }
 
     override suspend fun getUserFavouritePlaygrounds(token: String, userId: String) =
         handleApi { retrofitService.getUserFavouritePlaygrounds(token, userId) }
 
-    override suspend fun userFavourite(token: String, userId: String, playgroundId: String) =
+    override suspend fun userFavourite(token: String, userId: String, playgroundId: Int) =
         handleApi { retrofitService.userFavourite(token, userId, playgroundId) }
 
     override suspend fun uploadProfilePicture(

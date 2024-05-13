@@ -50,12 +50,11 @@ fun ImageSlider(
     playgroundState: StateFlow<PlaygroundUiState>,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
-    onClickFav: (String, Boolean) -> Unit,
+    onClickFav: (Boolean) -> Unit,
 ) {
     val uiState by playgroundState.collectAsStateWithLifecycle()
 
     val playgroundState1 by playgroundStateFlow.collectAsStateWithLifecycle()
-    val favState = uiState.favPlayground
 
     var playgroundData by remember { mutableStateOf<List<PlaygroundPicture>?>(null) }
 
@@ -143,10 +142,7 @@ fun ImageSlider(
                     Spacer(modifier = Modifier.padding(4.dp))
                     RoundedFavoriteIcon(
                         onFavoriteClick = {
-                            onClickFav(
-                                favState.id.toString(),
-                                favState.isFavourite
-                            )
+                            onClickFav(!uiState.isFavourite)
                         },
                         isFavorite = uiState.isFavourite,
                     )

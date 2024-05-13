@@ -88,6 +88,18 @@ class PlaygroundViewModel @Inject constructor(
         }
     }
 
+    fun updateFavouriteAndPlaygroundId(
+        isFavourite: Boolean,
+        playgroundId: Int
+    ) {
+        _uiState.update {
+            it.copy(
+                isFavourite = isFavourite,
+                playgroundId = playgroundId
+            )
+        }
+    }
+
 
     fun updateShowReviews() {
         _uiState.value = _uiState.value.copy(showReviews = !_uiState.value.showReviews)
@@ -211,7 +223,7 @@ class PlaygroundViewModel @Inject constructor(
         }
     }
 
-    fun updateUserFavourite(playgroundId: String, isFavourite: Boolean) {
+    fun updateUserFavourite(isFavourite: Boolean) {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect { localUser ->
                 Log.d("PlaygroundCardViewModel", "updateUserFavourite: $isFavourite")
@@ -219,7 +231,7 @@ class PlaygroundViewModel @Inject constructor(
                     remoteUserUseCase.deleteUserFavoriteUseCase(
                         token = "Bearer ${localUser.token ?: ""}",
                         userId = localUser.userID ?: "",
-                        playgroundId = playgroundId,
+                        playgroundId = _uiState.value.playgroundId,
                     ).collect {
                         Log.d("PlaygroundCardViewModel", "updateUserFavourite: $it")
                     }
@@ -227,7 +239,7 @@ class PlaygroundViewModel @Inject constructor(
                     remoteUserUseCase.userFavouriteUseCase(
                         token = "Bearer ${localUser.token ?: ""}",
                         userId = localUser.userID ?: "",
-                        playgroundId = playgroundId,
+                        playgroundId = _uiState.value.playgroundId,
                     ).collect {
                         Log.d("PlaygroundCardViewModel", "updateUserFavourite: $it")
                     }

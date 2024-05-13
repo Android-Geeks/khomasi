@@ -15,7 +15,7 @@ data class BookingDetails(
     @SerialName("playgroundAddress")
     val playgroundAddress: String,
     @SerialName("playgroundPicture")
-    val playgroundPicture : String,
+    val playgroundPicture: String,
     @SerialName("bookingTime")
     val bookingTime: String,
     @SerialName("duration")
@@ -27,5 +27,7 @@ data class BookingDetails(
     @SerialName("isCanceled")
     val isCanceled: Boolean,
     @SerialName("isFinished")
-    val isFinished: Boolean
+    val isFinished: Boolean,
+    @SerialName("isFavorite")
+    val isFavorite: Boolean
 )

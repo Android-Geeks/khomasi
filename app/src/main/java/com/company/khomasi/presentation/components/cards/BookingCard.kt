@@ -315,7 +315,8 @@ private fun BookingCardPreview() {
                 2425,
                 "false",
                 false,
-                isFinished = false
+                isFinished = false,
+                isFavorite = false
             ),
             bookingStatus = BookingStatus.CONFIRMED,
             onViewPlaygroundClick = {},
