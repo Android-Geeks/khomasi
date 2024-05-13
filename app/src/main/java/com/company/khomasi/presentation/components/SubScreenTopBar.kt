@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.components
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -17,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
@@ -25,7 +23,7 @@ import com.company.khomasi.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SubScreenTopBar(
-    @StringRes title: Int,
+    title: String,
     onBackClick: () -> Unit,
     navigationIcon: @Composable () -> Unit = {
         IconButton(
@@ -47,7 +45,7 @@ fun SubScreenTopBar(
         TopAppBar(
             title = {
                 Text(
-                    text = stringResource(title),
+                    text = title,
                     style = MaterialTheme.typography.displayMedium,
                     modifier = Modifier
                         .fillMaxWidth()
