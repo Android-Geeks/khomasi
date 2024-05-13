@@ -309,7 +309,13 @@ class PlaygroundViewModel @Inject constructor(
                         userId = localUser.userID ?: "",
                         playgroundId = _uiState.value.playgroundId,
                     ).collect {
-                        Log.d("PlaygroundCardViewModel", "updateUserFavourite: $it")
+                        if (it is DataState.Success) {
+                            _uiState.update { state ->
+                                state.copy(
+                                    isFavourite = false
+                                )
+                            }
+                        }
                     }
                 } else {
                     remoteUserUseCase.userFavouriteUseCase(
@@ -317,7 +323,13 @@ class PlaygroundViewModel @Inject constructor(
                         userId = localUser.userID ?: "",
                         playgroundId = _uiState.value.playgroundId,
                     ).collect {
-                        Log.d("PlaygroundCardViewModel", "updateUserFavourite: $it")
+                        if (it is DataState.Success) {
+                            _uiState.update { state ->
+                                state.copy(
+                                    isFavourite = true
+                                )
+                            }
+                        }
                     }
                 }
             }

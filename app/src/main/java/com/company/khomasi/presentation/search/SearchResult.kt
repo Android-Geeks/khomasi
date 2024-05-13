@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 fun SearchResult(
     searchUiState: StateFlow<SearchUiState>,
     onBackClick: () -> Unit,
-    navigateToPlaygroundDetails: (Int) -> Unit,
+    navigateToPlaygroundDetails: (Int, Boolean) -> Unit,
     onSearchFilterChanged: (SearchFilter) -> Unit,
     isDark: Boolean = isSystemInDarkTheme(),
     onBackPage: () -> Unit,
@@ -112,7 +112,12 @@ fun SearchResult(
                     PlaygroundCard(
                         playground = item,
                         onFavouriteClick = {},
-                        onViewPlaygroundClick = { navigateToPlaygroundDetails(item.id) }
+                        onViewPlaygroundClick = {
+                            navigateToPlaygroundDetails(
+                                item.id,
+                                item.isFavourite
+                            )
+                        }
                     )
                     Spacer(modifier = Modifier.padding(8.dp))
                 }

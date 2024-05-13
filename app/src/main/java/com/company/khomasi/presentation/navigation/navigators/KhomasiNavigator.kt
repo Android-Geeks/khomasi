@@ -133,7 +133,7 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavHostController) {
                 it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
             BrowseResults(
                 browseUiState = browsePlaygroundsViewModel.uiState,
-                onBackClicked = { navController.popBackStack() },
+                onBackClicked = navController::popBackStack,
                 onFavClicked = browsePlaygroundsViewModel::onFavouriteClicked,
                 onClickPlayground = { playgroundId, isFavourite ->
                     navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
@@ -149,8 +149,8 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
         startDestination = Screens.KhomasiNavigation.BookingPlayground.PlaygroundDetails.route
     ) {
         composable(route = Screens.KhomasiNavigation.BookingPlayground.PlaygroundDetails.route) { navBackStackEntry ->
-            val playgroundId = navBackStackEntry.arguments?.getInt("playgroundId")
-            val isFavourite = navBackStackEntry.arguments?.getBoolean("isFavourite")
+            val playgroundId = navBackStackEntry.arguments?.getString("playgroundId")?.toInt()
+            val isFavourite = navBackStackEntry.arguments?.getString("isFavourite")?.toBoolean()
             val playgroundViewModel =
                 navBackStackEntry.sharedViewModel<PlaygroundViewModel>(navController = navController)
             PlaygroundScreen(
@@ -161,7 +161,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
                 reviewsState = playgroundViewModel.reviewsState,
                 onViewRatingClicked = playgroundViewModel::updateShowReviews,
                 updateFavouriteAndPlaygroundId = playgroundViewModel::updateFavouriteAndPlaygroundId,
-                onClickBack = { navController.popBackStack() },
+                onClickBack = navController::popBackStack,
                 onClickShare = {},
                 onClickFav = playgroundViewModel::updateUserFavourite,
                 onBookNowClicked = {
@@ -181,7 +181,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
                 navBackStackEntry.sharedViewModel<PlaygroundViewModel>(navController = navController)
             BookingScreen(bookingUiState = bookingViewModel.bookingUiState,
                 freeSlotsState = bookingViewModel.freeSlotsState,
-                onBackClicked = { navController.popBackStack() },
+                onBackClicked = navController::popBackStack,
                 updateDuration = bookingViewModel::updateDuration,
                 getFreeSlots = bookingViewModel::getFreeTimeSlots,
                 updateSelectedDay = bookingViewModel::updateSelectedDay,
@@ -200,7 +200,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
 
             ConfirmBookingScreen(
                 bookingUiState = bookingViewModel.bookingUiState,
-                onBackClicked = { navController.popBackStack() },
+                onBackClicked = navController::popBackStack,
                 onNextClicked = { navController.navigate(Screens.KhomasiNavigation.BookingPlayground.Payment.route) },
             )
         }
@@ -216,7 +216,8 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
                 updateCardCvv = bookingViewModel::updateCardCvv,
                 onPayWithVisaClicked = { },
                 onPayWithCoinsClicked = { bookingViewModel.bookingPlayground(context) },
-                onBackClicked = { navController.popBackStack() })
+                onBackClicked = navController::popBackStack
+            )
         }
     }
 }
@@ -254,7 +255,7 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavHostController) {
             val myBookingViewModel =
                 it.sharedViewModel<MyBookingViewModel>(navController = navController)
             CancelSheet(
-                onBackClick = { navController.popBackStack() },
+                onBackClick = navController::popBackStack,
                 uiState = myBookingViewModel.uiState,
                 cancelBooking = myBookingViewModel::cancelBooking
             )
@@ -282,7 +283,7 @@ fun NavGraphBuilder.profileNavigator(navController: NavHostController) {
                 onFeedbackChanged = profileViewModel::onFeedbackChanged,
                 onLogout = profileViewModel::onLogout,
                 updateUserData = profileViewModel::updateUserData,
-                onBackClick = { navController.popBackStack() },
+                onBackClick = navController::popBackStack,
                 sendFeedback = profileViewModel::sendFeedback
             )
         }
@@ -296,7 +297,7 @@ fun NavGraphBuilder.profileNavigator(navController: NavHostController) {
                 onLastNameChange = profileViewModel::onLastNameChanged,
                 onPhoneChange = profileViewModel::onPhoneChanged,
                 onChangeProfileImage = profileViewModel::onChangeProfileImage,
-                onBackClick = { navController.popBackStack() }
+                onBackClick = navController::popBackStack
             )
         }
     }
@@ -318,8 +319,12 @@ fun NavGraphBuilder.searchNavigator(navController: NavHostController) {
                 onQueryChange = searchViewModel::onSearchQueryChanged,
                 onSearchQuerySubmitted = searchViewModel::onSearchQuerySubmitted,
                 onClearHistory = searchViewModel::onClickRemoveSearchHistory,
-                navigateToPlaygroundDetails = { playgroundId -> navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId") },
-                onBackClick = { navController.popBackStack() },
+                navigateToPlaygroundDetails = { playgroundId, isFavourite ->
+                    navController.navigate(
+                        Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite"
+                    )
+                },
+                onBackClick = navController::popBackStack,
                 onNextPage = { navController.navigate(Screens.KhomasiNavigation.Search.SearchResults.route) },
             )
         }
@@ -328,10 +333,14 @@ fun NavGraphBuilder.searchNavigator(navController: NavHostController) {
             val searchViewModel = it.sharedViewModel<SearchViewModel>(navController = navController)
             SearchResult(
                 searchUiState = searchViewModel.uiState,
-                onBackClick = { navController.popBackStack() },
-                navigateToPlaygroundDetails = { playgroundId -> navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId") },
+                onBackClick = navController::popBackStack,
+                navigateToPlaygroundDetails = { playgroundId, isFavourite ->
+                    navController.navigate(
+                        Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite"
+                    )
+                },
                 onSearchFilterChanged = searchViewModel::onSearchFilterChanged,
-                onBackPage = { navController.popBackStack() },
+                onBackPage = navController::popBackStack,
             )
         }
     }

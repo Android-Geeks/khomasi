@@ -142,7 +142,7 @@ fun ImageSlider(
                     Spacer(modifier = Modifier.padding(4.dp))
                     RoundedFavoriteIcon(
                         onFavoriteClick = {
-                            onClickFav(!uiState.isFavourite)
+                            onClickFav(uiState.isFavourite)
                         },
                         isFavorite = uiState.isFavourite,
                     )

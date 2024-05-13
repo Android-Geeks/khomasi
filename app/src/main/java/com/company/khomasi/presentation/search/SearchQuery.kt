@@ -48,7 +48,7 @@ fun SearchQuery(
     onNextPage: () -> Unit,
     onQueryChange: (String) -> Unit,
     onSearchQuerySubmitted: (String) -> Unit,
-    navigateToPlaygroundDetails: (Int) -> Unit,
+    navigateToPlaygroundDetails: (Int, Boolean) -> Unit,
     onClearHistory: () -> Unit,
     isDark: Boolean = isSystemInDarkTheme(),
 ) {
