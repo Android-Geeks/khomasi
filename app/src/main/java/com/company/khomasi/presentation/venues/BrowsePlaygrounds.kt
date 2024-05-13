@@ -40,7 +40,7 @@ fun BrowsePlaygrounds(
     getFilteredPlaygrounds: () -> Unit,
     onFilterClick: () -> Unit,
     onFavouriteClicked: (Int) -> Unit,
-    onClickPlaygroundCard: (Int) -> Unit
+    onClickPlaygroundCard: (Int, Boolean) -> Unit
 ) {
     val user by localUser.collectAsStateWithLifecycle()
     val uiState by browseUiState.collectAsStateWithLifecycle()
@@ -86,7 +86,12 @@ fun BrowsePlaygrounds(
                         onFavouriteClick = {
                             onFavouriteClicked(playground.id)
                         },
-                        onViewPlaygroundClick = { onClickPlaygroundCard(playground.id) },
+                        onViewPlaygroundClick = {
+                            onClickPlaygroundCard(
+                                playground.id,
+                                playground.isFavourite
+                            )
+                        },
                     )
                     Spacer(modifier = Modifier.height(16.dp))
                 }
@@ -111,7 +116,7 @@ fun BrowsePreview() {
             getFilteredPlaygrounds = { mockBrowseViewModel.getPlaygrounds() },
             onFilterClick = { },
             onFavouriteClicked = { },
-            onClickPlaygroundCard = { }
+            onClickPlaygroundCard = { _, _ -> }
         )
     }
 }

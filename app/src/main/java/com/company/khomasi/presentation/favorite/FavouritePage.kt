@@ -5,7 +5,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.shrinkVertically
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -41,12 +40,11 @@ import com.company.khomasi.presentation.components.cards.PlaygroundCard
 import com.company.khomasi.theme.KhomasiTheme
 import kotlinx.coroutines.flow.StateFlow
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun FavouritePage(
     uiState: StateFlow<FavouriteUiState>,
     onFavouriteClick: (Int) -> Unit,
-    onPlaygroundClick: (Int) -> Unit,
+    onPlaygroundClick: (Int, Boolean) -> Unit,
     getFavoritePlaygrounds: () -> Unit
 ) {
     LaunchedEffect(Unit) {
@@ -85,7 +83,12 @@ fun FavouritePage(
                                 playground = playground,
                                 modifier = Modifier
                                     .fillMaxWidth(),
-                                onViewPlaygroundClick = { onPlaygroundClick(playground.id) },
+                                onViewPlaygroundClick = {
+                                    onPlaygroundClick(
+                                        playground.id,
+                                        playground.isFavourite
+                                    )
+                                },
                                 onFavouriteClick = {
                                     //deletedList.add(playground)
                                     onFavouriteClick(playground.id)
@@ -168,7 +171,7 @@ fun FavouritePagePreview() {
         FavouritePage(
             uiState = mockViewModel.uiState,
             onFavouriteClick = { },
-            onPlaygroundClick = {},
+            onPlaygroundClick = { _, _ -> },
             getFavoritePlaygrounds = {},
         )
     }

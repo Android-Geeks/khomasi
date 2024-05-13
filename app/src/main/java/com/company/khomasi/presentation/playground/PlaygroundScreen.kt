@@ -71,6 +71,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun PlaygroundScreen(
     playgroundId: Int,
+    isFavourite: Boolean,
     playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
     playgroundUiState: StateFlow<PlaygroundUiState>,
     reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>>,
@@ -79,9 +80,10 @@ fun PlaygroundScreen(
     getPlaygroundDetails: (Int) -> Unit,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
-    onClickFav: (String, Boolean) -> Unit,
+    onClickFav: (Boolean) -> Unit,
     onBookNowClicked: () -> Unit,
     updateShowReview: () -> Unit,
+    updateFavouriteAndPlaygroundId: (Boolean, Int) -> Unit,
 ) {
     val showLoading by remember { mutableStateOf(false) }
     val reviews by reviewsState.collectAsStateWithLifecycle()
@@ -89,6 +91,7 @@ fun PlaygroundScreen(
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
+        updateFavouriteAndPlaygroundId(isFavourite, playgroundId)
         getPlaygroundDetails(playgroundId)
     }
 
@@ -175,7 +178,8 @@ fun ShowBottomSheet(
                     reviews = reviews,
                     onClickCancel = {
                         dismissBottomSheet(bottomSheetState, scope, updateShowReview)
-                    })
+                    }
+                )
             }
         )
     }
@@ -201,7 +205,7 @@ fun PlaygroundScreenContent(
     onViewRatingClicked: () -> Unit,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
-    onClickFav: (String, Boolean) -> Unit,
+    onClickFav: (Boolean) -> Unit,
 ) {
     LazyColumn(
         Modifier.fillMaxSize()
@@ -248,12 +252,9 @@ fun PlaygroundScreenContent(
         item { LineSpacer() }
 
         item {
-
             PlaygroundFeatures(
                 playgroundStateFlow = playgroundStateFlow,
             )
-
-
         }
 
         item { LineSpacer() }
@@ -335,16 +336,18 @@ fun PlaygroundScreenPreview() {
     KhomasiTheme(darkTheme = false) {
         PlaygroundScreen(
             playgroundId = 1,
+            isFavourite = true,
             playgroundStateFlow = mockViewModel.playgroundState,
             playgroundUiState = mockViewModel.uiState,
             reviewsState = mockViewModel.reviewsState,
             onViewRatingClicked = {},
-            onClickShare = {},
-            onClickBack = {},
-            onClickFav = mockViewModel::updateUserFavourite,
-            onBookNowClicked = { mockViewModel.onBookNowClicked() },
             getPlaygroundDetails = { mockViewModel.getPlaygroundDetails(1) },
+            onClickBack = {},
+            onClickShare = {},
+            onClickFav = { _ -> },
+            onBookNowClicked = { mockViewModel.onBookNowClicked() },
             updateShowReview = {},
+            updateFavouriteAndPlaygroundId = { _, _ -> }
         )
     }
 

@@ -35,9 +35,9 @@ fun MyBookingPage(
     playgroundReview: () -> Unit,
     onCommentChange: (String) -> Unit,
     onRatingChange: (Float) -> Unit,
-    reBook: (Int) -> Unit,
+    reBook: (Int, Boolean) -> Unit,
     onClickBookField: () -> Unit,
-    cancelDetails: (Int) -> Unit,
+    cancelDetails: (Int, Boolean) -> Unit,
     toRate: (Int) -> Unit,
 ) {
     LaunchedEffect(Unit) {
@@ -113,8 +113,8 @@ fun TabContent(
     onCommentChange: (String) -> Unit,
     onRatingChange: (Float) -> Unit,
     onClickBookField: () -> Unit,
-    reBook: (Int) -> Unit,
-    cancelDetails: (Int) -> Unit,
+    reBook: (Int, Boolean) -> Unit,
+    cancelDetails: (Int, Boolean) -> Unit,
     toRate: (Int) -> Unit,
 ) {
     HorizontalPager(count = tabs.size, state = pagerState) { page ->

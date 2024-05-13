@@ -96,7 +96,7 @@ fun PlaygroundCard(
                         onFavoriteClick = {
                             onFavouriteClick()
                             viewModel.updateUserFavourite(
-                                playground.id.toString(),
+                                playground.id,
                                 playground.isFavourite
                             )
                         },

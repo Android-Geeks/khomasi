@@ -33,7 +33,7 @@ interface RemoteUserRepository {
     suspend fun deleteUserFavourite(
         token: String,
         userId: String,
-        playgroundId: String
+        playgroundId: Int
     ): Flow<DataState<MessageResponse>>
 
     suspend fun getUserFavouritePlaygrounds(
@@ -44,7 +44,7 @@ interface RemoteUserRepository {
     suspend fun userFavourite(
         token: String,
         userId: String,
-        playgroundId: String
+        playgroundId: Int
     ): Flow<DataState<MessageResponse>>
 
     suspend fun cancelBooking(

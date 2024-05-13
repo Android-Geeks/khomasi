@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.playground.components
 
-import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -44,7 +43,6 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
 import kotlinx.coroutines.flow.StateFlow
 
-@SuppressLint("StateFlowValueCalledInComposition")
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ImageSlider(
@@ -52,12 +50,11 @@ fun ImageSlider(
     playgroundState: StateFlow<PlaygroundUiState>,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
-    onClickFav: (String, Boolean) -> Unit,
+    onClickFav: (Boolean) -> Unit,
 ) {
     val uiState by playgroundState.collectAsStateWithLifecycle()
 
     val playgroundState1 by playgroundStateFlow.collectAsStateWithLifecycle()
-    val favState = uiState.favPlayground
 
     var playgroundData by remember { mutableStateOf<List<PlaygroundPicture>?>(null) }
 
@@ -145,10 +142,7 @@ fun ImageSlider(
                     Spacer(modifier = Modifier.padding(4.dp))
                     RoundedFavoriteIcon(
                         onFavoriteClick = {
-                            onClickFav(
-                                favState.id.toString(),
-                                favState.isFavourite
-                            )
+                            onClickFav(!uiState.isFavourite)
                         },
                         isFavorite = uiState.isFavourite,
                     )

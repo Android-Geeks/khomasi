@@ -79,15 +79,14 @@ interface RetrofitService {
     suspend fun userFavourite(
         @Header("Authorization") token: String,
         @Query("userId") userId: String,
-        @Query("playgroundId") playgroundId: String
-
+        @Query("playgroundId") playgroundId: Int
     ): Response<MessageResponse>
 
     @DELETE("User/favorite")
     suspend fun deleteUserFavourite(
         @Header("Authorization") token: String,
         @Query("userId") userId: String,
-        @Query("playgroundId") playgroundId: String
+        @Query("playgroundId") playgroundId: Int
     ): Response<MessageResponse>
 
     @GET("User/favorite-playgrounds")

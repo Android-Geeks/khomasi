@@ -71,7 +71,7 @@ fun HomeScreen(
     onSearchBarClicked: () -> Unit,
     onClickViewAll: () -> Unit,
     onAdClicked: () -> Unit,
-    onClickPlaygroundCard: (Int) -> Unit,
+    onClickPlaygroundCard: (Int, Boolean) -> Unit,
     onFavouriteClick: (Int) -> Unit,
     getHomeScreenData: () -> Unit,
 ) {
@@ -120,9 +120,7 @@ fun HomeScreen(
                     homeUiState = uiState,
                     onAdClicked = onAdClicked,
                     onClickViewAll = onClickViewAll,
-                    onClickPlaygroundCard = { playgroundId ->
-                        onClickPlaygroundCard(playgroundId)
-                    },
+                    onClickPlaygroundCard = onClickPlaygroundCard,
                     onFavouriteClick = { playgroundId -> onFavouriteClick(playgroundId) }
                 )
                 if (showLoading) {
@@ -145,7 +143,7 @@ fun HomeContent(
     homeUiState: HomeUiState,
     onAdClicked: () -> Unit,
     onClickViewAll: () -> Unit,
-    onClickPlaygroundCard: (Int) -> Unit,
+    onClickPlaygroundCard: (Int, Boolean) -> Unit,
     onFavouriteClick: (Int) -> Unit
 ) {
 
@@ -212,6 +210,7 @@ fun HomeContent(
                 onViewPlaygroundClick = {
                     onClickPlaygroundCard(
                         playground.id,
+                        playground.isFavourite
                     )
                 }
             )
@@ -335,9 +334,7 @@ fun HomeScreenPreview() {
             onSearchBarClicked = {},
             onClickViewAll = { mockViewModel.onClickViewAll() },
             onAdClicked = { },
-            onClickPlaygroundCard = {
-                mockViewModel.onClickPlaygroundCard(it)
-            },
+            onClickPlaygroundCard = { _, _ -> },
             onFavouriteClick = {},
             getHomeScreenData = {},
         )

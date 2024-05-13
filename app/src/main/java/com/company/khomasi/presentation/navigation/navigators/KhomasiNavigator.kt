@@ -45,8 +45,8 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavHostController) {
                 homeUiState = homeViewModel.homeUiState,
                 localUserState = homeViewModel.localUser,
                 onClickUserImage = { navController.navigate(Screens.KhomasiNavigation.Profile.route) },
-                onClickPlaygroundCard = { playgroundId ->
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
+                onClickPlaygroundCard = { playgroundId, isFavourite ->
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 },
                 getHomeScreenData = homeViewModel::getHomeScreenData,
                 onClickBell = { /* will nav to notification page */ },
@@ -63,9 +63,9 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavHostController) {
                 uiState = favouriteViewModel.uiState,
                 getFavoritePlaygrounds = favouriteViewModel::getFavoritePlaygrounds,
                 onFavouriteClick = favouriteViewModel::onFavouriteClicked,
-                onPlaygroundClick = { playgroundId ->
+                onPlaygroundClick = { playgroundId, isFavourite ->
                     favouriteViewModel.onClickPlayground(playgroundId)
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 }
             )
         }
@@ -102,8 +102,8 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavHostController) {
                 getFilteredPlaygrounds = { browsePlaygroundsViewModel.getPlaygrounds() },
                 onFilterClick = { navController.navigate(Screens.KhomasiNavigation.Playgrounds.FilterPlaygrounds.route) },
                 onFavouriteClicked = browsePlaygroundsViewModel::onFavouriteClicked,
-                onClickPlaygroundCard = { playgroundId ->
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
+                onClickPlaygroundCard = { playgroundId, isFavourite ->
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 }
             )
         }
@@ -135,28 +135,32 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavHostController) {
                 browseUiState = browsePlaygroundsViewModel.uiState,
                 onBackClicked = { navController.popBackStack() },
                 onFavClicked = browsePlaygroundsViewModel::onFavouriteClicked,
-                onClickPlayground = { playgroundId ->
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
-                })
+                onClickPlayground = { playgroundId, isFavourite ->
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
+                }
+            )
         }
     }
 }
 
 fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController) {
     navigation(
-        route = Screens.KhomasiNavigation.BookingPlayground.route + "/{playgroundId}",
+        route = Screens.KhomasiNavigation.BookingPlayground.route + "/{playgroundId}" + "/{isFavourite}",
         startDestination = Screens.KhomasiNavigation.BookingPlayground.PlaygroundDetails.route
     ) {
         composable(route = Screens.KhomasiNavigation.BookingPlayground.PlaygroundDetails.route) { navBackStackEntry ->
-            val playgroundId = navBackStackEntry.arguments?.getString("playgroundId")
+            val playgroundId = navBackStackEntry.arguments?.getInt("playgroundId")
+            val isFavourite = navBackStackEntry.arguments?.getBoolean("isFavourite")
             val playgroundViewModel =
                 navBackStackEntry.sharedViewModel<PlaygroundViewModel>(navController = navController)
             PlaygroundScreen(
-                playgroundId = playgroundId?.toInt() ?: 1,
+                playgroundId = playgroundId ?: 1,
+                isFavourite = isFavourite ?: false,
                 playgroundStateFlow = playgroundViewModel.playgroundState,
                 playgroundUiState = playgroundViewModel.uiState,
                 reviewsState = playgroundViewModel.reviewsState,
                 onViewRatingClicked = playgroundViewModel::updateShowReviews,
+                updateFavouriteAndPlaygroundId = playgroundViewModel::updateFavouriteAndPlaygroundId,
                 onClickBack = { navController.popBackStack() },
                 onClickShare = {},
                 onClickFav = playgroundViewModel::updateUserFavourite,
@@ -235,14 +239,13 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavHostController) {
                 playgroundReview = bookingViewModel::playgroundReview,
                 onRatingChange = bookingViewModel::onRatingChange,
                 onCommentChange = bookingViewModel::onCommentChange,
-                reBook = { playgroundId ->
-                    bookingViewModel.reBook(playgroundId)
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
+
+                reBook = { playgroundId, isFavourite ->
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 },
                 onClickBookField = { navController.navigate(Screens.KhomasiNavigation.Playgrounds.route) },
-                cancelDetails = { playgroundId ->
-                    bookingViewModel.cancelDetails(playgroundId)
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId")
+                cancelDetails = { playgroundId, isFavourite ->
+                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 },
                 toRate = bookingViewModel::toRate
             )

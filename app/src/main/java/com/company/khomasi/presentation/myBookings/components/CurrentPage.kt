@@ -22,8 +22,7 @@ fun CurrentPage(
     uiState: StateFlow<MyBookingUiState>,
     onClickPlaygroundCard: (BookingDetails) -> Unit,
     onClickBookField: () -> Unit,
-    cancelDetails: (Int) -> Unit
-
+    cancelDetails: (Int, Boolean) -> Unit
 ) {
     val currentState = uiState.collectAsState().value
     Scaffold(
@@ -45,8 +44,9 @@ fun CurrentPage(
                         onViewPlaygroundClick = {
                             if (!currentState.currentBookings[index].isCanceled) {
                                 onClickPlaygroundCard(it)
-                            } else
-                                cancelDetails(index)
+                            } else {
+                                cancelDetails(it.playgroundId, it.isFavorite)
+                            }
                         },
                         toRate = {},
                         reBook = {}
