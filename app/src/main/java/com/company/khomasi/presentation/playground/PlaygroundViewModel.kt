@@ -299,7 +299,7 @@ class PlaygroundViewModel @Inject constructor(
         }
     }
 
-    fun updateUserFavourite(playgroundId: String, isFavourite: Boolean) {
+    fun updateUserFavourite(isFavourite: Boolean) {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect { localUser ->
                 Log.d("PlaygroundCardViewModel", "updateUserFavourite: $isFavourite")
