@@ -1,6 +1,8 @@
 package com.company.khomasi.presentation.playground.booking
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -37,6 +39,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -46,6 +49,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.focus.FocusDirection
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
@@ -53,18 +57,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.khomasi.R
+import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.BookingPlaygroundResponse
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextField
 import com.company.khomasi.presentation.playground.PaymentType
 import com.company.khomasi.presentation.playground.PlaygroundUiState
-import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightText
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Locale
 
@@ -72,13 +76,17 @@ import java.util.Locale
 @Composable
 fun PaymentScreen(
     playgroundUiState: StateFlow<PlaygroundUiState>,
+    bookingPlaygroundResponse: StateFlow<DataState<BookingPlaygroundResponse>>,
+    context: Context = LocalContext.current,
     updateCardNumber: (String) -> Unit,
     updateCardValidationDate: (String) -> Unit,
     updateCardCvv: (String) -> Unit,
     onPayWithVisaClicked: () -> Unit,
     onPayWithCoinsClicked: () -> Unit,
+    onBookingSuccess: () -> Unit,
     onBackClicked: () -> Unit
 ) {
+    val bookingResponse by bookingPlaygroundResponse.collectAsStateWithLifecycle()
     val showFawryDialog = remember { mutableStateOf(true) }
     val scrollState = rememberScrollState()
     val uiState by playgroundUiState.collectAsStateWithLifecycle()
@@ -99,6 +107,33 @@ fun PaymentScreen(
         stringResource(id = R.string.coins),
         ""
     )
+    LaunchedEffect(bookingResponse) {
+        when (bookingResponse) {
+            is DataState.Success -> {
+                Toast.makeText(
+                    context,
+                    "Booking Successful",
+                    Toast.LENGTH_SHORT
+                ).show()
+                delay(1000)
+                onBookingSuccess()
+            }
+
+            is DataState.Error -> {
+                Toast.makeText(
+                    context,
+                    "Booking Failed",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            is DataState.Loading -> {
+
+            }
+
+            else -> {}
+        }
+    }
     Scaffold(
         topBar = {
             PaymentTopBar(onBackClicked = onBackClicked)
@@ -216,30 +251,33 @@ fun PaymentTopBar(
         ) {
 
             Spacer(modifier = Modifier.width(4.dp))
-            TopAppBar(title = {
-                Text(
-                    text = stringResource(id = R.string.payment_method),
-                    style = MaterialTheme.typography.displayMedium,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Start
-                )
-            }, navigationIcon = {
-                IconButton(onClick = { onBackClicked() }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.back),
-                        contentDescription = null,
-                        Modifier
-                            .size(24.dp)
-                            .then(
-                                if (currentLanguage == "en") {
-                                    Modifier.rotate(180f)
-                                } else {
-                                    Modifier
-                                }
-                            )
+            TopAppBar(
+                title = {
+                    Text(
+                        text = stringResource(id = R.string.payment_method),
+                        style = MaterialTheme.typography.displayMedium,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Start
                     )
-                }
-            }, colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background)
+                },
+                navigationIcon = {
+                    IconButton(onClick = { onBackClicked() }) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.back),
+                            contentDescription = null,
+                            Modifier
+                                .size(24.dp)
+                                .then(
+                                    if (currentLanguage == "en") {
+                                        Modifier.rotate(180f)
+                                    } else {
+                                        Modifier
+                                    }
+                                )
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background)
             )
         }
         HorizontalDivider(
@@ -315,6 +353,7 @@ fun FawryContent(
                     color = if (isSystemInDarkTheme()) lightText else darkText
                 )
             }
+            Spacer(modifier = Modifier.height(16.dp))
         }
     }
 
@@ -493,19 +532,20 @@ fun CardContent(
     }
 }
 
-@SuppressLint("UnrememberedMutableState")
-@Preview(showSystemUi = true)
-@Composable
-fun PaymentScreenPreview() {
-    KhomasiTheme {
-        PaymentScreen(
-            playgroundUiState = MutableStateFlow(PlaygroundUiState()),
-            onPayWithVisaClicked = {},
-            updateCardNumber = {},
-            updateCardValidationDate = {},
-            updateCardCvv = {},
-            onPayWithCoinsClicked = {},
-            onBackClicked = {}
-        )
-    }
-}
+//@SuppressLint("UnrememberedMutableState")
+//@Preview(showSystemUi = true)
+//@Composable
+//fun PaymentScreenPreview() {
+//    KhomasiTheme {
+//        PaymentScreen(
+//            playgroundUiState = MutableStateFlow(PlaygroundUiState()),
+//            bookingPlaygroundResponse = MutableStateFlow(DataState.Success(BookingPlaygroundResponse())),
+//            onPayWithVisaClicked = {},
+//            updateCardNumber = {},
+//            updateCardValidationDate = {},
+//            updateCardCvv = {},
+//            onPayWithCoinsClicked = {},
+//            onBackClicked = {}
+//        )
+//    }
+//}

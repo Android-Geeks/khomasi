@@ -1,7 +1,6 @@
 package com.company.khomasi.presentation.navigation.navigators
 
 
-import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -207,15 +206,16 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
         composable(route = Screens.KhomasiNavigation.BookingPlayground.Payment.route) { navBack ->
             val bookingViewModel =
                 navBack.sharedViewModel<PlaygroundViewModel>(navController = navController)
-            val context = LocalContext.current
             PaymentScreen(
                 playgroundUiState = bookingViewModel.uiState,
+                bookingPlaygroundResponse = bookingViewModel.bookingResponse,
                 updateCardNumber = bookingViewModel::updateCardNumber,
                 updateCardValidationDate = bookingViewModel::updateCardValidationDate,
                 updateCardCvv = bookingViewModel::updateCardCvv,
                 onPayWithVisaClicked = { },
-                onPayWithCoinsClicked = { bookingViewModel.bookingPlayground(context) },
-                onBackClicked = navController::popBackStack
+                onPayWithCoinsClicked = { bookingViewModel.bookingPlayground() },
+                onBackClicked = navController::popBackStack,
+                onBookingSuccess = { navController.navigate(Screens.KhomasiNavigation.Home.route) }
             )
         }
     }

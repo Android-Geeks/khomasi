@@ -1,11 +1,10 @@
 package com.company.khomasi.presentation.playground
 
-import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.BookingPlaygroundResponse
 import com.company.khomasi.domain.model.BookingRequest
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.domain.model.PlaygroundReviewsResponse
@@ -50,6 +49,10 @@ class PlaygroundViewModel @Inject constructor(
     private val _reviewsState: MutableStateFlow<DataState<PlaygroundReviewsResponse>> =
         MutableStateFlow(DataState.Empty)
     val reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>> = _reviewsState
+
+    private val _bookingResponse =
+        MutableStateFlow<DataState<BookingPlaygroundResponse>>(DataState.Empty)
+    val bookingResponse: StateFlow<DataState<BookingPlaygroundResponse>> = _bookingResponse
 
 
     fun getPlaygroundDetails(playgroundId: Int) {
@@ -254,7 +257,7 @@ class PlaygroundViewModel @Inject constructor(
         }
     }
 
-    fun bookingPlayground(context: Context) {
+    fun bookingPlayground() {
         viewModelScope.launch {
             val userData = localUserUseCases.getLocalUser().first()
             val bookingData = _bookingUiState.value
@@ -269,14 +272,8 @@ class PlaygroundViewModel @Inject constructor(
                     duration = (bookingData.totalPrice / bookingData.playgroundPrice).toDouble(),
                 )
             ).collect { bookingRes ->
-                Toast.makeText(
-                    context,
-                    if (bookingRes is DataState.Success) "Booking Successful" else {
-                        if (bookingRes is DataState.Error) "Booking Failed"
-                        else "Booking Loading"
-                    },
-                    Toast.LENGTH_SHORT
-                ).show()
+                _bookingResponse.value = bookingRes
+
 
                 if (bookingRes is DataState.Success) {
                     localUserUseCases.saveLocalUser(
