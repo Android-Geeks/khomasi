@@ -48,7 +48,11 @@ fun NavGraph(
         NavHost(
             navController = navController,
             startDestination = startDestination,
-            modifier = Modifier.padding(paddingValues)
+            modifier = Modifier.then(
+                if (navBackStackEntry?.destination?.route in listOfNavItems.map { it.route })
+                    Modifier.padding(bottom = paddingValues.calculateBottomPadding())
+                else Modifier
+            )
         ) {
             // Navigation for onboarding
             onboardingNavigator()

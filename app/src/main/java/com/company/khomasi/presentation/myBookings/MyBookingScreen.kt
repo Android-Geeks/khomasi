@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Tab
 import androidx.compose.material3.TabRow
@@ -28,7 +29,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MyBookingPage(
+fun MyBookingScreen(
     uiState: StateFlow<MyBookingUiState>,
     onClickPlaygroundCard: (BookingDetails) -> Unit,
     myBookingPlaygrounds: () -> Unit,
@@ -45,7 +46,11 @@ fun MyBookingPage(
     }
     val list = listOf(TabItem.Current, TabItem.Expired)
     val pagerState = rememberPagerState(initialPage = 0)
-    Column(modifier = Modifier.fillMaxSize()) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+    ) {
         Tabs(tabs = list, pagerState = pagerState)
         Image(
             painter = painterResource(R.drawable.view_pager_group),

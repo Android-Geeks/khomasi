@@ -21,15 +21,14 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.company.khomasi.R
 import com.company.khomasi.theme.KhomasiTheme
 
@@ -44,7 +43,6 @@ fun MyButton(
     color: ButtonColors? = null,
     textStyle: TextStyle = MaterialTheme.typography.titleLarge
 ) {
-
     Button(
         onClick = onClick,
         modifier = modifier,
@@ -78,19 +76,21 @@ fun MyTextButton(
     text: Int,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
+    textColor: Color = MaterialTheme.colorScheme.primary,
     isUnderlined: Boolean = true,
-    textSize: TextUnit = 14.sp
+    shape: CornerBasedShape = MaterialTheme.shapes.medium,
 ) {
     TextButton(
         onClick = onClick,
         modifier = modifier,
+        shape = shape
     ) {
         Text(
             text = stringResource(id = text),
             textAlign = TextAlign.Center,
+            color = textColor,
             textDecoration = if (isUnderlined) TextDecoration.Underline else TextDecoration.None,
             style = MaterialTheme.typography.titleLarge,
-            fontSize = textSize
         )
     }
 }

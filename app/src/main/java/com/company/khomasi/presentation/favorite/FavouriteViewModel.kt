@@ -18,9 +18,11 @@ class FavouriteViewModel @Inject constructor(
     private val remoteUserUseCase: RemoteUserUseCase,
     private val localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
+
     private val _favState: MutableStateFlow<DataState<FavouritePlaygroundResponse>> =
         MutableStateFlow(DataState.Empty)
     val favState: StateFlow<DataState<FavouritePlaygroundResponse>> = _favState
+
     private val _uiState: MutableStateFlow<FavouriteUiState> = MutableStateFlow(FavouriteUiState())
     val uiState: StateFlow<FavouriteUiState> = _uiState
     private var localUser = LocalUser()
@@ -38,16 +40,9 @@ class FavouriteViewModel @Inject constructor(
                         _uiState.value = _uiState.value.copy(
                             playgrounds = dataState.data.playgrounds
                         )
-
                     }
                 }
             }
-        }
-    }
-
-    fun onClickPlayground(playgroundId: Int) {
-        viewModelScope.launch {
-            localUserUseCases.savePlaygroundId(playgroundId)
         }
     }
 
@@ -55,12 +50,6 @@ class FavouriteViewModel @Inject constructor(
         val updatedPlaygrounds = uiState.value.playgrounds.filterNot { it.id == playgroundId }
         _uiState.value = uiState.value.copy(playgrounds = updatedPlaygrounds)
     }
-//    fun onFavouriteClicked(playgroundId: Int) {
-//        val newDeletedIds = _uiState.value.deletedPlaygroundIds.toMutableSet().apply { add(playgroundId) }
-//        _uiState.value = _uiState.value.copy(deletedPlaygroundIds = newDeletedIds)
-//    }
-
-
 }
 
 

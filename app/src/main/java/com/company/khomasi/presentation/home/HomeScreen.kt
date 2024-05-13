@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -93,45 +94,44 @@ fun HomeScreen(
 //        Log.d("HomeScreen", "localUser recomposed")
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(start = 16.dp, end = 16.dp, top = 12.dp)
-        ) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .statusBarsPadding()
+            .padding(horizontal = 16.dp)
+    ) {
+        UserProfileSection(
+            userData = localUser,
+            profileImage = uiState.profileImage,
+            onClickUserImage = onClickUserImage,
+            onClickBell = onClickBell
+        )
 
-            UserProfileSection(
-                userData = localUser,
-                profileImage = uiState.profileImage,
-                onClickUserImage = onClickUserImage,
-                onClickBell = onClickBell
+        Spacer(modifier = Modifier.height(10.dp))
+
+        HomeSearchBar(
+            onSearchBarClicked = onSearchBarClicked
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Box(modifier = Modifier.fillMaxSize()) {
+            HomeContent(
+                playgroundsData = playgroundsData.sortedBy { it.id },
+                homeUiState = uiState,
+                onAdClicked = onAdClicked,
+                onClickViewAll = onClickViewAll,
+                onClickPlaygroundCard = onClickPlaygroundCard,
+                onFavouriteClick = { playgroundId -> onFavouriteClick(playgroundId) }
             )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            HomeSearchBar(
-                onSearchBarClicked = onSearchBarClicked
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-
-            Box(modifier = Modifier.fillMaxSize()) {
-                HomeContent(
-                    playgroundsData = playgroundsData.sortedBy { it.id },
-                    homeUiState = uiState,
-                    onAdClicked = onAdClicked,
-                    onClickViewAll = onClickViewAll,
-                    onClickPlaygroundCard = onClickPlaygroundCard,
-                    onFavouriteClick = { playgroundId -> onFavouriteClick(playgroundId) }
+            if (showLoading) {
+                ThreeBounce(
+                    color = MaterialTheme.colorScheme.primary,
+                    size = DpSize(75.dp, 75.dp),
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .align(Alignment.Center)
                 )
-                if (showLoading) {
-                    ThreeBounce(
-                        color = MaterialTheme.colorScheme.primary,
-                        size = DpSize(75.dp, 75.dp),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .align(Alignment.Center)
-                    )
-                }
             }
         }
     }
