@@ -1,6 +1,7 @@
 package com.company.khomasi.presentation.navigation.navigators
 
 
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -19,6 +20,7 @@ import com.company.khomasi.presentation.playground.PlaygroundScreen
 import com.company.khomasi.presentation.playground.PlaygroundViewModel
 import com.company.khomasi.presentation.playground.booking.BookingScreen
 import com.company.khomasi.presentation.playground.booking.ConfirmBookingScreen
+import com.company.khomasi.presentation.playground.booking.PaymentScreen
 import com.company.khomasi.presentation.profile.EditProfile
 import com.company.khomasi.presentation.profile.ProfileViewModel
 import com.company.khomasi.presentation.profile.ViewProfile
@@ -195,12 +197,22 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
             ConfirmBookingScreen(
                 bookingUiState = bookingViewModel.bookingUiState,
                 onBackClicked = { navController.popBackStack() },
-                onNextClicked = { },
+                onNextClicked = { navController.navigate(Screens.KhomasiNavigation.BookingPlayground.Payment.route) },
             )
         }
 
-        composable(route = Screens.KhomasiNavigation.BookingPlayground.Payment.route) {
-
+        composable(route = Screens.KhomasiNavigation.BookingPlayground.Payment.route) { navBack ->
+            val bookingViewModel =
+                navBack.sharedViewModel<PlaygroundViewModel>(navController = navController)
+            val context = LocalContext.current
+            PaymentScreen(
+                playgroundUiState = bookingViewModel.uiState,
+                updateCardNumber = bookingViewModel::updateCardNumber,
+                updateCardValidationDate = bookingViewModel::updateCardValidationDate,
+                updateCardCvv = bookingViewModel::updateCardCvv,
+                onPayWithVisaClicked = { },
+                onPayWithCoinsClicked = { bookingViewModel.bookingPlayground(context) },
+                onBackClicked = { navController.popBackStack() })
         }
     }
 }

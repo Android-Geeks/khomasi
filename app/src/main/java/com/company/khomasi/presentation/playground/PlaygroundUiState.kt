@@ -10,6 +10,8 @@ data class PlaygroundUiState(
     val cardNumber: String = "",
     val cardValidationDate: String = "",
     val cardCvv: String = "",
+    val coins: Double = 3000.0,
+    val totalCoinPrice: Double = 0.0,
     val favPlayground: Playground = Playground
         (
         id = 20,
@@ -26,7 +28,7 @@ data class PlaygroundUiState(
 
 enum class PaymentType {
     Fawry,
-    Card,
+    Visa,
     Coins,
     Empty
 }

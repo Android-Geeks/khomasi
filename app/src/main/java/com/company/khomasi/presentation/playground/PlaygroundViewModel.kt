@@ -1,9 +1,12 @@
 package com.company.khomasi.presentation.playground
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
+import com.company.khomasi.domain.model.BookingRequest
 import com.company.khomasi.domain.model.FessTimeSlotsResponse
 import com.company.khomasi.domain.model.PlaygroundReviewsResponse
 import com.company.khomasi.domain.model.PlaygroundScreenResponse
@@ -49,6 +52,7 @@ class PlaygroundViewModel @Inject constructor(
     val reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>> = _reviewsState
 
 
+
     fun getPlaygroundDetails(playgroundId: Int) {
         viewModelScope.launch {
             val localUser = localUserUseCases.getLocalUser().first()
@@ -69,6 +73,11 @@ class PlaygroundViewModel @Inject constructor(
                             playgroundPrice = playground.feesForHour,
                             playgroundMainPicture = if (pictureList.isNotEmpty()) pictureList[0].picture else "",
                             totalPrice = 0
+                        )
+                    }
+                    _uiState.update {
+                        it.copy(
+                            coins = localUser.coins ?: 0.0,
                         )
                     }
                 }
@@ -201,6 +210,11 @@ class PlaygroundViewModel @Inject constructor(
         _bookingUiState.update {
             it.copy(totalPrice = total.toInt())
         }
+        _uiState.update {
+            it.copy(
+                totalCoinPrice = total
+            )
+        }
     }
 
     fun updateBookingTime() {
@@ -226,6 +240,51 @@ class PlaygroundViewModel @Inject constructor(
     fun updateCardCvv(cardCvv: String) {
         _uiState.update {
             it.copy(cardCvv = cardCvv)
+        }
+    }
+
+    fun bookingPlayground(context: Context) {
+        viewModelScope.launch {
+            val userData = localUserUseCases.getLocalUser().first()
+            val bookingData = _bookingUiState.value
+            val localUser = localUserUseCases.getLocalUser().first()
+
+            remotePlaygroundUseCase.bookingPlaygroundUseCase(
+                token = "Bearer ${userData.token}",
+                body = BookingRequest(
+                    playgroundId = bookingData.playgroundId,
+                    userId = userData.userID ?: "",
+                    bookingTime = bookingData.bookingTime,
+                    duration = (bookingData.totalPrice / bookingData.playgroundPrice).toDouble(),
+                )
+            ).collect { bookingRes ->
+                Toast.makeText(
+                    context,
+                    if (bookingRes is DataState.Success) "Booking Successful" else {
+                        if (bookingRes is DataState.Error) "Booking Failed"
+                        else "Booking Loading"
+                    },
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                if (bookingRes is DataState.Success) {
+                    localUserUseCases.saveLocalUser(
+                        userData.copy(
+                            coins = userData.coins?.minus(
+                                bookingData.totalPrice
+                            )
+                        )
+                    )
+                    _uiState.update {
+                        it.copy(
+                            coins = localUser.coins?.minus(
+                                bookingData.totalPrice
+                            ) ?: 0.0,
+                        )
+                    }
+                }
+            }
+
         }
     }
 

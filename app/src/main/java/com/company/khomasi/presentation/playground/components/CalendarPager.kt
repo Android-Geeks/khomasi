@@ -124,7 +124,7 @@ fun CalendarPager(updateSelectedDay: (Int) -> Unit) {
                         )
                     }
                     .background(shape = MaterialTheme.shapes.small, color = Color.Transparent)
-                    .clickable { // Add clickable modifier to the Card
+                    .clickable { // Add clickable modifier to the Visa
                         coroutineScope.launch { // Launch a coroutine
                             pagerState.animateScrollToPage(page) // Scroll to the clicked page
                         }

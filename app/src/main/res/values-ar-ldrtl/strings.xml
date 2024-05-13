@@ -221,6 +221,7 @@
     <string name="no_internet_connection">لا يوجد اتصال بالإنترنت</string>
     <string name="something_went_wrong">حدث خطأ ما</string>
     <string name="password_changed">تم تغيير كلمة المرور</string>
+    <string name="process">معالجة</string>
     <string name="browse_results">تصفح النتائج</string>
     <string name="select_date">اختر التاريخ</string>
     <string name="start_time">اختر الوقت</string>
@@ -234,4 +235,9 @@
     <string name="validation_date">تاريخ الصلاحيه</string>
     <string name="card_cvv">CVV رمز ال</string>
     <string name="xxxx_xxxx">xxxx xxxx xxxx xxxx</string>
+    <string name="coin">عمله</string>
+    <string name="balance">الرصيد</string>
+    <string name="booking_price">سعر الحجز</string>
+    <string name="payment_method">طريقه الدفع</string>
+    <string name="pay_with">أدفع عن طريق</string>
 </resources>

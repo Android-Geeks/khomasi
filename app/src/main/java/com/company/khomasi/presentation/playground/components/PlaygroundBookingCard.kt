@@ -6,7 +6,6 @@ import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -41,8 +40,6 @@ import coil.request.ImageRequest
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.cards.BookingStatus
 import com.company.khomasi.theme.KhomasiTheme
-import com.company.khomasi.theme.darkSubText
-import com.company.khomasi.theme.lightSubText
 import com.company.khomasi.utils.convertToBitmap
 import com.company.khomasi.utils.extractDateFromTimestamp
 import com.company.khomasi.utils.parseTimestamp
@@ -164,7 +161,6 @@ fun PlaygroundBookingCardDetails(
 fun TextWithIcon(
     text: String,
     @DrawableRes iconId: Int,
-    isDark: Boolean = isSystemInDarkTheme()
 ) {
     Row(
         modifier = Modifier
@@ -176,7 +172,7 @@ fun TextWithIcon(
         Icon(
             painter = painterResource(id = iconId),
             contentDescription = null,
-            tint = if (isDark) darkSubText else lightSubText,
+            tint = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier.size(16.dp)
         )
 
@@ -185,7 +181,7 @@ fun TextWithIcon(
         Text(
             text = text,
             style = MaterialTheme.typography.titleSmall,
-            color = if (isDark) darkSubText else lightSubText,
+            color = MaterialTheme.colorScheme.tertiary,
             textAlign = TextAlign.Start
         )
     }

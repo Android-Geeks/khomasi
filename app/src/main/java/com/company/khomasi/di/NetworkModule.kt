@@ -123,6 +123,6 @@ object NetworkModule {
         getFreeTimeSlotsUseCase = GetFreeTimeSlotsUseCase(remotePlaygroundRepository),
         getPlaygroundReviewsUseCase = GetPlaygroundReviewsUseCase(remotePlaygroundRepository),
         getFilteredPlaygroundsUseCase = GetFilteredPlaygroundsUseCase(remotePlaygroundRepository),
-        bookingPlayground = BookingPlaygroundUseCase(remotePlaygroundRepository)
+        bookingPlaygroundUseCase = BookingPlaygroundUseCase(remotePlaygroundRepository)
     )
 }
