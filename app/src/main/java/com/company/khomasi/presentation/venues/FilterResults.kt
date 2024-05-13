@@ -143,7 +143,7 @@ fun FilterResults(
 
     Scaffold(topBar = {
         SubScreenTopBar(
-            title = R.string.filter_results,
+            title = stringResource(id = R.string.filter_results),
             onBackClick = onBackClick,
         )
     }) { paddingValues ->

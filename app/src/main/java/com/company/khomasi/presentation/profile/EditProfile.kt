@@ -83,7 +83,7 @@ fun EditProfile(
             .fillMaxSize(),
     ) {
         SubScreenTopBar(
-            title = R.string.edit_profile,
+            title = stringResource(id = R.string.edit_profile),
             onBackClick = onBackClick
         )
         Column(

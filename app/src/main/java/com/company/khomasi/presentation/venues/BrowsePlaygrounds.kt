@@ -55,7 +55,7 @@ fun BrowsePlaygrounds(
         Scaffold(
             topBar = {
                 SubScreenTopBar(
-                    title = R.string.browse_fields,
+                    title = stringResource(id = R.string.browse_fields),
                     onBackClick = {},
                     navigationIcon = {},
                     actions = {

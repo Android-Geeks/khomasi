@@ -9,13 +9,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -26,7 +24,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.khomasi.R
+import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyModalBottomSheet
+import com.company.khomasi.presentation.components.MyTextButton
 import com.company.khomasi.theme.KhomasiTheme
 import com.company.khomasi.theme.darkErrorColor
 import com.company.khomasi.theme.darkText
@@ -86,23 +86,20 @@ fun LogoutBottomSheet(
                 Row(
                     modifier = Modifier.padding(bottom = 16.dp)
                 ) {
-                    TextButton(
+                    MyTextButton(
+                        text = R.string.cancel,
                         onClick = {
                             scope.launch {
                                 bottomSheetState.hide()
                                 onDismissRequest()
                             }
                         },
-                        shape = MaterialTheme.shapes.medium,
+                        textColor = if (isDark) darkText else lightText,
+                        isUnderlined = false,
                         modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.cancel),
-                            style = MaterialTheme.typography.titleLarge,
-                            color = if (isDark) darkText else lightText
-                        )
-                    }
-                    Button(
+                    )
+                    MyButton(
+                        text = R.string.logout,
                         onClick = {
                             scope.launch {
                                 logout()
@@ -111,17 +108,11 @@ fun LogoutBottomSheet(
                             }
                         },
                         shape = MaterialTheme.shapes.medium,
-                        colors = ButtonDefaults.buttonColors(
+                        color = ButtonDefaults.buttonColors(
                             containerColor = if (isDark) darkErrorColor else lightErrorColor
                         ),
                         modifier = Modifier.weight(1f)
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.logout),
-                            style = MaterialTheme.typography.titleLarge,
-                            color = if (isDark) darkText else lightText
-                        )
-                    }
+                    )
                 }
             }
         }
