@@ -1,6 +1,7 @@
 package com.company.khomasi.presentation.venues
 
 import android.annotation.SuppressLint
+import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -81,6 +82,9 @@ fun FilterResults(
     setBookingTime: (String) -> Unit,
     updateType: (Int) -> Unit
 ) {
+    BackHandler {
+        onBackClick()
+    }
     val uiState by filteredUiState.collectAsStateWithLifecycle()
     val screenWidth = getScreenWidth()
     val screenHeight = getScreenHeight()
