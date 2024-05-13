@@ -27,17 +27,6 @@ android {
 
     }
 
-    // THIS FOR OPTIMIZATION IN RUNNING REMOVE IT WHEN PRODUCTION
-    flavorDimensions.add("default")
-    productFlavors {
-        create("dev") {
-            dimension = "default"
-            resourceConfigurations.add("en")
-            resourceConfigurations.add("ar-ldrtl")
-            resourceConfigurations.add("xxhdpi")
-        }
-    }
-
     buildTypes {
         release {
             isMinifyEnabled = false
