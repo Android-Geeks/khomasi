@@ -5,9 +5,10 @@ object Constants {
     const val PLAYGROUND_NAME: String = "playground_name"
     const val PLAYGROUND_PRICE: String = "playground_price"
     const val DATABASE_NAME = "app_db"
-    const val BASE_URL = "http://localhost:5000/api/"
+
+    //    const val BASE_URL = "http://localhost:5000/api/"
 //for emulator
-//    const val BASE_URL = "http://10.0.2.2:5000/api/"
+    const val BASE_URL = "http://10.0.2.2:5000/api/"
 
     const val USER_SETTINGS = "user_settings"
 

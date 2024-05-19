@@ -21,8 +21,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -53,7 +51,7 @@ import kotlinx.coroutines.flow.StateFlow
 fun OtpScreen(
     onEmailConfirmed: () -> Unit,
     modifier: Modifier = Modifier,
-    uiState: State<OtpUiState>,
+    uiState: StateFlow<OtpUiState>,
     confirmEmailState: StateFlow<DataState<MessageResponse>>,
     otpState: StateFlow<DataState<VerificationResponse>>,
     updateSmsCode: (String) -> Unit,
@@ -63,7 +61,7 @@ fun OtpScreen(
     resetTimer: (Int) -> Unit,
     getRegisterOtp: () -> Unit,
 ) {
-    val otpUiState = uiState.value
+    val otpUiState = uiState.collectAsStateWithLifecycle().value
     val otpStatus = otpState.collectAsStateWithLifecycle().value
     val confirmEmailStatus = confirmEmailState.collectAsStateWithLifecycle().value
     var showLoading by remember { mutableStateOf(false) }
@@ -261,7 +259,7 @@ fun OtpPreview() {
         val mockOtpViewModel: MockOtpViewModel = viewModel()
         OtpScreen(
             onEmailConfirmed = {},
-            uiState = mockOtpViewModel.uiState.collectAsState(),
+            uiState = mockOtpViewModel.uiState,
             confirmEmailState = mockOtpViewModel.confirmEmailState,
             otpState = mockOtpViewModel.otpState,
             updateSmsCode = mockOtpViewModel::updateSmsCode,

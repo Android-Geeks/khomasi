@@ -161,5 +161,4 @@ fun locationUpdate() {
             Looper.getMainLooper()
         )
     }
-
 }

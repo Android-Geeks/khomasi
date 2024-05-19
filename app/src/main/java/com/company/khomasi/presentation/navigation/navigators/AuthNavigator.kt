@@ -1,6 +1,5 @@
 package com.company.khomasi.presentation.navigation.navigators
 
-import androidx.compose.runtime.collectAsState
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -62,7 +61,7 @@ fun NavGraphBuilder.authNavigator(
             val otpViewModel: OtpViewModel = hiltViewModel()
             OtpScreen(
                 onEmailConfirmed = { navController.navigate(Screens.AuthNavigation.Login.route) },
-                uiState = otpViewModel.uiState.collectAsState(),
+                uiState = otpViewModel.uiState,
                 confirmEmailState = otpViewModel.confirmEmailState,
                 otpState = otpViewModel.otpState,
                 getRegisterOtp = otpViewModel::getRegisterOtp,
@@ -73,9 +72,7 @@ fun NavGraphBuilder.authNavigator(
                 resetTimer = otpViewModel::resetTimer,
             )
         }
-
         resetPassword(navController = navController)
-
     }
 }
 
