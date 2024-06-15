@@ -9,18 +9,18 @@ plugins {
 }
 
 android {
-    namespace = "com.company.khomasi"
+    namespace = "com.company.rentafield"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.company.khomasi"
+        applicationId = "com.company.rentafield"
         minSdk = 24
         //noinspection EditedTargetSdkVersion
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "com.company.khomasi.HiltTestRunner"
+        testInstrumentationRunner = "com.company.rentafield.HiltTestRunner"
         vectorDrawables {
             useSupportLibrary = true
         }

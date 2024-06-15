@@ -16,5 +16,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Khomasi"
+rootProject.name = "RentAField"
 include(":app")
