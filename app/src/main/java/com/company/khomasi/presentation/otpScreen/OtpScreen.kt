@@ -49,21 +49,21 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun OtpScreen(
-    onEmailConfirmed: () -> Unit,
-    modifier: Modifier = Modifier,
     uiState: StateFlow<OtpUiState>,
     confirmEmailState: StateFlow<DataState<MessageResponse>>,
     otpState: StateFlow<DataState<VerificationResponse>>,
     updateSmsCode: (String) -> Unit,
     resendCode: () -> Unit,
+    onEmailConfirmed: () -> Unit,
     confirmEmail: () -> Unit,
     startTimer: (Int) -> Unit,
     resetTimer: (Int) -> Unit,
     getRegisterOtp: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    val otpUiState = uiState.collectAsStateWithLifecycle().value
-    val otpStatus = otpState.collectAsStateWithLifecycle().value
-    val confirmEmailStatus = confirmEmailState.collectAsStateWithLifecycle().value
+    val otpUiState by uiState.collectAsStateWithLifecycle()
+    val otpStatus by otpState.collectAsStateWithLifecycle()
+    val confirmEmailStatus by confirmEmailState.collectAsStateWithLifecycle()
     var showLoading by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
