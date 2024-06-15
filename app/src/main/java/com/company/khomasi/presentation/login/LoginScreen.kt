@@ -2,7 +2,7 @@ package com.company.khomasi.presentation.login
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -15,12 +15,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,13 +35,15 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun LoginScreen(
-    onRegisterClick: () -> Unit,
-    onForgotPasswordClick: () -> Unit,
-    uiState: State<LoginUiState>,
+    uiState: StateFlow<LoginUiState>,
     loginState: StateFlow<DataState<UserLoginResponse>>,
     updatePassword: (String) -> Unit,
     updateEmail: (String) -> Unit,
     login: () -> Unit,
+    onLoginSuccess: (DataState.Success<UserLoginResponse>) -> Unit,
+    onRegisterClick: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
+    verifyEmail: () -> Unit,
     loginWithGmail: () -> Unit,
     privacyAndPolicy: () -> Unit,
     helpAndSupport: () -> Unit,
@@ -49,13 +51,14 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
     isDark: Boolean = isSystemInDarkTheme(),
 ) {
-    val loginStatus = loginState.collectAsStateWithLifecycle().value
+    val loginStatus by loginState.collectAsStateWithLifecycle()
     var showLoading by remember { mutableStateOf(false) }
 
     val keyboardController = LocalSoftwareKeyboardController.current
+    val context = LocalContext.current
 
     LaunchedEffect(key1 = loginStatus) {
-        when (loginStatus) {
+        when (val status = loginStatus) {
             is DataState.Loading -> {
                 showLoading = true
                 keyboardController?.hide()
@@ -63,17 +66,43 @@ fun LoginScreen(
 
             is DataState.Success -> {
                 showLoading = false
-                Log.d("LoginScreen", "LoginScreen: ${loginStatus.data}")
+                if (status.data.role == "User") {
+                    onLoginSuccess(status)
+                }
             }
 
             is DataState.Error -> {
                 showLoading = false
-                Log.d("LoginScreen", "LoginScreen: ${loginStatus.message}")
+                if (status.code == 404) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.user_not_found),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else if (status.code == 400 && status.message == "Invalid Password.") {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.invalid_email_or_password),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else if (status.code == 400 && status.message == "Email is not Confirmed.") {
+                    verifyEmail()
+                } else if (status.code == 0) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.login_only_message),
+                        Toast.LENGTH_LONG
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.something_went_wrong),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
 
-            is DataState.Empty -> {
-                Log.d("LoginScreen", "LoginScreen: Empty")
-            }
+            is DataState.Empty -> {}
         }
     }
     Column(
@@ -130,19 +159,21 @@ fun LoginScreen(
 @Composable
 fun LoginPreview() {
     KhomasiTheme {
-        val mockViewModel = MockLoginViewModel()
+        val mockViewModel = LoginMockViewModel()
         LoginScreen(
+            uiState = mockViewModel.uiState,
+            loginState = mockViewModel.loginState,
             updatePassword = mockViewModel::updatePassword,
             updateEmail = mockViewModel::updateEmail,
             login = mockViewModel::login,
+            onRegisterClick = {},
+            onForgotPasswordClick = {},
+            verifyEmail = {},
             loginWithGmail = mockViewModel::loginWithGmail,
             privacyAndPolicy = mockViewModel::privacyAndPolicy,
             helpAndSupport = mockViewModel::helpAndSupport,
-            isValidEmailAndPassword = mockViewModel::isValidEmailAndPassword,
-            uiState = mockViewModel.uiState,
-            loginState = mockViewModel.loginState,
-            onRegisterClick = {},
-            onForgotPasswordClick = {},
+            isValidEmailAndPassword = { _, _ -> true },
+            onLoginSuccess = {}
         )
     }
 }

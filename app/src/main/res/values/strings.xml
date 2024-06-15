@@ -222,7 +222,6 @@
     <string name="time_slot_validation">Please select one consecutive time period</string>
     <string name="continue_to_payment">Continue to payment</string>
     <string name="your_comment">your comment</string>
-
     <string name="face_not_detected">No Face Detected</string>
     <string name="verification_code_sent">Verification code sent</string>
     <string name="user_not_found">User not found</string>
@@ -244,6 +243,8 @@
     <string name="fawry_pay">FawryPay</string>
     <string name="payment_method">Payment Method</string>
     <string name="pay_with">Pay with</string>
-
+    <string name="invalid_email_or_password">Invalid email or password</string>
+    <string name="email_not_confirmed">Email is not Confirmed</string>
+    <string name="login_only_message">Users login only. Guards: install Khomasi Guard app. Owners: visit website.</string>
 
 </resources>

@@ -233,7 +233,7 @@
     <string name="fawry">فورى</string>
     <string name="card_number">رقم البطاقه</string>
     <string name="card_date">MM / YY</string>
-    <string name="validation_date">تاريخ الصلاحيه</string>
+    <string name="validation_date">تاريخ الصلاحية</string>
     <string name="card_cvv">CVV رمز ال</string>
     <string name="xxxx_xxxx">xxxx xxxx xxxx xxxx</string>
     <string name="coin">عمله</string>
@@ -241,4 +241,7 @@
     <string name="booking_price">سعر الحجز</string>
     <string name="payment_method">طريقه الدفع</string>
     <string name="pay_with">أدفع عن طريق</string>
+    <string name="invalid_email_or_password">البريد الإلكتروني أو كلمة المرور غير صحيحة</string>
+    <string name="email_not_confirmed">البريد الإلكتروني غير مؤكد</string>
+    <string name="login_only_message">"هذا التطبيق للمستخدمين فقط. الحراس: ثبتوا تطبيق Khomasi Guard. الملاك: زوروا موقعنا."</string>
 </resources>

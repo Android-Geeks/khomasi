@@ -19,7 +19,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -34,6 +34,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.khomasi.R
 import com.company.khomasi.presentation.components.MyButton
 import com.company.khomasi.presentation.components.MyTextField
@@ -43,6 +44,7 @@ import com.company.khomasi.theme.darkText
 import com.company.khomasi.theme.lightHint
 import com.company.khomasi.theme.lightSubText
 import com.company.khomasi.theme.lightText
+import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
@@ -51,7 +53,7 @@ fun LoginDataPage(
     modifier: Modifier = Modifier,
     onForgotPasswordClick: () -> Unit,
     onRegisterClick: () -> Unit,
-    loginUiState: State<LoginUiState>,
+    loginUiState: StateFlow<LoginUiState>,
     updatePassword: (String) -> Unit,
     updateEmail: (String) -> Unit,
     login: () -> Unit,
@@ -61,6 +63,7 @@ fun LoginDataPage(
     isValidEmailAndPassword: (String, String) -> Boolean,
     keyboardController: SoftwareKeyboardController?,
 ) {
+    val uiState by loginUiState.collectAsStateWithLifecycle()
     val localFocusManager = LocalFocusManager.current
     val keyboardActions = KeyboardActions(
         onNext = { localFocusManager.moveFocus(FocusDirection.Down) },
@@ -69,7 +72,6 @@ fun LoginDataPage(
         }
     )
 
-    val uiState = loginUiState.value
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier

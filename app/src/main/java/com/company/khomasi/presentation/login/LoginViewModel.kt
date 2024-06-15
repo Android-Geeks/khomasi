@@ -1,7 +1,5 @@
 package com.company.khomasi.presentation.login
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
@@ -23,8 +21,8 @@ class LoginViewModel @Inject constructor(
     private val localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
 
-    private val _uiState = mutableStateOf(LoginUiState())
-    val uiState: State<LoginUiState> = _uiState
+    private val _uiState = MutableStateFlow(LoginUiState())
+    val uiState: StateFlow<LoginUiState> = _uiState
 
     private val _loginState: MutableStateFlow<DataState<UserLoginResponse>> =
         MutableStateFlow(DataState.Empty)
@@ -47,32 +45,44 @@ class LoginViewModel @Inject constructor(
                 _uiState.value.password
             ).collect {
                 _loginState.value = it
-                if (it is DataState.Success) {
-                    onLoginSuccess()
-                    localUserUseCases.saveLocalUser(
-                        LocalUser(
-                            userID = it.data.userLoginData.userID,
-                            token = it.data.token,
-                            email = it.data.userLoginData.email,
-                            firstName = it.data.userLoginData.firstName,
-                            lastName = it.data.userLoginData.lastName,
-                            phoneNumber = it.data.userLoginData.phoneNumber,
-                            city = it.data.userLoginData.city,
-                            country = it.data.userLoginData.country,
-                            latitude = it.data.userLoginData.latitude,
-                            longitude = it.data.userLoginData.longitude,
-                            rating = it.data.userLoginData.rating,
-                            coins = it.data.userLoginData.coins
-                        )
-                    )
-                }
             }
         }
     }
 
-    private fun onLoginSuccess() {
+    fun onLoginSuccess(loginData: DataState.Success<UserLoginResponse>) {
         viewModelScope.launch {
+            localUserUseCases.saveLocalUser(
+                LocalUser(
+                    userID = loginData.data.userLoginData.userID,
+                    token = loginData.data.token,
+                    email = loginData.data.userLoginData.email,
+                    firstName = loginData.data.userLoginData.firstName,
+                    lastName = loginData.data.userLoginData.lastName,
+                    phoneNumber = loginData.data.userLoginData.phoneNumber,
+                    city = loginData.data.userLoginData.city,
+                    country = loginData.data.userLoginData.country,
+                    latitude = loginData.data.userLoginData.latitude,
+                    longitude = loginData.data.userLoginData.longitude,
+                    rating = loginData.data.userLoginData.rating,
+                    coins = loginData.data.userLoginData.coins
+                )
+            )
             appEntryUseCases.saveIsLogin(true)
+        }
+    }
+
+    fun verifyEmail() {
+        viewModelScope.launch {
+            authUseCases.getVerificationCodeUseCase(_uiState.value.email).collect {
+                if (it is DataState.Success) {
+                    localUserUseCases.saveLocalUser(
+                        LocalUser(
+                            email = _uiState.value.email,
+                            otpCode = it.data.code
+                        )
+                    )
+                }
+            }
         }
     }
 

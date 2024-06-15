@@ -1,7 +1,5 @@
 package com.company.khomasi.presentation.login
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.khomasi.domain.DataState
@@ -10,9 +8,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class MockLoginViewModel : ViewModel() {
-    private val _uiState = mutableStateOf(LoginUiState())
-    val uiState: State<LoginUiState> = _uiState
+class LoginMockViewModel : ViewModel() {
+    private val _uiState = MutableStateFlow(LoginUiState())
+    val uiState: StateFlow<LoginUiState> = _uiState
 
     private val _loginState: MutableStateFlow<DataState<UserLoginResponse>> =
         MutableStateFlow(DataState.Empty)
@@ -33,13 +31,6 @@ class MockLoginViewModel : ViewModel() {
         }
     }
 
-    fun onLoginSuccess() {
-        // Simulate saving login state for testing
-        viewModelScope.launch {
-            // Simulate saving isLogin state
-        }
-    }
-
     fun loginWithGmail() {
         // Simulate login with Gmail for testing
     }
@@ -50,10 +41,5 @@ class MockLoginViewModel : ViewModel() {
 
     fun helpAndSupport() {
         // Simulate help and support action for testing
-    }
-
-    fun isValidEmailAndPassword(email: String, password: String): Boolean {
-        // Simulate email and password validation for testing
-        return true // Return true for testing purposes
     }
 }

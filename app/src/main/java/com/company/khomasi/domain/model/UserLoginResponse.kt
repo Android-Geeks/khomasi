@@ -10,6 +10,8 @@ data class UserLoginResponse(
     val expiration: String,
     @SerialName("token")
     val token: String,
+    @SerialName("role")
+    val role: String,
     @SerialName("user")
     val userLoginData: UserLoginData
 )

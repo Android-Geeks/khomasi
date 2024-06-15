@@ -41,13 +41,18 @@ fun NavGraphBuilder.authNavigator(
         composable(route = Screens.AuthNavigation.Login.route) {
             val loginViewModel: LoginViewModel = hiltViewModel()
             LoginScreen(
-                onRegisterClick = { navController.navigate(Screens.AuthNavigation.Register.route) },
-                onForgotPasswordClick = { navController.navigate(Screens.AuthNavigation.ResetPassword.route) },
                 uiState = loginViewModel.uiState,
                 loginState = loginViewModel.loginState,
                 updatePassword = loginViewModel::updatePassword,
                 updateEmail = loginViewModel::updateEmail,
                 login = loginViewModel::login,
+                onLoginSuccess = loginViewModel::onLoginSuccess,
+                onRegisterClick = { navController.navigate(Screens.AuthNavigation.Register.route) },
+                onForgotPasswordClick = { navController.navigate(Screens.AuthNavigation.ResetPassword.route) },
+                verifyEmail = {
+                    loginViewModel.verifyEmail()
+                    navController.navigate(Screens.AuthNavigation.OTP.route)
+                },
                 loginWithGmail = loginViewModel::loginWithGmail,
                 privacyAndPolicy = loginViewModel::privacyAndPolicy,
                 helpAndSupport = loginViewModel::helpAndSupport,
