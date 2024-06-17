@@ -20,16 +20,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
@@ -73,55 +79,73 @@ fun PlaygroundCard(
             Modifier.padding(8.dp)
         ) {
             Box {
-                AsyncImage(
-                    model = ImageRequest
-                        .Builder(context = LocalContext.current)
-                        .data(playgroundImage)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = null,
-                    contentScale = ContentScale.FillWidth,
-                    error = painterResource(id = R.drawable.playground),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(131.dp)
-                        .clip(MaterialTheme.shapes.medium)
-                )
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(62.dp)
-                ) {
-                    FavoriteIcon(
-                        onFavoriteClick = {
-                            onFavouriteClick()
-                            viewModel.updateUserFavourite(
-                                playground.id,
-                                playground.isFavourite
-                            )
-                        },
-                        isFavorite = playground.isFavourite,
-                        modifier = Modifier.padding(top = 12.dp, start = 6.dp)
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(
-                        text = stringResource(
-                            if (playground.isBookable)
-                                R.string.bookable
-                            else
-                                R.string.un_bookable
-                        ),
-                        textAlign = TextAlign.Start,
-                        style = MaterialTheme.typography.bodyMedium,
+                CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Rtl) {
+                    AsyncImage(
+                        model = ImageRequest
+                            .Builder(context = LocalContext.current)
+                            .data(playgroundImage)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.FillWidth,
+                        error = painterResource(id = R.drawable.playground),
                         modifier = Modifier
-                            .padding(top = 12.dp)
-                            .clip(RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp))
-                            .background(
-                                color = if (isDark) darkCard else lightCard
-                            )
-                            .padding(start = 5.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
+                            .fillMaxWidth()
+                            .height(131.dp)
+                            .clip(MaterialTheme.shapes.medium)
+                            .drawWithCache {
+                                onDrawWithContent {
+                                    drawContent()
+                                    drawRect(
+                                        Brush.horizontalGradient(
+                                            colors = listOf(
+                                                Color.Transparent,
+                                                Color.Black.copy(alpha = 0.3f)
+                                            ),
+                                            startX = 0f,
+                                            endX = Float.POSITIVE_INFINITY
+                                        )
+                                    )
+                                }
+                            }
                     )
 
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(62.dp)
+                    ) {
+                        FavoriteIcon(
+                            onFavoriteClick = {
+                                onFavouriteClick()
+                                viewModel.updateUserFavourite(
+                                    playground.id,
+                                    playground.isFavourite
+                                )
+                            },
+                            isFavorite = playground.isFavourite,
+                            modifier = Modifier.padding(top = 12.dp, start = 6.dp)
+                        )
+                        Spacer(modifier = Modifier.weight(1f))
+                        Text(
+                            text = stringResource(
+                                if (playground.isBookable)
+                                    R.string.bookable
+                                else
+                                    R.string.un_bookable
+                            ),
+                            textAlign = TextAlign.Start,
+                            style = MaterialTheme.typography.bodyMedium,
+                            modifier = Modifier
+                                .padding(top = 12.dp)
+                                .clip(RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp))
+                                .background(
+                                    color = if (isDark) darkCard else lightCard
+                                )
+                                .padding(start = 5.dp, end = 5.dp, top = 5.dp, bottom = 5.dp)
+                        )
+
+                    }
                 }
             }
             Row(modifier = Modifier.fillMaxWidth()) {
