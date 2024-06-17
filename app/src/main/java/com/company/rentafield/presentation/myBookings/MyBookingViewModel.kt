@@ -18,33 +18,33 @@ import javax.inject.Inject
 class MyBookingViewModel @Inject constructor(
     private val remoteUserUseCase: RemoteUserUseCase,
     private val localUserUseCases: LocalUserUseCases,
-): ViewModel()  {
+) : ViewModel() {
     private val _reviewState =
         MutableStateFlow<DataState<PlaygroundReviewResponse>>(DataState.Empty)
     val reviewState: StateFlow<DataState<PlaygroundReviewResponse>> = _reviewState
 
     private val _uiState: MutableStateFlow<MyBookingUiState> = MutableStateFlow(MyBookingUiState())
-    val uiState:StateFlow<MyBookingUiState> =_uiState.asStateFlow()
+    val uiState: StateFlow<MyBookingUiState> = _uiState.asStateFlow()
 
 
     fun myBookingPlaygrounds() {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect { userData ->
-            remoteUserUseCase.getUserBookingsUseCase(
-                "Bearer ${userData.token}",
-                userData.userID ?: ""
-            ).collect { dataState ->
-                if (dataState is DataState.Success) {
-                    _uiState.value = _uiState.value.copy(
-                        currentBookings = dataState.data.results.filter { bookingDetails ->
-                            !bookingDetails.isFinished
-                        },
-                        expiredBookings = dataState.data.results.filter { bookingDetails ->
-                            bookingDetails.isFinished
-                        }
-                    )
+                remoteUserUseCase.getUserBookingsUseCase(
+                    "Bearer ${userData.token}",
+                    userData.userID ?: ""
+                ).collect { dataState ->
+                    if (dataState is DataState.Success) {
+                        _uiState.value = _uiState.value.copy(
+                            currentBookings = dataState.data.results.filter { bookingDetails ->
+                                !bookingDetails.isFinished
+                            },
+                            expiredBookings = dataState.data.results.filter { bookingDetails ->
+                                bookingDetails.isFinished
+                            }
+                        )
+                    }
                 }
-            }
             }
         }
     }
@@ -101,7 +101,5 @@ class MyBookingViewModel @Inject constructor(
                 }
             }
         }
-        }
-
-
+    }
 }

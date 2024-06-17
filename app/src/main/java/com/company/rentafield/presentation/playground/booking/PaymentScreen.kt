@@ -1,6 +1,5 @@
 package com.company.rentafield.presentation.playground.booking
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -72,7 +71,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Locale
 
-@SuppressLint("RememberReturnType", "UnrememberedMutableState")
 @Composable
 fun PaymentScreen(
     playgroundUiState: StateFlow<PlaygroundUiState>,
@@ -139,8 +137,7 @@ fun PaymentScreen(
             PaymentTopBar(onBackClicked = onBackClicked)
         },
         modifier = Modifier.fillMaxSize(),
-
-        ) { paddingValues ->
+    ) { paddingValues ->
         Surface(
             modifier = Modifier
                 .fillMaxSize()
@@ -453,7 +450,7 @@ fun CoinsContent(
                 onClick = onPayWithCoinsClicked,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(top = 16.dp)
             )
         }
     }
@@ -520,14 +517,11 @@ fun CardContent(
                     )
                 }
             }
-            Row(modifier = Modifier.fillMaxWidth()) {
-                MyButton(
-                    text = R.string.pay,
-                    onClick = onPayVisaClicked,
-                    modifier = Modifier.weight(2f)
-                )
-                Spacer(modifier = Modifier.weight(2f))
-            }
+            MyButton(
+                text = R.string.pay,
+                onClick = onPayVisaClicked,
+                modifier = Modifier.fillMaxWidth()
+            )
         }
     }
 }

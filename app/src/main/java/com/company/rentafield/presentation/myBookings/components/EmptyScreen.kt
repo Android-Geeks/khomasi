@@ -41,7 +41,7 @@ fun EmptyScreen(
             alignment = Alignment.Center
         )
         Text(
-            text = stringResource(R.string.no_favorite_fields),
+            text = stringResource(R.string.no_bookings_yet),
             modifier = Modifier.padding(16.dp),
             style = MaterialTheme.typography.titleSmall
         )
