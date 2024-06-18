@@ -244,4 +244,6 @@
     <string name="invalid_email_or_password">البريد الإلكتروني أو كلمة المرور غير صحيحة</string>
     <string name="email_not_confirmed">البريد الإلكتروني غير مؤكد</string>
     <string name="login_only_message">"هذا التطبيق للمستخدمين فقط. الحراس: ثبتوا تطبيق Khomasi Guard. الملاك: زوروا موقعنا."</string>
+    <string name="booking_failure">فشل في الحصول على الحجوزات</string>
+
 </resources>

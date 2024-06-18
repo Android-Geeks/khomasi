@@ -65,7 +65,6 @@ fun BrowsePlaygrounds(
                             Icon(
                                 painter = painterResource(id = R.drawable.sliders),
                                 contentDescription = stringResource(id = R.string.filter_results)
-
                             )
                         }
                     }

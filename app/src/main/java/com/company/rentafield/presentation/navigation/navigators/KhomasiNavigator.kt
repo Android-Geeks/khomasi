@@ -231,6 +231,7 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavHostController) {
                 it.sharedViewModel<MyBookingViewModel>(navController = navController)
             MyBookingScreen(
                 uiState = bookingViewModel.uiState,
+                myBookingsState = bookingViewModel.myBookingState,
                 myBookingPlaygrounds = bookingViewModel::myBookingPlaygrounds,
                 onClickPlaygroundCard = { playgroundId ->
                     bookingViewModel.onClickPlayground(playgroundId)

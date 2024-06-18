@@ -14,6 +14,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -47,7 +48,7 @@ fun SearchResult(
     val bottomSheetState = rememberModalBottomSheetState()
     var showFilterSheet by remember { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
-    var choice by remember { mutableStateOf(0) }
+    var choice by remember { mutableIntStateOf(0) }
 
     if (showFilterSheet) {
         MyModalBottomSheet(

@@ -3,8 +3,10 @@ package com.company.rentafield.presentation.myBookings.components
 import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,19 +31,23 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
+import com.company.rentafield.domain.DataState
+import com.company.rentafield.domain.model.MyBookingsResponse
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyModalBottomSheet
 import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.presentation.components.cards.BookingCard
 import com.company.rentafield.presentation.components.cards.BookingStatus
 import com.company.rentafield.presentation.components.cards.RatingRow
+import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
 import com.company.rentafield.presentation.myBookings.MyBookingUiState
 import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ExpiredPage(
-    uiState: StateFlow<MyBookingUiState>,
+    bookingsUiState: StateFlow<MyBookingUiState>,
+    myBookingsState: StateFlow<DataState<MyBookingsResponse>>,
     playgroundReview: () -> Unit,
     onCommentChange: (String) -> Unit,
     onRatingChange: (Float) -> Unit,
@@ -49,7 +55,9 @@ fun ExpiredPage(
     onClickBookField: () -> Unit,
     toRate: (Int) -> Unit,
 ) {
-    val expiredState by uiState.collectAsStateWithLifecycle()
+    val expiredState by bookingsUiState.collectAsStateWithLifecycle()
+    val bookingsState by myBookingsState.collectAsStateWithLifecycle()
+    var showLoading by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
     var isOpen by remember { mutableStateOf(false) }
     val imeState = rememberImeState()
@@ -59,6 +67,24 @@ fun ExpiredPage(
     LaunchedEffect(key1 = imeState.value) {
         if (imeState.value) {
             scrollState.animateScrollTo(scrollState.maxValue, tween(300))
+        }
+    }
+    LaunchedEffect(bookingsState) {
+        when (bookingsState) {
+            is DataState.Success -> {
+                showLoading = false
+            }
+
+            DataState.Loading -> {
+                showLoading = true
+            }
+
+            is DataState.Error -> {
+                showLoading = false
+                Toast.makeText(context, R.string.booking_failure, Toast.LENGTH_SHORT).show()
+            }
+
+            DataState.Empty -> {}
         }
     }
 
@@ -130,34 +156,38 @@ fun ExpiredPage(
             }
         }
     }
-    LazyColumn(
-        modifier = Modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        item {}
-        items(expiredState.expiredBookings) { bookingDetails ->
-            if (expiredState.expiredBookings.isNotEmpty()) {
-                BookingCard(
-                    bookingDetails = bookingDetails,
-                    bookingStatus = BookingStatus.EXPIRED,
-                    onViewPlaygroundClick = {
-                        reBook(
-                            bookingDetails.playgroundId,
-                            bookingDetails.isFavorite
-                        )
-                    },
-                    toRate = {
-                        toRate(bookingDetails.playgroundId)
-                        isOpen = true
-                    },
-                    reBook = { reBook(bookingDetails.playgroundId, bookingDetails.isFavorite) }
-                )
-            } else {
-                EmptyScreen(
-                    onClickBookField = onClickBookField
-                )
+    Box {
+        LazyColumn(
+            modifier = Modifier.padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+            item {}
+            items(expiredState.expiredBookings) { bookingDetails ->
+                if (expiredState.expiredBookings.isNotEmpty()) {
+                    BookingCard(
+                        bookingDetails = bookingDetails,
+                        bookingStatus = BookingStatus.EXPIRED,
+                        onViewPlaygroundClick = {
+                            reBook(
+                                bookingDetails.playgroundId,
+                                bookingDetails.isFavorite
+                            )
+                        },
+                        toRate = {
+                            toRate(bookingDetails.playgroundId)
+                            isOpen = true
+                        },
+                        reBook = { reBook(bookingDetails.playgroundId, bookingDetails.isFavorite) }
+                    )
+                } else {
+                    EmptyScreen(
+                        onClickBookField = onClickBookField
+                    )
+                }
             }
         }
-
+        if (showLoading) {
+            ThreeBounce(modifier = Modifier.fillMaxSize())
+        }
     }
 }

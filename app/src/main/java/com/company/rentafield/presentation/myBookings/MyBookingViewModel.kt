@@ -4,13 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.BookingDetails
+import com.company.rentafield.domain.model.MyBookingsResponse
 import com.company.rentafield.domain.model.PlaygroundReviewResponse
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,13 +20,17 @@ class MyBookingViewModel @Inject constructor(
     private val remoteUserUseCase: RemoteUserUseCase,
     private val localUserUseCases: LocalUserUseCases,
 ) : ViewModel() {
+
+    private val _uiState: MutableStateFlow<MyBookingUiState> = MutableStateFlow(MyBookingUiState())
+    val uiState: StateFlow<MyBookingUiState> = _uiState
+
     private val _reviewState =
         MutableStateFlow<DataState<PlaygroundReviewResponse>>(DataState.Empty)
     val reviewState: StateFlow<DataState<PlaygroundReviewResponse>> = _reviewState
 
-    private val _uiState: MutableStateFlow<MyBookingUiState> = MutableStateFlow(MyBookingUiState())
-    val uiState: StateFlow<MyBookingUiState> = _uiState.asStateFlow()
-
+    private val _myBookingState: MutableStateFlow<DataState<MyBookingsResponse>> =
+        MutableStateFlow(DataState.Empty)
+    val myBookingState: StateFlow<DataState<MyBookingsResponse>> = _myBookingState
 
     fun myBookingPlaygrounds() {
         viewModelScope.launch {
@@ -34,15 +39,18 @@ class MyBookingViewModel @Inject constructor(
                     "Bearer ${userData.token}",
                     userData.userID ?: ""
                 ).collect { dataState ->
+                    _myBookingState.update { dataState }
                     if (dataState is DataState.Success) {
-                        _uiState.value = _uiState.value.copy(
-                            currentBookings = dataState.data.results.filter { bookingDetails ->
-                                !bookingDetails.isFinished
-                            },
-                            expiredBookings = dataState.data.results.filter { bookingDetails ->
-                                bookingDetails.isFinished
-                            }
-                        )
+                        _uiState.update {
+                            _uiState.value.copy(
+                                currentBookings = dataState.data.results.filter { bookingDetails ->
+                                    !bookingDetails.isFinished
+                                },
+                                expiredBookings = dataState.data.results.filter { bookingDetails ->
+                                    bookingDetails.isFinished
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -59,7 +67,6 @@ class MyBookingViewModel @Inject constructor(
                 ).collect {
 
                 }
-
             }
         }
     }
@@ -91,13 +98,12 @@ class MyBookingViewModel @Inject constructor(
                     token = "Bearer ${userData.token}",
                     playgroundReview = PlaygroundReviewResponse(
                         playgroundId = _uiState.value.playgroundId,
-                        userId = userData.userID ?: " ",
+                        userId = userData.userID ?: "",
                         comment = _uiState.value.comment,
                         rating = _uiState.value.rating.toInt(),
                     )
                 ).collect {
                     _reviewState.value = it
-
                 }
             }
         }

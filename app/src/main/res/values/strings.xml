@@ -246,5 +246,6 @@
     <string name="invalid_email_or_password">Invalid email or password</string>
     <string name="email_not_confirmed">Email is not Confirmed</string>
     <string name="login_only_message">Users login only. Guards: install Khomasi Guard app. Owners: visit website.</string>
+    <string name="booking_failure">Failed to get bookings</string>
 
 </resources>
