@@ -6,6 +6,4 @@ data class LocalUserUseCases(
     val saveSearchHistory: SaveSearchHistory,
     val getSearchHistory: GetSearchHistory,
     val removeSearchHistory: RemoveSearchHistory,
-    val savePlaygroundId: SavePlaygroundId,
-    val getPlaygroundId: GetPlaygroundId
 )

@@ -5,7 +5,7 @@ import com.company.rentafield.domain.model.FavouritePlaygroundResponse
 import com.company.rentafield.domain.model.FeedbackRequest
 import com.company.rentafield.domain.model.MessageResponse
 import com.company.rentafield.domain.model.MyBookingsResponse
-import com.company.rentafield.domain.model.PlaygroundReviewResponse
+import com.company.rentafield.domain.model.PlaygroundReviewRequest
 import com.company.rentafield.domain.model.PlaygroundScreenResponse
 import com.company.rentafield.domain.model.PlaygroundsResponse
 import com.company.rentafield.domain.model.ProfileImageResponse
@@ -82,6 +82,6 @@ interface RemoteUserRepository {
 
     suspend fun playgroundReview(
         token: String,
-        playgroundReview: PlaygroundReviewResponse
-    ): Flow<DataState<PlaygroundReviewResponse>>
+        playgroundReview: PlaygroundReviewRequest
+    ): Flow<DataState<MessageResponse>>
 }

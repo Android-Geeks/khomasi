@@ -8,7 +8,7 @@ import com.company.rentafield.domain.model.FessTimeSlotsResponse
 import com.company.rentafield.domain.model.FilteredPlaygroundResponse
 import com.company.rentafield.domain.model.MessageResponse
 import com.company.rentafield.domain.model.MyBookingsResponse
-import com.company.rentafield.domain.model.PlaygroundReviewResponse
+import com.company.rentafield.domain.model.PlaygroundReviewRequest
 import com.company.rentafield.domain.model.PlaygroundReviewsResponse
 import com.company.rentafield.domain.model.PlaygroundScreenResponse
 import com.company.rentafield.domain.model.PlaygroundsResponse
@@ -141,8 +141,8 @@ interface RetrofitService {
     @POST("Review/review")
     suspend fun playgroundReview(
         @Header("Authorization") token: String,
-        @Body playgroundReview: PlaygroundReviewResponse
-    ): Response<PlaygroundReviewResponse>
+        @Body playgroundReview: PlaygroundReviewRequest
+    ): Response<MessageResponse>
 
 
     @GET("Review/playground-reviews")

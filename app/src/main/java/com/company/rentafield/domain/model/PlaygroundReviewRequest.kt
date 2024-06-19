@@ -5,7 +5,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PlaygroundReviewResponse(
+data class PlaygroundReviewRequest(
     @SerialName("playgroundId")
     val playgroundId: Int,
     @SerialName("userId")

@@ -4,7 +4,7 @@ package com.company.rentafield.data.repository
 import com.company.rentafield.data.data_source.remote.RetrofitService
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.FeedbackRequest
-import com.company.rentafield.domain.model.PlaygroundReviewResponse
+import com.company.rentafield.domain.model.PlaygroundReviewRequest
 import com.company.rentafield.domain.model.UserRegisterData
 import com.company.rentafield.domain.model.UserUpdateData
 import com.company.rentafield.domain.repository.RemoteUserRepository
@@ -80,7 +80,7 @@ class RemoteUserRepositoryImpl(
 
     override suspend fun playgroundReview(
         token: String,
-        playgroundReview: PlaygroundReviewResponse
+        playgroundReview: PlaygroundReviewRequest
     ) = handleApi { retrofitService.playgroundReview(token, playgroundReview) }
 
 }
