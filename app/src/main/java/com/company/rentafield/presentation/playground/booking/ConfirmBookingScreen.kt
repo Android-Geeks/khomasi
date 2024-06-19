@@ -59,7 +59,7 @@ fun ConfirmBookingScreen(
         topBar = {
             BookingTopBar(
                 playgroundName = bookingState.playgroundName,
-                onBackClicked = { onBackClicked() },
+                onBackClicked = onBackClicked,
                 context = context
             )
         },

@@ -227,8 +227,8 @@
     <string name="select_date">اختر التاريخ</string>
     <string name="start_time">اختر الوقت</string>
     <string name="to">الى</string>
-    <string name="rating_sent">تم ارسال التصنيف</string>
-    <string name="rate_not_found">لم يتم العثور علي المعدل</string>
+    <string name="rating_sent">تم ارسال التقييم</string>
+    <string name="rate_not_found">لم يتم العثور علي التقييم</string>
     <string name="ok">تم</string>
     <string name="fawry">فورى</string>
     <string name="card_number">رقم البطاقه</string>
@@ -245,5 +245,6 @@
     <string name="email_not_confirmed">البريد الإلكتروني غير مؤكد</string>
     <string name="login_only_message">"هذا التطبيق للمستخدمين فقط. الحراس: ثبتوا تطبيق Khomasi Guard. الملاك: زوروا موقعنا."</string>
     <string name="booking_failure">فشل في الحصول على الحجوزات</string>
-
+    <string name="already_rated">تم التقييم بالفعل</string>
+    <string name="rating_failure">فشل في التقييم، حاول مرة آخرى</string>
 </resources>

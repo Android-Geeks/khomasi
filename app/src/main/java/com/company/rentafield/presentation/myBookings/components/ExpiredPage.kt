@@ -1,5 +1,6 @@
 package com.company.rentafield.presentation.myBookings.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
@@ -32,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
+import com.company.rentafield.domain.model.MessageResponse
 import com.company.rentafield.domain.model.MyBookingsResponse
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyModalBottomSheet
@@ -48,27 +50,28 @@ import kotlinx.coroutines.flow.StateFlow
 fun ExpiredPage(
     bookingsUiState: StateFlow<MyBookingUiState>,
     myBookingsState: StateFlow<DataState<MyBookingsResponse>>,
+    reviewState: StateFlow<DataState<MessageResponse>>,
     playgroundReview: () -> Unit,
     onCommentChange: (String) -> Unit,
     onRatingChange: (Float) -> Unit,
     reBook: (Int, Boolean) -> Unit,
     onClickBookField: () -> Unit,
-    toRate: (Int) -> Unit,
 ) {
     val expiredState by bookingsUiState.collectAsStateWithLifecycle()
     val bookingsState by myBookingsState.collectAsStateWithLifecycle()
+    val ratingState by reviewState.collectAsStateWithLifecycle()
     var showLoading by remember { mutableStateOf(false) }
     val sheetState = rememberModalBottomSheetState()
     var isOpen by remember { mutableStateOf(false) }
     val imeState = rememberImeState()
     val scrollState = rememberScrollState()
     val context = LocalContext.current
-    var rate by remember { mutableStateOf(false) }
     LaunchedEffect(key1 = imeState.value) {
         if (imeState.value) {
             scrollState.animateScrollTo(scrollState.maxValue, tween(300))
         }
     }
+    Log.d("GoingToHave", ratingState.toString())
     LaunchedEffect(bookingsState) {
         when (bookingsState) {
             is DataState.Success -> {
@@ -82,6 +85,30 @@ fun ExpiredPage(
             is DataState.Error -> {
                 showLoading = false
                 Toast.makeText(context, R.string.booking_failure, Toast.LENGTH_SHORT).show()
+            }
+
+            DataState.Empty -> {}
+        }
+    }
+    LaunchedEffect(ratingState) {
+        when (val state = ratingState) {
+            is DataState.Success -> {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.rating_sent), Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            DataState.Loading -> {
+
+            }
+
+            is DataState.Error -> {
+                if (state.code == 400)
+                    Toast.makeText(context, R.string.already_rated, Toast.LENGTH_SHORT).show()
+                else {
+                    Toast.makeText(context, R.string.rating_failure, Toast.LENGTH_SHORT).show()
+                }
             }
 
             DataState.Empty -> {}
@@ -112,7 +139,6 @@ fun ExpiredPage(
                     rating = expiredState.rating,
                     onRatingChange = {
                         onRatingChange(it)
-                        rate = true
                     },
                 )
 
@@ -129,24 +155,10 @@ fun ExpiredPage(
             ) {
                 MyButton(
                     onClick = {
-                        if (rate) {
-                            playgroundReview()
-                            onCommentChange("")
-                            onRatingChange(0f)
-                            isOpen = false
-                            Toast.makeText(
-                                context,
-                                context.getString(R.string.rating_sent), Toast.LENGTH_SHORT
-                            ).show()
-
-                        } else {
-                            Toast.makeText(
-                                context,
-                                context.getString(R.string.rate_not_found), Toast.LENGTH_SHORT
-                            ).show()
-                            isOpen = true
-
-                        }
+                        playgroundReview()
+                        isOpen = false
+                        onCommentChange("")
+                        onRatingChange(0f)
                     },
                     text = R.string.rate,
                     modifier = Modifier
@@ -174,7 +186,6 @@ fun ExpiredPage(
                             )
                         },
                         toRate = {
-                            toRate(bookingDetails.playgroundId)
                             isOpen = true
                         },
                         reBook = { reBook(bookingDetails.playgroundId, bookingDetails.isFavorite) }

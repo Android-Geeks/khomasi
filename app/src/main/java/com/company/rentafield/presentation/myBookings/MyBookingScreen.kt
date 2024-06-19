@@ -19,6 +19,7 @@ import androidx.compose.ui.res.stringResource
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.BookingDetails
+import com.company.rentafield.domain.model.MessageResponse
 import com.company.rentafield.domain.model.MyBookingsResponse
 import com.company.rentafield.presentation.myBookings.components.CurrentPage
 import com.company.rentafield.presentation.myBookings.components.ExpiredPage
@@ -35,6 +36,7 @@ import kotlinx.coroutines.launch
 fun MyBookingScreen(
     uiState: StateFlow<MyBookingUiState>,
     myBookingsState: StateFlow<DataState<MyBookingsResponse>>,
+    reviewState: StateFlow<DataState<MessageResponse>>,
     onClickPlaygroundCard: (BookingDetails) -> Unit,
     myBookingPlaygrounds: () -> Unit,
     playgroundReview: () -> Unit,
@@ -43,18 +45,18 @@ fun MyBookingScreen(
     reBook: (Int, Boolean) -> Unit,
     onClickBookField: () -> Unit,
     cancelDetails: (Int, Boolean) -> Unit,
-    toRate: (Int) -> Unit,
 ) {
     LaunchedEffect(Unit) {
         myBookingPlaygrounds()
     }
     val pagerState = rememberPagerState(initialPage = 0)
+    val pagerItems = listOf(R.string.current, R.string.expired)
     Column(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
     ) {
-        Tabs(tabs = listOf(R.string.current, R.string.expired), pagerState = pagerState)
+        Tabs(tabs = pagerItems, pagerState = pagerState)
         Image(
             painter = painterResource(R.drawable.view_pager_group),
             contentDescription = null,
@@ -64,6 +66,8 @@ fun MyBookingScreen(
         TabContent(
             uiState = uiState,
             myBookingsState = myBookingsState,
+            reviewState = reviewState,
+            pagerItems = pagerItems,
             pagerState = pagerState,
             onClickPlaygroundCard = onClickPlaygroundCard,
             playgroundReview = playgroundReview,
@@ -72,7 +76,6 @@ fun MyBookingScreen(
             reBook = reBook,
             onClickBookField = onClickBookField,
             cancelDetails = cancelDetails,
-            toRate = toRate
         )
     }
 }
@@ -115,7 +118,9 @@ fun Tabs(tabs: List<Int>, pagerState: PagerState) {
 fun TabContent(
     uiState: StateFlow<MyBookingUiState>,
     myBookingsState: StateFlow<DataState<MyBookingsResponse>>,
+    reviewState: StateFlow<DataState<MessageResponse>>,
     pagerState: PagerState,
+    pagerItems: List<Int>,
     onClickPlaygroundCard: (BookingDetails) -> Unit,
     playgroundReview: () -> Unit,
     onCommentChange: (String) -> Unit,
@@ -123,9 +128,8 @@ fun TabContent(
     onClickBookField: () -> Unit,
     reBook: (Int, Boolean) -> Unit,
     cancelDetails: (Int, Boolean) -> Unit,
-    toRate: (Int) -> Unit,
 ) {
-    HorizontalPager(count = 2, state = pagerState) { page ->
+    HorizontalPager(count = pagerItems.size, state = pagerState) { page ->
         if (page == 0) {
             CurrentPage(
                 uiState,
@@ -138,12 +142,12 @@ fun TabContent(
             ExpiredPage(
                 uiState,
                 myBookingsState,
+                reviewState,
                 playgroundReview,
                 onCommentChange,
                 onRatingChange,
                 reBook,
                 onClickBookField,
-                toRate
             )
         }
     }

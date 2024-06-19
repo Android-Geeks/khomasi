@@ -232,6 +232,7 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavHostController) {
             MyBookingScreen(
                 uiState = bookingViewModel.uiState,
                 myBookingsState = bookingViewModel.myBookingState,
+                reviewState = bookingViewModel.reviewState,
                 myBookingPlaygrounds = bookingViewModel::myBookingPlaygrounds,
                 onClickPlaygroundCard = { playgroundId ->
                     bookingViewModel.onClickPlayground(playgroundId)
@@ -248,7 +249,6 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavHostController) {
                 cancelDetails = { playgroundId, isFavourite ->
                     navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 },
-                toRate = bookingViewModel::toRate
             )
         }
         composable(route = Screens.KhomasiNavigation.MyBookings.CancelBooking.route) {

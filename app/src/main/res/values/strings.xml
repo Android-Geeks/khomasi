@@ -221,7 +221,7 @@
     <string name="available_times">Available times:</string>
     <string name="time_slot_validation">Please select one consecutive time period</string>
     <string name="continue_to_payment">Continue to payment</string>
-    <string name="your_comment">your comment</string>
+    <string name="your_comment">Your Comment</string>
     <string name="face_not_detected">No Face Detected</string>
     <string name="verification_code_sent">Verification code sent</string>
     <string name="user_not_found">User not found</string>
@@ -232,8 +232,8 @@
     <string name="to">to</string>
     <string name="process">Process</string>
     <string name="browse_results">Browse Results</string>
-    <string name="rating_sent">rating sent</string>
-    <string name="rate_not_found">rate not found</string>
+    <string name="rating_sent">Rating Sent</string>
+    <string name="rate_not_found">Rating Not Found</string>
     <string name="select_date">Select Date</string>
     <string name="start_time">Select Time</string>
     <string name="ok">OK</string>
@@ -247,5 +247,7 @@
     <string name="email_not_confirmed">Email is not Confirmed</string>
     <string name="login_only_message">Users login only. Guards: install Khomasi Guard app. Owners: visit website.</string>
     <string name="booking_failure">Failed to get bookings</string>
+    <string name="already_rated">Already Rated.</string>
+    <string name="rating_failure">Failed to rate, try again</string>
 
 </resources>
