@@ -50,6 +50,9 @@ import com.company.rentafield.theme.darkSubText
 import com.company.rentafield.theme.lightErrorColor
 import com.company.rentafield.theme.lightSubText
 import com.company.rentafield.utils.convertToBitmap
+import com.company.rentafield.utils.extractDateFromTimestamp
+import com.company.rentafield.utils.extractTimeFromTimestamp
+import com.company.rentafield.utils.parseTimestamp
 
 @Composable
 fun BookingCard(
@@ -212,6 +215,12 @@ fun BookingCardDetails(
     context: Context = LocalContext.current,
     isDark: Boolean
 ) {
+    val timestamp = parseTimestamp(bookingDetails.bookingTime)
+    val date = extractDateFromTimestamp(timestamp)
+    val time = extractTimeFromTimestamp(timestamp) +
+            " ${stringResource(id = R.string.to)} " +
+            extractTimeFromTimestamp(timestamp.plusMinutes((bookingDetails.duration * 60).toLong()))
+
     Column(
         modifier = modifier
             .fillMaxWidth(),
@@ -249,12 +258,12 @@ fun BookingCardDetails(
                 isDark = isDark
             )
             TextWithIcon(
-                text = bookingDetails.bookingTime,
+                text = date,
                 iconId = R.drawable.calendar,
                 isDark = isDark
             )
             TextWithIcon(
-                text = bookingDetails.bookingTime,
+                text = time,
                 iconId = R.drawable.clock,
                 isDark = isDark
             )
