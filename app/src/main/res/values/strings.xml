@@ -194,6 +194,7 @@
     <string name="enter_verification_email">Enter the verification code</string>
     <string name="invalid_pass_message"> A password should contain at least a minimum length of 12 characters, one digit, one symbol, and no whitespace.</string>
     <string name="invalid_email_message">Invalid email format</string>
+    <string name="existing_email_message">This email already exists</string>
     <string name="invalid_phone_number_message">Invalid phone number</string>
     <string name="invalid_name_message"> A name should contain at least a minimum length of two characters and not contain digits.</string>
     <string name="not_matched_passwords">New password does not match. Enter new password again here.</string>

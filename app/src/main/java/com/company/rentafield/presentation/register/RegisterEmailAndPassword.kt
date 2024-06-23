@@ -73,19 +73,23 @@ fun RegisterEmailAndPassword(
 ) {
     val userState = uiState.collectAsStateWithLifecycle().value
 
-    val isErrorEmail = userState.validating2 && !CheckInputValidation.isEmailValid(userState.email)
+    var isErrorEmail by remember {
+        mutableStateOf(
+            userState.validating2 && !CheckInputValidation.isEmailValid(
+                userState.email
+            )
+        )
+    }
     val isErrorPassword =
         userState.validating2 && !CheckInputValidation.isPasswordValid(userState.password)
-    val isErrorConfirmPassword = userState.password != userState.confirmPassword
-            && userState.confirmPassword.isNotEmpty()
+    val isErrorConfirmPassword =
+        userState.password != userState.confirmPassword && userState.confirmPassword.isNotEmpty()
 
 
-    val keyboardActions = KeyboardActions(
-        onNext = { localFocusManager.moveFocus(FocusDirection.Down) },
-        onDone = {
+    val keyboardActions =
+        KeyboardActions(onNext = { localFocusManager.moveFocus(FocusDirection.Down) }, onDone = {
             keyboardController?.hide()
-        }
-    )
+        })
     val scrollState = rememberScrollState()
     val keyboardHeight = WindowInsets.ime.getTop(LocalDensity.current)
 
@@ -95,7 +99,6 @@ fun RegisterEmailAndPassword(
 
     val registerStatus = registerState.collectAsState().value
     var showLoading by remember { mutableStateOf(false) }
-
 
     LaunchedEffect(key1 = registerStatus) {
         Log.d("RegisterStatus", "$registerStatus")
@@ -112,6 +115,9 @@ fun RegisterEmailAndPassword(
 
             is DataState.Error -> {
                 showLoading = false
+                if (registerStatus.code == 500) {
+                    isErrorEmail = true
+                }
             }
 
             is DataState.Empty -> {}
@@ -123,135 +129,125 @@ fun RegisterEmailAndPassword(
             .fillMaxSize()
             .systemBarsPadding()
     ) {
-        AuthSheet(
-            screenContent = {
-                Image(
-                    painter =
-                    if (isSystemInDarkTheme())
-                        painterResource(id = R.drawable.dark_starting_player)
-                    else
-                        painterResource(id = R.drawable.light_starting_player),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .fillMaxWidth()
+        AuthSheet(screenContent = {
+            Image(
+                painter = if (isSystemInDarkTheme()) painterResource(id = R.drawable.dark_starting_player)
+                else painterResource(id = R.drawable.light_starting_player),
+                contentDescription = null,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }, sheetContent = {
+            Column(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .imePadding()
+                    .verticalScroll(scrollState),
+                verticalArrangement = Arrangement.spacedBy(8.dp) // Adjust the spacing between items
+            ) {
+                Text(
+                    text = stringResource(id = R.string.you_are_almost_there),
+                    style = MaterialTheme.typography.displayMedium,
+                    color = if (isDark) darkText else lightText
                 )
-            },
-            sheetContent = {
-                Column(
-                    modifier = Modifier
-                        .wrapContentHeight()
-                        .imePadding()
-                        .verticalScroll(scrollState),
-                    verticalArrangement = Arrangement.spacedBy(8.dp) // Adjust the spacing between items
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.you_are_almost_there),
-                        style = MaterialTheme.typography.displayMedium,
-                        color = if (isDark) darkText else lightText
-                    )
-                    MyTextField(
-                        value = userState.email,
-                        onValueChange = onEmailChange,
-                        label = R.string.email,
-                        imeAction = ImeAction.Next,
-                        keyBoardType = KeyboardType.Email,
-                        keyboardActions = keyboardActions,
-                        isError = isErrorEmail,
-                        supportingText = {
-                            if (isErrorEmail)
+                MyTextField(value = userState.email,
+                    onValueChange = onEmailChange,
+                    label = R.string.email,
+                    imeAction = ImeAction.Next,
+                    keyBoardType = KeyboardType.Email,
+                    keyboardActions = keyboardActions,
+                    isError = isErrorEmail,
+                    supportingText = {
+                        if (isErrorEmail) {
+                            if (userState.validating2 &&
+                                !CheckInputValidation.isEmailValid(userState.email)
+                            ) {
                                 Text(
                                     text = stringResource(R.string.invalid_email_message),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.error
                                 )
-                        }
-                    )
-
-                    MyTextField(
-                        value = userState.password,
-                        onValueChange = onPasswordChange,
-                        label = R.string.password,
-                        imeAction = ImeAction.Next,
-                        keyBoardType = KeyboardType.Password,
-                        keyboardActions = keyboardActions,
-                        isError = isErrorPassword,
-                        supportingText = {
-                            Column {
-                                PasswordStrengthMeter(
-                                    password = userState.password,
-                                    enable = userState.password.isNotEmpty()
-                                )
+                            } else {
                                 Text(
-                                    text =
-                                    if (isErrorPassword) {
-                                        stringResource(id = R.string.invalid_pass_message)
-                                    } else {
-                                        stringResource(id = R.string.password_restrictions)
-                                    },
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = if (isErrorPassword)
-                                        MaterialTheme.colorScheme.error
-                                    else
-                                        MaterialTheme.colorScheme.outline
-                                )
-
-                            }
-                        }
-                    )
-
-                    MyTextField(
-                        value = userState.confirmPassword,
-                        onValueChange = onConfirmPasswordChange,
-                        label = R.string.confirm_password,
-                        imeAction = ImeAction.Done,
-                        keyBoardType = KeyboardType.Password,
-                        keyboardActions = keyboardActions,
-                        isError = isErrorConfirmPassword,
-                        supportingText = {
-                            if (isErrorConfirmPassword) {
-                                Text(
-                                    text = stringResource(R.string.not_matched_passwords),
+                                    text = stringResource(R.string.existing_email_message),
                                     style = MaterialTheme.typography.labelSmall,
                                     color = MaterialTheme.colorScheme.error
                                 )
                             }
                         }
-                    )
+                    })
 
-                    Spacer(modifier = Modifier.weight(1f))
-                    MyButton(
-                        text = R.string.create_account,
-                        onClick = {
-                            if (isValidEmailAndPassword(
-                                    userState.email,
-                                    userState.password
-                                )
-                            ) {
-                                onRegister()
-                            }
-                        },
-                        modifier = Modifier.fillMaxWidth()
-                    )
+                MyTextField(value = userState.password,
+                    onValueChange = onPasswordChange,
+                    label = R.string.password,
+                    imeAction = ImeAction.Next,
+                    keyBoardType = KeyboardType.Password,
+                    keyboardActions = keyboardActions,
+                    isError = isErrorPassword,
+                    supportingText = {
+                        Column {
+                            PasswordStrengthMeter(
+                                password = userState.password,
+                                enable = userState.password.isNotEmpty()
+                            )
+                            Text(
+                                text = if (isErrorPassword) {
+                                    stringResource(id = R.string.invalid_pass_message)
+                                } else {
+                                    stringResource(id = R.string.password_restrictions)
+                                },
+                                style = MaterialTheme.typography.labelSmall,
+                                color = if (isErrorPassword) MaterialTheme.colorScheme.error
+                                else MaterialTheme.colorScheme.outline
+                            )
 
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.already_have_an_account),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = if (isDark) darkText else lightText
-                        )
-                        MyTextButton(
-                            text = R.string.login,
-                            isUnderlined = false,
-                            onClick = onLoginClick
-                        )
-                    }
+                        }
+                    })
+
+                MyTextField(value = userState.confirmPassword,
+                    onValueChange = onConfirmPasswordChange,
+                    label = R.string.confirm_password,
+                    imeAction = ImeAction.Done,
+                    keyBoardType = KeyboardType.Password,
+                    keyboardActions = keyboardActions,
+                    isError = isErrorConfirmPassword,
+                    supportingText = {
+                        if (isErrorConfirmPassword) {
+                            Text(
+                                text = stringResource(R.string.not_matched_passwords),
+                                style = MaterialTheme.typography.labelSmall,
+                                color = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    })
+
+                Spacer(modifier = Modifier.weight(1f))
+                MyButton(
+                    text = R.string.create_account, onClick = {
+                        if (isValidEmailAndPassword(
+                                userState.email, userState.password
+                            )
+                        ) {
+                            onRegister()
+                        }
+                    }, modifier = Modifier.fillMaxWidth()
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = stringResource(id = R.string.already_have_an_account),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = if (isDark) darkText else lightText
+                    )
+                    MyTextButton(
+                        text = R.string.login, isUnderlined = false, onClick = onLoginClick
+                    )
                 }
             }
-        )
+        })
         if (showLoading) {
             Loading()
         }

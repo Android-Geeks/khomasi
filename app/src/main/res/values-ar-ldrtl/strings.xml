@@ -250,4 +250,5 @@
     <string name="already_rated">تم التقييم بالفعل</string>
     <string name="rating_failure">فشل في التقييم، حاول مرة آخرى</string>
     <string name="donot_have_notifications">لا توجد لديك اي اشعارات جديدة !</string>
+    <string name="existing_email_message">هذا البريد الالكترونى موجود بالفعل</string>
 </resources>
