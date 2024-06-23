@@ -15,6 +15,7 @@ import com.company.rentafield.presentation.myBookings.MyBookingScreen
 import com.company.rentafield.presentation.myBookings.MyBookingViewModel
 import com.company.rentafield.presentation.myBookings.components.CancelBookingPage
 import com.company.rentafield.presentation.navigation.components.sharedViewModel
+import com.company.rentafield.presentation.notifications.NotificationsScreen
 import com.company.rentafield.presentation.playground.PlaygroundScreen
 import com.company.rentafield.presentation.playground.PlaygroundViewModel
 import com.company.rentafield.presentation.playground.booking.BookingScreen
@@ -48,14 +49,19 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavHostController) {
                     navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 },
                 getHomeScreenData = homeViewModel::getHomeScreenData,
-                onClickBell = { /* will nav to notification page */ },
+                onClickBell = { navController.navigate(Screens.KhomasiNavigation.Notifications.route) },
                 onClickViewAll = { homeViewModel.onClickViewAll() },
                 onSearchBarClicked = { navController.navigate(Screens.KhomasiNavigation.Search.route) },
                 onAdClicked = {},
                 onFavouriteClick = homeViewModel::onFavouriteClicked
             )
         }
-
+        composable(route = Screens.KhomasiNavigation.Notifications.route) {
+            NotificationsScreen(
+                onBackClicked = { navController.popBackStack() },
+                notifications = emptyList()
+            )
+        }
         composable(route = Screens.KhomasiNavigation.Favorite.route) {
             val favouriteViewModel: FavouriteViewModel = hiltViewModel()
             FavouriteScreen(

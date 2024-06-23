@@ -56,7 +56,6 @@ private val SECONDARY_SPACER_HEIGHT = 10.dp
 @Composable
 fun NotificationsScreen(
     onBackClicked: () -> Unit,
-    onClickBackToHome: () -> Unit,
     notifications: List<Notification>
 ) {
     Scaffold(
@@ -73,7 +72,7 @@ fun NotificationsScreen(
             color = MaterialTheme.colorScheme.background,
         ) {
             when (notifications.size) {
-                0 -> EmptyNotification(onClickBackToHome = onClickBackToHome)
+                0 -> EmptyNotification(onClickBackToHome = onBackClicked)
                 else -> NotificationContent(notifications = notifications)
             }
         }
@@ -302,7 +301,6 @@ fun NotificationsPreview() {
     KhomasiTheme {
         NotificationsScreen(
             onBackClicked = { },
-            onClickBackToHome = { },
             notifications = notificationsTestList
         )
     }

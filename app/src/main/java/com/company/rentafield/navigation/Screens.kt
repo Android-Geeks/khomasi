@@ -25,6 +25,7 @@ sealed class Screens(
 
     data object KhomasiNavigation : Screens("KhomasiNavigation") {
         data object Home : Screens("Home")
+        data object Notifications : Screens("Notifications")
         data object MyBookings : Screens("MyBookings") {
             data object BookingHistory : Screens("BookingHistory")
             data object CancelBooking : Screens("CancelBooking")
