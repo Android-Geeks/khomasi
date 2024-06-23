@@ -247,4 +247,5 @@
     <string name="booking_failure">فشل في الحصول على الحجوزات</string>
     <string name="already_rated">تم التقييم بالفعل</string>
     <string name="rating_failure">فشل في التقييم، حاول مرة آخرى</string>
+    <string name="donot_have_notifications">لا توجد لديك اي اشعارات جديدة !</string>
 </resources>

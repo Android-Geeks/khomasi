@@ -249,5 +249,6 @@
     <string name="booking_failure">Failed to get bookings</string>
     <string name="already_rated">Already Rated.</string>
     <string name="rating_failure">Failed to rate, try again</string>
+    <string name="donot_have_notifications">You do not have any new notifications!</string>
 
 </resources>
