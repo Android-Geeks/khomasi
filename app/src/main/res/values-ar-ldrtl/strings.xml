@@ -237,6 +237,8 @@
     <string name="card_cvv">CVV رمز ال</string>
     <string name="xxxx_xxxx">xxxx xxxx xxxx xxxx</string>
     <string name="coin">عمله</string>
+    <string name="coin_pay">CoinPay</string>
+    <string name="fawry_pay">FawryPay</string>
     <string name="balance">الرصيد</string>
     <string name="booking_price">سعر الحجز</string>
     <string name="payment_method">طريقه الدفع</string>

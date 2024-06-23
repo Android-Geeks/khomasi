@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -53,9 +54,10 @@ private val MAIN_SPACER_HEIGHT = 16.dp
 private val SECONDARY_SPACER_HEIGHT = 10.dp
 
 @Composable
-fun NotificationScreen(
+fun NotificationsScreen(
+    onBackClicked: () -> Unit,
     onClickBackToHome: () -> Unit,
-    onBackClicked: () -> Unit
+    notifications: List<Notification>
 ) {
     Scaffold(
         topBar = {
@@ -70,57 +72,66 @@ fun NotificationScreen(
                 .padding(paddingValues),
             color = MaterialTheme.colorScheme.background,
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-            ) {
-                Spacer(modifier = Modifier.weight(1f))
-
-                NotificationsCard(
-                    modifier = Modifier.padding(horizontal = 63.dp),
-                    isMain = true
-                )
-
-                Spacer(modifier = Modifier.height(13.dp))
-
-                NotificationsCard(
-                    modifier = Modifier.padding(horizontal = 104.dp),
-                    isMain = false
-                )
-
-                Spacer(modifier = Modifier.height(8.dp))
-
-                NotificationsCard(modifier = Modifier.padding(horizontal = 104.dp), isMain = false)
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                Text(
-                    text = stringResource(R.string.donot_have_notifications),
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    style = MaterialTheme.typography.titleSmall,
-                    textAlign = TextAlign.Center,
-                    modifier = Modifier.fillMaxWidth()
-                )
-
-                Spacer(modifier = Modifier.weight(1f))
-
-                MyButton(
-                    text = R.string.back_to_home, onClick = onClickBackToHome,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp)
-                )
-
-                Spacer(modifier = Modifier.height(112.dp))
+            when (notifications.size) {
+                0 -> EmptyNotification(onClickBackToHome = onClickBackToHome)
+                else -> NotificationContent(notifications = notifications)
             }
         }
     }
 }
 
+
+@Composable
+fun EmptyNotification(
+    onClickBackToHome: () -> Unit,
+) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+    ) {
+        Spacer(modifier = Modifier.weight(1f))
+
+        NotificationsCard(
+            modifier = Modifier.padding(horizontal = 63.dp), isMain = true
+        )
+
+        Spacer(modifier = Modifier.height(13.dp))
+
+        NotificationsCard(
+            modifier = Modifier.padding(horizontal = 104.dp), isMain = false
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        NotificationsCard(modifier = Modifier.padding(horizontal = 104.dp), isMain = false)
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Text(
+            text = stringResource(R.string.donot_have_notifications),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            style = MaterialTheme.typography.titleSmall,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        MyButton(
+            text = R.string.back_to_home,
+            onClick = onClickBackToHome,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 24.dp)
+        )
+
+        Spacer(modifier = Modifier.height(112.dp))
+    }
+}
+
 @Composable
 fun NotificationsCard(
-    modifier: Modifier = Modifier,
-    isMain: Boolean = true
+    modifier: Modifier = Modifier, isMain: Boolean = true
 ) {
     val paddingValue = if (isMain) MAIN_PADDING else SECONDARY_PADDING
     val iconSize = if (isMain) MAIN_ICON_SIZE else SECONDARY_ICON_SIZE
@@ -164,8 +175,7 @@ fun NotificationsCard(
                     tint = bellColor
                 )
                 Column(
-                    Modifier
-                        .padding(top = 8.dp, start = 16.dp, end = 20.dp)
+                    Modifier.padding(top = 8.dp, start = 16.dp, end = 20.dp)
                 ) {
                     DrawLine(
                         if (isSystemInDarkTheme()) darkOverlay else lightOverlay,
@@ -186,6 +196,44 @@ fun NotificationsCard(
 
             }
         }
+    }
+}
+
+@Composable
+fun NotificationContent(notifications: List<Notification>) {
+    LazyColumn {
+        items(notifications.size) { index ->
+            NotificationItem(notification = notifications[index])
+        }
+    }
+}
+
+@Composable
+fun NotificationItem(notification: Notification) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 16.dp, horizontal = 16.dp)
+    ) {
+        Row {
+            Text(
+                text = notification.title,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+            )
+            Spacer(modifier = Modifier.weight(1f))
+            Text(
+                text = notification.time,
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.outline,
+            )
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = notification.subTitle,
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.tertiary,
+        )
     }
 }
 
@@ -248,13 +296,32 @@ fun NotificationTopBar(
     }
 }
 
-@Preview(showSystemUi = true, locale = "ar")
+@Preview(showSystemUi = true, locale = "en")
 @Composable
 fun NotificationsPreview() {
     KhomasiTheme {
-        NotificationScreen(
-            onClickBackToHome = {},
-            onBackClicked = {}
+        NotificationsScreen(
+            onBackClicked = { },
+            onClickBackToHome = { },
+            notifications = notificationsTestList
         )
     }
 }
+
+val notificationsTestList = listOf(
+    Notification(
+        time = "4:00 PM",
+        title = "New field added near you",
+        subTitle = "A new field has been added near you. Click here to view the field."
+    ),
+    Notification(
+        time = "4:00 PM",
+        title = "New field added near you",
+        subTitle = "A new field has been added near you. Click here to view the field."
+    ),
+    Notification(
+        time = "4:00 PM",
+        title = "New field added near you",
+        subTitle = "A new field has been added near you. Click here to view the field."
+    ),
+)
