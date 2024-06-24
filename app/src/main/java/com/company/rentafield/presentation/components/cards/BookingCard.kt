@@ -320,7 +320,7 @@ private fun BookingCardPreview() {
                 "Nasr City",
                 "1/10/2024",
                 "7",
-                50,
+                50.0,
                 2425,
                 "false",
                 false,

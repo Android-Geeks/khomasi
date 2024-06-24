@@ -19,7 +19,7 @@ data class BookingDetails(
     @SerialName("bookingTime")
     val bookingTime: String,
     @SerialName("duration")
-    val duration: Int,
+    val duration: Double,
     @SerialName("cost")
     val cost: Int,
     @SerialName("confirmationCode")

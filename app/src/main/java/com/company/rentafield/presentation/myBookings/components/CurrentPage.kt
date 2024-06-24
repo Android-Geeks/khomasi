@@ -1,5 +1,6 @@
 package com.company.rentafield.presentation.myBookings.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -40,6 +41,7 @@ fun CurrentPage(
     var showLoading by remember { mutableStateOf(false) }
     val context = LocalContext.current
     LaunchedEffect(currentState) {
+        Log.d("CurrentPage", "Current state: $currentState")
         when (currentState) {
             is DataState.Success -> {
                 showLoading = false

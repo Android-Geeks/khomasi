@@ -16,7 +16,7 @@ data class MyBookingUiState(
         playgroundAddress = "",
         playgroundPicture = "",
         bookingTime = "",
-        duration = 0,
+        duration = 0.0,
         cost = 0,
         confirmationCode = "",
         isCanceled = true,
@@ -24,5 +24,3 @@ data class MyBookingUiState(
         isFavorite = false
     )
 )
-
-
