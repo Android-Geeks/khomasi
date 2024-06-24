@@ -37,7 +37,7 @@ fun PlaygroundRules(
 
     if (playgroundData != null) {
         val rulesList = playgroundData!!.playground.rules.split(",")
-        val myHeight = (30.dp * rulesList.size).coerceAtLeast(40.dp)
+        val myHeight = (50.dp * rulesList.size).coerceAtLeast(50.dp)
         Column(
             modifier = Modifier
                 .fillMaxWidth()

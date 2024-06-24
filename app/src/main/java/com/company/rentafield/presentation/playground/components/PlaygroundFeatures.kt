@@ -43,7 +43,7 @@ fun PlaygroundFeatures(
     }
     if (playgroundData != null) {
         val featureList = playgroundData!!.playground.advantages.split(",")
-        val myHeight = if (featureList.size > 3) 220.dp else 110.dp
+        val myHeight = if (featureList.size > 3) 160.dp else 110.dp
         Box {
             Column(
                 modifier = Modifier
