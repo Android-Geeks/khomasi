@@ -1,7 +1,6 @@
 package com.company.rentafield.presentation.mainActivity
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -22,7 +21,7 @@ class MainActivity : ComponentActivity() {
     private lateinit var connectivityObserver: ConnectivityObserver
 
     private val mainViewModel by viewModels<MainViewModel>()
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         connectivityObserver = NetworkConnectivityObserver(applicationContext)
@@ -37,7 +36,6 @@ class MainActivity : ComponentActivity() {
                 initialValue = ConnectivityObserver.Status.Unavailable
             )
             KhomasiTheme {
-                Log.d("ActivityMain", mainViewModel.startDestination.value)
                 NavGraph(
                     startDestination = startDestination,
                     isNetworkAvailable = isNetworkAvailable
