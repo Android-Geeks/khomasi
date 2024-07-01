@@ -14,5 +14,4 @@ data class LocalUser(
     val coins: Double? = null,
     val rating: Double? = null,
     val token: String? = null,
-   // val playgroundId: String? = null,
 )

@@ -74,8 +74,8 @@ fun BrowsePlaygrounds(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(it)
-                    .padding(16.dp),
+                    .padding(top = it.calculateTopPadding())
+                    .padding(start = 16.dp, end = 16.dp, top = 16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
