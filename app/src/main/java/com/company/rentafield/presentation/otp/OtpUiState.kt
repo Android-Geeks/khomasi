@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.otpScreen
+package com.company.rentafield.presentation.otp
 
 data class OtpUiState(
     val code: String = "",

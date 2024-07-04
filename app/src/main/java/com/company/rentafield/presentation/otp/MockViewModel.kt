@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.otpScreen
+package com.company.rentafield.presentation.otp
 
 import androidx.lifecycle.ViewModel
 import com.company.rentafield.domain.DataState
@@ -29,9 +29,6 @@ class MockOtpViewModel : ViewModel() {
 
     val confirmEmailState: StateFlow<DataState<MessageResponse>> = _confirmEmailState
 
-    companion object {
-        private const val MAX_CODE_LENGTH = 5
-    }
 
     fun updateSmsCode(newCode: String) {
     }
@@ -60,7 +57,4 @@ class MockOtpViewModel : ViewModel() {
     fun resetTimer(time: Int) {
     }
 
-    override fun onCleared() {
-        super.onCleared()
-    }
 }

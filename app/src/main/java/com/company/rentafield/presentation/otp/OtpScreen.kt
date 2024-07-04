@@ -1,6 +1,7 @@
-package com.company.rentafield.presentation.otpScreen
+package com.company.rentafield.presentation.otp
 
 
+import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
@@ -47,6 +48,7 @@ import com.company.rentafield.presentation.components.connectionStates.Loading
 import com.company.rentafield.theme.KhomasiTheme
 import kotlinx.coroutines.flow.StateFlow
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun OtpScreen(
     uiState: StateFlow<OtpUiState>,

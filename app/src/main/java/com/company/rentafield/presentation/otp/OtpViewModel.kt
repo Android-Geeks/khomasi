@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.otpScreen
+package com.company.rentafield.presentation.otp
 
 import android.util.Log
 import androidx.lifecycle.ViewModel

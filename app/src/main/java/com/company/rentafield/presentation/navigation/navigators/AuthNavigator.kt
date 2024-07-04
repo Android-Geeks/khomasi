@@ -10,8 +10,8 @@ import com.company.rentafield.presentation.login.LoginScreen
 import com.company.rentafield.presentation.login.LoginViewModel
 import com.company.rentafield.presentation.loginOrSignup.LoginOrRegisterScreen
 import com.company.rentafield.presentation.navigation.components.sharedViewModel
-import com.company.rentafield.presentation.otpScreen.OtpScreen
-import com.company.rentafield.presentation.otpScreen.OtpViewModel
+import com.company.rentafield.presentation.otp.OtpScreen
+import com.company.rentafield.presentation.otp.OtpViewModel
 import com.company.rentafield.presentation.register.RegisterEmailAndPassword
 import com.company.rentafield.presentation.register.RegisterNameAndPhone
 import com.company.rentafield.presentation.register.RegisterViewModel

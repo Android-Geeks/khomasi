@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.otpScreen
+package com.company.rentafield.presentation.otp
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
