@@ -1,11 +1,11 @@
-package com.company.rentafield.domain.model
+package com.company.rentafield.domain.model.booking
 
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class CancelBookingResponse(
+data class BookingPlaygroundResponse(
     @SerialName("bookingNumber")
     val bookingNumber: Int,
     @SerialName("userId")
@@ -18,6 +18,8 @@ data class CancelBookingResponse(
     val duration: Int,
     @SerialName("cost")
     val cost: Int,
+    @SerialName("confirmationCode")
+    val confirmationCode: String,
     @SerialName("isCanceled")
     val isCanceled: Boolean
 )

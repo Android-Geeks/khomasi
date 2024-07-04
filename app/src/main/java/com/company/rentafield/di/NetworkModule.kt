@@ -1,8 +1,8 @@
 package com.company.rentafield.di
 
 
-import com.company.rentafield.data.data_source.remote.RetrofitAiService
-import com.company.rentafield.data.data_source.remote.RetrofitService
+import com.company.rentafield.data.data_source.RetrofitAiService
+import com.company.rentafield.data.data_source.RetrofitService
 import com.company.rentafield.data.repository.RemoteAiRepositoryImpl
 import com.company.rentafield.data.repository.RemotePlaygroundRepositoryImpl
 import com.company.rentafield.data.repository.RemoteUserRepositoryImpl

@@ -3,7 +3,7 @@ package com.company.rentafield.presentation.playground.booking
 
 import androidx.lifecycle.ViewModel
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.FessTimeSlotsResponse
+import com.company.rentafield.domain.model.playground.FreeTimeSlotsResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -11,9 +11,9 @@ import org.threeten.bp.LocalDateTime
 
 
 class MockBookingViewModel : ViewModel() {
-    private val _freeSlotsState: MutableStateFlow<DataState<FessTimeSlotsResponse>> =
+    private val _freeSlotsState: MutableStateFlow<DataState<FreeTimeSlotsResponse>> =
         MutableStateFlow(DataState.Empty)
-    val freeSlotsState: StateFlow<DataState<FessTimeSlotsResponse>> = _freeSlotsState
+    val freeSlotsState: StateFlow<DataState<FreeTimeSlotsResponse>> = _freeSlotsState
 
     private val _bookingUiState: MutableStateFlow<BookingUiState> =
         MutableStateFlow(BookingUiState())

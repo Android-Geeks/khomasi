@@ -1,4 +1,4 @@
-package com.company.rentafield.domain.model
+package com.company.rentafield.domain.model.booking
 
 
 import kotlinx.serialization.SerialName

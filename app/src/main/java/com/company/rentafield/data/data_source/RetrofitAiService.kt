@@ -1,4 +1,4 @@
-package com.company.rentafield.data.data_source.remote
+package com.company.rentafield.data.data_source
 
 import com.company.rentafield.domain.model.MessageResponse
 import okhttp3.MultipartBody

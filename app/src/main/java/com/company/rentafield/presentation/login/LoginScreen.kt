@@ -27,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.UserLoginResponse
+import com.company.rentafield.domain.model.auth.UserLoginResponse
 import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.connectionStates.Loading
 import com.company.rentafield.theme.KhomasiTheme

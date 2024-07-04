@@ -3,7 +3,7 @@ package com.company.rentafield.presentation.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.UserLoginResponse
+import com.company.rentafield.domain.model.auth.UserLoginResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

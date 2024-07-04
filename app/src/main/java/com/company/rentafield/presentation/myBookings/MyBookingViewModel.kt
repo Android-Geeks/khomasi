@@ -3,10 +3,10 @@ package com.company.rentafield.presentation.myBookings
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.BookingDetails
 import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.model.MyBookingsResponse
-import com.company.rentafield.domain.model.PlaygroundReviewRequest
+import com.company.rentafield.domain.model.booking.BookingDetails
+import com.company.rentafield.domain.model.booking.MyBookingsResponse
+import com.company.rentafield.domain.model.booking.PlaygroundReviewRequest
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

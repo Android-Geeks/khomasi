@@ -1,23 +1,24 @@
-package com.company.rentafield.data.data_source.remote
+package com.company.rentafield.data.data_source
 
-import com.company.rentafield.domain.model.BookingPlaygroundResponse
-import com.company.rentafield.domain.model.BookingRequest
-import com.company.rentafield.domain.model.FavouritePlaygroundResponse
-import com.company.rentafield.domain.model.FeedbackRequest
-import com.company.rentafield.domain.model.FessTimeSlotsResponse
-import com.company.rentafield.domain.model.FilteredPlaygroundResponse
 import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.model.MyBookingsResponse
-import com.company.rentafield.domain.model.PlaygroundReviewRequest
-import com.company.rentafield.domain.model.PlaygroundReviewsResponse
-import com.company.rentafield.domain.model.PlaygroundScreenResponse
-import com.company.rentafield.domain.model.PlaygroundsResponse
-import com.company.rentafield.domain.model.ProfileImageResponse
-import com.company.rentafield.domain.model.UserLoginResponse
-import com.company.rentafield.domain.model.UserRegisterData
-import com.company.rentafield.domain.model.UserRegisterResponse
-import com.company.rentafield.domain.model.UserUpdateData
-import com.company.rentafield.domain.model.VerificationResponse
+import com.company.rentafield.domain.model.ai.AiResponse
+import com.company.rentafield.domain.model.auth.UserLoginResponse
+import com.company.rentafield.domain.model.auth.UserRegisterData
+import com.company.rentafield.domain.model.auth.UserRegisterResponse
+import com.company.rentafield.domain.model.auth.VerificationResponse
+import com.company.rentafield.domain.model.booking.BookingPlaygroundResponse
+import com.company.rentafield.domain.model.booking.MyBookingsResponse
+import com.company.rentafield.domain.model.booking.PlaygroundReviewRequest
+import com.company.rentafield.domain.model.favourite.FavouritePlaygroundResponse
+import com.company.rentafield.domain.model.playground.BookingRequest
+import com.company.rentafield.domain.model.playground.FreeTimeSlotsResponse
+import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
+import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
+import com.company.rentafield.domain.model.playground.PlaygroundsResponse
+import com.company.rentafield.domain.model.search.FilteredPlaygroundResponse
+import com.company.rentafield.domain.model.user.FeedbackRequest
+import com.company.rentafield.domain.model.user.ProfileImageResponse
+import com.company.rentafield.domain.model.user.UserUpdateData
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -122,7 +123,7 @@ interface RetrofitService {
         @Header("Authorization") token: String,
         @Query("id") id: Int,
         @Query("dayDiff") dayDiff: Int
-    ): Response<FessTimeSlotsResponse>
+    ): Response<FreeTimeSlotsResponse>
 
 
     @GET("User/picture")
@@ -167,4 +168,10 @@ interface RetrofitService {
         @Header("Authorization") token: String,
         @Body body: BookingRequest
     ): Response<BookingPlaygroundResponse>
+
+    @GET("AI/ai-service")
+    suspend fun getUploadVideoStatus(@Query("id") id: String): Response<MessageResponse>
+
+    @GET("AI/ai-response")
+    suspend fun getAiResults(@Query("id") id: String): Response<AiResponse>
 }

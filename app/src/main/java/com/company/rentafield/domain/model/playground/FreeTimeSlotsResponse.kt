@@ -1,10 +1,10 @@
-package com.company.rentafield.domain.model
+package com.company.rentafield.domain.model.playground
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FessTimeSlotsResponse(
+data class FreeTimeSlotsResponse(
     @SerialName("freeTimeSlots")
     val freeTimeSlots: List<FreeTimeSlots>
 )

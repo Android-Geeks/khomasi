@@ -1,17 +1,17 @@
-package com.company.rentafield.domain.model
+package com.company.rentafield.domain.model.booking
 
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BookingRequest(
+data class PlaygroundReviewRequest(
     @SerialName("playgroundId")
     val playgroundId: Int,
     @SerialName("userId")
     val userId: String,
-    @SerialName("bookingTime")
-    val bookingTime: String,
-    @SerialName("duration")
-    val duration: Double
+    @SerialName("comment")
+    val comment: String,
+    @SerialName("rating")
+    val rating: Int,
 )

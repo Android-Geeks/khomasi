@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.BookingDetails
-import com.company.rentafield.domain.model.MyBookingsResponse
+import com.company.rentafield.domain.model.booking.BookingDetails
+import com.company.rentafield.domain.model.booking.MyBookingsResponse
 import com.company.rentafield.presentation.components.cards.BookingCard
 import com.company.rentafield.presentation.components.cards.BookingStatus
 import com.company.rentafield.presentation.components.connectionStates.ThreeBounce

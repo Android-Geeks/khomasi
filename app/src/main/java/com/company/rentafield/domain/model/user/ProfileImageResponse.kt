@@ -1,4 +1,4 @@
-package com.company.rentafield.domain.model
+package com.company.rentafield.domain.model.user
 
 
 import kotlinx.serialization.SerialName

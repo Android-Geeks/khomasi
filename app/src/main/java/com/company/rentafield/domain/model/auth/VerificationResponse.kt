@@ -1,4 +1,4 @@
-package com.company.rentafield.domain.model
+package com.company.rentafield.domain.model.auth
 
 
 import kotlinx.serialization.SerialName
@@ -9,7 +9,7 @@ data class VerificationResponse(
     @SerialName("code")
     val code: Int,
     @SerialName("email")
-    val email : String,
+    val email: String,
     @SerialName("message")
     val message: String
 )

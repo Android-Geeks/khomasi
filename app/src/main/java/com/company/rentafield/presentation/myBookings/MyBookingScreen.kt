@@ -18,9 +18,9 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.BookingDetails
 import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.model.MyBookingsResponse
+import com.company.rentafield.domain.model.booking.BookingDetails
+import com.company.rentafield.domain.model.booking.MyBookingsResponse
 import com.company.rentafield.presentation.myBookings.components.CurrentPage
 import com.company.rentafield.presentation.myBookings.components.ExpiredPage
 import com.google.accompanist.pager.ExperimentalPagerApi

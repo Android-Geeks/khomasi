@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.model.VerificationResponse
+import com.company.rentafield.domain.model.auth.VerificationResponse
 import com.company.rentafield.domain.use_case.auth.AuthUseCases
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel

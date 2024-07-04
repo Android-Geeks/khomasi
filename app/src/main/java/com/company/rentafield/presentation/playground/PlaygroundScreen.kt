@@ -45,8 +45,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.PlaygroundReviewsResponse
-import com.company.rentafield.domain.model.PlaygroundScreenResponse
+import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
+import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
 import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyModalBottomSheet

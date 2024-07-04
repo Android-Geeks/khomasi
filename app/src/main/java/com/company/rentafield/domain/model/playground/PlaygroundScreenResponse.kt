@@ -1,4 +1,4 @@
-package com.company.rentafield.domain.model
+package com.company.rentafield.domain.model.playground
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
@@ -60,12 +60,4 @@ data class PlaygroundX(
     val isBookable: Boolean,
     @SerialName("rules")
     val rules: String,
-)
-
-@Serializable
-data class BusyTime(
-    @SerialName("bookingTime")
-    val bookingTime: String,
-    @SerialName("duration")
-    val duration: Int
 )

@@ -3,7 +3,7 @@ package com.company.rentafield.presentation.otp
 import androidx.lifecycle.ViewModel
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.model.VerificationResponse
+import com.company.rentafield.domain.model.auth.VerificationResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

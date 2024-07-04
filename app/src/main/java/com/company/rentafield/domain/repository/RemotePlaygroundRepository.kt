@@ -1,11 +1,11 @@
 package com.company.rentafield.domain.repository
 
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.BookingPlaygroundResponse
-import com.company.rentafield.domain.model.BookingRequest
-import com.company.rentafield.domain.model.FessTimeSlotsResponse
-import com.company.rentafield.domain.model.FilteredPlaygroundResponse
-import com.company.rentafield.domain.model.PlaygroundReviewsResponse
+import com.company.rentafield.domain.model.booking.BookingPlaygroundResponse
+import com.company.rentafield.domain.model.playground.BookingRequest
+import com.company.rentafield.domain.model.playground.FreeTimeSlotsResponse
+import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
+import com.company.rentafield.domain.model.search.FilteredPlaygroundResponse
 import kotlinx.coroutines.flow.Flow
 
 interface RemotePlaygroundRepository {
@@ -13,7 +13,7 @@ interface RemotePlaygroundRepository {
         token: String,
         id: Int,
         dayDiff: Int
-    ): Flow<DataState<FessTimeSlotsResponse>>
+    ): Flow<DataState<FreeTimeSlotsResponse>>
 
     suspend fun getPlaygroundReviews(
         token: String,

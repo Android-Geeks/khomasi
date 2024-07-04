@@ -26,8 +26,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.PlaygroundReviewsResponse
-import com.company.rentafield.domain.model.Review
+import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
+import com.company.rentafield.domain.model.playground.Review
 import com.company.rentafield.presentation.components.cards.CommentCard
 import com.company.rentafield.presentation.playground.MockPlaygroundViewModel
 import com.company.rentafield.theme.KhomasiTheme

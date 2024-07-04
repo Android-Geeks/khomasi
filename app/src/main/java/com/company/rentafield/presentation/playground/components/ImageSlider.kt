@@ -30,8 +30,8 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.PlaygroundPicture
-import com.company.rentafield.domain.model.PlaygroundScreenResponse
+import com.company.rentafield.domain.model.playground.PlaygroundPicture
+import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
 import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
 import com.company.rentafield.presentation.components.iconButtons.RoundedFavoriteIcon
 import com.company.rentafield.presentation.playground.ButtonWithIcon

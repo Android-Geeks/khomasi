@@ -6,5 +6,5 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AiViewModel @Inject constructor(
-
+    
 ) : ViewModel()

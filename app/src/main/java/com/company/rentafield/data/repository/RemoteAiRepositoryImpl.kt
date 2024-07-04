@@ -1,6 +1,6 @@
 package com.company.rentafield.data.repository
 
-import com.company.rentafield.data.data_source.remote.RetrofitAiService
+import com.company.rentafield.data.data_source.RetrofitAiService
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.MessageResponse
 import com.company.rentafield.domain.repository.RemoteAiRepository

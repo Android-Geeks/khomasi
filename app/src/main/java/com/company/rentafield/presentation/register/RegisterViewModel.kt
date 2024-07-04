@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.UserRegisterData
-import com.company.rentafield.domain.model.UserRegisterResponse
+import com.company.rentafield.domain.model.auth.UserRegisterData
+import com.company.rentafield.domain.model.auth.UserRegisterResponse
 import com.company.rentafield.domain.use_case.auth.AuthUseCases
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.presentation.components.LatandLong

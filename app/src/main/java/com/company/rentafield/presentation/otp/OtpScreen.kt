@@ -41,7 +41,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.model.VerificationResponse
+import com.company.rentafield.domain.model.auth.VerificationResponse
 import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.connectionStates.Loading

@@ -50,8 +50,8 @@ import coil.request.ImageRequest
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.Playground
-import com.company.rentafield.domain.model.PlaygroundsResponse
+import com.company.rentafield.domain.model.playground.Playground
+import com.company.rentafield.domain.model.playground.PlaygroundsResponse
 import com.company.rentafield.presentation.components.AdsContent
 import com.company.rentafield.presentation.components.AdsSlider
 import com.company.rentafield.presentation.components.cards.PlaygroundCard

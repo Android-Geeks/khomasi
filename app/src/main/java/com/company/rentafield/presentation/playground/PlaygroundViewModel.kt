@@ -4,11 +4,11 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.BookingPlaygroundResponse
-import com.company.rentafield.domain.model.BookingRequest
-import com.company.rentafield.domain.model.FessTimeSlotsResponse
-import com.company.rentafield.domain.model.PlaygroundReviewsResponse
-import com.company.rentafield.domain.model.PlaygroundScreenResponse
+import com.company.rentafield.domain.model.booking.BookingPlaygroundResponse
+import com.company.rentafield.domain.model.playground.BookingRequest
+import com.company.rentafield.domain.model.playground.FreeTimeSlotsResponse
+import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
+import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemotePlaygroundUseCase
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
@@ -42,9 +42,9 @@ class PlaygroundViewModel @Inject constructor(
         MutableStateFlow(BookingUiState())
     val bookingUiState: StateFlow<BookingUiState> = _bookingUiState
 
-    private val _freeSlotsState: MutableStateFlow<DataState<FessTimeSlotsResponse>> =
+    private val _freeSlotsState: MutableStateFlow<DataState<FreeTimeSlotsResponse>> =
         MutableStateFlow(DataState.Empty)
-    val freeSlotsState: StateFlow<DataState<FessTimeSlotsResponse>> = _freeSlotsState
+    val freeSlotsState: StateFlow<DataState<FreeTimeSlotsResponse>> = _freeSlotsState
 
     private val _reviewsState: MutableStateFlow<DataState<PlaygroundReviewsResponse>> =
         MutableStateFlow(DataState.Empty)

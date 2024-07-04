@@ -1,6 +1,6 @@
 package com.company.rentafield.presentation.myBookings
 
-import com.company.rentafield.domain.model.BookingDetails
+import com.company.rentafield.domain.model.booking.BookingDetails
 
 data class MyBookingUiState(
     val currentBookings: List<BookingDetails> = listOf(),

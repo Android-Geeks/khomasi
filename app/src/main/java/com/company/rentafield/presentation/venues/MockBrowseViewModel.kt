@@ -3,8 +3,8 @@ package com.company.rentafield.presentation.venues
 
 import androidx.lifecycle.ViewModel
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.FilteredPlaygroundResponse
 import com.company.rentafield.domain.model.LocalUser
+import com.company.rentafield.domain.model.search.FilteredPlaygroundResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import org.threeten.bp.LocalDateTime

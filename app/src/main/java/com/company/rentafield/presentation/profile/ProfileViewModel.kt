@@ -4,9 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.FeedbackRequest
 import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.UserUpdateData
+import com.company.rentafield.domain.model.user.FeedbackRequest
+import com.company.rentafield.domain.model.user.UserUpdateData
 import com.company.rentafield.domain.use_case.app_entry.AppEntryUseCases
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase

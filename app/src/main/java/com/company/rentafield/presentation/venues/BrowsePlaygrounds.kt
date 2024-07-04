@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.FilteredPlaygroundResponse
 import com.company.rentafield.domain.model.LocalUser
+import com.company.rentafield.domain.model.search.FilteredPlaygroundResponse
 import com.company.rentafield.presentation.components.SubScreenTopBar
 import com.company.rentafield.presentation.components.cards.PlaygroundCard
 import com.company.rentafield.presentation.components.connectionStates.ThreeBounce

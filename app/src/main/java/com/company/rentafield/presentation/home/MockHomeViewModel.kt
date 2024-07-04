@@ -2,7 +2,7 @@ package com.company.rentafield.presentation.home
 
 import androidx.lifecycle.ViewModel
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.PlaygroundsResponse
+import com.company.rentafield.domain.model.playground.PlaygroundsResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
