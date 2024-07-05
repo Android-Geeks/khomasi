@@ -44,3 +44,15 @@ fun Context.createImageFile(): File {
         externalCacheDir      /* directory */
     )
 }
+
+@SuppressLint("SimpleDateFormat")
+fun Context.createVideoFile(): File {
+    // Create a video file name
+    val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+    val videoFileName = "MP4_" + timeStamp + "_"
+    return File.createTempFile(
+        videoFileName, /* prefix */
+        ".mp4", /* suffix */
+        externalCacheDir      /* directory */
+    )
+}

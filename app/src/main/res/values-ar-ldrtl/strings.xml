@@ -251,4 +251,10 @@
     <string name="rating_failure">فشل في التقييم، حاول مرة آخرى</string>
     <string name="donot_have_notifications">لا توجد لديك اي اشعارات جديدة !</string>
     <string name="existing_email_message">هذا البريد الالكترونى موجود بالفعل</string>
+    <string name="you_can_t_upload_video_now">لا يمكنك رفع فيديو الآن</string>
+    <string name="ad_content_1">ارفع فيديو واربح العملات الآن!</string>
+    <string name="ad_content_2">احجز أي ملعب بخصم 10%</string>
+    <string name="ad_content_3">احصل على خصم 20% عند دعوة 5 أصدقاء</string>
+    <string name="ad_content_4">احجز أي ملعب في الصباح بخصم 30%</string>
+
 </resources>

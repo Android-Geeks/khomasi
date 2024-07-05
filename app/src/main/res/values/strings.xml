@@ -251,5 +251,10 @@
     <string name="already_rated">Already Rated.</string>
     <string name="rating_failure">Failed to rate, try again</string>
     <string name="donot_have_notifications">You do not have any new notifications!</string>
+    <string name="you_can_t_upload_video_now">You can\'t upload video now</string>
+    <string name="ad_content_1">Upload Video and Win Coins Now!</string>
+    <string name="ad_content_2">Book any playground with a 10% discount</string>
+    <string name="ad_content_3">Get a 20% discount when inviting 5 friends</string>
+    <string name="ad_content_4">Book any playground in the morning with a 30% discount</string>
 
 </resources>

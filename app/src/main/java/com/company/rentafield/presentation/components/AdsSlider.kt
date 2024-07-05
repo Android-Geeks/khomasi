@@ -17,6 +17,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
@@ -25,7 +27,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.util.lerp
 import com.company.rentafield.R
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -45,8 +46,9 @@ data class AdsContent(
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AdsSlider(
-    adsContent: List<AdsContent>,
-    onAdClicked: () -> Unit = {}
+    adsContent: MutableList<AdsContent>,
+    userId: String,
+    onAdClicked: (String) -> Unit = {}
 ) {
 
     val pagerState = rememberPagerState(initialPage = 0)
@@ -69,28 +71,57 @@ fun AdsSlider(
             modifier = Modifier
                 .height(180.dp)
                 .fillMaxWidth()
-                .clickable { onAdClicked() }
         ) { page ->
-            Card(shape = MaterialTheme.shapes.large, modifier = Modifier.graphicsLayer {
-                val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+            Card(
+                shape = MaterialTheme.shapes.large,
+                modifier = Modifier
+                    .graphicsLayer {
+                        val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
 
-                lerp(
-                    start = 0.85f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                ).also { scale ->
-                    scaleX = scale
-                    scaleY = scale
-                }
+                        lerp(
+                            start = 0.85f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        ).also { scale ->
+                            scaleX = scale
+                            scaleY = scale
+                        }
 
-                alpha = lerp(
-                    start = 0.5f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                )
-            }) {
-                Box(modifier = Modifier.fillMaxSize()) {
+                        alpha = lerp(
+                            start = 0.5f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        )
+
+                    }
+                    .then(
+                        if (adsContent[page].contentText == "Upload Video and Win Coins Now!")
+                            Modifier.clickable { onAdClicked(userId) }
+                        else
+                            Modifier
+                    )
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                ) {
                     Image(
                         painter = imageSlider[page],
                         contentDescription = "image slider",
                         contentScale = ContentScale.Crop,
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .drawWithCache {
+                                onDrawWithContent {
+                                    drawContent()
+                                    drawRect(
+                                        Brush.verticalGradient(
+                                            colors = listOf(
+                                                Color.Transparent,
+                                                Color.Black.copy(alpha = .6f)
+                                            ),
+                                            startY = 0f,
+                                            endY = Float.POSITIVE_INFINITY
+                                        )
+                                    )
+                                }
+                            }
                     )
                     Column(
                         modifier = Modifier.fillMaxSize(),
@@ -100,7 +131,7 @@ fun AdsSlider(
                         Text(
                             text = contentSlider[page],
                             color = Color.White,
-                            fontSize = 18.sp,
+                            style = MaterialTheme.typography.displayLarge,
                             modifier = Modifier.padding(8.dp),
                             textAlign = TextAlign.Start,
                             maxLines = 2
@@ -125,6 +156,12 @@ fun AdsSlider(
 @Composable
 fun AdsSliderPreview() {
     AdsSlider(
-        listOf(AdsContent(painterResource(id = R.drawable.playground), " احجز اى ملعب بخصم 10 %")),
+        mutableListOf(
+            AdsContent(
+                painterResource(id = R.drawable.playground),
+                " احجز اى ملعب بخصم 10 %"
+            )
+        ),
+        userId = "userId"
     )
 }
