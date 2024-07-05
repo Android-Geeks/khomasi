@@ -1,13 +1,15 @@
 package com.company.rentafield.presentation
 
 import android.content.Context
+import android.net.Uri
+import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.use_case.ai.AiUseCase
+import com.company.rentafield.domain.use_case.ai.AiUseCases
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -20,7 +22,7 @@ import java.io.File
 class UploadVideoWorker @AssistedInject constructor(
     @Assisted context: Context,
     @Assisted workerParams: WorkerParameters,
-    private val aiUseCase: AiUseCase
+    private val aiUseCases: AiUseCases
 ) : CoroutineWorker(context, workerParams) {
 
     override suspend fun doWork(): Result {
@@ -29,22 +31,36 @@ class UploadVideoWorker @AssistedInject constructor(
 
         val idRequestBody = id.toRequestBody("text/plain".toMediaTypeOrNull())
 
-        val videoFile = File(videoFilePath)
+        val videoFileUri = Uri.parse(videoFilePath)
+        val videoFile = createFileFromUri(videoFileUri) ?: return Result.failure()
         val videoRequestBody = videoFile.asRequestBody("video/*".toMediaTypeOrNull())
         val videoPart = MultipartBody.Part.createFormData("video", videoFile.name, videoRequestBody)
 
         return try {
             var resultData: DataState<MessageResponse>? = null
-            aiUseCase(idRequestBody, videoPart).collect { result ->
+            aiUseCases.uploadVideoUseCase(idRequestBody, videoPart).collect { result ->
                 resultData = result
             }
+            Log.d("UploadVideoWorker", "doWork: $resultData")
             if (resultData != null) {
-                Result.success(workDataOf("result" to resultData))
+                Result.success(workDataOf("result" to resultData.toString()))
             } else {
                 Result.failure()
             }
         } catch (e: Exception) {
+            Log.d("UploadVideoWorker", "doWork: ${e.message}")
             Result.failure()
         }
     }
+
+    private fun createFileFromUri(uri: Uri): File? {
+        val contentResolver = applicationContext.contentResolver
+        val inputStream = contentResolver.openInputStream(uri) ?: return null
+        val outputFile = File(applicationContext.cacheDir, "upload.mp4")
+        outputFile.outputStream().use { outputStream ->
+            inputStream.copyTo(outputStream)
+        }
+        return outputFile
+    }
 }
+
