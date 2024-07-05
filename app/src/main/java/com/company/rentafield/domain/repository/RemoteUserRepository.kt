@@ -2,6 +2,7 @@ package com.company.rentafield.domain.repository
 
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.MessageResponse
+import com.company.rentafield.domain.model.ai.AiResponse
 import com.company.rentafield.domain.model.auth.UserLoginResponse
 import com.company.rentafield.domain.model.auth.UserRegisterData
 import com.company.rentafield.domain.model.auth.UserRegisterResponse
@@ -84,4 +85,12 @@ interface RemoteUserRepository {
         token: String,
         playgroundReview: PlaygroundReviewRequest
     ): Flow<DataState<MessageResponse>>
+
+    suspend fun getUploadVideoStatus(
+        id: String
+    ): Flow<DataState<MessageResponse>>
+
+    suspend fun getAiResults(
+        id: String
+    ): Flow<DataState<AiResponse>>
 }

@@ -3,6 +3,8 @@ package com.company.rentafield.data.repository
 
 import com.company.rentafield.data.data_source.RetrofitService
 import com.company.rentafield.domain.DataState
+import com.company.rentafield.domain.model.MessageResponse
+import com.company.rentafield.domain.model.ai.AiResponse
 import com.company.rentafield.domain.model.auth.UserRegisterData
 import com.company.rentafield.domain.model.booking.PlaygroundReviewRequest
 import com.company.rentafield.domain.model.user.FeedbackRequest
@@ -82,6 +84,12 @@ class RemoteUserRepositoryImpl(
         token: String,
         playgroundReview: PlaygroundReviewRequest
     ) = handleApi { retrofitService.playgroundReview(token, playgroundReview) }
+
+    override suspend fun getUploadVideoStatus(id: String): Flow<DataState<MessageResponse>> =
+        handleApi { retrofitService.getUploadVideoStatus(id) }
+
+    override suspend fun getAiResults(id: String): Flow<DataState<AiResponse>> =
+        handleApi { retrofitService.getAiResults(id) }
 
 }
 

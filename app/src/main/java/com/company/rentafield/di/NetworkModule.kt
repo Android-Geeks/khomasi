@@ -9,7 +9,10 @@ import com.company.rentafield.data.repository.RemoteUserRepositoryImpl
 import com.company.rentafield.domain.repository.RemoteAiRepository
 import com.company.rentafield.domain.repository.RemotePlaygroundRepository
 import com.company.rentafield.domain.repository.RemoteUserRepository
-import com.company.rentafield.domain.use_case.ai.AiUseCase
+import com.company.rentafield.domain.use_case.ai.AiUseCases
+import com.company.rentafield.domain.use_case.ai.GetAiResultsUseCase
+import com.company.rentafield.domain.use_case.ai.GetUploadStatusUseCase
+import com.company.rentafield.domain.use_case.ai.UploadVideoUseCase
 import com.company.rentafield.domain.use_case.auth.AuthUseCases
 import com.company.rentafield.domain.use_case.auth.ConfirmEmailUseCase
 import com.company.rentafield.domain.use_case.auth.GetVerificationCodeUseCase
@@ -60,9 +63,9 @@ object NetworkModule {
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             addInterceptor(loggingInterceptor)
-            connectTimeout(20, TimeUnit.SECONDS) // connect timeout
-            readTimeout(30, TimeUnit.SECONDS) // socket timeout
-            writeTimeout(20, TimeUnit.SECONDS) // write timeout
+            connectTimeout(20, TimeUnit.HOURS) // connect timeout
+            readTimeout(30, TimeUnit.HOURS) // socket timeout
+            writeTimeout(20, TimeUnit.HOURS) // write timeout
         }.build()
     }
 
@@ -151,7 +154,11 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRemoteAiUseCase(
-        remoteAiRepository: RemoteAiRepository
-    ): AiUseCase = AiUseCase(remoteAiRepository)
-
+        remoteAiRepository: RemoteAiRepository,
+        remoteUserRepository: RemoteUserRepository
+    ): AiUseCases = AiUseCases(
+        uploadVideoUseCase = UploadVideoUseCase(remoteAiRepository),
+        getAiResultsUseCase = GetAiResultsUseCase(remoteUserRepository),
+        getUploadStatusUseCase = GetUploadStatusUseCase(remoteUserRepository)
+    )
 }

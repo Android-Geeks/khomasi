@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
-class AiUseCase(
+class UploadVideoUseCase(
     private val remoteAiRepository: RemoteAiRepository
 ) {
     suspend operator fun invoke(
