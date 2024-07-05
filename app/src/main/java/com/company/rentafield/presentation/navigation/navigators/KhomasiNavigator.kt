@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.company.rentafield.navigation.Screens
+import com.company.rentafield.presentation.ai.AiScreen
 import com.company.rentafield.presentation.favorite.FavouriteScreen
 import com.company.rentafield.presentation.favorite.FavouriteViewModel
 import com.company.rentafield.presentation.home.HomeScreen
@@ -52,16 +53,18 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavHostController) {
                 onClickBell = { navController.navigate(Screens.KhomasiNavigation.Notifications.route) },
                 onClickViewAll = { homeViewModel.onClickViewAll() },
                 onSearchBarClicked = { navController.navigate(Screens.KhomasiNavigation.Search.route) },
-                onAdClicked = {},
+                onAdClicked = { userId -> navController.navigate(Screens.KhomasiNavigation.AiService.route + "/$userId") },
                 onFavouriteClick = homeViewModel::onFavouriteClicked
             )
         }
+
         composable(route = Screens.KhomasiNavigation.Notifications.route) {
             NotificationsScreen(
                 onBackClicked = { navController.popBackStack() },
                 notifications = emptyList()
             )
         }
+
         composable(route = Screens.KhomasiNavigation.Favorite.route) {
             val favouriteViewModel: FavouriteViewModel = hiltViewModel()
             FavouriteScreen(
@@ -74,19 +77,24 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavHostController) {
             )
         }
 
+        composable(route = Screens.KhomasiNavigation.AiService.route + "/{userId}") { navBackStackEntry ->
+            val userId = navBackStackEntry.arguments?.getString("userId") ?: ""
+
+            AiScreen(
+                onBackClicked = { navController.popBackStack() },
+                userId = userId
+            )
+        }
 
         myBookingsNavigator(navController = navController)
-
-        composable(route = Screens.KhomasiNavigation.Playgrounds.route) {
-
-        }
 
         searchNavigator(navController)
 
         profileNavigator(navController)
 
         playgroundsNavigator(navController)
-        bookingPlaygroundNavigator(navController = navController)
+
+        bookingPlaygroundNavigator(navController)
 
     }
 }
