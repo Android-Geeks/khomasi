@@ -17,7 +17,7 @@ fun String.convertToBitmap(): Bitmap? {
     return BitmapFactory.decodeByteArray(byte, 0, byte.size)
 }
 
-fun Uri.createFileFromUri(context: Context): File {
+fun Uri.createImageFromUri(context: Context): File {
     val file = File(context.filesDir, "profile_image.png")
     context.contentResolver.openInputStream(this)?.use { inputStream ->
         FileOutputStream(file).use { outputStream ->

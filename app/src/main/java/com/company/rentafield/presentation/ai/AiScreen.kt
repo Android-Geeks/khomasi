@@ -43,7 +43,7 @@ fun AiScreen(
 
     Log.d("AiScreen", "currentVideoUri: $currentVideoUri")
 
-    val videoFile by remember { mutableStateOf(context.createVideoFile()) }
+    val videoFile = context.createVideoFile()
     val uri = FileProvider.getUriForFile(
         Objects.requireNonNull(context),
         BuildConfig.APPLICATION_ID + ".provider", videoFile
@@ -72,7 +72,8 @@ fun AiScreen(
             currentVideoUri = uri
             if (isSuccess) {
                 val workManager: WorkManager = WorkManager.getInstance(context)
-                val inputData = workDataOf("id" to userId, "videoFilePath" to currentVideoUri)
+                val inputData =
+                    workDataOf("id" to userId, "videoFilePath" to currentVideoUri.toString())
                 val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadVideoWorker>()
                     .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
                     .setInputData(inputData)
@@ -97,6 +98,7 @@ fun AiScreen(
         singleVideoPicker.launch(
             PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.VideoOnly)
         )
+//        permissionLauncher.launch(android.Manifest.permission.CAMERA)
     }) {
         Text("Upload Video")
     }
