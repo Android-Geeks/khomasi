@@ -256,5 +256,9 @@
     <string name="ad_content_2">Book any playground with a 10% discount</string>
     <string name="ad_content_3">Get a 20% discount when inviting 5 friends</string>
     <string name="ad_content_4">Book any playground in the morning with a 30% discount</string>
+    <string name="notification_title">Video Upload</string>
+    <string name="notification_message">Your video is being uploaded…</string>
+    <string name="channel_name">Upload Channel</string>
+    <string name="channel_description">Channel for video upload notifications</string>
 
 </resources>
