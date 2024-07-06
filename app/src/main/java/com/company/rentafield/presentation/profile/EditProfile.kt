@@ -174,6 +174,7 @@ fun EditProfile(
                 text = R.string.save_changes,
                 onClick = {
                     onSaveProfile()
+                    onBackClick()
                 },
                 buttonEnable = !isErrorFirstName
                         && !isErrorLastName
