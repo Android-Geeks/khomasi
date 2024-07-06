@@ -13,4 +13,5 @@ data class RemoteUserUseCase(
     val playgroundReviewUseCase: PlaygroundReviewUseCase,
     val sendFeedbackUseCase: SendFeedbackUseCase,
     val getProfileImageUseCase: GetProfileImageUseCase,
+    val userDataUseCase: UserDataUseCase
 )

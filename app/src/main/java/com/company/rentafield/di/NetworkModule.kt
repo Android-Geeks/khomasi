@@ -29,6 +29,7 @@ import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
 import com.company.rentafield.domain.use_case.remote_user.SendFeedbackUseCase
 import com.company.rentafield.domain.use_case.remote_user.UpdateProfilePictureUseCase
 import com.company.rentafield.domain.use_case.remote_user.UpdateUserUseCase
+import com.company.rentafield.domain.use_case.remote_user.UserDataUseCase
 import com.company.rentafield.domain.use_case.remote_user.UserFavouriteUseCase
 import com.company.rentafield.utils.Constants.BASE_URL
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
@@ -112,7 +113,8 @@ object NetworkModule {
         sendFeedbackUseCase = SendFeedbackUseCase(remoteUserRepository),
         getProfileImageUseCase = GetProfileImageUseCase(remoteUserRepository),
         cancelBookingUseCase = CancelBookingUseCase(remoteUserRepository),
-        playgroundReviewUseCase = PlaygroundReviewUseCase(remoteUserRepository)
+        playgroundReviewUseCase = PlaygroundReviewUseCase(remoteUserRepository),
+        userDataUseCase = UserDataUseCase(remoteUserRepository)
     )
 
     @Provides

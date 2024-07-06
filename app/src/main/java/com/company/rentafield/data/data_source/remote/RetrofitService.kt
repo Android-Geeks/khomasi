@@ -13,6 +13,7 @@ import com.company.rentafield.domain.model.PlaygroundReviewsResponse
 import com.company.rentafield.domain.model.PlaygroundScreenResponse
 import com.company.rentafield.domain.model.PlaygroundsResponse
 import com.company.rentafield.domain.model.ProfileImageResponse
+import com.company.rentafield.domain.model.UserDataResponse
 import com.company.rentafield.domain.model.UserLoginResponse
 import com.company.rentafield.domain.model.UserRegisterData
 import com.company.rentafield.domain.model.UserRegisterResponse
@@ -167,4 +168,10 @@ interface RetrofitService {
         @Header("Authorization") token: String,
         @Body body: BookingRequest
     ): Response<BookingPlaygroundResponse>
+
+    @GET("User/user-data")
+    suspend fun userData(
+        @Header("Authorization") token: String,
+        @Query("id") userId: String,
+    ): Response<UserDataResponse>
 }

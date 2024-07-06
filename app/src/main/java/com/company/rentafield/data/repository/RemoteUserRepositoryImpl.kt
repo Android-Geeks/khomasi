@@ -83,6 +83,13 @@ class RemoteUserRepositoryImpl(
         playgroundReview: PlaygroundReviewRequest
     ) = handleApi { retrofitService.playgroundReview(token, playgroundReview) }
 
+    override suspend fun userData(
+        token: String,
+        userId: String
+    ) = handleApi {
+        retrofitService.userData(token, userId)
+    }
+
 }
 
 suspend fun <T : Any> handleApi(

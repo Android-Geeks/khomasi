@@ -9,6 +9,7 @@ import com.company.rentafield.domain.model.PlaygroundReviewRequest
 import com.company.rentafield.domain.model.PlaygroundScreenResponse
 import com.company.rentafield.domain.model.PlaygroundsResponse
 import com.company.rentafield.domain.model.ProfileImageResponse
+import com.company.rentafield.domain.model.UserDataResponse
 import com.company.rentafield.domain.model.UserLoginResponse
 import com.company.rentafield.domain.model.UserRegisterData
 import com.company.rentafield.domain.model.UserRegisterResponse
@@ -84,4 +85,9 @@ interface RemoteUserRepository {
         token: String,
         playgroundReview: PlaygroundReviewRequest
     ): Flow<DataState<MessageResponse>>
+
+    suspend fun userData(
+        token: String,
+        userId: String
+    ): Flow<DataState<UserDataResponse>>
 }
