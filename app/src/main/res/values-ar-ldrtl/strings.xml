@@ -266,4 +266,7 @@
     <string name="successfully_your_kick_up_count_is">تم معالجه الفيديو الخاص بك بنجاح، عدد الركلات التى حققتها هى  </string>
     <string name="you_ve_got">لقد قمت بتحقيق  </string>
 
+    <string name="upload_video">رفع الفيديو</string>
+    <string name="capture_video">التقاط فيديو</string>
+    <string name="upload">ارفع</string>
 </resources>

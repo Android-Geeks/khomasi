@@ -265,5 +265,9 @@
     <string name="wait_your_video_is_being_processed">Your video is being processed and will likely take a few minutes...</string>
     <string name="successfully_your_kick_up_count_is">Your video was processed successfully, Your Kick up count is </string>
     <string name="you_ve_got">You\'ve got</string>
+    <string name="upload_video">Upload Video</string>
+    <string name="capture_video">Capture Video</string>
+    <string name="upload">Upload</string>
+
 
 </resources>

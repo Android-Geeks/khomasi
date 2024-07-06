@@ -1,15 +1,25 @@
 package com.company.rentafield.presentation
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
+import android.os.Build
 import android.util.Log
+import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
 import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import androidx.work.workDataOf
+import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.MessageResponse
 import com.company.rentafield.domain.use_case.ai.AiUseCases
+import com.company.rentafield.presentation.mainActivity.MainActivity
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -30,6 +40,12 @@ class UploadVideoWorker @AssistedInject constructor(
         private const val NOTIFICATION_ID = 1
     }
 
+    override suspend fun getForegroundInfo(): ForegroundInfo {
+        createNotificationChannel()
+        val notification = createNotification()
+        return ForegroundInfo(NOTIFICATION_ID, notification)
+    }
+
     override suspend fun doWork(): Result {
         val id = inputData.getString("id") ?: return Result.failure()
         val videoFilePath = inputData.getString("videoFilePath") ?: return Result.failure()
@@ -41,9 +57,6 @@ class UploadVideoWorker @AssistedInject constructor(
         val videoRequestBody = videoFile.asRequestBody("video/*".toMediaTypeOrNull())
         val videoPart = MultipartBody.Part.createFormData("video", videoFile.name, videoRequestBody)
 
-//        createNotificationChannel()
-//        val notification = createNotification()
-//        setForegroundAsync(createForegroundInfo(notification))
 
         return try {
             var resultData: DataState<MessageResponse>? = null
@@ -62,42 +75,38 @@ class UploadVideoWorker @AssistedInject constructor(
         }
     }
 
-//    private fun createNotificationChannel() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//            val name = applicationContext.getString(R.string.channel_name)
-//            val descriptionText = applicationContext.getString(R.string.channel_description)
-//            val importance = NotificationManager.IMPORTANCE_HIGH
-//            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
-//                description = descriptionText
-//            }
-//            val notificationManager: NotificationManager =
-//                applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-//            notificationManager.createNotificationChannel(channel)
-//        }
-//    }
-//
-//    private fun createNotification(): Notification {
-//        val intent = Intent(applicationContext, MainActivity::class.java).apply {
-//            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//        }
-//        val pendingIntent: PendingIntent = PendingIntent.getActivity(
-//            applicationContext, 0, intent,
-//            PendingIntent.FLAG_IMMUTABLE
-//        )
-//
-//        return NotificationCompat.Builder(applicationContext, CHANNEL_ID)
-//            .setSmallIcon(R.drawable.filled_bell)
-//            .setContentTitle(applicationContext.getString(R.string.notification_title))
-//            .setContentText(applicationContext.getString(R.string.notification_message))
-//            .setPriority(NotificationCompat.PRIORITY_HIGH)
-//            .setContentIntent(pendingIntent)
-//            .setAutoCancel(true)
-//            .build()
-//    }
-//
-//    private fun createForegroundInfo(notification: Notification): ForegroundInfo {
-//        return ForegroundInfo(NOTIFICATION_ID, notification)
-//    }
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = applicationContext.getString(R.string.channel_name)
+            val descriptionText = applicationContext.getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_HIGH
+            val channel = NotificationChannel(CHANNEL_ID, name, importance).apply {
+                description = descriptionText
+            }
+            val notificationManager: NotificationManager =
+                applicationContext.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun createNotification(): Notification {
+        val intent = Intent(applicationContext, MainActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(
+            applicationContext, 0, intent,
+            PendingIntent.FLAG_IMMUTABLE
+        )
+
+        return NotificationCompat.Builder(applicationContext, CHANNEL_ID)
+            .setSmallIcon(R.drawable.light_mode_splash)
+            .setContentTitle(applicationContext.getString(R.string.notification_title))
+            .setContentText(applicationContext.getString(R.string.notification_message))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setProgress(100, 0, true)
+            .setContentIntent(pendingIntent)
+            .build()
+    }
 
     private fun createFileFromUri(uri: Uri): File? {
         val contentResolver = applicationContext.contentResolver
