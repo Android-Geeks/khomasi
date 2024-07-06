@@ -96,6 +96,11 @@ dependencies {
     //Datastore
     implementation("androidx.datastore:datastore-preferences:1.1.1")
 
+    //Exo Player
+    implementation("androidx.media3:media3-exoplayer:1.3.1")
+    implementation("androidx.media3:media3-ui:1.3.1")
+
+
     //Compose Foundation
     implementation("androidx.compose.foundation:foundation:1.6.7")
 

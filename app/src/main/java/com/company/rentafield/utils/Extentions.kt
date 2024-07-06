@@ -7,8 +7,10 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
+import android.util.Log
 import java.io.File
 import java.io.FileOutputStream
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.Date
 
@@ -50,9 +52,20 @@ fun Context.createVideoFile(): File {
     // Create a video file name
     val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
     val videoFileName = "MP4_" + timeStamp + "_"
-    return File.createTempFile(
-        videoFileName, /* prefix */
-        ".mp4", /* suffix */
-        externalCacheDir      /* directory */
-    )
+
+    // Check if external cache directory is available
+    val cacheDir = externalCacheDir ?: throw IOException("External cache directory not available")
+
+    // Try to create a temporary file
+    return try {
+        File.createTempFile(
+            videoFileName, /* prefix */
+            ".mp4", /* suffix */
+            cacheDir      /* directory */
+        )
+    } catch (e: IOException) {
+        // Log the exception
+        Log.e("createVideoFile", "Could not create video file", e)
+        throw e
+    }
 }
