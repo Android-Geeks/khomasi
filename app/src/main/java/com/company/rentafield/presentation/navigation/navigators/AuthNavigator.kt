@@ -130,7 +130,7 @@ fun NavGraphBuilder.resetPassword(navController: NavHostController) {
                 verificationRes = resetPasswordViewModel.verificationRes,
                 onCorrectCodeChange = resetPasswordViewModel::onCorrectCodeChange,
                 onUserEmailChange = resetPasswordViewModel::onUserEmailChange,
-                onCancelClick = navController::popBackStack,
+                onCancelClick = navController::navigateUp,
                 onClickButtonScreen1 = resetPasswordViewModel::onClickButtonScreen1,
                 onSetPasswordClick = { navController.navigate(Screens.AuthNavigation.ResetPassword.Confirmation.route) }
             )

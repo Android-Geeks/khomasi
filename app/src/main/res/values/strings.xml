@@ -260,5 +260,10 @@
     <string name="notification_message">Your video is being uploaded…</string>
     <string name="channel_name">Upload Channel</string>
     <string name="channel_description">Channel for video upload notifications</string>
+    <string name="video_processed_successfully">Video Processed successfully</string>
+    <string name="video_processing">Video Processing</string>
+    <string name="wait_your_video_is_being_processed">Your video is being processed and will likely take a few minutes...</string>
+    <string name="successfully_your_kick_up_count_is">Your video was processed successfully, Your Kick up count is </string>
+    <string name="you_ve_got">You\'ve got</string>
 
 </resources>

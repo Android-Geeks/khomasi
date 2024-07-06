@@ -260,5 +260,10 @@
     <string name="notification_message">يتم الآن تحميل الفيديو…</string>
     <string name="channel_name">قناة التحميل</string>
     <string name="channel_description">قناة لإشعارات تحميل الفيديو</string>
+    <string name="video_processed_successfully">تمت معالجه الفيديو بنجاح.</string>
+    <string name="video_processing">جارى معالجه الفيديو.</string>
+    <string name="wait_your_video_is_being_processed">تتم معالجة الفيديو الخاص بك ومن المرجح أن يستغرق بضع دقائق.</string>
+    <string name="successfully_your_kick_up_count_is">تم معالجه الفيديو الخاص بك بنجاح، عدد الركلات التى حققتها هى  </string>
+    <string name="you_ve_got">لقد قمت بتحقيق  </string>
 
 </resources>
