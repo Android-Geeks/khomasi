@@ -265,8 +265,16 @@
     <string name="wait_your_video_is_being_processed">تتم معالجة الفيديو الخاص بك ومن المرجح أن يستغرق بضع دقائق.</string>
     <string name="successfully_your_kick_up_count_is">تم معالجه الفيديو الخاص بك بنجاح، عدد الركلات التى حققتها هى  </string>
     <string name="you_ve_got">لقد قمت بتحقيق  </string>
-
     <string name="upload_video">رفع الفيديو</string>
     <string name="capture_video">التقاط فيديو</string>
     <string name="upload">ارفع</string>
+    <string name="today_challenge">تحدى اليوم</string>
+    <string name="browse">تصفح</string>
+    <string name="instructions">التعليمات</string>
+    <string name="dribbling_challenge_instructions">"\n                        |• قم بتحميل مقطع فيديو صغير حيث تقوم بركل الكرة دون ان تلمس الكره الارض بقدر ما تستطيع
+.\n                        |• لا يخرج الشخص عن اطار الفيديو
+.\n                        |• لا يلمس الشخص الكرة بيديه.\n                        |• لا تلمس الكرة الارض
+.\n                        |• الا تخرج الكرة عن اطار الفيديو
+.\n                        |• تحسب الركلات بالقدم فقط
+.\n                    "</string>
 </resources>

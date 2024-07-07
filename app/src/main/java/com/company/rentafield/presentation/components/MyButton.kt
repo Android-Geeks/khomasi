@@ -103,12 +103,13 @@ fun MyOutlinedButton(
     modifier: Modifier = Modifier,
     @DrawableRes icon: Int = 0,
     shape: CornerBasedShape = MaterialTheme.shapes.medium,
+    color: Color = MaterialTheme.colorScheme.primary,
 ) {
     OutlinedButton(
         onClick = onClick,
         modifier = modifier,
         shape = shape,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+        border = BorderStroke(1.dp, color),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
@@ -121,7 +122,7 @@ fun MyOutlinedButton(
             Text(
                 text = stringResource(id = text),
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.primary,
+                color = color,
                 style = MaterialTheme.typography.titleLarge
             )
         }

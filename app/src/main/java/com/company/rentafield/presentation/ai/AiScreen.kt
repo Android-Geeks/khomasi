@@ -27,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.work.OneTimeWorkRequestBuilder
@@ -167,4 +168,10 @@ fun AiScreen(
             )
         }
     }
+}
+
+@Preview
+@Composable
+fun fd() {
+    AiScreen(userId = "1", onBackClicked = {})
 }

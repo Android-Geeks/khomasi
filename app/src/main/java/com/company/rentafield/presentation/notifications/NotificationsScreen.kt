@@ -2,6 +2,7 @@ package com.company.rentafield.presentation.notifications
 
 import android.util.Log
 import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -32,7 +33,7 @@ import com.company.rentafield.domain.model.LocalUser
 import com.company.rentafield.domain.model.ai.AiLog
 import com.company.rentafield.domain.model.ai.AiResponse
 import com.company.rentafield.presentation.notifications.component.NotificationItem
-import com.company.rentafield.presentation.notifications.component.NotificationTopBar
+import com.company.rentafield.presentation.search.components.MyTopAppBar
 import com.company.rentafield.theme.KhomasiTheme
 import com.company.rentafield.utils.extractTimeFromTimestamp
 import com.company.rentafield.utils.parseTimestamp
@@ -52,7 +53,11 @@ fun NotificationsScreen(
     }
     Scaffold(
         topBar = {
-            NotificationTopBar(onBackClicked = onBackClicked)
+            MyTopAppBar(
+                onBackClick = onBackClicked,
+                title = R.string.notifications,
+                isDark = isSystemInDarkTheme()
+            )
         },
         modifier = Modifier.fillMaxSize(),
 
