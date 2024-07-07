@@ -269,7 +269,7 @@
     <string name="capture_video">التقاط فيديو</string>
     <string name="upload">ارفع</string>
     <string name="today_challenge">تحدى اليوم</string>
-    <string name="browse">تصفح</string>
+    <string name="browse">تصفح او قم بألتقاط فيديو</string>
     <string name="instructions">التعليمات</string>
     <string name="dribbling_challenge_instructions">"\n                        |• قم بتحميل مقطع فيديو صغير حيث تقوم بركل الكرة دون ان تلمس الكره الارض بقدر ما تستطيع
 .\n                        |• لا يخرج الشخص عن اطار الفيديو

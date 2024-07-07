@@ -269,8 +269,8 @@
     <string name="capture_video">Capture Video</string>
     <string name="upload">Upload</string>
     <string name="today_challenge">Today\'s challenge</string>
-    <string name="browse">Browse</string>
+    <string name="browse">Browse or Capture a video </string>
     <string name="instructions">Instructions</string>
-    <string name="dribbling_challenge_instructions">"\n                        |• Upload a small video where you kick up the ball without |touching the ground as much as you can.\n                        |• The person does not go out of the video frame.\n                        |• He does not touch the ball with his hands.\n                        |• The ball does not touch the ground.\n                        |• The ball does not go out of the video frame.\n                        |• Foot dribbling only counts.\n                    "</string>
+    <string name="dribbling_challenge_instructions">"\n                        |• Upload a small video where you kick up the ball without touching the ground as much as you can.\n                        |• The person does not go out of the video frame.\n                        |• He does not touch the ball with his hands.\n                        |• The ball does not touch the ground.\n                        |• The ball does not go out of the video frame.\n                        |• Foot kicks only counts.\n                    "</string>
 
 </resources>

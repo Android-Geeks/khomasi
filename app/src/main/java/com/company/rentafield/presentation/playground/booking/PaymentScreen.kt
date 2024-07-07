@@ -2,6 +2,7 @@ package com.company.rentafield.presentation.playground.booking
 
 import android.content.Context
 import android.widget.Toast
+import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -238,6 +239,7 @@ fun PaymentScreen(
 @Composable
 fun PaymentTopBar(
     onBackClicked: () -> Unit = {},
+    @StringRes titleId: Int = R.string.payment_method
 ) {
     val currentLanguage = Locale.getDefault().language
     Column(verticalArrangement = Arrangement.Center) {
@@ -251,7 +253,7 @@ fun PaymentTopBar(
             TopAppBar(
                 title = {
                     Text(
-                        text = stringResource(id = R.string.payment_method),
+                        text = stringResource(titleId),
                         style = MaterialTheme.typography.displayMedium,
                         modifier = Modifier.fillMaxWidth(),
                         textAlign = TextAlign.Start
@@ -274,7 +276,7 @@ fun PaymentTopBar(
                         )
                     }
                 },
-                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.background)
+                colors = TopAppBarDefaults.topAppBarColors(MaterialTheme.colorScheme.surface)
             )
         }
         HorizontalDivider(

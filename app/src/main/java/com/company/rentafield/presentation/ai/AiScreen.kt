@@ -27,7 +27,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.work.OneTimeWorkRequestBuilder
@@ -162,16 +161,7 @@ fun AiScreen(
             }
             Spacer(modifier = Modifier.height(16.dp))
         } else {
-            MyButton(
-                text = R.string.upload_video,
-                onClick = { isSheetVisible = true }
-            )
+            AiScreenContent(onBackClicked = onBackClicked) { isSheetVisible = true }
         }
     }
-}
-
-@Preview
-@Composable
-fun fd() {
-    AiScreen(userId = "1", onBackClicked = {})
 }
