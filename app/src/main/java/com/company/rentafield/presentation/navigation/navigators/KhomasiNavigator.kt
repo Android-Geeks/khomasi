@@ -53,7 +53,8 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavHostController) {
                 onClickViewAll = { homeViewModel.onClickViewAll() },
                 onSearchBarClicked = { navController.navigate(Screens.KhomasiNavigation.Search.route) },
                 onAdClicked = {},
-                onFavouriteClick = homeViewModel::onFavouriteClicked
+                onFavouriteClick = homeViewModel::onFavouriteClicked,
+                getUserData = homeViewModel::getUserData
             )
         }
         composable(route = Screens.KhomasiNavigation.Notifications.route) {

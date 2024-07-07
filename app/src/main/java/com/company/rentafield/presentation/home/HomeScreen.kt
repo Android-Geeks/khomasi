@@ -75,6 +75,7 @@ fun HomeScreen(
     onClickPlaygroundCard: (Int, Boolean) -> Unit,
     onFavouriteClick: (Int) -> Unit,
     getHomeScreenData: () -> Unit,
+    getUserData: () -> Unit,
 ) {
     val localUser by localUserState.collectAsStateWithLifecycle()
     val playgrounds by playgroundsState.collectAsStateWithLifecycle()
@@ -93,7 +94,9 @@ fun HomeScreen(
         getHomeScreenData()
 //        Log.d("HomeScreen", "localUser recomposed")
     }
-
+    LaunchedEffect(localUser) {
+        getUserData()
+    }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -337,6 +340,7 @@ fun HomeScreenPreview() {
             onClickPlaygroundCard = { _, _ -> },
             onFavouriteClick = {},
             getHomeScreenData = {},
+            getUserData = {}
         )
     }
 }

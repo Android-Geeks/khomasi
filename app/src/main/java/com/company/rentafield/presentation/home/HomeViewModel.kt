@@ -1,10 +1,12 @@
 package com.company.rentafield.presentation.home
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.LocalUser
 import com.company.rentafield.domain.model.PlaygroundsResponse
+import com.company.rentafield.domain.model.UserDataResponse
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,6 +28,9 @@ class HomeViewModel @Inject constructor(
     private val _playgroundState: MutableStateFlow<DataState<PlaygroundsResponse>> =
         MutableStateFlow(DataState.Empty)
     val playgroundState: StateFlow<DataState<PlaygroundsResponse>> = _playgroundState
+
+    private val _userDataState: MutableStateFlow<DataState<UserDataResponse>> =
+        MutableStateFlow(DataState.Empty)
 
     private val _homeUiState: MutableStateFlow<HomeUiState> = MutableStateFlow(HomeUiState())
     val homeUiState: StateFlow<HomeUiState> = _homeUiState
@@ -84,6 +89,36 @@ class HomeViewModel @Inject constructor(
                                 }
                             })
                     )
+            }
+        }
+    }
+
+    fun getUserData() {
+        viewModelScope.launch {
+            remoteUserUseCase.userDataUseCase(
+                token = "Bearer ${_localUser.value.token ?: ""}",
+                userId = _localUser.value.userID ?: ""
+            ).collect { dataState ->
+                _userDataState.value = dataState
+                Log.d("UserResponse", "UserResponse: $dataState")
+                when (dataState) {
+                    is DataState.Success -> {
+                        localUserUseCases.saveLocalUser(
+                            _localUser.value.copy(
+                                coins = dataState.data.coins.toDouble(),
+                                rating = dataState.data.rating.toDouble()
+                            )
+                        )
+                    }
+
+                    is DataState.Error -> {
+                    }
+
+                    is DataState.Loading -> {
+                    }
+
+                    is DataState.Empty -> {}
+                }
             }
         }
     }
