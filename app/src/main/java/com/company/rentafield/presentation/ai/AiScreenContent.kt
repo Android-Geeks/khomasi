@@ -8,13 +8,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.MyOutlinedButton
-import com.company.rentafield.presentation.playground.booking.PaymentTopBar
+import com.company.rentafield.presentation.components.SubScreenTopBar
 import com.company.rentafield.theme.KhomasiTheme
 
 @Composable
@@ -39,94 +37,86 @@ fun AiScreenContent(
 ) {
     Scaffold(
         topBar = {
-            PaymentTopBar(
-                titleId = R.string.today_challenge,
-                onBackClicked = onBackClicked
+            SubScreenTopBar(
+                title = stringResource(id = R.string.today_challenge),
+                onBackClick = onBackClicked
             )
         },
         modifier = Modifier.fillMaxSize(),
     ) { paddingValues ->
-        Surface(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
         ) {
-            Column(
+            Spacer(modifier = Modifier.weight(1f))
+            Card(
                 modifier = Modifier
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface),
             ) {
-                Card(
+                Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(16.dp),
-                    colors = CardDefaults.cardColors(MaterialTheme.colorScheme.surface),
+                        .padding(vertical = 28.dp, horizontal = 12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Column(
-                        modifier = Modifier
+                        Modifier
                             .fillMaxWidth()
-                            .height(400.dp)
-                            .padding(vertical = 28.dp, horizontal = 12.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                            .drawDashedBorder()
+                            .padding(20.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Column(
-                            Modifier
-                                .fillMaxWidth()
-                                .drawDashedBorder()
-                                .padding(20.dp),
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Icon(
-                                painter = painterResource(id = R.drawable.upload),
-                                contentDescription = null,
-                                modifier = Modifier
-                                    .padding(top = 16.dp)
-                                    .size(100.dp),
-                                tint = Color.Gray
-                            )
-                            Spacer(modifier = Modifier.height(10.dp))
-                            Text(
-                                text = stringResource(id = R.string.browse),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = Color.Gray
-                            )
+                        Icon(
+                            painter = painterResource(id = R.drawable.upload),
+                            contentDescription = stringResource(id = R.string.upload),
+                            modifier = Modifier
+                                .padding(top = 16.dp)
+                                .size(125.dp),
+                            tint = Color.Gray
+                        )
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Text(
+                            text = stringResource(id = R.string.browse),
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.Gray
+                        )
 
-                            Spacer(modifier = Modifier.height(16.dp))
+                        Spacer(modifier = Modifier.height(16.dp))
 
-                            MyOutlinedButton(
-                                text = R.string.upload,
-                                onClick = onBrowseClick,
-                                modifier = Modifier.width(100.dp),
-                            )
-                        }
+                        MyOutlinedButton(
+                            text = R.string.upload,
+                            onClick = onBrowseClick,
+                            modifier = Modifier.fillMaxWidth(),
+                        )
                     }
                 }
-                Spacer(modifier = Modifier.height(16.dp))
-
-                Text(
-                    text = stringResource(R.string.instructions),
-                    style = MaterialTheme.typography.displayMedium,
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    textAlign = TextAlign.Start,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                )
-                Column(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(start = 26.dp, end = 8.dp, bottom = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.dribbling_challenge_instructions).trimMargin(),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.outline,
-                        textAlign = TextAlign.Start,
-                    )
-                }
             }
+            Spacer(modifier = Modifier.weight(.5f))
+
+            Text(
+                text = stringResource(R.string.instructions),
+                style = MaterialTheme.typography.displayMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+            )
+            Text(
+                text = stringResource(R.string.dribbling_challenge_instructions).trimMargin(),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.outline,
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 16.dp, end = 8.dp, bottom = 16.dp)
+            )
+            Spacer(modifier = Modifier.weight(1f))
         }
     }
 }

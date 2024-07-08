@@ -1,7 +1,6 @@
 package com.company.rentafield.presentation.ai
 
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
@@ -75,7 +74,6 @@ fun AiScreen(
         }
     )
 
-    Log.d("AiScreen", "uri: $selectedVideoUri")
 
     val cameraLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CaptureVideo(),
