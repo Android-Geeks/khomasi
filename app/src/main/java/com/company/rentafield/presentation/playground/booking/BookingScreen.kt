@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.FessTimeSlotsResponse
+import com.company.rentafield.domain.model.playground.FreeTimeSlotsResponse
 import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
@@ -70,7 +70,7 @@ import java.util.Locale
 @Composable
 fun BookingScreen(
     bookingUiState: StateFlow<BookingUiState>,
-    freeSlotsState: StateFlow<DataState<FessTimeSlotsResponse>>,
+    freeSlotsState: StateFlow<DataState<FreeTimeSlotsResponse>>,
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme(),
     onBackClicked: () -> Unit,
@@ -134,7 +134,7 @@ fun BookingScreen(
 @Composable
 fun BookingScreenContent(
     bookingUiState: BookingUiState,
-    freeSlotsState: DataState<FessTimeSlotsResponse>,
+    freeSlotsState: DataState<FreeTimeSlotsResponse>,
     isDark: Boolean,
     updateDuration: (String) -> Unit,
     getFreeSlots: () -> Unit,
@@ -310,7 +310,7 @@ fun BookingBottomSheet(
 }
 
 fun calculateHourlyIntervalsList(
-    freeSlots: DataState<FessTimeSlotsResponse>,
+    freeSlots: DataState<FreeTimeSlotsResponse>,
     selectedDuration: Int
 ): List<Pair<LocalDateTime, LocalDateTime>> {
     return if (freeSlots is DataState.Success) {
@@ -397,8 +397,9 @@ fun BookingTopBar(
 fun BookingScreenPreview() {
     val mockViewModel = MockBookingViewModel()
     KhomasiTheme {
-        BookingScreen(bookingUiState
-        = mockViewModel.bookingUiState,
+        BookingScreen(
+            bookingUiState
+            = mockViewModel.bookingUiState,
             freeSlotsState = mockViewModel.freeSlotsState,
             onBackClicked = {},
             updateDuration = { mockViewModel.updateDuration(it) },

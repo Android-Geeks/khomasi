@@ -251,5 +251,26 @@
     <string name="already_rated">Already Rated.</string>
     <string name="rating_failure">Failed to rate, try again</string>
     <string name="donot_have_notifications">You do not have any new notifications!</string>
+    <string name="you_can_t_upload_video_now">You can\'t upload video now</string>
+    <string name="ad_content_1">Upload Video and Win Coins Now!</string>
+    <string name="ad_content_2">Book any playground with a 10% discount</string>
+    <string name="ad_content_3">Get a 20% discount when inviting 5 friends</string>
+    <string name="ad_content_4">Book any playground in the morning with a 30% discount</string>
+    <string name="notification_title">Video Upload</string>
+    <string name="notification_message">Your video is being uploaded…</string>
+    <string name="channel_name">Upload Channel</string>
+    <string name="channel_description">Channel for video upload notifications</string>
+    <string name="video_processed_successfully">Video Processed successfully</string>
+    <string name="video_processing">Video Processing</string>
+    <string name="wait_your_video_is_being_processed">Your video is being processed and will likely take a few minutes...</string>
+    <string name="successfully_your_kick_up_count_is">Your video was processed successfully, Your Kick up count is </string>
+    <string name="you_ve_got">You\'ve got</string>
+    <string name="upload_video">Upload Video</string>
+    <string name="capture_video">Capture Video</string>
+    <string name="upload">Upload</string>
+    <string name="today_challenge">Today\'s challenge</string>
+    <string name="browse">Browse or Capture a video </string>
+    <string name="instructions">Instructions</string>
+    <string name="dribbling_challenge_instructions">"\n                        |• Upload a small video where you kick up the ball without touching the ground as much as you can.\n                        |• The person does not go out of the video frame.\n                        |• He does not touch the ball with his hands.\n                        |• The ball does not touch the ground.\n                        |• The ball does not go out of the video frame.\n                        |• Foot kicks only counts.\n                    "</string>
 
 </resources>

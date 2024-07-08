@@ -251,4 +251,30 @@
     <string name="rating_failure">فشل في التقييم، حاول مرة آخرى</string>
     <string name="donot_have_notifications">لا توجد لديك اي اشعارات جديدة !</string>
     <string name="existing_email_message">هذا البريد الالكترونى موجود بالفعل</string>
+    <string name="you_can_t_upload_video_now">لا يمكنك رفع فيديو الآن</string>
+    <string name="ad_content_1">ارفع فيديو واربح العملات الآن!</string>
+    <string name="ad_content_2">احجز أي ملعب بخصم 10%</string>
+    <string name="ad_content_3">احصل على خصم 20% عند دعوة 5 أصدقاء</string>
+    <string name="ad_content_4">احجز أي ملعب في الصباح بخصم 30%</string>
+    <string name="notification_title">تحميل الفيديو</string>
+    <string name="notification_message">يتم الآن تحميل الفيديو…</string>
+    <string name="channel_name">قناة التحميل</string>
+    <string name="channel_description">قناة لإشعارات تحميل الفيديو</string>
+    <string name="video_processed_successfully">تمت معالجه الفيديو بنجاح.</string>
+    <string name="video_processing">جارى معالجه الفيديو.</string>
+    <string name="wait_your_video_is_being_processed">تتم معالجة الفيديو الخاص بك ومن المرجح أن يستغرق بضع دقائق.</string>
+    <string name="successfully_your_kick_up_count_is">تم معالجه الفيديو الخاص بك بنجاح، عدد الركلات التى حققتها هى  </string>
+    <string name="you_ve_got">لقد قمت بتحقيق  </string>
+    <string name="upload_video">رفع الفيديو</string>
+    <string name="capture_video">التقاط فيديو</string>
+    <string name="upload">ارفع</string>
+    <string name="today_challenge">تحدى اليوم</string>
+    <string name="browse">تصفح او قم بألتقاط فيديو</string>
+    <string name="instructions">التعليمات</string>
+    <string name="dribbling_challenge_instructions">"\n                        |• قم بتحميل مقطع فيديو صغير حيث تقوم بركل الكرة دون ان تلمس الكره الارض بقدر ما تستطيع
+.\n                        |• لا يخرج الشخص عن اطار الفيديو
+.\n                        |• لا يلمس الشخص الكرة بيديه.\n                        |• لا تلمس الكرة الارض
+.\n                        |• الا تخرج الكرة عن اطار الفيديو
+.\n                        |• تحسب الركلات بالقدم فقط
+.\n                    "</string>
 </resources>

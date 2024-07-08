@@ -1,11 +1,18 @@
 package com.company.rentafield.di
 
 
-import com.company.rentafield.data.data_source.remote.RetrofitService
+import com.company.rentafield.data.data_source.RetrofitAiService
+import com.company.rentafield.data.data_source.RetrofitService
+import com.company.rentafield.data.repository.RemoteAiRepositoryImpl
 import com.company.rentafield.data.repository.RemotePlaygroundRepositoryImpl
 import com.company.rentafield.data.repository.RemoteUserRepositoryImpl
+import com.company.rentafield.domain.repository.RemoteAiRepository
 import com.company.rentafield.domain.repository.RemotePlaygroundRepository
 import com.company.rentafield.domain.repository.RemoteUserRepository
+import com.company.rentafield.domain.use_case.ai.AiUseCases
+import com.company.rentafield.domain.use_case.ai.GetAiResultsUseCase
+import com.company.rentafield.domain.use_case.ai.GetUploadStatusUseCase
+import com.company.rentafield.domain.use_case.ai.UploadVideoUseCase
 import com.company.rentafield.domain.use_case.auth.AuthUseCases
 import com.company.rentafield.domain.use_case.auth.ConfirmEmailUseCase
 import com.company.rentafield.domain.use_case.auth.GetVerificationCodeUseCase
@@ -31,6 +38,7 @@ import com.company.rentafield.domain.use_case.remote_user.UpdateProfilePictureUs
 import com.company.rentafield.domain.use_case.remote_user.UpdateUserUseCase
 import com.company.rentafield.domain.use_case.remote_user.UserDataUseCase
 import com.company.rentafield.domain.use_case.remote_user.UserFavouriteUseCase
+import com.company.rentafield.utils.Constants.AI_URL
 import com.company.rentafield.utils.Constants.BASE_URL
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -56,9 +64,9 @@ object NetworkModule {
             val loggingInterceptor = HttpLoggingInterceptor()
             loggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             addInterceptor(loggingInterceptor)
-            connectTimeout(20, TimeUnit.SECONDS) // connect timeout
-            readTimeout(30, TimeUnit.SECONDS) // socket timeout
-            writeTimeout(20, TimeUnit.SECONDS) // write timeout
+            connectTimeout(20, TimeUnit.HOURS) // connect timeout
+            readTimeout(30, TimeUnit.HOURS) // socket timeout
+            writeTimeout(20, TimeUnit.HOURS) // write timeout
         }.build()
     }
 
@@ -75,6 +83,17 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideAiService(okHttpClient: OkHttpClient): RetrofitAiService {
+        return Retrofit.Builder()
+            .baseUrl(AI_URL)
+            .client(okHttpClient)
+            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+            .build()
+            .create(RetrofitAiService::class.java)
+    }
+
+    @Provides
+    @Singleton
     fun provideRemoteUserRepository(
         retrofitService: RetrofitService
     ): RemoteUserRepository = RemoteUserRepositoryImpl(retrofitService)
@@ -84,6 +103,12 @@ object NetworkModule {
     fun provideRemotePlaygroundRepository(
         retrofitService: RetrofitService
     ): RemotePlaygroundRepository = RemotePlaygroundRepositoryImpl(retrofitService)
+
+    @Provides
+    @Singleton
+    fun provideRemoteAiRepository(
+        retrofitAiService: RetrofitAiService
+    ): RemoteAiRepository = RemoteAiRepositoryImpl(retrofitAiService)
 
     @Provides
     @Singleton
@@ -126,5 +151,16 @@ object NetworkModule {
         getPlaygroundReviewsUseCase = GetPlaygroundReviewsUseCase(remotePlaygroundRepository),
         getFilteredPlaygroundsUseCase = GetFilteredPlaygroundsUseCase(remotePlaygroundRepository),
         bookingPlaygroundUseCase = BookingPlaygroundUseCase(remotePlaygroundRepository)
+    )
+
+    @Provides
+    @Singleton
+    fun provideRemoteAiUseCase(
+        remoteAiRepository: RemoteAiRepository,
+        remoteUserRepository: RemoteUserRepository
+    ): AiUseCases = AiUseCases(
+        uploadVideoUseCase = UploadVideoUseCase(remoteAiRepository),
+        getAiResultsUseCase = GetAiResultsUseCase(remoteUserRepository),
+        getUploadStatusUseCase = GetUploadStatusUseCase(remoteUserRepository)
     )
 }

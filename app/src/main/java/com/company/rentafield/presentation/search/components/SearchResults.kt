@@ -26,7 +26,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
-import com.company.rentafield.domain.model.Playground
+import com.company.rentafield.domain.model.playground.Playground
 import com.company.rentafield.theme.KhomasiTheme
 import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightText

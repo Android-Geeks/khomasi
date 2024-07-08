@@ -1,6 +1,6 @@
 package com.company.rentafield.domain.use_case.remote_user
 
-import com.company.rentafield.domain.model.BookingRequest
+import com.company.rentafield.domain.model.playground.BookingRequest
 import com.company.rentafield.domain.repository.RemotePlaygroundRepository
 
 class BookingPlaygroundUseCase(

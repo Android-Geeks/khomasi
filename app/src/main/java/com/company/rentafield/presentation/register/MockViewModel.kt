@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.UserRegisterData
-import com.company.rentafield.domain.model.UserRegisterResponse
+import com.company.rentafield.domain.model.auth.UserRegisterData
+import com.company.rentafield.domain.model.auth.UserRegisterResponse
 import com.company.rentafield.presentation.components.LatandLong
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -74,6 +74,7 @@ class MockRegisterViewModel : ViewModel() {
     fun onPhoneNumberChange(phoneNumber: String) {
         _uiState.value = _uiState.value.copy(phoneNumber = phoneNumber)
     }
+
     fun isValidNameAndPhoneNumber(
         firstName: String,
         lastName: String,

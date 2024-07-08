@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.Playground
-import com.company.rentafield.domain.model.PlaygroundsResponse
+import com.company.rentafield.domain.model.playground.Playground
+import com.company.rentafield.domain.model.playground.PlaygroundsResponse
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

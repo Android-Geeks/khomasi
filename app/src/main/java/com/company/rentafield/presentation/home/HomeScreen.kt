@@ -1,5 +1,6 @@
 package com.company.rentafield.presentation.home
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -50,8 +51,8 @@ import coil.request.ImageRequest
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.Playground
-import com.company.rentafield.domain.model.PlaygroundsResponse
+import com.company.rentafield.domain.model.playground.Playground
+import com.company.rentafield.domain.model.playground.PlaygroundsResponse
 import com.company.rentafield.presentation.components.AdsContent
 import com.company.rentafield.presentation.components.AdsSlider
 import com.company.rentafield.presentation.components.cards.PlaygroundCard
@@ -71,7 +72,7 @@ fun HomeScreen(
     onClickBell: () -> Unit,
     onSearchBarClicked: () -> Unit,
     onClickViewAll: () -> Unit,
-    onAdClicked: () -> Unit,
+    onAdClicked: (String) -> Unit,
     onClickPlaygroundCard: (Int, Boolean) -> Unit,
     onFavouriteClick: (Int) -> Unit,
     getHomeScreenData: () -> Unit,
@@ -120,8 +121,9 @@ fun HomeScreen(
 
         Box(modifier = Modifier.fillMaxSize()) {
             HomeContent(
-                playgroundsData = playgroundsData.sortedBy { it.id },
+                playgroundsData = playgroundsData.sortedBy { it.distance },
                 homeUiState = uiState,
+                userId = localUser.userID ?: "",
                 onAdClicked = onAdClicked,
                 onClickViewAll = onClickViewAll,
                 onClickPlaygroundCard = onClickPlaygroundCard,
@@ -144,25 +146,30 @@ fun HomeScreen(
 fun HomeContent(
     playgroundsData: List<Playground>,
     homeUiState: HomeUiState,
-    onAdClicked: () -> Unit,
+    userId: String,
+    onAdClicked: (String) -> Unit,
     onClickViewAll: () -> Unit,
     onClickPlaygroundCard: (Int, Boolean) -> Unit,
     onFavouriteClick: (Int) -> Unit
 ) {
-
+    val context = LocalContext.current
     //        -----------------Temporary-----------------           //
-    val adsList = listOf(
+    val adsList = mutableListOf(
+        AdsContent(
+            imageSlider = painterResource(id = R.drawable.ads_ai),
+            contentText = stringResource(id = R.string.ad_content_1),
+        ),
         AdsContent(
             imageSlider = painterResource(id = R.drawable.playground),
-            contentText = " احجز اى ملعب بخصم 10 %",
+            contentText = stringResource(id = R.string.ad_content_2),
         ),
         AdsContent(
             imageSlider = painterResource(id = R.drawable.playground_image),
-            contentText = "احصل على خصم 20% عند دعوة 5 أصدقاء",
+            contentText = stringResource(id = R.string.ad_content_3),
         ),
         AdsContent(
             imageSlider = painterResource(id = R.drawable.playground),
-            contentText = " احجز اى ملعب صباحًا بخصم 30 %",
+            contentText = stringResource(id = R.string.ad_content_4),
         ),
     )
 
@@ -173,21 +180,18 @@ fun HomeContent(
         modifier = Modifier.fillMaxWidth(),
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
-
-//      ------------ Temporary until the booking page is completed   -----//
-        /*            if(true){
-                        item {
-                            RatingCard(
-                                buttonText = R.string.rating,
-                                mainText = "كانت مباراه حماسيه",
-                                subText = "اليوم الساعه 9:00 م",
-                                timeIcon = R.drawable.clock
-                            )
-                        }
-                    }*/
-//  -------------------------------------------------------------------//
-
-        item { AdsSlider(adsContent = adsList, onAdClicked = onAdClicked) }
+        item {
+            AdsSlider(
+                adsContent = adsList,
+                userId = userId,
+                onAdClicked = if (homeUiState.canUploadVideo) onAdClicked else { _ ->
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.you_can_t_upload_video_now), Toast.LENGTH_SHORT
+                    ).show()
+                }
+            )
+        }
 
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {

@@ -1,6 +1,6 @@
 package com.company.rentafield.domain.use_case.remote_user
 
-import com.company.rentafield.domain.model.UserUpdateData
+import com.company.rentafield.domain.model.user.UserUpdateData
 import com.company.rentafield.domain.repository.RemoteUserRepository
 
 class UpdateUserUseCase(

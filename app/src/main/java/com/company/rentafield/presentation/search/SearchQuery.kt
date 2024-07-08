@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.Playground
+import com.company.rentafield.domain.model.playground.Playground
 import com.company.rentafield.presentation.components.MyAlertDialog
 import com.company.rentafield.presentation.search.components.EmptySearch
 import com.company.rentafield.presentation.search.components.SearchHistory

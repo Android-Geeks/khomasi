@@ -1,20 +1,21 @@
 package com.company.rentafield.domain.repository
 
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.FavouritePlaygroundResponse
-import com.company.rentafield.domain.model.FeedbackRequest
 import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.model.MyBookingsResponse
-import com.company.rentafield.domain.model.PlaygroundReviewRequest
-import com.company.rentafield.domain.model.PlaygroundScreenResponse
-import com.company.rentafield.domain.model.PlaygroundsResponse
-import com.company.rentafield.domain.model.ProfileImageResponse
+import com.company.rentafield.domain.model.ai.AiResponse
+import com.company.rentafield.domain.model.auth.UserLoginResponse
+import com.company.rentafield.domain.model.auth.UserRegisterData
+import com.company.rentafield.domain.model.auth.UserRegisterResponse
+import com.company.rentafield.domain.model.auth.VerificationResponse
+import com.company.rentafield.domain.model.booking.MyBookingsResponse
+import com.company.rentafield.domain.model.booking.PlaygroundReviewRequest
+import com.company.rentafield.domain.model.favourite.FavouritePlaygroundResponse
 import com.company.rentafield.domain.model.UserDataResponse
-import com.company.rentafield.domain.model.UserLoginResponse
-import com.company.rentafield.domain.model.UserRegisterData
-import com.company.rentafield.domain.model.UserRegisterResponse
-import com.company.rentafield.domain.model.UserUpdateData
-import com.company.rentafield.domain.model.VerificationResponse
+import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
+import com.company.rentafield.domain.model.playground.PlaygroundsResponse
+import com.company.rentafield.domain.model.user.FeedbackRequest
+import com.company.rentafield.domain.model.user.ProfileImageResponse
+import com.company.rentafield.domain.model.user.UserUpdateData
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 
@@ -85,6 +86,14 @@ interface RemoteUserRepository {
         token: String,
         playgroundReview: PlaygroundReviewRequest
     ): Flow<DataState<MessageResponse>>
+
+    suspend fun getUploadVideoStatus(
+        id: String
+    ): Flow<DataState<MessageResponse>>
+
+    suspend fun getAiResults(
+        id: String
+    ): Flow<DataState<AiResponse>>
 
     suspend fun userData(
         token: String,

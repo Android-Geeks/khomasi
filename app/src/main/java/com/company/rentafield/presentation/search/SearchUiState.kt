@@ -1,6 +1,6 @@
 package com.company.rentafield.presentation.search
 
-import com.company.rentafield.domain.model.Playground
+import com.company.rentafield.domain.model.playground.Playground
 
 
 data class SearchUiState(

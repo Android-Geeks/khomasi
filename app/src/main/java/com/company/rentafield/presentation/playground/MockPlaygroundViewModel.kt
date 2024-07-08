@@ -2,9 +2,9 @@ package com.company.rentafield.presentation.playground
 
 import androidx.lifecycle.ViewModel
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.PlaygroundPicture
-import com.company.rentafield.domain.model.PlaygroundReviewsResponse
-import com.company.rentafield.domain.model.PlaygroundScreenResponse
+import com.company.rentafield.domain.model.playground.PlaygroundPicture
+import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
+import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -20,6 +20,7 @@ class MockPlaygroundViewModel : ViewModel() {
     val reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>> = _reviewsState
     fun getPlaygroundDetails(playgroundId: Int) {
     }
+
     fun onBookNowClicked() {
 
     }

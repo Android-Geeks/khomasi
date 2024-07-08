@@ -32,9 +32,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val startDestination by mainViewModel.startDestination.collectAsStateWithLifecycle()
-            val isNetworkAvailable by connectivityObserver.observe().collectAsStateWithLifecycle(
-                initialValue = ConnectivityObserver.Status.Unavailable
-            )
+            val isNetworkAvailable by connectivityObserver.observe()
+                .collectAsStateWithLifecycle(
+                    initialValue = ConnectivityObserver.Status.Unavailable
+                )
             KhomasiTheme {
                 NavGraph(
                     startDestination = startDestination,

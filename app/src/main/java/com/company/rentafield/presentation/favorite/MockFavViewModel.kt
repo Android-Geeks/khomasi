@@ -2,7 +2,7 @@ package com.company.rentafield.presentation.favorite
 
 import androidx.lifecycle.ViewModel
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.FavouritePlaygroundResponse
+import com.company.rentafield.domain.model.favourite.FavouritePlaygroundResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

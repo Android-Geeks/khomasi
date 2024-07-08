@@ -1,11 +1,11 @@
 package com.company.rentafield.data.repository
 
-import com.company.rentafield.data.data_source.remote.RetrofitService
+import com.company.rentafield.data.data_source.RetrofitService
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.BookingPlaygroundResponse
-import com.company.rentafield.domain.model.BookingRequest
-import com.company.rentafield.domain.model.FilteredPlaygroundResponse
-import com.company.rentafield.domain.model.PlaygroundReviewsResponse
+import com.company.rentafield.domain.model.booking.BookingPlaygroundResponse
+import com.company.rentafield.domain.model.playground.BookingRequest
+import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
+import com.company.rentafield.domain.model.search.FilteredPlaygroundResponse
 import com.company.rentafield.domain.repository.RemotePlaygroundRepository
 import kotlinx.coroutines.flow.Flow
 

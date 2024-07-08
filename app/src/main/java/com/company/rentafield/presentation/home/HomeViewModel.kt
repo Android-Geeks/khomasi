@@ -5,7 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.PlaygroundsResponse
+import com.company.rentafield.domain.model.playground.PlaygroundsResponse
+import com.company.rentafield.domain.use_case.ai.AiUseCases
 import com.company.rentafield.domain.model.UserDataResponse
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
@@ -23,6 +24,7 @@ import javax.inject.Inject
 class HomeViewModel @Inject constructor(
     private val remoteUserUseCase: RemoteUserUseCase,
     private val localUserUseCases: LocalUserUseCases,
+    private val aiUseCases: AiUseCases
 ) : ViewModel() {
 
     private val _playgroundState: MutableStateFlow<DataState<PlaygroundsResponse>> =
@@ -59,6 +61,15 @@ class HomeViewModel @Inject constructor(
                             profileImage = profileImageRes.data.profilePicture
                         )
                     }
+                }
+            }
+            aiUseCases.getUploadStatusUseCase(
+                id = _localUser.value.userID ?: ""
+            ).collect { uploadStatusRes ->
+                _homeUiState.update {
+                    it.copy(
+                        canUploadVideo = uploadStatusRes is DataState.Success
+                    )
                 }
             }
         }
@@ -110,14 +121,7 @@ class HomeViewModel @Inject constructor(
                             )
                         )
                     }
-
-                    is DataState.Error -> {
-                    }
-
-                    is DataState.Loading -> {
-                    }
-
-                    is DataState.Empty -> {}
+                    else -> {}
                 }
             }
         }

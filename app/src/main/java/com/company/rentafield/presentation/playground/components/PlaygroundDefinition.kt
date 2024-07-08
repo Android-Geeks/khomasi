@@ -33,7 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.PlaygroundScreenResponse
+import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
 import com.company.rentafield.presentation.playground.IconWithText
 import com.company.rentafield.utils.navigateToMaps
 import kotlinx.coroutines.flow.StateFlow

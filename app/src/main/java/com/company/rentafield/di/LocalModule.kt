@@ -1,8 +1,6 @@
 package com.company.rentafield.di
 
 import android.app.Application
-import androidx.room.Room
-import com.company.rentafield.data.data_source.database.AppDatabase
 import com.company.rentafield.data.repository.LocalUserRepositoryImpl
 import com.company.rentafield.domain.repository.LocalUserRepository
 import com.company.rentafield.domain.use_case.app_entry.AppEntryUseCases
@@ -24,16 +22,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object LocalModule {
-
-    @Provides
-    @Singleton
-    fun provideAppDatabase(app: Application): AppDatabase {
-        return Room.databaseBuilder(
-            app,
-            AppDatabase::class.java,
-            AppDatabase.DATABASE_NAME
-        ).build()
-    }
 
     @Provides
     @Singleton
@@ -61,8 +49,6 @@ object LocalModule {
         getSearchHistory = GetSearchHistory(localUserManger),
         saveSearchHistory = SaveSearchHistory(localUserManger),
         removeSearchHistory = RemoveSearchHistory(localUserManger),
-//        savePlaygroundId = SavePlaygroundId(localUserManger),
-//        getPlaygroundId = GetPlaygroundId(localUserManger),
     )
 }
 

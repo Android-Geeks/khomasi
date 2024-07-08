@@ -2,13 +2,15 @@ package com.company.rentafield.utils
 
 object Constants {
     const val PLAYGROUND_ID: String = "playground_id"
-    const val PLAYGROUND_NAME: String = "playground_name"
-    const val PLAYGROUND_PRICE: String = "playground_price"
 
     //for real device
-    const val BASE_URL = "http://localhost:5000/api/"
+//    const val BASE_URL = "http://localhost:5000/api/"
+//    const val AI_URL = "http://localhost:5050/"
+
     //for emulator
-    //const val BASE_URL = "http://10.0.2.2:5000/api/"
+    const val BASE_URL = "http://10.0.2.2:5000/api/"
+    const val AI_URL = "http://10.0.2.2:5050/"
+
 
     const val USER_SETTINGS = "user_settings"
 

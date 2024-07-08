@@ -1,12 +1,14 @@
 package com.company.rentafield.data.repository
 
 
-import com.company.rentafield.data.data_source.remote.RetrofitService
+import com.company.rentafield.data.data_source.RetrofitService
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.FeedbackRequest
-import com.company.rentafield.domain.model.PlaygroundReviewRequest
-import com.company.rentafield.domain.model.UserRegisterData
-import com.company.rentafield.domain.model.UserUpdateData
+import com.company.rentafield.domain.model.MessageResponse
+import com.company.rentafield.domain.model.ai.AiResponse
+import com.company.rentafield.domain.model.auth.UserRegisterData
+import com.company.rentafield.domain.model.booking.PlaygroundReviewRequest
+import com.company.rentafield.domain.model.user.FeedbackRequest
+import com.company.rentafield.domain.model.user.UserUpdateData
 import com.company.rentafield.domain.repository.RemoteUserRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -82,6 +84,12 @@ class RemoteUserRepositoryImpl(
         token: String,
         playgroundReview: PlaygroundReviewRequest
     ) = handleApi { retrofitService.playgroundReview(token, playgroundReview) }
+
+    override suspend fun getUploadVideoStatus(id: String): Flow<DataState<MessageResponse>> =
+        handleApi { retrofitService.getUploadVideoStatus(id) }
+
+    override suspend fun getAiResults(id: String): Flow<DataState<AiResponse>> =
+        handleApi { retrofitService.getAiResults(id) }
 
     override suspend fun userData(
         token: String,

@@ -3,7 +3,7 @@ package com.company.rentafield.presentation.resetPassword
 import androidx.lifecycle.ViewModel
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.model.VerificationResponse
+import com.company.rentafield.domain.model.auth.VerificationResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -12,7 +12,8 @@ class MockResetPasswordViewModel : ViewModel() {
     private val _resetUiState = MutableStateFlow(ResetPasswordUiState())
     val resetUiState: StateFlow<ResetPasswordUiState> = _resetUiState
 
-    private val _verificationRes = MutableStateFlow<DataState<VerificationResponse>>(DataState.Empty)
+    private val _verificationRes =
+        MutableStateFlow<DataState<VerificationResponse>>(DataState.Empty)
     val verificationRes: StateFlow<DataState<VerificationResponse>> = _verificationRes
 
     private val _recoverResponse = MutableStateFlow<DataState<MessageResponse>>(DataState.Empty)

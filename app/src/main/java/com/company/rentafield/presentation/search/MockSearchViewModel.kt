@@ -1,7 +1,7 @@
 package com.company.rentafield.presentation.search
 
 import androidx.lifecycle.ViewModel
-import com.company.rentafield.domain.model.Playground
+import com.company.rentafield.domain.model.playground.Playground
 import kotlinx.coroutines.flow.MutableStateFlow
 
 class MockSearchViewModel : ViewModel() {

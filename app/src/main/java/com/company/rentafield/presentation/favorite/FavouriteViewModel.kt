@@ -3,8 +3,8 @@ package com.company.rentafield.presentation.favorite
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.FavouritePlaygroundResponse
 import com.company.rentafield.domain.model.LocalUser
+import com.company.rentafield.domain.model.favourite.FavouritePlaygroundResponse
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

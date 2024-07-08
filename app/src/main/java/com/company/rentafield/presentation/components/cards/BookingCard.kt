@@ -41,7 +41,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.rentafield.R
-import com.company.rentafield.domain.model.BookingDetails
+import com.company.rentafield.domain.model.booking.BookingDetails
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyOutlinedButton
 import com.company.rentafield.theme.KhomasiTheme

@@ -37,8 +37,8 @@ import com.company.rentafield.presentation.components.MyTextButton
 import com.company.rentafield.presentation.profile.components.sheets.UploadPhotoOptionsSheet
 import com.company.rentafield.theme.KhomasiTheme
 import com.company.rentafield.utils.convertToBitmap
-import com.company.rentafield.utils.createFileFromUri
 import com.company.rentafield.utils.createImageFile
+import com.company.rentafield.utils.createImageFromUri
 import kotlinx.coroutines.launch
 import java.io.File
 import java.util.Objects
@@ -164,7 +164,7 @@ fun PhotoSelectorView(
         if (selectedImageUri != null) {
             detectFace(context, selectedImageUri!!, { hasFace ->
                 if (hasFace) {
-                    val tempFile = selectedImageUri!!.createFileFromUri(context)
+                    val tempFile = selectedImageUri!!.createImageFromUri(context)
                     onChangeProfileImage(tempFile)
                 } else {
                     Toast.makeText(context, R.string.face_not_detected, Toast.LENGTH_SHORT).show()
@@ -179,7 +179,7 @@ fun PhotoSelectorView(
         if (capturedImageUri != Uri.EMPTY) {
             detectFace(context, capturedImageUri, { hasFace ->
                 if (hasFace) {
-                    val tempFile = capturedImageUri.createFileFromUri(context)
+                    val tempFile = capturedImageUri.createImageFromUri(context)
                     onChangeProfileImage(tempFile)
                 } else {
                     Toast.makeText(context, R.string.face_not_detected, Toast.LENGTH_SHORT).show()

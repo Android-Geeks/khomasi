@@ -87,11 +87,19 @@ dependencies {
     // Splash Api
     implementation("androidx.core:core-splashscreen:1.0.1")
 
+    //Work Manager
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
+
     //Coil
     implementation("io.coil-kt:coil-compose:2.6.0")
 
     //Datastore
     implementation("androidx.datastore:datastore-preferences:1.1.1")
+
+    //Exo Player
+    implementation("androidx.media3:media3-exoplayer:1.3.1")
+    implementation("androidx.media3:media3-ui:1.3.1")
+
 
     //Compose Foundation
     implementation("androidx.compose.foundation:foundation:1.6.7")
@@ -129,6 +137,7 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.50")
     ksp("com.google.dagger:hilt-android-compiler:2.50")
     ksp("androidx.hilt:hilt-compiler:1.2.0")
+    implementation("androidx.hilt:hilt-work:1.2.0")
 
     //room
     val room = "2.6.1"
