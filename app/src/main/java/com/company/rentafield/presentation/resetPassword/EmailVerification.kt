@@ -48,7 +48,6 @@ import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextButton
 import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.presentation.components.connectionStates.Loading
-import com.company.rentafield.theme.lightText
 import com.company.rentafield.utils.CheckInputValidation
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -63,8 +62,8 @@ fun EmailVerification(
     onClickButtonScreen1: () -> Unit,
     onSetPasswordClick: () -> Unit
 ) {
-    val resetUiState = uiState.collectAsStateWithLifecycle().value
-    val verificationStatus = verificationRes.collectAsState().value
+    val resetUiState by uiState.collectAsStateWithLifecycle()
+    val verificationStatus by verificationRes.collectAsState()
     var showLoading by remember { mutableStateOf(false) }
 
     val context = LocalContext.current
@@ -74,7 +73,7 @@ fun EmailVerification(
 
     LaunchedEffect(key1 = verificationStatus) {
         Log.d("VerificationStatus", "VerificationStatus: $verificationStatus")
-        when (verificationStatus) {
+        when (val state = verificationStatus) {
             is DataState.Loading -> {
                 showLoading = true
                 keyboardController?.hide()
@@ -83,13 +82,13 @@ fun EmailVerification(
             is DataState.Success -> {
                 showLoading = false
                 Toast.makeText(context, R.string.verification_code_sent, Toast.LENGTH_SHORT).show()
-                onCorrectCodeChange(verificationStatus.data.code.toString())
+                onCorrectCodeChange(state.data.code.toString())
                 onSetPasswordClick()
             }
 
             is DataState.Error -> {
                 showLoading = false
-                when (verificationStatus.code) {
+                when (state.code) {
                     0 -> {
                         Toast.makeText(context, R.string.no_internet_connection, Toast.LENGTH_SHORT)
                             .show()
@@ -129,7 +128,7 @@ fun EmailVerification(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(top = 50.dp, start = 16.dp, end = 16.dp),
-            verticalArrangement = Arrangement.Top,
+            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
@@ -141,13 +140,13 @@ fun EmailVerification(
                 text = stringResource(id = R.string.forgot_your_password),
                 style = MaterialTheme.typography.titleMedium,
                 modifier = Modifier.padding(top = 40.dp),
-                color = lightText
+                color = MaterialTheme.colorScheme.onSurface
             )
             Text(
                 text = stringResource(id = R.string.enter_email_to_reset_password),
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(top = 8.dp),
-                color = MaterialTheme.colorScheme.onSurface
+                color = MaterialTheme.colorScheme.outline
             )
 
             Spacer(modifier = Modifier.height(54.dp))
