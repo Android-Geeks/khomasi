@@ -7,7 +7,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class UserDataResponse(
     @SerialName("coins")
-    val coins: Int,
+    val coins: Double,
     @SerialName("rating")
-    val rating: Int
+    val rating: Double
 )
