@@ -38,6 +38,7 @@ import com.company.rentafield.domain.use_case.remote_user.UpdateProfilePictureUs
 import com.company.rentafield.domain.use_case.remote_user.UpdateUserUseCase
 import com.company.rentafield.domain.use_case.remote_user.UserDataUseCase
 import com.company.rentafield.domain.use_case.remote_user.UserFavouriteUseCase
+import com.company.rentafield.utils.Constants.AI_URL
 import com.company.rentafield.utils.Constants.BASE_URL
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -84,7 +85,7 @@ object NetworkModule {
     @Singleton
     fun provideAiService(okHttpClient: OkHttpClient): RetrofitAiService {
         return Retrofit.Builder()
-            .baseUrl("http://10.0.2.2:5050/")
+            .baseUrl(AI_URL)
             .client(okHttpClient)
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .build()

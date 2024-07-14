@@ -4,12 +4,12 @@ object Constants {
     const val PLAYGROUND_ID: String = "playground_id"
 
     //for real device
-//    const val BASE_URL = "http://localhost:5000/api/"
-//    const val AI_URL = "http://localhost:5050/"
+    const val BASE_URL = "http://localhost:5000/api/"
+    const val AI_URL = "http://localhost:5050/"
 
     //for emulator
-    const val BASE_URL = "http://localhost:5000/api/"
-    const val AI_URL = "http://10.0.2.2:5050/"
+//    const val BASE_URL = "http://localhost:5000/api/"
+//    const val AI_URL = "http://10.0.2.2:5050/"
 
 
     const val USER_SETTINGS = "user_settings"
