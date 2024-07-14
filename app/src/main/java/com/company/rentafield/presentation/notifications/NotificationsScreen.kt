@@ -153,10 +153,13 @@ fun DrawLine(lineColor: Color, modifier: Modifier = Modifier) {
 @Preview(showSystemUi = true, locale = "en")
 @Composable
 fun NotificationsPreview() {
+    val mockViewModel = MockNotificationViewModel()
     KhomasiTheme {
-//        NotificationsScreen(
-//            onBackClicked = { },
-//            notificationStateFlow =
-//        )
+        NotificationsScreen(
+            onBackClicked = { },
+            notificationStateFlow = mockViewModel.notificationState,
+            getNotifications = { },
+            localUserUiState = mockViewModel.localUser
+        )
     }
 }

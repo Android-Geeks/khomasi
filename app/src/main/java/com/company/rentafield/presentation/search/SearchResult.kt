@@ -99,7 +99,7 @@ fun SearchResult(
                 .padding(it)
                 .padding(horizontal = 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Top
         ) {
             if (uiState.playgroundResults.isEmpty()) {
                 item {

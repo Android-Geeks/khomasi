@@ -4,7 +4,6 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,11 +36,9 @@ fun PlaygroundRules(
 
     if (playgroundData != null) {
         val rulesList = playgroundData!!.playground.rules.split(",")
-        val myHeight = (50.dp * rulesList.size).coerceAtLeast(50.dp)
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(myHeight)
                 .padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
