@@ -1,5 +1,6 @@
 package com.company.rentafield.presentation.playground.booking
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -57,18 +58,22 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.booking.BookingPlaygroundResponse
+import com.company.rentafield.presentation.components.DoneSuccessfully
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.presentation.playground.PaymentType
 import com.company.rentafield.presentation.playground.PlaygroundUiState
+import com.company.rentafield.theme.KhomasiTheme
 import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightText
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Locale
 
@@ -98,7 +103,6 @@ fun PaymentScreen(
             keyboardController?.hide()
         }
     )
-
     val interactionSource = remember { MutableInteractionSource() }
     val choices = listOf(
         stringResource(id = R.string.visa),
@@ -106,15 +110,18 @@ fun PaymentScreen(
         stringResource(id = R.string.coins),
         ""
     )
+    val showDoneSuccessfully = remember { mutableStateOf(false) }
+
     LaunchedEffect(bookingResponse) {
         when (bookingResponse) {
             is DataState.Success -> {
-                Toast.makeText(
-                    context,
-                    "Booking Successful",
-                    Toast.LENGTH_SHORT
-                ).show()
-                delay(1000)
+                showDoneSuccessfully.value = true
+//                Toast.makeText(
+//                    context,
+//                    "Booking Successful",
+//                    Toast.LENGTH_SHORT
+//                ).show()
+                delay(3000)
                 onBookingSuccess()
             }
 
@@ -198,7 +205,9 @@ fun PaymentScreen(
                             updateCardNumber = updateCardNumber,
                             updateCardValidationDate = updateCardValidationDate,
                             updateCardCvv = updateCardCvv,
-                            onPayVisaClicked = onPayWithVisaClicked,
+                            onPayVisaClicked = {
+                                onPayWithVisaClicked()
+                            },
                             keyboardActions = keyboardActions
                         )
                     }
@@ -206,13 +215,15 @@ fun PaymentScreen(
                         CoinsContent(
                             coins = uiState.coins.toLong(),
                             price = uiState.totalCoinPrice.toLong(),
-                            onPayWithCoinsClicked = onPayWithCoinsClicked
+                            onPayWithCoinsClicked = {
+                                onPayWithCoinsClicked()
+                            }
                         )
                     }
                     if (type.ordinal == 1 && choice == 1) {
                         if (showFawryDialog.value) {
                             FawryContent(
-                                onConfirmButtonClick = { showFawryDialog.value = false },
+                                onConfirmButtonClick = { },
                             )
                         }
                     }
@@ -229,6 +240,9 @@ fun PaymentScreen(
                         }
                     ), contentDescription = null
                 )
+            }
+            if (showDoneSuccessfully.value) {
+                DoneSuccessfully()
             }
         }
     }
@@ -359,6 +373,7 @@ fun FawryContent(
 
 }
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun CoinsContent(
     coins: Long,
@@ -528,20 +543,34 @@ fun CardContent(
     }
 }
 
-//@SuppressLint("UnrememberedMutableState")
-//@Preview(showSystemUi = true)
-//@Composable
-//fun PaymentScreenPreview() {
-//    KhomasiTheme {
-//        PaymentScreen(
-//            playgroundUiState = MutableStateFlow(PlaygroundUiState()),
-//            bookingPlaygroundResponse = MutableStateFlow(DataState.Success(BookingPlaygroundResponse())),
-//            onPayWithVisaClicked = {},
-//            updateCardNumber = {},
-//            updateCardValidationDate = {},
-//            updateCardCvv = {},
-//            onPayWithCoinsClicked = {},
-//            onBackClicked = {}
-//        )
-//    }
-//}
+@SuppressLint("UnrememberedMutableState")
+@Preview(showSystemUi = true)
+@Composable
+fun PaymentScreenPreview() {
+    KhomasiTheme {
+        PaymentScreen(
+            playgroundUiState = MutableStateFlow(PlaygroundUiState()),
+            bookingPlaygroundResponse = MutableStateFlow(
+                DataState.Success(
+                    BookingPlaygroundResponse(
+                        1,
+                        "1",
+                        1,
+                        "2021-09-01",
+                        1,
+                        1,
+                        "123",
+                        false
+                    )
+                )
+            ),
+            onPayWithVisaClicked = {},
+            updateCardNumber = {},
+            updateCardValidationDate = {},
+            updateCardCvv = {},
+            onPayWithCoinsClicked = {},
+            onBackClicked = {},
+            onBookingSuccess = {}
+        )
+    }
+}
