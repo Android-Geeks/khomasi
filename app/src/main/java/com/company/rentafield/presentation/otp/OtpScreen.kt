@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -28,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -67,6 +69,7 @@ fun OtpScreen(
     val otpStatus by otpState.collectAsStateWithLifecycle()
     val confirmEmailStatus by confirmEmailState.collectAsStateWithLifecycle()
     var showLoading by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         getRegisterOtp()
@@ -101,7 +104,9 @@ fun OtpScreen(
 
             is DataState.Success -> {
                 showLoading = false
+                Toast.makeText(context, "Registered Successfully", Toast.LENGTH_LONG).show()
                 onEmailConfirmed()
+
             }
 
             is DataState.Error -> {
