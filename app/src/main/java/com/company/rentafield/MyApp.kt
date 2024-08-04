@@ -8,7 +8,7 @@ import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
 import com.company.rentafield.domain.use_case.ai.AiUseCases
-import com.company.rentafield.presentation.UploadVideoWorker
+import com.company.rentafield.workers.UploadVideoWorker
 import com.jakewharton.threetenabp.AndroidThreeTen
 import dagger.hilt.android.HiltAndroidApp
 import javax.inject.Inject

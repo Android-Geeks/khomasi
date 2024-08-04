@@ -35,9 +35,9 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.company.rentafield.BuildConfig
 import com.company.rentafield.R
-import com.company.rentafield.presentation.UploadVideoWorker
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.utils.createVideoFile
+import com.company.rentafield.workers.UploadVideoWorker
 import java.util.Objects
 
 @OptIn(ExperimentalMaterial3Api::class)

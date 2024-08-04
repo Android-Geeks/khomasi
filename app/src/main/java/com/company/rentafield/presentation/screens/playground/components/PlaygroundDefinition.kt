@@ -1,6 +1,8 @@
 package com.company.rentafield.presentation.screens.playground.components
 
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -35,7 +37,6 @@ import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
 import com.company.rentafield.presentation.screens.playground.IconWithText
-import com.company.rentafield.utils.navigateToMaps
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -95,11 +96,13 @@ fun PlaygroundDefinition(
                         .fillMaxSize()
                         .padding(start = 93.dp, end = 109.dp)
                         .clickable {
-                            navigateToMaps(
-                                context = context,
-                                lat = playgroundData?.playground?.latitude ?: 0.0,
-                                long = playgroundData?.playground?.longitude ?: 0.0
-                            )
+                            val lat = playgroundData?.playground?.latitude ?: 0.0
+                            val long = playgroundData?.playground?.longitude ?: 0.0
+                            val zoom = 10.0f
+
+                            val intent = Intent(Intent.ACTION_VIEW)
+                            intent.data = Uri.parse("geo:$lat,$long?z=$zoom&q=$lat,$long(Marker)")
+                            context.startActivity(intent)
                         },
                     colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onPrimaryContainer),
                 ) {

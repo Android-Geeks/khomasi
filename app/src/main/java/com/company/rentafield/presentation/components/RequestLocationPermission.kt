@@ -3,7 +3,10 @@ package com.company.rentafield.presentation.components
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Looper
+import android.provider.Settings
 import android.util.Log
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -13,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.company.rentafield.R
-import com.company.rentafield.utils.navigateToSettings
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -67,7 +69,10 @@ fun getUserLocation(context: Context): LatandLong {
             onDismissRequest = {},
             confirmButtonText = R.string.go_to_settings,
             onConfirmButtonClick = {
-                navigateToSettings(context)
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                val uri: Uri = Uri.fromParts("package", context.packageName, null)
+                intent.data = uri
+                context.startActivity(intent)
             },
             confirmButtonColor = MaterialTheme.colorScheme.primary
         )
