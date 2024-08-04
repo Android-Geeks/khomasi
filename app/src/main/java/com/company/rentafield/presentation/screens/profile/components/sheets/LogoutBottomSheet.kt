@@ -64,7 +64,10 @@ fun LogoutBottomSheet(
             )
             Image(
                 painter = painterResource(id = R.drawable.logout),
-                contentDescription = null
+                contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(130.dp)
             )
             Column(
                 modifier = Modifier
