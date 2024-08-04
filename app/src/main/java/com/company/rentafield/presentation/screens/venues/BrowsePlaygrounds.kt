@@ -112,7 +112,7 @@ fun BrowsePreview() {
             localUser = mockBrowseViewModel.localUser,
             browseUiState = mockBrowseViewModel.uiState,
             filteredPlayground = mockBrowseViewModel.filteredPlaygrounds,
-            getFilteredPlaygrounds = { mockBrowseViewModel.getPlaygrounds() },
+            getFilteredPlaygrounds = { },
             onFilterClick = { },
             onFavouriteClicked = { },
             onClickPlaygroundCard = { _, _ -> }

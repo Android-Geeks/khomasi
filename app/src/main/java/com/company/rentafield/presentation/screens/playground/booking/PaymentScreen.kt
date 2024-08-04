@@ -77,6 +77,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import java.util.Locale
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentScreen(
     playgroundUiState: StateFlow<PlaygroundUiState>,
@@ -107,8 +108,7 @@ fun PaymentScreen(
     val choices = listOf(
         stringResource(id = R.string.visa),
         stringResource(id = R.string.fawry),
-        stringResource(id = R.string.coins),
-        ""
+        stringResource(id = R.string.coins)
     )
     val showDoneSuccessfully = remember { mutableStateOf(false) }
 
@@ -116,12 +116,8 @@ fun PaymentScreen(
         when (bookingResponse) {
             is DataState.Success -> {
                 showDoneSuccessfully.value = true
-//                Toast.makeText(
-//                    context,
-//                    "Booking Successful",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-                delay(3000)
+                delay(2000)
+                showDoneSuccessfully.value = false
                 onBookingSuccess()
             }
 
