@@ -26,8 +26,8 @@ class MainViewModel @Inject constructor(
     init {
         appEntryUseCases.readAppEntry().onEach { startingRoute ->
             when (startingRoute) {
-                Screens.KhomasiNavigation -> _startDestination.value =
-                    Screens.KhomasiNavigation.route
+                Screens.RentafieldNavigation -> _startDestination.value =
+                    Screens.RentafieldNavigation.route
 
                 Screens.AuthNavigation -> _startDestination.value = Screens.AuthNavigation.route
                 Screens.AppStartNavigation -> _startDestination.value =

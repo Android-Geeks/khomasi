@@ -9,7 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.viewinterop.AndroidView
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 
 
 @Composable
@@ -40,7 +40,7 @@ fun RatingRow(
 @Preview(name = "Dark Mode", showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun LightRatingRowPreview() {
-    KhomasiTheme {
+    RentafieldTheme {
         RatingRow(rating = 4f, onRatingChange = {})
     }
 

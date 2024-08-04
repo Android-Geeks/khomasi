@@ -7,7 +7,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 
 @Composable
 fun RadioButton(
@@ -31,7 +31,7 @@ fun RadioButton(
 @Preview(name = "Dark Mode", uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun RadioButtonPreview() {
-    KhomasiTheme {
+    RentafieldTheme {
         RadioButton(
             options = listOf("Option 1", "Option 2"),
             selectedOption = "Option 1",

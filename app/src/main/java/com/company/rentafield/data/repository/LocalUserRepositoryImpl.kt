@@ -97,7 +97,7 @@ class LocalUserRepositoryImpl(
             } else if (!isLogin) {
                 Screens.AuthNavigation
             } else {
-                Screens.KhomasiNavigation
+                Screens.RentafieldNavigation
             }
         }
     }

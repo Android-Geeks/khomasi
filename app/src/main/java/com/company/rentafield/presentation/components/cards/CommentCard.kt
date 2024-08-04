@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.company.rentafield.R
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.utils.convertToBitmap
 import com.company.rentafield.utils.extractDateFromTimestamp
 import com.company.rentafield.utils.parseTimestamp
@@ -119,7 +119,7 @@ fun CommentCard(
 @Preview
 @Composable
 fun CommentCardPreview() {
-    KhomasiTheme {
+    RentafieldTheme {
         CommentCard(
             userName = "Ali Gamal",
             userImageUrl = "",

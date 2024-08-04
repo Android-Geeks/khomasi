@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkSubText
 import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightSubText
@@ -68,7 +68,7 @@ fun LossConnection() {
 @Preview(name = "Light", uiMode = Configuration.UI_MODE_NIGHT_NO, locale = "ar")
 @Composable
 fun LossConnectionPreview() {
-    KhomasiTheme(darkTheme = true) {
+    RentafieldTheme(darkTheme = true) {
         LossConnection()
     }
 }

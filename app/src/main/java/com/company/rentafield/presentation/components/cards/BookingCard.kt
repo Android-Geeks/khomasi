@@ -44,7 +44,7 @@ import com.company.rentafield.R
 import com.company.rentafield.domain.model.booking.BookingDetails
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyOutlinedButton
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkErrorColor
 import com.company.rentafield.theme.darkSubText
 import com.company.rentafield.theme.lightErrorColor
@@ -311,7 +311,7 @@ fun TextWithIcon(
 @Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO, locale = "ar")
 @Composable
 private fun BookingCardPreview() {
-    KhomasiTheme {
+    RentafieldTheme {
         BookingCard(
             bookingDetails = BookingDetails(
                 1,

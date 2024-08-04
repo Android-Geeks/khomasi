@@ -36,7 +36,7 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.MyButton
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkIcon
 import com.company.rentafield.theme.darkOverlay
 import com.company.rentafield.theme.darkText
@@ -133,7 +133,7 @@ fun RatingCard(
 @Preview(name = "light", uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewRatingCard() {
-    KhomasiTheme {
+    RentafieldTheme {
         RatingCard(
             buttonText = R.string.ratings,
             mainText = "Was a perfect match",

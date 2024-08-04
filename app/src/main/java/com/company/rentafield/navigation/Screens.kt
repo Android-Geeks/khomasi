@@ -23,7 +23,7 @@ sealed class Screens(
         data object OTP : Screens("OTP")
     }
 
-    data object KhomasiNavigation : Screens("KhomasiNavigation") {
+    data object RentafieldNavigation : Screens("RentafieldNavigation") {
         data object Home : Screens("Home")
         data object Notifications : Screens("Notifications")
         data object AiService : Screens("AiService")

@@ -13,7 +13,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkIcon
 import com.company.rentafield.theme.lightIcon
 
@@ -47,7 +47,7 @@ fun RoundedFavoriteIcon(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_NO)
 @Composable
 fun RoundedFavoriteIconPreview() {
-    KhomasiTheme {
+    RentafieldTheme {
         RoundedFavoriteIcon(
             onFavoriteClick = {},
             isFavorite = true

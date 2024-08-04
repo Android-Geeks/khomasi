@@ -9,7 +9,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.company.rentafield.R
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 
 @Composable
 fun FavoriteIcon(
@@ -30,7 +30,7 @@ fun FavoriteIcon(
 @Preview
 @Composable
 fun FavoriteIconPreview() {
-    KhomasiTheme {
+    RentafieldTheme {
         FavoriteIcon(
             onFavoriteClick = { },
             isFavorite = true

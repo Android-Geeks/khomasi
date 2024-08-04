@@ -38,7 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 
 @Composable
 fun MyTextField(
@@ -143,7 +143,7 @@ fun MyTextField(
 @Preview(name = "light", uiMode = UI_MODE_NIGHT_NO, locale = "ar")
 @Composable
 fun TextFieldPreview() {
-    KhomasiTheme {
+    RentafieldTheme {
         MyTextField(
             value = "Zeyad",
             onValueChange = { },

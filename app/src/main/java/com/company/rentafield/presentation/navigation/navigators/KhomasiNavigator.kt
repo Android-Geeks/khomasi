@@ -7,60 +7,60 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.company.rentafield.navigation.Screens
-import com.company.rentafield.presentation.ai.AiScreen
-import com.company.rentafield.presentation.favorite.FavouriteScreen
-import com.company.rentafield.presentation.favorite.FavouriteViewModel
-import com.company.rentafield.presentation.home.HomeScreen
-import com.company.rentafield.presentation.home.HomeViewModel
-import com.company.rentafield.presentation.myBookings.MyBookingScreen
-import com.company.rentafield.presentation.myBookings.MyBookingViewModel
-import com.company.rentafield.presentation.myBookings.components.CancelBookingPage
 import com.company.rentafield.presentation.navigation.components.sharedViewModel
-import com.company.rentafield.presentation.notifications.NotificationViewModel
-import com.company.rentafield.presentation.notifications.NotificationsScreen
-import com.company.rentafield.presentation.playground.PlaygroundScreen
-import com.company.rentafield.presentation.playground.PlaygroundViewModel
-import com.company.rentafield.presentation.playground.booking.BookingScreen
-import com.company.rentafield.presentation.playground.booking.ConfirmBookingScreen
-import com.company.rentafield.presentation.playground.booking.PaymentScreen
-import com.company.rentafield.presentation.profile.EditProfile
-import com.company.rentafield.presentation.profile.ProfileViewModel
-import com.company.rentafield.presentation.profile.ViewProfile
-import com.company.rentafield.presentation.search.SearchQuery
-import com.company.rentafield.presentation.search.SearchResult
-import com.company.rentafield.presentation.search.SearchViewModel
-import com.company.rentafield.presentation.venues.BrowsePlaygrounds
-import com.company.rentafield.presentation.venues.BrowsePlaygroundsViewModel
-import com.company.rentafield.presentation.venues.BrowseResults
-import com.company.rentafield.presentation.venues.FilterResults
+import com.company.rentafield.presentation.screens.ai.AiScreen
+import com.company.rentafield.presentation.screens.favorite.FavouriteScreen
+import com.company.rentafield.presentation.screens.favorite.FavouriteViewModel
+import com.company.rentafield.presentation.screens.home.HomeScreen
+import com.company.rentafield.presentation.screens.home.HomeViewModel
+import com.company.rentafield.presentation.screens.myBookings.MyBookingScreen
+import com.company.rentafield.presentation.screens.myBookings.MyBookingViewModel
+import com.company.rentafield.presentation.screens.myBookings.components.CancelBookingPage
+import com.company.rentafield.presentation.screens.notifications.NotificationViewModel
+import com.company.rentafield.presentation.screens.notifications.NotificationsScreen
+import com.company.rentafield.presentation.screens.playground.PlaygroundScreen
+import com.company.rentafield.presentation.screens.playground.PlaygroundViewModel
+import com.company.rentafield.presentation.screens.playground.booking.BookingScreen
+import com.company.rentafield.presentation.screens.playground.booking.ConfirmBookingScreen
+import com.company.rentafield.presentation.screens.playground.booking.PaymentScreen
+import com.company.rentafield.presentation.screens.profile.EditProfile
+import com.company.rentafield.presentation.screens.profile.ProfileViewModel
+import com.company.rentafield.presentation.screens.profile.ViewProfile
+import com.company.rentafield.presentation.screens.search.SearchQuery
+import com.company.rentafield.presentation.screens.search.SearchResult
+import com.company.rentafield.presentation.screens.search.SearchViewModel
+import com.company.rentafield.presentation.screens.venues.BrowsePlaygrounds
+import com.company.rentafield.presentation.screens.venues.BrowsePlaygroundsViewModel
+import com.company.rentafield.presentation.screens.venues.BrowseResults
+import com.company.rentafield.presentation.screens.venues.FilterResults
 
 
-fun NavGraphBuilder.khomasiNavigator(navController: NavHostController) {
+fun NavGraphBuilder.rentafieldNavigator(navController: NavHostController) {
     navigation(
-        route = Screens.KhomasiNavigation.route,
-        startDestination = Screens.KhomasiNavigation.Home.route
+        route = Screens.RentafieldNavigation.route,
+        startDestination = Screens.RentafieldNavigation.Home.route
     ) {
-        composable(route = Screens.KhomasiNavigation.Home.route) {
+        composable(route = Screens.RentafieldNavigation.Home.route) {
             val homeViewModel: HomeViewModel = hiltViewModel()
             HomeScreen(
                 playgroundsState = homeViewModel.playgroundState,
                 homeUiState = homeViewModel.homeUiState,
                 localUserState = homeViewModel.localUser,
-                onClickUserImage = { navController.navigate(Screens.KhomasiNavigation.Profile.route) },
+                onClickUserImage = { navController.navigate(Screens.RentafieldNavigation.Profile.route) },
                 onClickPlaygroundCard = { playgroundId, isFavourite ->
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
+                    navController.navigate(Screens.RentafieldNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 },
                 getHomeScreenData = homeViewModel::getHomeScreenData,
-                onClickBell = { navController.navigate(Screens.KhomasiNavigation.Notifications.route) },
+                onClickBell = { navController.navigate(Screens.RentafieldNavigation.Notifications.route) },
                 onClickViewAll = { homeViewModel.onClickViewAll() },
-                onSearchBarClicked = { navController.navigate(Screens.KhomasiNavigation.Search.route) },
-                onAdClicked = { userId -> navController.navigate(Screens.KhomasiNavigation.AiService.route + "/$userId") },
+                onSearchBarClicked = { navController.navigate(Screens.RentafieldNavigation.Search.route) },
+                onAdClicked = { userId -> navController.navigate(Screens.RentafieldNavigation.AiService.route + "/$userId") },
                 onFavouriteClick = homeViewModel::onFavouriteClicked,
                 getUserData = homeViewModel::getUserData
             )
         }
 
-        composable(route = Screens.KhomasiNavigation.Notifications.route) {
+        composable(route = Screens.RentafieldNavigation.Notifications.route) {
             val notificationViewModel: NotificationViewModel = hiltViewModel()
             NotificationsScreen(
                 onBackClicked = navController::navigateUp,
@@ -70,19 +70,19 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavHostController) {
             )
         }
 
-        composable(route = Screens.KhomasiNavigation.Favorite.route) {
+        composable(route = Screens.RentafieldNavigation.Favorite.route) {
             val favouriteViewModel: FavouriteViewModel = hiltViewModel()
             FavouriteScreen(
                 uiState = favouriteViewModel.uiState,
                 getFavoritePlaygrounds = favouriteViewModel::getFavoritePlaygrounds,
                 onFavouriteClick = favouriteViewModel::onFavouriteClicked,
                 onPlaygroundClick = { playgroundId, isFavourite ->
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
+                    navController.navigate(Screens.RentafieldNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 }
             )
         }
 
-        composable(route = Screens.KhomasiNavigation.AiService.route + "/{userId}") { navBackStackEntry ->
+        composable(route = Screens.RentafieldNavigation.AiService.route + "/{userId}") { navBackStackEntry ->
             val userId = navBackStackEntry.arguments?.getString("userId") ?: ""
 
             AiScreen(
@@ -106,10 +106,10 @@ fun NavGraphBuilder.khomasiNavigator(navController: NavHostController) {
 
 fun NavGraphBuilder.playgroundsNavigator(navController: NavHostController) {
     navigation(
-        route = Screens.KhomasiNavigation.Playgrounds.route,
-        startDestination = Screens.KhomasiNavigation.Playgrounds.BrowsePlaygrounds.route
+        route = Screens.RentafieldNavigation.Playgrounds.route,
+        startDestination = Screens.RentafieldNavigation.Playgrounds.BrowsePlaygrounds.route
     ) {
-        composable(route = Screens.KhomasiNavigation.Playgrounds.BrowsePlaygrounds.route) {
+        composable(route = Screens.RentafieldNavigation.Playgrounds.BrowsePlaygrounds.route) {
             val browsePlaygroundsViewModel =
                 it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
             BrowsePlaygrounds(
@@ -117,15 +117,15 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavHostController) {
                 filteredPlayground = browsePlaygroundsViewModel.filteredPlaygrounds,
                 browseUiState = browsePlaygroundsViewModel.uiState,
                 getFilteredPlaygrounds = { browsePlaygroundsViewModel.getPlaygrounds() },
-                onFilterClick = { navController.navigate(Screens.KhomasiNavigation.Playgrounds.FilterPlaygrounds.route) },
+                onFilterClick = { navController.navigate(Screens.RentafieldNavigation.Playgrounds.FilterPlaygrounds.route) },
                 onFavouriteClicked = browsePlaygroundsViewModel::onFavouriteClicked,
                 onClickPlaygroundCard = { playgroundId, isFavourite ->
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
+                    navController.navigate(Screens.RentafieldNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 }
             )
         }
 
-        composable(route = Screens.KhomasiNavigation.Playgrounds.FilterPlaygrounds.route) {
+        composable(route = Screens.RentafieldNavigation.Playgrounds.FilterPlaygrounds.route) {
             val browsePlaygroundsViewModel =
                 it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
             FilterResults(
@@ -136,7 +136,7 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavHostController) {
                 },
                 onShowFiltersClicked = { s, d ->
                     browsePlaygroundsViewModel.onShowFiltersClicked(s, d)
-                    navController.navigate(Screens.KhomasiNavigation.Playgrounds.ResultPlaygrounds.route)
+                    navController.navigate(Screens.RentafieldNavigation.Playgrounds.ResultPlaygrounds.route)
                 },
                 onResetFilters = browsePlaygroundsViewModel::onResetFilters,
                 updateDuration = browsePlaygroundsViewModel::updateDuration,
@@ -145,7 +145,7 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavHostController) {
                 updateType = browsePlaygroundsViewModel::updateType,
             )
         }
-        composable(route = Screens.KhomasiNavigation.Playgrounds.ResultPlaygrounds.route) {
+        composable(route = Screens.RentafieldNavigation.Playgrounds.ResultPlaygrounds.route) {
             val browsePlaygroundsViewModel =
                 it.sharedViewModel<BrowsePlaygroundsViewModel>(navController = navController)
             BrowseResults(
@@ -153,7 +153,7 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavHostController) {
                 onBackClicked = navController::navigateUp,
                 onFavClicked = browsePlaygroundsViewModel::onFavouriteClicked,
                 onClickPlayground = { playgroundId, isFavourite ->
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
+                    navController.navigate(Screens.RentafieldNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 }
             )
         }
@@ -162,10 +162,10 @@ fun NavGraphBuilder.playgroundsNavigator(navController: NavHostController) {
 
 fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController) {
     navigation(
-        route = Screens.KhomasiNavigation.BookingPlayground.route + "/{playgroundId}" + "/{isFavourite}",
-        startDestination = Screens.KhomasiNavigation.BookingPlayground.PlaygroundDetails.route
+        route = Screens.RentafieldNavigation.BookingPlayground.route + "/{playgroundId}" + "/{isFavourite}",
+        startDestination = Screens.RentafieldNavigation.BookingPlayground.PlaygroundDetails.route
     ) {
-        composable(route = Screens.KhomasiNavigation.BookingPlayground.PlaygroundDetails.route) { navBackStackEntry ->
+        composable(route = Screens.RentafieldNavigation.BookingPlayground.PlaygroundDetails.route) { navBackStackEntry ->
             val playgroundId = navBackStackEntry.arguments?.getString("playgroundId")?.toInt()
             val isFavourite = navBackStackEntry.arguments?.getString("isFavourite")?.toBoolean()
             val playgroundViewModel =
@@ -183,7 +183,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
                 onClickFav = playgroundViewModel::updateUserFavourite,
                 onBookNowClicked = {
                     navController.navigate(
-                        Screens.KhomasiNavigation.BookingPlayground.BookingDetails.route
+                        Screens.RentafieldNavigation.BookingPlayground.BookingDetails.route
                     )
                 },
                 getPlaygroundDetails = playgroundViewModel::getPlaygroundDetails,
@@ -192,7 +192,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
         }
 
         composable(
-            route = Screens.KhomasiNavigation.BookingPlayground.BookingDetails.route,
+            route = Screens.RentafieldNavigation.BookingPlayground.BookingDetails.route,
         ) { navBackStackEntry ->
             val bookingViewModel =
                 navBackStackEntry.sharedViewModel<PlaygroundViewModel>(navController = navController)
@@ -205,12 +205,12 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
                 onSlotClicked = bookingViewModel::onSlotClicked,
                 checkValidity = bookingViewModel::checkSlotsConsecutive,
                 onNextClicked = {
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.BookingConfirmation.route)
+                    navController.navigate(Screens.RentafieldNavigation.BookingPlayground.BookingConfirmation.route)
                     bookingViewModel.updateBookingTime()
                 })
         }
 
-        composable(route = Screens.KhomasiNavigation.BookingPlayground.BookingConfirmation.route) {
+        composable(route = Screens.RentafieldNavigation.BookingPlayground.BookingConfirmation.route) {
 
             val bookingViewModel =
                 it.sharedViewModel<PlaygroundViewModel>(navController = navController)
@@ -218,11 +218,11 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
             ConfirmBookingScreen(
                 bookingUiState = bookingViewModel.bookingUiState,
                 onBackClicked = navController::navigateUp,
-                onNextClicked = { navController.navigate(Screens.KhomasiNavigation.BookingPlayground.Payment.route) },
+                onNextClicked = { navController.navigate(Screens.RentafieldNavigation.BookingPlayground.Payment.route) },
             )
         }
 
-        composable(route = Screens.KhomasiNavigation.BookingPlayground.Payment.route) { navBack ->
+        composable(route = Screens.RentafieldNavigation.BookingPlayground.Payment.route) { navBack ->
             val bookingViewModel =
                 navBack.sharedViewModel<PlaygroundViewModel>(navController = navController)
             PaymentScreen(
@@ -234,7 +234,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
                 onPayWithVisaClicked = { },
                 onPayWithCoinsClicked = { bookingViewModel.bookingPlayground() },
                 onBackClicked = navController::navigateUp,
-                onBookingSuccess = { navController.navigate(Screens.KhomasiNavigation.Home.route) }
+                onBookingSuccess = { navController.navigate(Screens.RentafieldNavigation.Home.route) }
             )
         }
     }
@@ -242,10 +242,10 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
 
 fun NavGraphBuilder.myBookingsNavigator(navController: NavHostController) {
     navigation(
-        route = Screens.KhomasiNavigation.MyBookings.route,
-        startDestination = Screens.KhomasiNavigation.MyBookings.BookingHistory.route
+        route = Screens.RentafieldNavigation.MyBookings.route,
+        startDestination = Screens.RentafieldNavigation.MyBookings.BookingHistory.route
     ) {
-        composable(route = Screens.KhomasiNavigation.MyBookings.BookingHistory.route) {
+        composable(route = Screens.RentafieldNavigation.MyBookings.BookingHistory.route) {
             val bookingViewModel =
                 it.sharedViewModel<MyBookingViewModel>(navController = navController)
             MyBookingScreen(
@@ -255,22 +255,22 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavHostController) {
                 myBookingPlaygrounds = bookingViewModel::myBookingPlaygrounds,
                 onClickPlaygroundCard = { playgroundId ->
                     bookingViewModel.onClickPlayground(playgroundId)
-                    navController.navigate(Screens.KhomasiNavigation.MyBookings.CancelBooking.route)
+                    navController.navigate(Screens.RentafieldNavigation.MyBookings.CancelBooking.route)
                 },
                 playgroundReview = bookingViewModel::playgroundReview,
                 onRatingChange = bookingViewModel::onRatingChange,
                 onCommentChange = bookingViewModel::onCommentChange,
 
                 reBook = { playgroundId, isFavourite ->
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
+                    navController.navigate(Screens.RentafieldNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 },
-                onClickBookField = { navController.navigate(Screens.KhomasiNavigation.Playgrounds.route) },
+                onClickBookField = { navController.navigate(Screens.RentafieldNavigation.Playgrounds.route) },
                 cancelDetails = { playgroundId, isFavourite ->
-                    navController.navigate(Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
+                    navController.navigate(Screens.RentafieldNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 },
             )
         }
-        composable(route = Screens.KhomasiNavigation.MyBookings.CancelBooking.route) {
+        composable(route = Screens.RentafieldNavigation.MyBookings.CancelBooking.route) {
             val myBookingViewModel =
                 it.sharedViewModel<MyBookingViewModel>(navController = navController)
             CancelBookingPage(
@@ -285,10 +285,10 @@ fun NavGraphBuilder.myBookingsNavigator(navController: NavHostController) {
 
 fun NavGraphBuilder.profileNavigator(navController: NavHostController) {
     navigation(
-        route = Screens.KhomasiNavigation.Profile.route,
-        startDestination = Screens.KhomasiNavigation.Profile.ViewProfile.route
+        route = Screens.RentafieldNavigation.Profile.route,
+        startDestination = Screens.RentafieldNavigation.Profile.ViewProfile.route
     ) {
-        composable(route = Screens.KhomasiNavigation.Profile.ViewProfile.route) {
+        composable(route = Screens.RentafieldNavigation.Profile.ViewProfile.route) {
             val profileViewModel =
                 it.sharedViewModel<ProfileViewModel>(navController = navController)
             ViewProfile(
@@ -296,7 +296,7 @@ fun NavGraphBuilder.profileNavigator(navController: NavHostController) {
                 localUserUiState = profileViewModel.localUser,
                 getProfileImage = profileViewModel::getProfileImage,
                 onEditProfile = {
-                    navController.navigate(Screens.KhomasiNavigation.Profile.EditProfile.route)
+                    navController.navigate(Screens.RentafieldNavigation.Profile.EditProfile.route)
                 },
                 onFeedbackCategorySelected = profileViewModel::onFeedbackCategorySelected,
                 onFeedbackChanged = profileViewModel::onFeedbackChanged,
@@ -306,7 +306,7 @@ fun NavGraphBuilder.profileNavigator(navController: NavHostController) {
                 sendFeedback = profileViewModel::sendFeedback
             )
         }
-        composable(route = Screens.KhomasiNavigation.Profile.EditProfile.route) {
+        composable(route = Screens.RentafieldNavigation.Profile.EditProfile.route) {
             val profileViewModel =
                 it.sharedViewModel<ProfileViewModel>(navController = navController)
             EditProfile(
@@ -324,10 +324,10 @@ fun NavGraphBuilder.profileNavigator(navController: NavHostController) {
 
 fun NavGraphBuilder.searchNavigator(navController: NavHostController) {
     navigation(
-        route = Screens.KhomasiNavigation.Search.route,
-        startDestination = Screens.KhomasiNavigation.Search.SearchQuery.route
+        route = Screens.RentafieldNavigation.Search.route,
+        startDestination = Screens.RentafieldNavigation.Search.SearchQuery.route
     ) {
-        composable(route = Screens.KhomasiNavigation.Search.SearchQuery.route) {
+        composable(route = Screens.RentafieldNavigation.Search.SearchQuery.route) {
             val searchViewModel = it.sharedViewModel<SearchViewModel>(navController = navController)
             SearchQuery(
                 playgroundsState = searchViewModel.searchResults,
@@ -340,22 +340,22 @@ fun NavGraphBuilder.searchNavigator(navController: NavHostController) {
                 onClearHistory = searchViewModel::onClickRemoveSearchHistory,
                 navigateToPlaygroundDetails = { playgroundId, isFavourite ->
                     navController.navigate(
-                        Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite"
+                        Screens.RentafieldNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite"
                     )
                 },
                 onBackClick = navController::navigateUp,
-                onNextPage = { navController.navigate(Screens.KhomasiNavigation.Search.SearchResults.route) },
+                onNextPage = { navController.navigate(Screens.RentafieldNavigation.Search.SearchResults.route) },
             )
         }
 
-        composable(route = Screens.KhomasiNavigation.Search.SearchResults.route) {
+        composable(route = Screens.RentafieldNavigation.Search.SearchResults.route) {
             val searchViewModel = it.sharedViewModel<SearchViewModel>(navController = navController)
             SearchResult(
                 searchUiState = searchViewModel.uiState,
                 onBackClick = navController::navigateUp,
                 navigateToPlaygroundDetails = { playgroundId, isFavourite ->
                     navController.navigate(
-                        Screens.KhomasiNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite"
+                        Screens.RentafieldNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite"
                     )
                 },
                 onSearchFilterChanged = searchViewModel::onSearchFilterChanged,

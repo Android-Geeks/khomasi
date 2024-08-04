@@ -6,18 +6,18 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.company.rentafield.navigation.Screens
-import com.company.rentafield.presentation.login.LoginScreen
-import com.company.rentafield.presentation.login.LoginViewModel
-import com.company.rentafield.presentation.loginOrSignup.LoginOrRegisterScreen
 import com.company.rentafield.presentation.navigation.components.sharedViewModel
-import com.company.rentafield.presentation.otp.OtpScreen
-import com.company.rentafield.presentation.otp.OtpViewModel
-import com.company.rentafield.presentation.register.RegisterEmailAndPassword
-import com.company.rentafield.presentation.register.RegisterNameAndPhone
-import com.company.rentafield.presentation.register.RegisterViewModel
-import com.company.rentafield.presentation.resetPassword.EmailVerification
-import com.company.rentafield.presentation.resetPassword.PasswordConfirmation
-import com.company.rentafield.presentation.resetPassword.ResetPasswordViewModel
+import com.company.rentafield.presentation.screens.login.LoginScreen
+import com.company.rentafield.presentation.screens.login.LoginViewModel
+import com.company.rentafield.presentation.screens.loginOrSignup.LoginOrRegisterScreen
+import com.company.rentafield.presentation.screens.otp.OtpScreen
+import com.company.rentafield.presentation.screens.otp.OtpViewModel
+import com.company.rentafield.presentation.screens.register.RegisterEmailAndPassword
+import com.company.rentafield.presentation.screens.register.RegisterNameAndPhone
+import com.company.rentafield.presentation.screens.register.RegisterViewModel
+import com.company.rentafield.presentation.screens.resetPassword.EmailVerification
+import com.company.rentafield.presentation.screens.resetPassword.PasswordConfirmation
+import com.company.rentafield.presentation.screens.resetPassword.ResetPasswordViewModel
 
 
 fun NavGraphBuilder.authNavigator(

@@ -14,21 +14,21 @@ val listOfNavItems = listOf(
     NavItem(
         label = R.string.home,
         icon = R.drawable.housesimple,
-        route = Screens.KhomasiNavigation.Home.route
+        route = Screens.RentafieldNavigation.Home.route
     ),
     NavItem(
         label = R.string.my_bookings,
         icon = R.drawable.ticket,
-        route = Screens.KhomasiNavigation.MyBookings.BookingHistory.route
+        route = Screens.RentafieldNavigation.MyBookings.BookingHistory.route
     ),
     NavItem(
         label = R.string.fields,
         icon = R.drawable.soccerball,
-        route = Screens.KhomasiNavigation.Playgrounds.BrowsePlaygrounds.route
+        route = Screens.RentafieldNavigation.Playgrounds.BrowsePlaygrounds.route
     ),
     NavItem(
         label = R.string.favorites,
         icon = R.drawable.heart,
-        route = Screens.KhomasiNavigation.Favorite.route
+        route = Screens.RentafieldNavigation.Favorite.route
     )
 )

@@ -15,9 +15,9 @@ import com.company.rentafield.navigation.listOfNavItems
 import com.company.rentafield.presentation.components.connectionStates.LossConnection
 import com.company.rentafield.presentation.navigation.components.BottomNavigationBar
 import com.company.rentafield.presentation.navigation.navigators.authNavigator
-import com.company.rentafield.presentation.navigation.navigators.khomasiNavigator
 import com.company.rentafield.presentation.navigation.navigators.onboardingNavigator
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.presentation.navigation.navigators.rentafieldNavigator
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.utils.ConnectivityObserver
 
 @Composable
@@ -60,8 +60,8 @@ fun NavGraph(
             // Navigation for Auth
             authNavigator(navController)
 
-            // Navigation for Khomasi app
-            khomasiNavigator(navController)
+            // Navigation for Rentafield app
+            rentafieldNavigator(navController)
         }
     }
 }
@@ -70,9 +70,9 @@ fun NavGraph(
 @Preview(uiMode = UI_MODE_NIGHT_YES)
 @Composable
 fun DefaultPreview() {
-    KhomasiTheme {
+    RentafieldTheme {
         NavGraph(
-            startDestination = Screens.KhomasiNavigation.route,
+            startDestination = Screens.RentafieldNavigation.route,
             isNetworkAvailable = ConnectivityObserver.Status.Unavailable
         )
     }

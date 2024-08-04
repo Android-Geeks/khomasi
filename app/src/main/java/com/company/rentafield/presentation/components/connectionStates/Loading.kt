@@ -22,7 +22,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 
 
 @Composable
@@ -111,5 +111,5 @@ fun ThreeBounce(
 @Preview(showSystemUi = true)
 @Composable
 fun LoadingPreview() {
-    KhomasiTheme { Loading() }
+    RentafieldTheme { Loading() }
 }

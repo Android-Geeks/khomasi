@@ -10,7 +10,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.presentation.navigation.NavGraph
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.utils.ConnectivityObserver
 import com.company.rentafield.utils.NetworkConnectivityObserver
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                 .collectAsStateWithLifecycle(
                     initialValue = ConnectivityObserver.Status.Unavailable
                 )
-            KhomasiTheme {
+            RentafieldTheme {
                 NavGraph(
                     startDestination = startDestination,
                     isNetworkAvailable = isNetworkAvailable

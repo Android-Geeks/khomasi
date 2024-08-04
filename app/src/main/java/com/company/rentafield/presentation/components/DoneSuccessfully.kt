@@ -22,7 +22,7 @@ import com.airbnb.lottie.compose.LottieCompositionSpec
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.company.rentafield.R
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 
 @Composable
 fun DoneSuccessfully() {
@@ -59,7 +59,7 @@ fun DoneSuccessfully() {
 @Preview(showSystemUi = true)
 @Composable
 private fun DoneSuccessfullyPrev() {
-    KhomasiTheme {
+    RentafieldTheme {
         DoneSuccessfully()
     }
 }

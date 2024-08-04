@@ -38,7 +38,7 @@ private val darkThemeColors = darkColorScheme(
 )
 
 @Composable
-fun KhomasiTheme(
+fun RentafieldTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit

@@ -1,5 +1,6 @@
 <resources>
-    <style name="Theme.Khomasi" parent="android:Theme.Material.Light.NoActionBar">
+
+    <style name="Theme.Rentafield" parent="android:Theme.Material.Light.NoActionBar">
 
     </style>
 </resources>

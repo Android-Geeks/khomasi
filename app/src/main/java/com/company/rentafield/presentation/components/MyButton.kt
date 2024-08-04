@@ -30,7 +30,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 
 @Composable
 fun MyButton(
@@ -133,7 +133,7 @@ fun MyOutlinedButton(
 @Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO)
 @Composable
 fun ButtonPreview() {
-    KhomasiTheme {
+    RentafieldTheme {
         Column {
             MyButton(
                 text = R.string.skip,

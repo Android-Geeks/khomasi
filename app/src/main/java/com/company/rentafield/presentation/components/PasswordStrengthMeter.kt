@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.company.rentafield.theme.KhomasiTheme
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.utils.CheckInputValidation
 import com.nulabinc.zxcvbn.Zxcvbn
 
@@ -105,5 +105,5 @@ fun PasswordStrengthIndicator(
 @Preview
 @Composable
 fun PasswordStrengthMeterPreview() {
-    KhomasiTheme{ PasswordStrengthMeter("", false) }
+    RentafieldTheme { PasswordStrengthMeter("", false) }
 }

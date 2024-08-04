@@ -3,6 +3,6 @@
     <style name="App.Starting.Theme" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">#FFF5F5F5</item>
         <item name="windowSplashScreenAnimatedIcon">@mipmap/light_splash</item>
-        <item name="postSplashScreenTheme">@style/Theme.Khomasi</item>
+        <item name="postSplashScreenTheme">@style/Theme.Rentafield</item>
     </style>
 </resources>
