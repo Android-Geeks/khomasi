@@ -42,8 +42,20 @@ fun PagerIndicator(
     }
 }
 
-@Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO)
-@Preview(name = "Dark", uiMode = UI_MODE_NIGHT_YES)
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
 @Composable
 fun PagerIndicatorPreview() {
     RentafieldTheme {

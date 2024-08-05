@@ -258,8 +258,20 @@ fun OtpScreen(
     }
 }
 
-@Preview(name = "light", uiMode = UI_MODE_NIGHT_NO, showBackground = true)
-@Preview(name = "dark", uiMode = UI_MODE_NIGHT_YES)
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
 @Composable
 fun OtpPreview() {
     RentafieldTheme {

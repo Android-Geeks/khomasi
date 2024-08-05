@@ -1,6 +1,7 @@
 package com.company.rentafield.presentation.screens.onboarding
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -83,11 +84,23 @@ fun OnBoardingScreen(
     }
 }
 
-@Preview(name = "en", uiMode = UI_MODE_NIGHT_NO, showSystemUi = true)
-@Preview(name = "ar", uiMode = UI_MODE_NIGHT_NO, showSystemUi = true, locale = "ar")
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
 @Composable
 fun OnBoardingScreenPreview() {
     RentafieldTheme {
-        OnBoardingScreen({})
+        OnBoardingScreen {}
     }
 }

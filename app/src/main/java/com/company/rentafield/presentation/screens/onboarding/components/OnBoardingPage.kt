@@ -1,6 +1,7 @@
 package com.company.rentafield.presentation.screens.onboarding.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -50,6 +51,7 @@ fun OnBoardingPage(
             style = MaterialTheme.typography.displayLarge.copy(
                 fontSize = 28.sp
             ),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
@@ -60,6 +62,7 @@ fun OnBoardingPage(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp),
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
         )
     }
 }
@@ -73,7 +76,20 @@ fun getResourceId(pageTitle: Int, darkTheme: Boolean): Int {
     }
 }
 
-@Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO, showSystemUi = true)
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
 @Composable
 fun OnBoardingPagePreview() {
     RentafieldTheme {
