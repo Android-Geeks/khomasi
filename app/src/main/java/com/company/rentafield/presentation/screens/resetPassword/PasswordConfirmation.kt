@@ -1,5 +1,7 @@
 package com.company.rentafield.presentation.screens.resetPassword
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.gestures.scrollBy
@@ -37,6 +39,7 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
@@ -47,7 +50,9 @@ import com.company.rentafield.presentation.components.MyTextButton
 import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.presentation.components.PasswordStrengthMeter
 import com.company.rentafield.presentation.components.connectionStates.Loading
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.utils.CheckInputValidation
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
@@ -143,12 +148,14 @@ fun PasswordConfirmation(
                 text = stringResource(id = R.string.reset_password),
                 modifier = Modifier
                     .padding(bottom = 8.dp),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
 
             Text(
                 text = stringResource(id = R.string.create_new_password),
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
 
             Spacer(modifier = Modifier.height(56.dp))
@@ -249,5 +256,35 @@ fun PasswordConfirmation(
     }
     if (showLoading) {
         Loading()
+    }
+}
+
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
+@Composable
+fun PasswordConfirmationPreview() {
+    RentafieldTheme {
+        PasswordConfirmation(
+            uiState = MutableStateFlow(ResetPasswordUiState()),
+            recoverResponse = MutableStateFlow(DataState.Empty),
+            onEnteringVerificationCode = {},
+            onEnteringPassword = {},
+            onReTypingPassword = {},
+            onButtonClickedScreen2 = {},
+            onBackToLogin = {},
+            verifyVerificationCode = {},
+        )
     }
 }

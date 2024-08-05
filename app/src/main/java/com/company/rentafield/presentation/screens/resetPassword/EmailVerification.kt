@@ -1,5 +1,7 @@
 package com.company.rentafield.presentation.screens.resetPassword
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.Image
@@ -39,6 +41,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
@@ -48,7 +51,9 @@ import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextButton
 import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.presentation.components.connectionStates.Loading
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.utils.CheckInputValidation
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
@@ -190,5 +195,34 @@ fun EmailVerification(
     }
     if (showLoading) {
         Loading()
+    }
+}
+
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
+@Composable
+fun EmailVerificationPreview() {
+    RentafieldTheme {
+        EmailVerification(
+            uiState = MutableStateFlow(ResetPasswordUiState()),
+            verificationRes = MutableStateFlow(DataState.Empty),
+            onUserEmailChange = {},
+            onCorrectCodeChange = {},
+            onCancelClick = {},
+            onClickButtonScreen1 = {},
+            onSetPasswordClick = {},
+        )
     }
 }
