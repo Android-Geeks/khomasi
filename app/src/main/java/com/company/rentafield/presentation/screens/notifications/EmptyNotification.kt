@@ -1,5 +1,7 @@
 package com.company.rentafield.presentation.screens.notifications
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -13,10 +15,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.screens.notifications.component.NotificationsCard
+import com.company.rentafield.theme.RentafieldTheme
 
 
 @Composable
@@ -64,5 +68,26 @@ fun EmptyNotification(
         )
 
         Spacer(modifier = Modifier.height(112.dp))
+    }
+}
+
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
+@Composable
+fun EmptyNotificationPreview() {
+    RentafieldTheme {
+        EmptyNotification(onClickBackToHome = {})
     }
 }

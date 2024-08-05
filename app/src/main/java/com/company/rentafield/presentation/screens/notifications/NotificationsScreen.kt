@@ -1,5 +1,7 @@
 package com.company.rentafield.presentation.screens.notifications
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -37,6 +39,7 @@ import com.company.rentafield.presentation.screens.search.components.MyTopAppBar
 import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.utils.extractTimeFromTimestamp
 import com.company.rentafield.utils.parseTimestamp
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -150,13 +153,45 @@ fun DrawLine(lineColor: Color, modifier: Modifier = Modifier) {
 }
 
 
-@Preview(showSystemUi = true, locale = "en")
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
 @Composable
 fun NotificationsPreview() {
     RentafieldTheme {
-//        NotificationsScreen(
-//            onBackClicked = { },
-//            notificationStateFlow =
-//        )
+        NotificationsScreen(
+            onBackClicked = { },
+            getNotifications = {},
+            localUserUiState = MutableStateFlow(LocalUser()),
+            notificationStateFlow = MutableStateFlow(
+                DataState.Success(
+                    AiResponse(
+                        aiLogs = listOf(
+                            AiLog(
+                                isProcessed = true,
+                                kickupCount = 1,
+                                uploadDate = "2021-09-01T00:00:00.00"
+                            ),
+                            AiLog(
+                                isProcessed = false,
+                                kickupCount = 1,
+                                uploadDate = "2021-09-01T00:00:00.00"
+                            )
+                        )
+                    )
+                )
+            )
+        )
     }
 }
