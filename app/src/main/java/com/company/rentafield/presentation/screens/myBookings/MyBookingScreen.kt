@@ -1,5 +1,7 @@
 package com.company.rentafield.presentation.screens.myBookings
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.MessageResponse
@@ -23,6 +26,7 @@ import com.company.rentafield.domain.model.booking.BookingDetails
 import com.company.rentafield.domain.model.booking.MyBookingsResponse
 import com.company.rentafield.presentation.screens.myBookings.components.CurrentPage
 import com.company.rentafield.presentation.screens.myBookings.components.ExpiredPage
+import com.company.rentafield.theme.RentafieldTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -153,3 +157,23 @@ fun TabContent(
     }
 }
 
+@Preview(name = "DARK | EN", locale = "en", uiMode = UI_MODE_NIGHT_YES, showSystemUi = true)
+@Preview(name = "LIGHT | AR", locale = "ar", uiMode = UI_MODE_NIGHT_NO, showSystemUi = true)
+@Composable
+fun MyBookingScreenPreview() {
+    val myBookingViewModel = MyBookingMockViewModel()
+    RentafieldTheme {
+        MyBookingScreen(
+            uiState = myBookingViewModel.uiState,
+            myBookingsState = myBookingViewModel.myBooking,
+            reviewState = myBookingViewModel.reviewState,
+            onClickPlaygroundCard = { _ -> },
+            myBookingPlaygrounds = { },
+            playgroundReview = { },
+            onCommentChange = { _ -> },
+            onRatingChange = { _ -> },
+            reBook = { _, _ -> },
+            onClickBookField = { },
+            cancelDetails = { _, _ -> })
+    }
+}
