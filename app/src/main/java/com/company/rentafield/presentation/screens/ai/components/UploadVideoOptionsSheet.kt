@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.screens.ai
+package com.company.rentafield.presentation.screens.ai.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

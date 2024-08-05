@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.screens.ai
+package com.company.rentafield.presentation.screens.ai.components
 
 import android.net.Uri
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,7 +14,10 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.ui.PlayerView
 
 @Composable
-fun ExoPlayerView(videoUri: Uri, modifier: Modifier) {
+fun ExoPlayerView(
+    modifier: Modifier = Modifier,
+    videoUri: Uri
+) {
     val context = LocalContext.current
 
     val exoPlayer = remember {

@@ -8,15 +8,9 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,7 +21,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import androidx.core.content.FileProvider
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
@@ -35,12 +28,12 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.company.rentafield.BuildConfig
 import com.company.rentafield.R
-import com.company.rentafield.presentation.components.MyButton
+import com.company.rentafield.presentation.screens.ai.components.UploadVideoOptionsSheet
 import com.company.rentafield.utils.createVideoFile
 import com.company.rentafield.workers.UploadVideoWorker
 import java.util.Objects
 
-@OptIn(ExperimentalMaterial3Api::class)
+@ExperimentalMaterial3Api
 @Composable
 fun AiScreen(
     userId: String,
@@ -119,48 +112,29 @@ fun AiScreen(
     ) {
         val videoUri = currentVideoUri.takeIf { it != Uri.EMPTY } ?: selectedVideoUri
         if (videoUri != null) {
-            ExoPlayerView(
+            AiVideoUpload(
+                modifier = Modifier.weight(1f),
                 videoUri = videoUri,
-                modifier = Modifier.weight(1f)
+                onUpload = {
+                    val workManager: WorkManager = WorkManager.getInstance(context)
+                    val inputData = workDataOf(
+                        "id" to userId,
+                        "videoFilePath" to videoUri.toString()
+                    )
+                    val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadVideoWorker>()
+                        .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+                        .setInputData(inputData)
+                        .build()
+                    workManager.enqueue(uploadWorkRequest)
+                    onBackClicked()
+                },
+                onCancel = {
+                    currentVideoUri = Uri.EMPTY
+                    selectedVideoUri = null
+                }
             )
-            Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                MyButton(
-                    text = R.string.cancel,
-                    color = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.error
-                    ),
-                    onClick = {
-                        currentVideoUri = Uri.EMPTY
-                        selectedVideoUri = null
-                    },
-                    modifier = Modifier.weight(1f)
-                )
-                MyButton(
-                    text = R.string.upload,
-                    onClick = {
-                        val workManager: WorkManager = WorkManager.getInstance(context)
-                        val inputData = workDataOf(
-                            "id" to userId,
-                            "videoFilePath" to videoUri.toString()
-                        )
-                        val uploadWorkRequest = OneTimeWorkRequestBuilder<UploadVideoWorker>()
-                            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-                            .setInputData(inputData)
-                            .build()
-                        workManager.enqueue(uploadWorkRequest)
-                        onBackClicked()
-                    },
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            Spacer(modifier = Modifier.height(16.dp))
         } else {
-            AiScreenContent(onBackClicked = onBackClicked) { isSheetVisible = true }
+            AiInstructions(onBackClicked = onBackClicked) { isSheetVisible = true }
         }
     }
 }

@@ -1,5 +1,7 @@
 package com.company.rentafield.presentation.screens.ai
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -31,7 +33,7 @@ import com.company.rentafield.presentation.components.SubScreenTopBar
 import com.company.rentafield.theme.RentafieldTheme
 
 @Composable
-fun AiScreenContent(
+fun AiInstructions(
     onBackClicked: () -> Unit,
     onBrowseClick: () -> Unit,
 ) {
@@ -159,10 +161,11 @@ fun Modifier.drawDashedBorder(
     }
 )
 
-@Preview(showBackground = true)
+@Preview(name = "DARK | EN", locale = "en", uiMode = UI_MODE_NIGHT_YES)
+@Preview(name = "LIGHT | AR", locale = "ar", uiMode = UI_MODE_NIGHT_NO)
 @Composable
-fun ScreenPreview() {
+fun AiInstructionPreview() {
     RentafieldTheme {
-        AiScreenContent(onBackClicked = {}, {})
+        AiInstructions(onBackClicked = {}, {})
     }
 }
