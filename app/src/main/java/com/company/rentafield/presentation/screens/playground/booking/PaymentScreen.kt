@@ -2,6 +2,8 @@ package com.company.rentafield.presentation.screens.playground.booking
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.compose.foundation.Image
@@ -270,7 +272,7 @@ fun PaymentTopBar(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { onBackClicked() }) {
+                    IconButton(onClick = onBackClicked) {
                         Icon(
                             painter = painterResource(id = R.drawable.back),
                             contentDescription = null,
@@ -539,8 +541,20 @@ fun CardContent(
     }
 }
 
-@SuppressLint("UnrememberedMutableState")
-@Preview(showSystemUi = true)
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
 @Composable
 fun PaymentScreenPreview() {
     RentafieldTheme {

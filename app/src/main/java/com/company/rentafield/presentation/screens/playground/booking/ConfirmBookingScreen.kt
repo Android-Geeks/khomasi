@@ -2,6 +2,8 @@ package com.company.rentafield.presentation.screens.playground.booking
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -202,7 +204,20 @@ fun ConfirmBookingBottomSheet(
     }
 }
 
-@Preview(showSystemUi = true, locale = "en")
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
 @Composable
 fun ConfirmBookingScreenPreview() {
     RentafieldTheme {

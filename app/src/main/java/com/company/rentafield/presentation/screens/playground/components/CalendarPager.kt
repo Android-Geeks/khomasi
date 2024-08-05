@@ -2,6 +2,8 @@ package com.company.rentafield.presentation.screens.playground.components
 
 
 import android.content.Context
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -58,7 +60,7 @@ fun CalendarPager(
     val screenWidth = getScreenWidth(context)
 
     val currentDate = LocalDate.now()
-//    val currentDay = currentDate.dayOfMonth
+
     val currentDaysList = remember {
         (0..20).map { day -> (currentDate).plusDays(day.toLong()) }
     }
@@ -177,8 +179,25 @@ fun CalendarItem(
 
 }
 
-@Preview(showSystemUi = true)
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
 @Composable
 fun CalendarPreview() {
-    RentafieldTheme { CalendarPager(updateSelectedDay = {}) }
+    RentafieldTheme {
+        CalendarPager(
+            updateSelectedDay = {},
+        )
+    }
 }

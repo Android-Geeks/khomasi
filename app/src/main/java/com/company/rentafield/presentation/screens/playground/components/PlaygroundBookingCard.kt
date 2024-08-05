@@ -187,8 +187,20 @@ fun TextWithIcon(
     }
 }
 
-@Preview(name = "Night", uiMode = UI_MODE_NIGHT_YES)
-@Preview(name = "Light", uiMode = UI_MODE_NIGHT_NO, locale = "ar")
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
 @Composable
 private fun BookingCardPreview() {
     RentafieldTheme {

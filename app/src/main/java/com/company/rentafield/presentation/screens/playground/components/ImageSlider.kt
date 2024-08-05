@@ -1,5 +1,7 @@
 package com.company.rentafield.presentation.screens.playground.components
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,6 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -32,15 +35,18 @@ import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.playground.PlaygroundPicture
 import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
+import com.company.rentafield.domain.model.playground.PlaygroundX
 import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
 import com.company.rentafield.presentation.components.iconButtons.RoundedFavoriteIcon
 import com.company.rentafield.presentation.screens.playground.ButtonWithIcon
 import com.company.rentafield.presentation.screens.playground.PlaygroundUiState
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.utils.convertToBitmap
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.rememberPagerState
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalPagerApi::class)
@@ -149,5 +155,57 @@ fun ImageSlider(
                 }
             }
         }
+    }
+}
+
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
+@Composable
+fun ImageSliderPreview() {
+    RentafieldTheme {
+        ImageSlider(
+            playgroundStateFlow = MutableStateFlow(
+                DataState.Success(
+                    PlaygroundScreenResponse(
+                        playgroundPictures = listOf(),
+                        playground = PlaygroundX(
+                            id = 2,
+                            name = "Adventure Island",
+                            description = "A thrilling playground with exciting obstacle courses and climbing structures.",
+                            advantages = "Challenging activities, promotes physical fitness, great for older kids.",
+                            address = "456 Elm Street, Townsville",
+                            type = 2,
+                            rating = 4.5,
+                            country = "Canada",
+                            city = "Townsville",
+                            latitude = 43.6532,
+                            longitude = -79.3832,
+                            holidays = "Thanksgiving Day, Boxing Day",
+                            openingHours = "9:00 AM - 7:00 PM",
+                            feesForHour = 25,
+                            cancellationFees = 10,
+                            isBookable = true,
+                            rules = "Wear appropriate footwear, adult supervision required for children under 10."
+                        )
+                    )
+                )
+            ),
+            playgroundState = MutableStateFlow(PlaygroundUiState()),
+            onClickBack = {},
+            onClickFav = {},
+            onClickShare = {}
+        )
     }
 }
