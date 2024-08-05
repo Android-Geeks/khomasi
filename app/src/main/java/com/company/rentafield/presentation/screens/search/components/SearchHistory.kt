@@ -1,6 +1,9 @@
 package com.company.rentafield.presentation.screens.search.components
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,9 +21,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.presentation.screens.search.SearchUiState
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkSubText
 import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightSubText
@@ -95,6 +100,31 @@ fun SearchHistoryItem(
             style = MaterialTheme.typography.bodyMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis
+        )
+    }
+}
+
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
+@Composable
+fun SearchHistoryItemPreview() {
+    RentafieldTheme {
+        SearchHistoryItem(
+            text = "test",
+            onClick = {},
+            isDark = isSystemInDarkTheme()
         )
     }
 }

@@ -1,5 +1,7 @@
 package com.company.rentafield.presentation.screens.search
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -21,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
@@ -31,10 +34,12 @@ import com.company.rentafield.presentation.screens.search.components.EmptySearch
 import com.company.rentafield.presentation.screens.search.components.SearchHistory
 import com.company.rentafield.presentation.screens.search.components.SearchResults
 import com.company.rentafield.presentation.screens.search.components.SearchTopAppBar
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkErrorColor
 import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightErrorColor
 import com.company.rentafield.theme.lightText
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -153,5 +158,26 @@ fun SearchQuery(
             }
         }
 
+    }
+}
+
+@Preview(name = "DARK | EN", locale = "en", uiMode = UI_MODE_NIGHT_YES, showSystemUi = true)
+@Preview(name = "LIGHT | AR", locale = "ar", uiMode = UI_MODE_NIGHT_NO, showSystemUi = true)
+@Composable
+fun SearchQueryPreview() {
+    RentafieldTheme {
+        SearchQuery(
+            searchUiState = MutableStateFlow(SearchUiState()),
+            localUserState = MutableStateFlow(LocalUser()),
+            playgroundsState = MutableStateFlow(listOf()),
+            searchQuery = MutableStateFlow(""),
+            getSearchData = {},
+            onBackClick = {},
+            onNextPage = {},
+            onQueryChange = {},
+            onSearchQuerySubmitted = {},
+            navigateToPlaygroundDetails = { _, _ -> },
+            onClearHistory = {}
+        )
     }
 }

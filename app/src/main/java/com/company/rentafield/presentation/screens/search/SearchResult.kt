@@ -1,5 +1,7 @@
 package com.company.rentafield.presentation.screens.search
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
@@ -22,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
@@ -30,6 +33,8 @@ import com.company.rentafield.presentation.components.cards.PlaygroundCard
 import com.company.rentafield.presentation.screens.search.components.EmptySearch
 import com.company.rentafield.presentation.screens.search.components.MyTopAppBar
 import com.company.rentafield.presentation.screens.search.components.SearchFilterSheetContent
+import com.company.rentafield.theme.RentafieldTheme
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
@@ -124,5 +129,20 @@ fun SearchResult(
                 }
             }
         }
+    }
+}
+
+@Preview(name = "DARK | EN", locale = "en", uiMode = UI_MODE_NIGHT_YES, showSystemUi = true)
+@Preview(name = "LIGHT | AR", locale = "ar", uiMode = UI_MODE_NIGHT_NO, showSystemUi = true)
+@Composable
+fun SearchResultPreview() {
+    RentafieldTheme {
+        SearchResult(
+            searchUiState = MutableStateFlow(SearchUiState()),
+            onBackClick = {},
+            navigateToPlaygroundDetails = { _, _ -> },
+            onSearchFilterChanged = { _ -> },
+            onBackPage = {}
+        )
     }
 }

@@ -1,6 +1,9 @@
 package com.company.rentafield.presentation.screens.search.components
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -131,16 +134,28 @@ fun SearchResultsItem(
     }
 }
 
-
-@Preview
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
 @Composable
-fun SearchResultsItemPreview() {
+fun SearchResultItemPreview() {
     RentafieldTheme {
         SearchResultsItem(
-            text = "Search result",
+            text = "test",
             onClick = {},
-            isDark = false,
-            distance = "11.2"
+            isDark = isSystemInDarkTheme(),
+            distance = "10"
         )
     }
 }
