@@ -1,5 +1,7 @@
 package com.company.rentafield.presentation.screens.register
 
+import android.content.res.Configuration.UI_MODE_NIGHT_NO
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.scrollBy
@@ -40,6 +42,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
@@ -51,9 +54,11 @@ import com.company.rentafield.presentation.components.MyTextButton
 import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.presentation.components.PasswordStrengthMeter
 import com.company.rentafield.presentation.components.connectionStates.Loading
+import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightText
 import com.company.rentafield.utils.CheckInputValidation
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
@@ -71,7 +76,7 @@ fun RegisterEmailAndPassword(
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
     isDark: Boolean = isSystemInDarkTheme(),
 ) {
-    val userState = uiState.collectAsStateWithLifecycle().value
+    val userState by uiState.collectAsStateWithLifecycle()
 
     var isErrorEmail by remember {
         mutableStateOf(
@@ -252,5 +257,37 @@ fun RegisterEmailAndPassword(
             Loading()
         }
     }
+}
 
+
+@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
+@Composable
+fun RegisterEmailAndPasswordPreview() {
+    RentafieldTheme {
+        RegisterEmailAndPassword(
+            onEmailChange = {},
+            onPasswordChange = {},
+            onConfirmPasswordChange = {},
+            onRegister = {},
+            onLoginClick = {},
+            isValidEmailAndPassword = { _, _ -> true },
+            uiState = MutableStateFlow(RegisterUiState()),
+            isDark = isSystemInDarkTheme(),
+            registerState = MutableStateFlow(DataState.Empty),
+            onDoneClick = {}
+        )
+    }
 }

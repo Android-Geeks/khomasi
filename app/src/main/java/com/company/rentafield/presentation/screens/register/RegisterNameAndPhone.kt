@@ -207,3 +207,35 @@ fun RegisterNameAndPhone(
         }
     )
 }
+
+
+/*@Preview(
+    name = "DARK | EN",
+    locale = "en",
+    uiMode = UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF0E0E0E,
+    showBackground = true
+)
+@Preview(
+    name = "LIGHT | AR",
+    locale = "ar",
+    uiMode = UI_MODE_NIGHT_NO,
+    backgroundColor = 0xFFF5F5F5,
+    showBackground = true
+)
+@Composable
+fun RegisterNameAndPhonePreview() {
+    RentafieldTheme {
+        RegisterNameAndPhone(
+            uiState = MutableStateFlow(RegisterUiState()),
+            onFirstNameChange = {},
+            onLastNameChange = {},
+            onPhoneNumberChange = {},
+            onNextClick = {},
+            onLoginClick = {},
+            isValidNameAndPhoneNumber = { _, _, _ -> true },
+            isDark = isSystemInDarkTheme(),
+            updateLocation = {},
+        )
+    }
+}*/
