@@ -173,9 +173,9 @@ fun ExpiredPage(
             modifier = Modifier.padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item {}
-            items(expiredState.expiredBookings) { bookingDetails ->
-                if (expiredState.expiredBookings.isNotEmpty()) {
+
+            if (expiredState.expiredBookings.isNotEmpty()) {
+                items(expiredState.expiredBookings) { bookingDetails ->
                     BookingCard(
                         bookingDetails = bookingDetails,
                         bookingStatus = BookingStatus.EXPIRED,
@@ -190,12 +190,15 @@ fun ExpiredPage(
                         },
                         reBook = { reBook(bookingDetails.playgroundId, bookingDetails.isFavorite) }
                     )
-                } else {
+                }
+            } else {
+                item {
                     EmptyScreen(
                         onClickBookField = onClickBookField
                     )
                 }
             }
+
         }
         if (showLoading) {
             ThreeBounce(modifier = Modifier.fillMaxSize())

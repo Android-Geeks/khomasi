@@ -64,9 +64,8 @@ fun CurrentPage(
             modifier = Modifier.padding(horizontal = 16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            item {}
-            itemsIndexed(uiState.currentBookings) { index, it ->
-                if (uiState.currentBookings.isNotEmpty()) {
+            if (uiState.currentBookings.isNotEmpty()) {
+                itemsIndexed(uiState.currentBookings) { index, it ->
                     BookingCard(
                         bookingDetails = it,
                         bookingStatus = if (!uiState.currentBookings[index].isCanceled) BookingStatus.CONFIRMED else BookingStatus.CANCEL,
@@ -80,16 +79,18 @@ fun CurrentPage(
                         toRate = {},
                         reBook = {}
                     )
-                } else {
+                }
+            } else {
+                item {
                     EmptyScreen(
                         onClickBookField = onClickBookField
                     )
                 }
             }
         }
-        if (showLoading) {
-            ThreeBounce(modifier = Modifier.fillMaxSize())
-        }
+    }
+    if (showLoading) {
+        ThreeBounce(modifier = Modifier.fillMaxSize())
     }
 }
 
