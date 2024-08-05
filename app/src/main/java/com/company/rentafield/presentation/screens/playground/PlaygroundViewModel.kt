@@ -154,7 +154,7 @@ class PlaygroundViewModel @Inject constructor(
 
                 _bookingUiState.update {
                     it.copy(
-                        selectedDuration = if (increasedDuration < 3600) increasedDuration else 3500,   // always less than or equal to 3600 minutes to avoid overlapping time slots.
+                        selectedDuration = if (increasedDuration < 1440) increasedDuration else 1440,   // always less than or equal to 3600 minutes to avoid overlapping time slots.
                         selectedSlots = mutableListOf()
                     )
                 }
