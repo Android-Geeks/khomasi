@@ -18,9 +18,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -36,14 +33,14 @@ import java.util.Locale
 fun SlotItem(
     slotStart: String,
     slotEnd: String,
-    isSelected: MutableState<Boolean>,
+    isSelected: Boolean,
     onClickSlot: () -> Unit = {}
 ) {
-    val cardColor = if (isSelected.value) MaterialTheme.colorScheme.primary else Color.Transparent
+    val cardColor = if (isSelected) MaterialTheme.colorScheme.primary else Color.Transparent
     val textColor =
-        if (isSelected.value) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary
+        if (isSelected) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary
     val textSize =
-        if (isSelected.value) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium
+        if (isSelected) MaterialTheme.typography.titleLarge else MaterialTheme.typography.titleMedium
     val currentLanguage = Locale.getDefault().language
     Card(
         modifier = Modifier
@@ -56,7 +53,6 @@ fun SlotItem(
             )
             .clickable {
                 onClickSlot()
-                isSelected.value = !isSelected.value
             },
         shape = MaterialTheme.shapes.medium,
         colors = CardDefaults.cardColors(cardColor),
@@ -73,7 +69,7 @@ fun SlotItem(
 
                 )
             Spacer(modifier = Modifier.width(4.dp))
-            if (isSelected.value) {
+            if (isSelected) {
                 Icon(
                     painter = painterResource(id = R.drawable.arrow_left),
                     tint = MaterialTheme.colorScheme.background,
@@ -125,7 +121,7 @@ fun SlotItemPreview() {
         SlotItem(
             slotStart = "10:00",
             slotEnd = "11:00",
-            isSelected = remember { mutableStateOf(false) }
+            isSelected = false,
         )
     }
 }

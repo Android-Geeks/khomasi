@@ -80,11 +80,10 @@ fun HomeScreen(
 
     LaunchedEffect(localUser) {
         getHomeScreenData()
+        getUserData()
 //        Log.d("HomeScreen", "localUser recomposed")
     }
-    LaunchedEffect(localUser) {
-        getUserData()
-    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()

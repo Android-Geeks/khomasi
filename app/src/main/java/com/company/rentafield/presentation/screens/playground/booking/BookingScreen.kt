@@ -231,16 +231,13 @@ fun BookingScreenContent(
                     val slotStart = hourlyIntervalsList[slot].first
                     val slotEnd = hourlyIntervalsList[slot].second
                     val isSelected =
-                        remember(bookingUiState.selectedSlots) {
-                            mutableStateOf(
-                                bookingUiState.selectedSlots.contains(
-                                    Pair(
-                                        slotStart,
-                                        slotEnd
-                                    )
-                                )
+                        bookingUiState.selectedSlots.contains(
+                            Pair(
+                                slotStart,
+                                slotEnd
                             )
-                        }
+                        )
+
 
                     SlotItem(
                         slotStart = extractTimeFromTimestamp(slotStart),
