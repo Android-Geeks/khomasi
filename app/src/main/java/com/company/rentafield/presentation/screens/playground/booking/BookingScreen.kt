@@ -1,6 +1,5 @@
 package com.company.rentafield.presentation.screens.playground.booking
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
@@ -68,7 +67,7 @@ import kotlinx.coroutines.flow.StateFlow
 import org.threeten.bp.LocalDateTime
 import java.util.Locale
 
-@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter", "MutableCollectionMutableState")
+
 @Composable
 fun BookingScreen(
     bookingUiState: StateFlow<BookingUiState>,
@@ -316,7 +315,12 @@ fun calculateHourlyIntervalsList(
 ): List<Pair<LocalDateTime, LocalDateTime>> {
     return if (freeSlots is DataState.Success) {
         freeSlots.data.freeTimeSlots.map { daySlots ->
-            val startTime = parseTimestamp(daySlots.start).withMinute(0).withSecond(0)
+            val startTime =
+                if (parseTimestamp(daySlots.start).dayOfMonth == LocalDateTime.now().dayOfMonth) parseTimestamp(
+                    daySlots.start
+                ).withMinute(0).withSecond(0).plusHours(2)
+                else parseTimestamp(daySlots.start).withMinute(0).withSecond(0)
+
             val endTime = parseTimestamp(daySlots.end).withMinute(0).withSecond(0)
             val startHour = startTime.hour
             val endHour = endTime.hour
