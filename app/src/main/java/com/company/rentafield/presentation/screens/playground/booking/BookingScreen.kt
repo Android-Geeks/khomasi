@@ -56,11 +56,8 @@ import com.company.rentafield.presentation.screens.playground.components.Duratio
 import com.company.rentafield.presentation.screens.playground.components.SlotItem
 import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkOverlay
-import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightOverlay
-import com.company.rentafield.theme.lightText
 import com.company.rentafield.utils.extractTimeFromTimestamp
-import com.company.rentafield.utils.parseTimestamp
 import com.company.rentafield.utils.screenDimensions.getScreenHeight
 import com.company.rentafield.utils.screenDimensions.getScreenWidth
 import kotlinx.coroutines.flow.StateFlow
@@ -111,6 +108,7 @@ fun BookingScreen(
                         freeSlotsState = freeSlots,
                         isDark = isDark,
                         context = context,
+                        hourlyIntervalsList = bookingState.hourlyIntervalList,
                         updateDuration = updateDuration,
                         getFreeSlots = { getFreeSlots() },
                         updateSelectedDay = updateSelectedDay,
@@ -122,7 +120,6 @@ fun BookingScreen(
                     BookingBottomSheet(
                         sheetHeight = (screenHeight * 0.16).dp,
                         playgroundPrice = bookingState.totalPrice,
-                        isDark = isDark,
                         context = context,
                         onNextClicked = onNextClicked,
                         checkValidity = checkValidity
@@ -137,6 +134,7 @@ fun BookingScreen(
 fun BookingScreenContent(
     bookingUiState: BookingUiState,
     freeSlotsState: DataState<FreeTimeSlotsResponse>,
+    hourlyIntervalsList: List<Pair<LocalDateTime, LocalDateTime>>,
     isDark: Boolean,
     context: Context,
     updateDuration: (String) -> Unit,
@@ -149,8 +147,6 @@ fun BookingScreenContent(
         getFreeSlots()
     }
     var showLoading by remember { mutableStateOf(false) }
-    val hourlyIntervalsList =
-        calculateHourlyIntervalsList(freeSlotsState, bookingUiState.selectedDuration)
 
     LaunchedEffect(freeSlotsState) {
         showLoading = freeSlotsState is DataState.Loading
@@ -212,7 +208,7 @@ fun BookingScreenContent(
         Text(
             text = stringResource(id = R.string.available_times),
             style = MaterialTheme.typography.displayLarge,
-            color = if (isDark) darkText else lightText,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 12.dp),
@@ -267,7 +263,6 @@ fun BookingScreenContent(
 fun BookingBottomSheet(
     sheetHeight: Dp,
     playgroundPrice: Int,
-    isDark: Boolean,
     context: Context,
     onNextClicked: () -> Unit,
     checkValidity: () -> Boolean
@@ -280,11 +275,9 @@ fun BookingBottomSheet(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
-            text = context.getString(
-                R.string.fees_per_hour, playgroundPrice
-            ),
+            text = "$playgroundPrice" + " " + stringResource(R.string.price_egp),
             style = MaterialTheme.typography.displayLarge,
-            color = if (isDark) darkText else lightText
+            color = MaterialTheme.colorScheme.onPrimaryContainer
         )
 
         MyButton(
@@ -306,43 +299,6 @@ fun BookingBottomSheet(
             textStyle = MaterialTheme.typography.displayLarge
         )
 
-    }
-}
-
-fun calculateHourlyIntervalsList(
-    freeSlots: DataState<FreeTimeSlotsResponse>,
-    selectedDuration: Int
-): List<Pair<LocalDateTime, LocalDateTime>> {
-    return if (freeSlots is DataState.Success) {
-        freeSlots.data.freeTimeSlots.map { daySlots ->
-            val startTime =
-                if (parseTimestamp(daySlots.start).dayOfMonth == LocalDateTime.now().dayOfMonth) parseTimestamp(
-                    daySlots.start
-                ).withMinute(0).withSecond(0).plusHours(2)
-                else parseTimestamp(daySlots.start).withMinute(0).withSecond(0)
-
-            val endTime = parseTimestamp(daySlots.end).withMinute(0).withSecond(0)
-            val startHour = startTime.hour
-            val endHour = endTime.hour
-            val startEndDuration = if (endHour > startHour) {
-                (endHour - startHour) * 60
-            } else {
-                if (endHour < startHour) {
-                    (24 - startHour + endHour) * 60
-                } else {
-                    24 * 60
-                }
-            }
-            val slotsCount = startEndDuration / selectedDuration
-            List(slotsCount) { i ->
-                val hourStartTime = startTime.plusMinutes(i * selectedDuration.toLong())
-                val hourEndTime = hourStartTime.plusMinutes(selectedDuration.toLong())
-                Pair(hourStartTime, hourEndTime)
-            }
-        }.flatten()
-
-    } else {
-        emptyList()
     }
 }
 

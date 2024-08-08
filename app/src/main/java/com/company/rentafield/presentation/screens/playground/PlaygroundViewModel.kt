@@ -13,6 +13,7 @@ import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemotePlaygroundUseCase
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
 import com.company.rentafield.presentation.screens.playground.booking.BookingUiState
+import com.company.rentafield.utils.parseTimestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,8 +61,7 @@ class PlaygroundViewModel @Inject constructor(
             val localUser = localUserUseCases.getLocalUser().first()
 
             remoteUserUseCase.getSpecificPlaygroundUseCase(
-                token = "Bearer ${localUser.token}",
-                id = playgroundId
+                token = "Bearer ${localUser.token}", id = playgroundId
             ).collect { playgroundRes ->
                 _playgroundState.value = playgroundRes
                 if (playgroundRes is DataState.Success) {
@@ -86,8 +86,7 @@ class PlaygroundViewModel @Inject constructor(
             }
 
             remotePlaygroundUseCase.getPlaygroundReviewsUseCase(
-                token = "Bearer ${localUser.token}",
-                id = playgroundId
+                token = "Bearer ${localUser.token}", id = playgroundId
             ).collect { reviewRes ->
                 _reviewsState.value = reviewRes
                 if (reviewRes is DataState.Success) {
@@ -100,13 +99,11 @@ class PlaygroundViewModel @Inject constructor(
     }
 
     fun updateFavouriteAndPlaygroundId(
-        isFavourite: Boolean,
-        playgroundId: Int
+        isFavourite: Boolean, playgroundId: Int
     ) {
         _uiState.update {
             it.copy(
-                isFavourite = isFavourite,
-                playgroundId = playgroundId
+                isFavourite = isFavourite, playgroundId = playgroundId
             )
         }
     }
@@ -131,12 +128,53 @@ class PlaygroundViewModel @Inject constructor(
                 _freeSlotsState.value = freeSlotsRes
                 _bookingUiState.update {
                     it.copy(
-                        totalPrice = 0
+                        totalPrice = 0, hourlyIntervalList = calculateHourlyIntervalsList()
                     )
                 }
             }
         }
     }
+
+    private fun calculateHourlyIntervalsList(): List<Pair<LocalDateTime, LocalDateTime>> {
+        val selectedDuration = _bookingUiState.value.selectedDuration
+
+        return if (_freeSlotsState.value is DataState.Success<FreeTimeSlotsResponse>) {
+
+            (_freeSlotsState.value as DataState.Success<FreeTimeSlotsResponse>).data.freeTimeSlots.mapIndexed { index, daySlots ->
+                val startTime =
+//                    if (parseTimestamp(daySlots.start).dayOfMonth == LocalDateTime.now().dayOfMonth && index == 0) {
+//
+//                        parseTimestamp(daySlots.start).plusHours(2).withMinute(0).withSecond(0)
+//                    } else {
+                    parseTimestamp(daySlots.start).withMinute(0).withSecond(0)
+//                    }
+
+                val endTime = parseTimestamp(daySlots.end).withMinute(0).withSecond(0)
+                val startHour = startTime.hour
+                val endHour = endTime.hour
+                val startEndDuration = if (endHour > startHour) {
+                    (endHour - startHour) * 60
+                } else {
+                    if (endHour < startHour) {
+                        (24 - startHour + endHour) * 60
+                    } else {
+                        24 * 60
+                    }
+                }
+
+                val slotsCount = startEndDuration / selectedDuration
+                List(slotsCount) { i ->
+                    val hourStartTime = startTime.plusMinutes(i * selectedDuration.toLong())
+                    val hourEndTime = hourStartTime.plusMinutes(selectedDuration.toLong())
+                    Pair(hourStartTime, hourEndTime)
+                }
+            }.flatten()
+
+        } else {
+            emptyList()
+        }
+    }
+
 
     fun updateSelectedDay(day: Int) {
         _bookingUiState.update {
@@ -148,14 +186,14 @@ class PlaygroundViewModel @Inject constructor(
     }
 
     fun updateDuration(type: String) {
+
         when (type) {
             "+" -> {
                 val increasedDuration = _bookingUiState.value.selectedDuration.plus(30)   //90
-
                 _bookingUiState.update {
                     it.copy(
                         selectedDuration = if (increasedDuration < 1440) increasedDuration else 1440,   // always less than or equal to 3600 minutes to avoid overlapping time slots.
-                        selectedSlots = mutableListOf()
+                        selectedSlots = mutableListOf(),
                     )
                 }
 
@@ -166,10 +204,16 @@ class PlaygroundViewModel @Inject constructor(
                     val decreasedDuration = it.selectedDuration - 30    // 120 -> 90
                     it.copy(
                         selectedDuration = decreasedDuration,
-                        selectedSlots = mutableListOf()
+                        selectedSlots = mutableListOf(),
                     )
                 }
             }
+
+        }
+        _bookingUiState.update {
+            it.copy(
+                hourlyIntervalList = calculateHourlyIntervalsList()
+            )
         }
     }
 
@@ -216,8 +260,7 @@ class PlaygroundViewModel @Inject constructor(
 
     private fun calculateTotalCost() {
 
-        val durationInHours =
-            _bookingUiState.value.selectedDuration / 60.0
+        val durationInHours = _bookingUiState.value.selectedDuration / 60.0
 
         val total =
             (_bookingUiState.value.selectedSlots.size) * _bookingUiState.value.playgroundPrice * durationInHours
@@ -264,8 +307,7 @@ class PlaygroundViewModel @Inject constructor(
             val localUser = localUserUseCases.getLocalUser().first()
 
             remotePlaygroundUseCase.bookingPlaygroundUseCase(
-                token = "Bearer ${userData.token}",
-                body = BookingRequest(
+                token = "Bearer ${userData.token}", body = BookingRequest(
                     playgroundId = bookingData.playgroundId,
                     userId = userData.userID ?: "",
                     bookingTime = bookingData.bookingTime,
@@ -273,7 +315,7 @@ class PlaygroundViewModel @Inject constructor(
                 )
             ).collect { bookingRes ->
                 _bookingResponse.value = bookingRes
-
+                Log.d("PlaygroundCardViewModel", "bookingPlayground: $bookingRes")
 
                 if (bookingRes is DataState.Success) {
                     localUserUseCases.saveLocalUser(
