@@ -10,5 +10,6 @@ data class RegisterUiState(
     val longitude: Double = 0.0,
     val latitude: Double = 0.0,
     val validating1: Boolean = false,
-    val validating2: Boolean = false
+    val validating2: Boolean = false,
+    val showLoading: Boolean = false
 )

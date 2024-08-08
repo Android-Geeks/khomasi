@@ -57,6 +57,9 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
+    fun updateLoading(isLoading: Boolean) {
+        _uiState.value = _uiState.value.copy(showLoading = isLoading)
+    }
 
     fun onFirstNameChange(firstName: String) {
         _uiState.value = _uiState.value.copy(firstName = firstName)

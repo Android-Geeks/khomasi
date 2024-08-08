@@ -112,6 +112,7 @@ fun NavGraphBuilder.register(navController: NavHostController) {
                 onPasswordChange = registerViewModel::onPasswordChange,
                 onConfirmPasswordChange = registerViewModel::onConfirmPasswordChange,
                 onLoginClick = { navController.navigate(Screens.AuthNavigation.Login.route) },
+                updateLoading = registerViewModel::updateLoading
             )
         }
     }
