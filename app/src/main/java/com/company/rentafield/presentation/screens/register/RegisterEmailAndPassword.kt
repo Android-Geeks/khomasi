@@ -25,7 +25,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -70,6 +69,7 @@ fun RegisterEmailAndPassword(
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit,
+    updateLoading: (Boolean) -> Unit,
     localFocusManager: FocusManager = LocalFocusManager.current,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
 ) {
@@ -99,24 +99,23 @@ fun RegisterEmailAndPassword(
         scrollState.scrollBy(keyboardHeight.toFloat())
     }
 
-    val registerStatus = registerState.collectAsState().value
-    var showLoading by remember { mutableStateOf(false) }
+    val registerStatus = registerState.collectAsStateWithLifecycle().value
 
     LaunchedEffect(key1 = registerStatus) {
         Log.d("RegisterStatus", "$registerStatus")
         when (registerStatus) {
             is DataState.Loading -> {
-                showLoading = true
+                updateLoading(true)
                 keyboardController?.hide()
             }
 
             is DataState.Success -> {
-                showLoading = false
+                updateLoading(false)
                 onDoneClick()
             }
 
             is DataState.Error -> {
-                showLoading = false
+                updateLoading(false)
                 if (registerStatus.code == 500) {
                     isErrorEmail = true
                 }
@@ -250,7 +249,7 @@ fun RegisterEmailAndPassword(
                 }
             }
         })
-        if (showLoading) {
+        if (userState.showLoading) {
             Loading()
         }
     }
@@ -283,7 +282,8 @@ fun RegisterEmailAndPasswordPreview() {
             isValidEmailAndPassword = { _, _ -> true },
             uiState = MutableStateFlow(RegisterUiState()),
             registerState = MutableStateFlow(DataState.Empty),
-            onDoneClick = {}
+            onDoneClick = {},
+            updateLoading = { _ -> }
         )
     }
 }
