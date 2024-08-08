@@ -42,9 +42,7 @@ import com.company.rentafield.presentation.components.cards.BookingStatus
 import com.company.rentafield.presentation.screens.myBookings.MyBookingUiState
 import com.company.rentafield.theme.Cairo
 import com.company.rentafield.theme.darkErrorColor
-import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightErrorColor
-import com.company.rentafield.theme.lightText
 import kotlinx.coroutines.flow.StateFlow
 
 
@@ -110,7 +108,7 @@ fun CancelBookingPage(
                     MyTextButton(
                         text = R.string.back,
                         isUnderlined = false,
-                        textColor = if (isDark) darkText else lightText,
+                        textColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         onClick = { isOpen = false },
                         modifier = Modifier.weight(1f)
                     )

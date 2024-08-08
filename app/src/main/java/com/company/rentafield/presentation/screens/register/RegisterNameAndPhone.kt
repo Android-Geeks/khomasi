@@ -42,8 +42,6 @@ import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextButton
 import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.presentation.components.getUserLocation
-import com.company.rentafield.theme.darkText
-import com.company.rentafield.theme.lightText
 import com.company.rentafield.utils.CheckInputValidation
 import kotlinx.coroutines.flow.StateFlow
 
@@ -57,7 +55,6 @@ fun RegisterNameAndPhone(
     isValidNameAndPhoneNumber: (String, String, String) -> Boolean,
     onLoginClick: () -> Unit,
     onNextClick: () -> Unit,
-    isDark: Boolean = isSystemInDarkTheme(),
 ) {
     val userState by uiState.collectAsStateWithLifecycle()
 
@@ -115,7 +112,7 @@ fun RegisterNameAndPhone(
                 Text(
                     text = stringResource(id = R.string.please_confirm_your_information),
                     style = MaterialTheme.typography.displayMedium,
-                    color = if (isDark) darkText else lightText,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     modifier = Modifier.padding(bottom = 8.dp)
                 )
                 MyTextField(
@@ -195,7 +192,7 @@ fun RegisterNameAndPhone(
                     Text(
                         text = stringResource(id = R.string.already_have_an_account),
                         style = MaterialTheme.typography.bodySmall,
-                        color = if (isDark) darkText else lightText
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                     MyTextButton(
                         text = R.string.login,

@@ -71,7 +71,6 @@ fun ViewProfile(
             },
             sendFeedback = sendFeedback,
             scope = scope,
-            isDark = isDark
         )
     }
     if (showLogoutSheet) {

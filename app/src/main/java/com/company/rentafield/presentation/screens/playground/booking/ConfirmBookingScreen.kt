@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -38,8 +37,6 @@ import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.cards.BookingStatus
 import com.company.rentafield.presentation.screens.playground.components.PlaygroundBookingCard
 import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkText
-import com.company.rentafield.theme.lightText
 import com.company.rentafield.utils.extractTimeFromTimestamp
 import com.company.rentafield.utils.parseTimestamp
 import com.company.rentafield.utils.screenDimensions.getScreenHeight
@@ -51,7 +48,6 @@ import kotlinx.coroutines.flow.StateFlow
 fun ConfirmBookingScreen(
     bookingUiState: StateFlow<BookingUiState>,
     context: Context = LocalContext.current,
-    isDark: Boolean = isSystemInDarkTheme(),
     onBackClicked: () -> Unit,
     onNextClicked: () -> Unit,
 ) {
@@ -89,7 +85,6 @@ fun ConfirmBookingScreen(
                     ConfirmBookingBottomSheet(
                         sheetHeight = (screenHeight * 0.16).dp,
                         playgroundPrice = bookingState.totalPrice,
-                        isDark = isDark,
                         onContinueToPaymentClicked = { onNextClicked() }
                     )
                 }
@@ -165,7 +160,6 @@ fun ConfirmBookingContent(
 fun ConfirmBookingBottomSheet(
     sheetHeight: Dp,
     playgroundPrice: Int,
-    isDark: Boolean,
     onContinueToPaymentClicked: () -> Unit
 ) {
     Column(
@@ -184,13 +178,13 @@ fun ConfirmBookingBottomSheet(
             Text(
                 text = stringResource(id = R.string.total_amount_label),
                 style = MaterialTheme.typography.displayLarge,
-                color = if (isDark) darkText else lightText
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = "$playgroundPrice " + stringResource(id = R.string.price_egp),
                 style = MaterialTheme.typography.displayLarge,
-                color = if (isDark) darkText else lightText
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         }
 

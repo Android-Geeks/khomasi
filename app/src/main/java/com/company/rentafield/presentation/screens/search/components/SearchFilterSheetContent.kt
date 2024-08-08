@@ -24,8 +24,6 @@ import com.company.rentafield.R
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.screens.search.SearchFilter
 import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkText
-import com.company.rentafield.theme.lightText
 
 @Composable
 fun SearchFilterSheetContent(
@@ -33,7 +31,6 @@ fun SearchFilterSheetContent(
     onChoiceChange: (Int) -> Unit,
     onSearchFilterChanged: (SearchFilter) -> Unit,
     hideBottomSheet: () -> Unit,
-    isDark: Boolean
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val choices = listOf(
@@ -49,7 +46,7 @@ fun SearchFilterSheetContent(
     ) {
         Text(
             text = stringResource(id = R.string.sort_by),
-            color = if (isDark) darkText else lightText,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.displayMedium,
             modifier = Modifier.padding(start = 16.dp)
         )
@@ -116,7 +113,6 @@ fun SearchFilterSheetContentPreview() {
             onChoiceChange = {},
             onSearchFilterChanged = {},
             hideBottomSheet = {},
-            isDark = true
         )
     }
 }

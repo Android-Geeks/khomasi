@@ -24,10 +24,8 @@ import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.theme.darkHint
 import com.company.rentafield.theme.darkIcon
-import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightHint
 import com.company.rentafield.theme.lightIcon
-import com.company.rentafield.theme.lightText
 
 @Composable
 fun SearchTopAppBar(
@@ -78,7 +76,7 @@ fun MyTopAppBar(
     TopAppBar(title = {
         Text(
             text = stringResource(id = title),
-            color = if (isDark) darkText else lightText,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.displayMedium
         )
     }, navigationIcon = {

@@ -1,7 +1,6 @@
 package com.company.rentafield.presentation.screens.playground.components
 
 import android.util.Log
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -30,8 +29,6 @@ import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
 import com.company.rentafield.domain.model.playground.Review
 import com.company.rentafield.presentation.components.cards.CommentCard
 import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkText
-import com.company.rentafield.theme.lightText
 
 
 @Composable
@@ -65,7 +62,7 @@ fun PlaygroundReviews(
                     text = stringResource(R.string.all_ratings) +
                             " (${reviewsList.value.size}) " +
                             stringResource(R.string.rate),
-                    color = if (isSystemInDarkTheme()) darkText else lightText,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     style = MaterialTheme.typography.displayMedium
                 )
                 Spacer(modifier = Modifier.weight(1f))

@@ -28,8 +28,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.company.rentafield.R
-import com.company.rentafield.theme.darkText
-import com.company.rentafield.theme.lightText
 import com.company.rentafield.utils.convertToBitmap
 import java.util.Locale
 
@@ -38,7 +36,6 @@ fun ProfileImage(
     name: String,
     image: String?,
     rating: Double,
-    isDark: Boolean,
     coins: Double
 ) {
     val profileImage by remember(image) {
@@ -71,7 +68,7 @@ fun ProfileImage(
         Text(
             text = name,
             style = MaterialTheme.typography.displayMedium,
-            color = if (isDark) darkText else lightText
+            color = MaterialTheme.colorScheme.onPrimaryContainer
         )
         Row(
             verticalAlignment = Alignment.CenterVertically,

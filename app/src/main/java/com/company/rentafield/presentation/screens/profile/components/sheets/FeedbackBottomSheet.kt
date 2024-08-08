@@ -33,8 +33,6 @@ import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyModalBottomSheet
 import com.company.rentafield.presentation.screens.profile.FeedbackCategory
 import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkText
-import com.company.rentafield.theme.lightText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -49,7 +47,6 @@ fun FeedbackBottomSheet(
     onFeedbackChanged: (String) -> Unit,
     onDismissRequest: () -> Unit,
     sendFeedback: () -> Unit,
-    isDark: Boolean
 ) {
     var expandFeedbackCategory by remember { mutableStateOf(false) }
     val sheetHeight = LocalConfiguration.current.screenHeightDp.dp / 2
@@ -76,7 +73,7 @@ fun FeedbackBottomSheet(
             Text(
                 text = stringResource(id = R.string.share_your_feedback),
                 style = MaterialTheme.typography.displayMedium,
-                color = if (isDark) darkText else lightText
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Box(
                 modifier = Modifier
@@ -99,7 +96,7 @@ fun FeedbackBottomSheet(
                             Text(
                                 text = stringResource(id = R.string.category),
                                 style = MaterialTheme.typography.bodyMedium,
-                                color = if (isDark) darkText else lightText
+                                color = MaterialTheme.colorScheme.onPrimaryContainer
                             )
                         },
                         trailingIcon = {
@@ -122,7 +119,7 @@ fun FeedbackBottomSheet(
                                     Text(
                                         text = stringResource(id = item),
                                         style = MaterialTheme.typography.bodyMedium,
-                                        color = if (isDark) darkText else lightText
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
                                 },
                                 onClick = {
@@ -182,7 +179,6 @@ fun FeedbackBottomSheetPreview() {
             onFeedbackChanged = {},
             sendFeedback = {},
             scope = rememberCoroutineScope(),
-            isDark = false
         )
     }
 

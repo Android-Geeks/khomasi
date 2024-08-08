@@ -2,7 +2,6 @@ package com.company.rentafield.presentation.screens.playground.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,8 +24,6 @@ import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
 import com.company.rentafield.domain.model.playground.PlaygroundX
 import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkText
-import com.company.rentafield.theme.lightText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -54,7 +51,7 @@ fun PlaygroundRules(
             Text(
                 text = stringResource(id = R.string.field_instructions),
                 style = MaterialTheme.typography.titleLarge,
-                color = if (isSystemInDarkTheme()) darkText else lightText
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
 
             for (i in rulesList.indices.take(6)) {

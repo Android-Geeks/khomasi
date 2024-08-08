@@ -36,9 +36,7 @@ import com.company.rentafield.presentation.screens.search.components.SearchResul
 import com.company.rentafield.presentation.screens.search.components.SearchTopAppBar
 import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkErrorColor
-import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightErrorColor
-import com.company.rentafield.theme.lightText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -87,7 +85,7 @@ fun SearchQuery(
                     Text(
                         text = stringResource(id = R.string.cancel),
                         style = MaterialTheme.typography.titleLarge,
-                        color = if (isDark) darkText else lightText
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                 }
             },
@@ -152,7 +150,6 @@ fun SearchQuery(
                         onSearchQuerySubmitted = onSearchQuerySubmitted,
                         navigateToPlaygroundDetails = navigateToPlaygroundDetails,
                         onNextPage = onNextPage,
-                        isDark = isDark
                     )
                 }
             }

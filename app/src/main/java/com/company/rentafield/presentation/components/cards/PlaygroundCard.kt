@@ -45,10 +45,9 @@ import com.company.rentafield.domain.model.playground.Playground
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.iconButtons.FavoriteIcon
 import com.company.rentafield.theme.darkCard
-import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightCard
-import com.company.rentafield.theme.lightText
 import com.company.rentafield.utils.convertToBitmap
+import java.util.Locale
 
 @Composable
 fun PlaygroundCard(
@@ -152,7 +151,7 @@ fun PlaygroundCard(
                 Text(
                     text = playground.name,
                     textAlign = TextAlign.Start,
-                    color = if (isDark) darkText else lightText,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
@@ -162,7 +161,7 @@ fun PlaygroundCard(
                 Text(
                     text = String.format("%.1f", playground.rating),
                     textAlign = TextAlign.End,
-                    color = if (isDark) darkText else lightText,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier
                         .padding(top = 8.dp)
@@ -189,7 +188,7 @@ fun PlaygroundCard(
                 Text(
                     text = context.getString(
                         R.string.distance_away,
-                        String.format("%.1f", playground.distance)
+                        String.format(Locale.UK, "%.1f", playground.distance)
                     ),
                     textAlign = TextAlign.Start,
                     style = MaterialTheme.typography.bodyMedium,
@@ -214,7 +213,7 @@ fun PlaygroundCard(
                 Text(
                     text = context.getString(R.string.fees_per_hour, playground.feesForHour),
                     textAlign = TextAlign.End,
-                    color = if (isDark) darkText else lightText,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                     style = MaterialTheme.typography.bodyLarge,
                 )
                 Spacer(modifier = Modifier.weight(1f))

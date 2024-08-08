@@ -40,10 +40,8 @@ import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.theme.darkHint
 import com.company.rentafield.theme.darkSubText
-import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightHint
 import com.company.rentafield.theme.lightSubText
-import com.company.rentafield.theme.lightText
 import kotlinx.coroutines.flow.StateFlow
 
 
@@ -143,7 +141,7 @@ fun LoginDataPage(
             Text(
                 text = stringResource(id = R.string.do_not_have_an_account),
                 style = MaterialTheme.typography.bodySmall,
-                color = if (isDark) darkText else lightText
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Spacer(modifier = Modifier.padding(2.dp))
             Text(

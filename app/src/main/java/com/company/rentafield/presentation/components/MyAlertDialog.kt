@@ -16,9 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.theme.darkOverlay
-import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightOverlay
-import com.company.rentafield.theme.lightText
 
 @Composable
 fun MyAlertDialog(
@@ -38,7 +36,7 @@ fun MyAlertDialog(
             Text(
                 text = stringResource(title),
                 style = MaterialTheme.typography.displayLarge,
-                color = if (isDark) darkText else lightText
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         },
         text = {
@@ -58,7 +56,7 @@ fun MyAlertDialog(
                 Text(
                     text = stringResource(id = if (confirmButtonText == 0) R.string.clear else confirmButtonText),
                     style = MaterialTheme.typography.titleLarge,
-                    color = if (isDark) darkText else lightText
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             }
         },

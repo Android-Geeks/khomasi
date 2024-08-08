@@ -67,7 +67,6 @@ fun SearchResult(
                 choice = choice,
                 onChoiceChange = { choice = it },
                 onSearchFilterChanged = onSearchFilterChanged,
-                isDark = isDark,
                 hideBottomSheet = {
                     scope.launch {
                         showFilterSheet = false

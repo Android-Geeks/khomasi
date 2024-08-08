@@ -40,9 +40,7 @@ import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.presentation.components.SubScreenTopBar
 import com.company.rentafield.presentation.screens.profile.components.PhotoSelectorView
 import com.company.rentafield.theme.darkIconMask
-import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightIconMask
-import com.company.rentafield.theme.lightText
 import com.company.rentafield.utils.CheckInputValidation
 import kotlinx.coroutines.flow.StateFlow
 import java.io.File
@@ -145,7 +143,7 @@ fun EditProfile(
                 style = MaterialTheme.typography.bodyMedium.copy(
                     textAlign = TextAlign.Center
                 ),
-                color = if (isDark) darkText else lightText,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(vertical = 16.dp)

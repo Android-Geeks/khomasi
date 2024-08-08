@@ -39,10 +39,8 @@ import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkIcon
 import com.company.rentafield.theme.darkOverlay
-import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightIcon
 import com.company.rentafield.theme.lightOverlay
-import com.company.rentafield.theme.lightText
 
 @Composable
 fun RatingCard(
@@ -75,7 +73,7 @@ fun RatingCard(
                 Text(
                     text = mainText,
                     style = MaterialTheme.typography.displayLarge,
-                    color = if (isDark) darkText else lightText,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
                 )
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     if (timeIcon != 0) {

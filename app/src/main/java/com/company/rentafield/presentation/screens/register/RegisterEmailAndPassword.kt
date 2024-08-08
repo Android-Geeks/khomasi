@@ -55,8 +55,6 @@ import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.presentation.components.PasswordStrengthMeter
 import com.company.rentafield.presentation.components.connectionStates.Loading
 import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkText
-import com.company.rentafield.theme.lightText
 import com.company.rentafield.utils.CheckInputValidation
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -74,7 +72,6 @@ fun RegisterEmailAndPassword(
     onLoginClick: () -> Unit,
     localFocusManager: FocusManager = LocalFocusManager.current,
     keyboardController: SoftwareKeyboardController? = LocalSoftwareKeyboardController.current,
-    isDark: Boolean = isSystemInDarkTheme(),
 ) {
     val userState by uiState.collectAsStateWithLifecycle()
 
@@ -152,7 +149,7 @@ fun RegisterEmailAndPassword(
                 Text(
                     text = stringResource(id = R.string.you_are_almost_there),
                     style = MaterialTheme.typography.displayMedium,
-                    color = if (isDark) darkText else lightText
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 MyTextField(value = userState.email,
                     onValueChange = onEmailChange,
@@ -245,7 +242,7 @@ fun RegisterEmailAndPassword(
                     Text(
                         text = stringResource(id = R.string.already_have_an_account),
                         style = MaterialTheme.typography.bodySmall,
-                        color = if (isDark) darkText else lightText
+                        color = MaterialTheme.colorScheme.onPrimaryContainer
                     )
                     MyTextButton(
                         text = R.string.login, isUnderlined = false, onClick = onLoginClick
@@ -285,7 +282,6 @@ fun RegisterEmailAndPasswordPreview() {
             onLoginClick = {},
             isValidEmailAndPassword = { _, _ -> true },
             uiState = MutableStateFlow(RegisterUiState()),
-            isDark = isSystemInDarkTheme(),
             registerState = MutableStateFlow(DataState.Empty),
             onDoneClick = {}
         )

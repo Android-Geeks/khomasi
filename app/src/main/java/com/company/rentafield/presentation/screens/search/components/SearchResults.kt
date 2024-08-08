@@ -3,7 +3,6 @@ package com.company.rentafield.presentation.screens.search.components
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,8 +30,6 @@ import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.domain.model.playground.Playground
 import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkText
-import com.company.rentafield.theme.lightText
 import java.util.Locale
 
 
@@ -44,7 +41,6 @@ fun SearchResults(
     onSearchQuerySubmitted: (String) -> Unit,
     navigateToPlaygroundDetails: (Int, Boolean) -> Unit,
     onNextPage: () -> Unit,
-    isDark: Boolean
 ) {
     LazyColumn(
         modifier = Modifier
@@ -61,7 +57,6 @@ fun SearchResults(
                     onSearchQuerySubmitted(query)
                     navigateToPlaygroundDetails(item.id, item.isFavourite)
                 },
-                isDark = isDark
             )
         }
 
@@ -91,7 +86,6 @@ fun SearchResults(
 fun SearchResultsItem(
     text: String,
     onClick: () -> Unit,
-    isDark: Boolean,
     distance: String
 ) {
     Row(
@@ -115,7 +109,7 @@ fun SearchResultsItem(
         ) {
             Text(
                 text = text,
-                color = if (isDark) darkText else lightText,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.bodyMedium.copy(
                     fontWeight = FontWeight.SemiBold
                 ),
@@ -154,7 +148,6 @@ fun SearchResultItemPreview() {
         SearchResultsItem(
             text = "test",
             onClick = {},
-            isDark = isSystemInDarkTheme(),
             distance = "10"
         )
     }

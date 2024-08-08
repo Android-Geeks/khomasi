@@ -29,9 +29,7 @@ import com.company.rentafield.presentation.components.MyModalBottomSheet
 import com.company.rentafield.presentation.components.MyTextButton
 import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkErrorColor
-import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightErrorColor
-import com.company.rentafield.theme.lightText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -60,7 +58,7 @@ fun LogoutBottomSheet(
             Text(
                 text = stringResource(id = R.string.logout),
                 style = MaterialTheme.typography.displayMedium,
-                color = if (isDark) darkText else lightText
+                color = MaterialTheme.colorScheme.onPrimaryContainer
             )
             Image(
                 painter = painterResource(id = R.drawable.logout),
@@ -77,7 +75,7 @@ fun LogoutBottomSheet(
                 Text(
                     text = stringResource(id = R.string.sad_to_see_you_go),
                     style = MaterialTheme.typography.displayLarge,
-                    color = if (isDark) darkText else lightText
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
@@ -97,7 +95,7 @@ fun LogoutBottomSheet(
                                 onDismissRequest()
                             }
                         },
-                        textColor = if (isDark) darkText else lightText,
+                        textColor = MaterialTheme.colorScheme.onPrimaryContainer,
                         isUnderlined = false,
                         modifier = Modifier.weight(1f)
                     )

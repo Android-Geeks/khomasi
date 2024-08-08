@@ -27,9 +27,7 @@ import com.company.rentafield.R
 import com.company.rentafield.presentation.screens.search.SearchUiState
 import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkSubText
-import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightSubText
-import com.company.rentafield.theme.lightText
 
 
 @Composable
@@ -46,7 +44,7 @@ fun SearchHistory(
     ) {
         Text(
             text = stringResource(id = R.string.search_history),
-            color = if (isDark) darkText else lightText,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.titleMedium
         )
         Text(

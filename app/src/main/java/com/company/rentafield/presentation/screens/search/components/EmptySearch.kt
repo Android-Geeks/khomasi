@@ -22,8 +22,6 @@ import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkText
-import com.company.rentafield.theme.lightText
 
 @Composable
 fun EmptySearch(
@@ -46,7 +44,7 @@ fun EmptySearch(
         Text(
             text = stringResource(id = R.string.no_matching_results),
             style = MaterialTheme.typography.titleMedium,
-            color = if (isDark) darkText else lightText
+            color = MaterialTheme.colorScheme.onPrimaryContainer
         )
         Spacer(modifier = Modifier.padding(8.dp))
         MyButton(

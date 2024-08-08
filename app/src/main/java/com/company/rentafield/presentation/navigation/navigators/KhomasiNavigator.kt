@@ -1,6 +1,7 @@
 package com.company.rentafield.presentation.navigation.navigators
 
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -35,6 +36,7 @@ import com.company.rentafield.presentation.screens.venues.BrowseResults
 import com.company.rentafield.presentation.screens.venues.FilterResults
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.rentafieldNavigator(navController: NavHostController) {
     navigation(
         route = Screens.RentafieldNavigation.route,

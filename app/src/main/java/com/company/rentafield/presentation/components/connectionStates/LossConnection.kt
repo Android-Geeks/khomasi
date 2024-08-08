@@ -22,9 +22,7 @@ import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkSubText
-import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightSubText
-import com.company.rentafield.theme.lightText
 
 
 @Composable
@@ -50,7 +48,7 @@ fun LossConnection() {
         Text(
             text = stringResource(id = R.string.internet_connection_lost),
             style = MaterialTheme.typography.displayMedium,
-            color = if (isSystemInDarkTheme()) darkText else lightText
+            color = MaterialTheme.colorScheme.onPrimaryContainer
         )
 
         Spacer(modifier = Modifier.height(16.dp))
