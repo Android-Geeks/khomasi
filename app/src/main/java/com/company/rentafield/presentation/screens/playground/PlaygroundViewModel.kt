@@ -110,7 +110,9 @@ class PlaygroundViewModel @Inject constructor(
 
 
     fun updateShowReviews() {
-        _uiState.value = _uiState.value.copy(showReviews = !_uiState.value.showReviews)
+        _uiState.update {
+            it.copy(showReviews = !_uiState.value.showReviews)
+        }
     }
 
 
