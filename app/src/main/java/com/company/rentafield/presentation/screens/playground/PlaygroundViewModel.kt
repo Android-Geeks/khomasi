@@ -142,27 +142,29 @@ class PlaygroundViewModel @Inject constructor(
 
         return if (_freeSlotsState.value is DataState.Success<FreeTimeSlotsResponse>) {
 
-            (_freeSlotsState.value as DataState.Success<FreeTimeSlotsResponse>).data.freeTimeSlots.map { daySlots ->
+            (_freeSlotsState.value as DataState.Success<FreeTimeSlotsResponse>).data.freeTimeSlots.mapIndexed { index, daySlots ->
+
                 val startTime =
-//                    if (parseTimestamp(daySlots.start).dayOfMonth == LocalDateTime.now().dayOfMonth && index == 0) {
-//
-//                        parseTimestamp(daySlots.start).plusHours(2).withMinute(0).withSecond(0)
-//                    } else {
-                    parseTimestamp(daySlots.start).withMinute(0).withSecond(0)
-//                    }
+                    if (parseTimestamp(daySlots.start).dayOfMonth == LocalDateTime.now().dayOfMonth && index == 0) {
+
+                        parseTimestamp(daySlots.start).plusHours(2).withMinute(0).withSecond(0)
+                    } else {
+                        parseTimestamp(daySlots.start).withMinute(0).withSecond(0)
+                    }
 
                 val endTime = parseTimestamp(daySlots.end).withMinute(0).withSecond(0)
-                val startHour = startTime.hour
-                val endHour = endTime.hour
-                val startEndDuration = if (endHour > startHour) {
-                    (endHour - startHour) * 60
-                } else {
-                    if (endHour < startHour) {
-                        (24 - startHour + endHour) * 60
+
+
+                val startEndDuration =
+                    if (endTime.hour > startTime.hour) {
+                        (endTime.hour - startTime.hour) * 60
                     } else {
-                        24 * 60
+                        if (endTime.hour < startTime.hour) {
+                            (24 - startTime.hour + endTime.hour) * 60
+                        } else {
+                            24 * 60
+                        }
                     }
-                }
 
                 val slotsCount = startEndDuration / selectedDuration
                 List(slotsCount) { i ->
@@ -317,7 +319,7 @@ class PlaygroundViewModel @Inject constructor(
                 )
             ).collect { bookingRes ->
                 _bookingResponse.value = bookingRes
-                Log.d("PlaygroundCardViewModel", "bookingPlayground: $bookingRes")
+                Log.d("BookingDetails", "bookingPlayground: $bookingRes")
 
                 if (bookingRes is DataState.Success) {
                     localUserUseCases.saveLocalUser(
