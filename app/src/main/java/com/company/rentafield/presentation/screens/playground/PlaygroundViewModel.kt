@@ -110,7 +110,9 @@ class PlaygroundViewModel @Inject constructor(
 
 
     fun updateShowReviews() {
-        _uiState.value = _uiState.value.copy(showReviews = !_uiState.value.showReviews)
+        _uiState.update {
+            it.copy(showReviews = !_uiState.value.showReviews)
+        }
     }
 
 
@@ -140,7 +142,7 @@ class PlaygroundViewModel @Inject constructor(
 
         return if (_freeSlotsState.value is DataState.Success<FreeTimeSlotsResponse>) {
 
-            (_freeSlotsState.value as DataState.Success<FreeTimeSlotsResponse>).data.freeTimeSlots.mapIndexed { index, daySlots ->
+            (_freeSlotsState.value as DataState.Success<FreeTimeSlotsResponse>).data.freeTimeSlots.map { daySlots ->
                 val startTime =
 //                    if (parseTimestamp(daySlots.start).dayOfMonth == LocalDateTime.now().dayOfMonth && index == 0) {
 //
