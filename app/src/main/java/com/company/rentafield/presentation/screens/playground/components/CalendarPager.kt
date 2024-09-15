@@ -57,7 +57,7 @@ fun CalendarPager(
 ) {
     val coroutineScope = rememberCoroutineScope()
 
-    val screenWidth = getScreenWidth(context)
+    val screenWidth = remember { getScreenWidth(context) }
 
     val currentDate = LocalDate.now()
 
