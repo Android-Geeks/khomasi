@@ -51,6 +51,7 @@ import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyModalBottomSheet
 import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
+import com.company.rentafield.presentation.screens.playground.components.ImageSlider
 import com.company.rentafield.presentation.screens.playground.components.PlaygroundDefinition
 import com.company.rentafield.presentation.screens.playground.components.PlaygroundDescription
 import com.company.rentafield.presentation.screens.playground.components.PlaygroundFeatures
@@ -64,7 +65,6 @@ import com.company.rentafield.theme.lightIcon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import com.company.rentafield.presentation.screens.playground.components.ImageSlider as ImageSlider1
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -197,7 +197,7 @@ fun dismissBottomSheet(
     }
 }
 
-//  recompose more than one at the start
+
 @Composable
 fun PlaygroundScreenContent(
     playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
@@ -211,7 +211,7 @@ fun PlaygroundScreenContent(
         Modifier.fillMaxSize()
     ) {
         item {
-            ImageSlider1(
+            ImageSlider(
                 playgroundStateFlow = playgroundStateFlow,
                 playgroundState = uiState,
                 onClickBack = onClickBack,
