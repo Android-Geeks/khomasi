@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
+import coil.request.CachePolicy
 import coil.request.ImageRequest
 import com.company.rentafield.R
 import com.company.rentafield.utils.convertToBitmap
@@ -41,6 +42,9 @@ fun ProfileImage(
     val profileImage by remember(image) {
         mutableStateOf(image)
     }
+    val listener = object : ImageRequest.Listener {
+
+    }
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier.padding(30.dp)
@@ -49,6 +53,11 @@ fun ProfileImage(
             model = ImageRequest
                 .Builder(context = LocalContext.current)
                 .data(profileImage?.convertToBitmap())
+                .memoryCacheKey(profileImage)
+                .diskCacheKey(profileImage)
+                .listener(listener)
+                .memoryCachePolicy(CachePolicy.ENABLED)
+                .diskCachePolicy(CachePolicy.ENABLED)
                 .crossfade(true)
                 .build(),
             contentDescription = null,
