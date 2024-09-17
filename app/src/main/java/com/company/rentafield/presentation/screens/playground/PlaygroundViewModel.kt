@@ -13,6 +13,8 @@ import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemotePlaygroundUseCase
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
 import com.company.rentafield.presentation.screens.playground.booking.BookingUiState
+import com.company.rentafield.presentation.screens.playground.model.PlaygroundInfoUiState
+import com.company.rentafield.presentation.screens.playground.model.PlaygroundReviewsUiState
 import com.company.rentafield.utils.parseTimestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
@@ -35,9 +37,13 @@ class PlaygroundViewModel @Inject constructor(
         MutableStateFlow(DataState.Empty)
     val playgroundState: StateFlow<DataState<PlaygroundScreenResponse>> = _playgroundState
 
-    private val _uiState: MutableStateFlow<PlaygroundUiState> =
-        MutableStateFlow(PlaygroundUiState())
-    val uiState: StateFlow<PlaygroundUiState> = _uiState
+    private val _infoUiState: MutableStateFlow<PlaygroundInfoUiState> =
+        MutableStateFlow(PlaygroundInfoUiState())
+    val infoUiState: StateFlow<PlaygroundInfoUiState> = _infoUiState
+
+    private val _reviewsUiState: MutableStateFlow<PlaygroundReviewsUiState> =
+        MutableStateFlow(PlaygroundReviewsUiState())
+    val reviewsUiState: StateFlow<PlaygroundReviewsUiState> = _reviewsUiState
 
     private val _bookingUiState: MutableStateFlow<BookingUiState> =
         MutableStateFlow(BookingUiState())
@@ -57,7 +63,7 @@ class PlaygroundViewModel @Inject constructor(
 
 
     fun getPlaygroundDetails(playgroundId: Int) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val localUser = localUserUseCases.getLocalUser().first()
 
             remoteUserUseCase.getSpecificPlaygroundUseCase(
@@ -77,7 +83,7 @@ class PlaygroundViewModel @Inject constructor(
                             totalPrice = 0
                         )
                     }
-                    _uiState.update {
+                    _infoUiState.update {
                         it.copy(
                             coins = localUser.coins ?: 0.0,
                         )
@@ -90,7 +96,7 @@ class PlaygroundViewModel @Inject constructor(
             ).collect { reviewRes ->
                 _reviewsState.value = reviewRes
                 if (reviewRes is DataState.Success) {
-                    _uiState.update {
+                    _reviewsUiState.update {
                         it.copy(reviewsCount = reviewRes.data.reviewList.size)
                     }
                 }
@@ -101,7 +107,7 @@ class PlaygroundViewModel @Inject constructor(
     fun updateFavouriteAndPlaygroundId(
         isFavourite: Boolean, playgroundId: Int
     ) {
-        _uiState.update {
+        _infoUiState.update {
             it.copy(
                 isFavourite = isFavourite, playgroundId = playgroundId
             )
@@ -110,8 +116,8 @@ class PlaygroundViewModel @Inject constructor(
 
 
     fun updateShowReviews() {
-        _uiState.update {
-            it.copy(showReviews = !_uiState.value.showReviews)
+        _reviewsUiState.update {
+            it.copy(showReviews = !_reviewsUiState.value.showReviews)
         }
     }
 
@@ -271,7 +277,7 @@ class PlaygroundViewModel @Inject constructor(
         _bookingUiState.update {
             it.copy(totalPrice = total.toInt())
         }
-        _uiState.update {
+        _infoUiState.update {
             it.copy(
                 totalCoinPrice = total
             )
@@ -287,19 +293,19 @@ class PlaygroundViewModel @Inject constructor(
     }
 
     fun updateCardNumber(cardNumber: String) {
-        _uiState.update {
+        _infoUiState.update {
             it.copy(cardNumber = cardNumber)
         }
     }
 
     fun updateCardValidationDate(cardValidationDate: String) {
-        _uiState.update {
+        _infoUiState.update {
             it.copy(cardValidationDate = cardValidationDate)
         }
     }
 
     fun updateCardCvv(cardCvv: String) {
-        _uiState.update {
+        _infoUiState.update {
             it.copy(cardCvv = cardCvv)
         }
     }
@@ -329,7 +335,7 @@ class PlaygroundViewModel @Inject constructor(
                             )
                         )
                     )
-                    _uiState.update {
+                    _infoUiState.update {
                         it.copy(
                             coins = localUser.coins?.minus(
                                 bookingData.totalPrice
@@ -343,17 +349,17 @@ class PlaygroundViewModel @Inject constructor(
     }
 
     fun updateUserFavourite(isFavourite: Boolean) {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             localUserUseCases.getLocalUser().collect { localUser ->
                 Log.d("PlaygroundCardViewModel", "updateUserFavourite: $isFavourite")
                 if (isFavourite) {
                     remoteUserUseCase.deleteUserFavoriteUseCase(
                         token = "Bearer ${localUser.token ?: ""}",
                         userId = localUser.userID ?: "",
-                        playgroundId = _uiState.value.playgroundId,
+                        playgroundId = _infoUiState.value.playgroundId,
                     ).collect {
                         if (it is DataState.Success) {
-                            _uiState.update { state ->
+                            _infoUiState.update { state ->
                                 state.copy(
                                     isFavourite = false
                                 )
@@ -364,10 +370,10 @@ class PlaygroundViewModel @Inject constructor(
                     remoteUserUseCase.userFavouriteUseCase(
                         token = "Bearer ${localUser.token ?: ""}",
                         userId = localUser.userID ?: "",
-                        playgroundId = _uiState.value.playgroundId,
+                        playgroundId = _infoUiState.value.playgroundId,
                     ).collect {
                         if (it is DataState.Success) {
-                            _uiState.update { state ->
+                            _infoUiState.update { state ->
                                 state.copy(
                                     isFavourite = true
                                 )

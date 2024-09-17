@@ -224,7 +224,7 @@ fun RegisterNameAndPhone(
 fun RegisterNameAndPhonePreview() {
     RentafieldTheme {
         RegisterNameAndPhone(
-            uiState = MutableStateFlow(RegisterUiState()),
+            infoUiState = MutableStateFlow(RegisterUiState()),
             onFirstNameChange = {},
             onLastNameChange = {},
             onPhoneNumberChange = {},

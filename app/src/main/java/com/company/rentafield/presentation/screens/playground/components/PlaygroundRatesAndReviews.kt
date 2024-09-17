@@ -29,14 +29,14 @@ import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
 import com.company.rentafield.domain.model.playground.PlaygroundX
 import com.company.rentafield.presentation.components.MyOutlinedButton
-import com.company.rentafield.presentation.screens.playground.PlaygroundUiState
+import com.company.rentafield.presentation.screens.playground.model.PlaygroundReviewsUiState
 import com.company.rentafield.theme.RentafieldTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun PlaygroundRatesAndReviews(
-    uiState: StateFlow<PlaygroundUiState>,
+    reviewsUiState: StateFlow<PlaygroundReviewsUiState>,
     playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
     onViewRatingClicked: () -> Unit
 ) {
@@ -46,10 +46,11 @@ fun PlaygroundRatesAndReviews(
     if (playgroundState is DataState.Success) {
         playgroundData = (playgroundState as DataState.Success).data
     }
-    val ui by uiState.collectAsStateWithLifecycle()
+    val reviews by reviewsUiState.collectAsStateWithLifecycle()
 
-    val rate = playgroundData?.playground?.rating.toString()
-    val rateNum = ui.reviewsCount
+    val rate =
+        remember(playgroundData?.playground?.rating) { playgroundData?.playground?.rating.toString() }
+    val rateNum = remember(reviews) { reviews.reviewsCount }
     Box {
         Column(
             modifier = Modifier
@@ -117,7 +118,12 @@ fun PlaygroundRatesAndReviews(
 fun PlaygroundRatesAndReviewsPreview() {
     RentafieldTheme {
         PlaygroundRatesAndReviews(
-            uiState = MutableStateFlow(PlaygroundUiState()),
+            reviewsUiState = MutableStateFlow(
+                PlaygroundReviewsUiState(
+                    reviewsCount = 5,
+                    showReviews = false
+                )
+            ),
             playgroundStateFlow = MutableStateFlow(
                 DataState.Success(
                     PlaygroundScreenResponse(

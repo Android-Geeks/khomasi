@@ -176,7 +176,8 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
                 playgroundId = playgroundId ?: 1,
                 isFavourite = isFavourite ?: false,
                 playgroundStateFlow = playgroundViewModel.playgroundState,
-                playgroundUiState = playgroundViewModel.uiState,
+                playgroundInfoUiState = playgroundViewModel.infoUiState,
+                playgroundReviewsUiState = playgroundViewModel.reviewsUiState,
                 reviewsState = playgroundViewModel.reviewsState,
                 onViewRatingClicked = playgroundViewModel::updateShowReviews,
                 updateFavouriteAndPlaygroundId = playgroundViewModel::updateFavouriteAndPlaygroundId,
@@ -228,7 +229,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
             val bookingViewModel =
                 navBack.sharedViewModel<PlaygroundViewModel>(navController = navController)
             PaymentScreen(
-                playgroundUiState = bookingViewModel.uiState,
+                playgroundInfoUiState = bookingViewModel.infoUiState,
                 bookingPlaygroundResponse = bookingViewModel.bookingResponse,
                 updateCardNumber = bookingViewModel::updateCardNumber,
                 updateCardValidationDate = bookingViewModel::updateCardValidationDate,

@@ -2,25 +2,15 @@ package com.company.rentafield.presentation.screens.playground
 
 
 import android.content.Context
-import androidx.annotation.DrawableRes
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
@@ -33,13 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLayoutDirection
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -52,6 +38,7 @@ import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyModalBottomSheet
 import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
 import com.company.rentafield.presentation.screens.playground.components.ImageSlider
+import com.company.rentafield.presentation.screens.playground.components.LineSpacer
 import com.company.rentafield.presentation.screens.playground.components.PlaygroundDefinition
 import com.company.rentafield.presentation.screens.playground.components.PlaygroundDescription
 import com.company.rentafield.presentation.screens.playground.components.PlaygroundFeatures
@@ -59,9 +46,9 @@ import com.company.rentafield.presentation.screens.playground.components.Playgro
 import com.company.rentafield.presentation.screens.playground.components.PlaygroundReviews
 import com.company.rentafield.presentation.screens.playground.components.PlaygroundRules
 import com.company.rentafield.presentation.screens.playground.components.PlaygroundSize
+import com.company.rentafield.presentation.screens.playground.model.PlaygroundInfoUiState
+import com.company.rentafield.presentation.screens.playground.model.PlaygroundReviewsUiState
 import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkIcon
-import com.company.rentafield.theme.lightIcon
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -73,7 +60,8 @@ fun PlaygroundScreen(
     playgroundId: Int,
     isFavourite: Boolean,
     playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
-    playgroundUiState: StateFlow<PlaygroundUiState>,
+    playgroundInfoUiState: StateFlow<PlaygroundInfoUiState>,
+    playgroundReviewsUiState: StateFlow<PlaygroundReviewsUiState>,
     reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>>,
     context: Context = LocalContext.current,
     onViewRatingClicked: () -> Unit,
@@ -100,7 +88,8 @@ fun PlaygroundScreen(
         screenContent = {
             PlaygroundScreenContent(
                 playgroundStateFlow = playgroundStateFlow,
-                uiState = playgroundUiState,
+                uiState = playgroundInfoUiState,
+                reviewsUiState = playgroundReviewsUiState,
                 onViewRatingClicked = onViewRatingClicked,
                 onClickBack = onClickBack,
                 onClickShare = onClickShare,
@@ -135,7 +124,7 @@ fun PlaygroundScreen(
         })
 
     ShowBottomSheet(
-        playgroundUiState = playgroundUiState,
+        playgroundReviewsUiState = playgroundReviewsUiState,
         bottomSheetState = bottomSheetState,
         scope = scope,
         reviews = reviews,
@@ -159,14 +148,14 @@ fun PlaygroundScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ShowBottomSheet(
-    playgroundUiState: StateFlow<PlaygroundUiState>,
+    playgroundReviewsUiState: StateFlow<PlaygroundReviewsUiState>,
     bottomSheetState: SheetState,
     scope: CoroutineScope,
     reviews: DataState<PlaygroundReviewsResponse>,
     updateShowReview: () -> Unit
 ) {
-    val uiState by playgroundUiState.collectAsStateWithLifecycle()
-    if (uiState.showReviews) {
+    val reviewsState by playgroundReviewsUiState.collectAsStateWithLifecycle()
+    if (reviewsState.showReviews) {
         MyModalBottomSheet(
             sheetState = bottomSheetState,
             onDismissRequest = {
@@ -201,7 +190,8 @@ fun dismissBottomSheet(
 @Composable
 fun PlaygroundScreenContent(
     playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
-    uiState: StateFlow<PlaygroundUiState>,
+    uiState: StateFlow<PlaygroundInfoUiState>,
+    reviewsUiState: StateFlow<PlaygroundReviewsUiState>,
     onViewRatingClicked: () -> Unit,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
@@ -213,7 +203,7 @@ fun PlaygroundScreenContent(
         item {
             ImageSlider(
                 playgroundStateFlow = playgroundStateFlow,
-                playgroundState = uiState,
+                playgroundInfoUiState = uiState,
                 onClickBack = onClickBack,
                 onClickShare = onClickShare,
                 onClickFav = onClickFav
@@ -230,7 +220,7 @@ fun PlaygroundScreenContent(
 
         item {
             PlaygroundRatesAndReviews(
-                uiState = uiState,
+                reviewsUiState = reviewsUiState,
                 playgroundStateFlow = playgroundStateFlow,
                 onViewRatingClicked = onViewRatingClicked
             )
@@ -267,67 +257,6 @@ fun PlaygroundScreenContent(
 }
 
 
-@Composable
-fun ButtonWithIcon(
-    iconId: Int, onClick: () -> Unit
-) {
-    val currentLanguage = LocalLayoutDirection.current
-    IconButton(
-        onClick = onClick,
-        colors = IconButtonDefaults.iconButtonColors(
-            containerColor = MaterialTheme.colorScheme.surface
-        ),
-        modifier = Modifier
-            .size(44.dp)
-    ) {
-        Icon(
-            painter = painterResource(id = iconId),
-            contentDescription = null,
-            tint = if (isSystemInDarkTheme()) darkIcon else lightIcon,
-            modifier = Modifier
-                .size(24.dp)
-                .then(
-                    if (currentLanguage == LayoutDirection.Ltr) {
-                        Modifier.rotate(180f)
-                    } else {
-                        Modifier
-                    }
-                )
-        )
-    }
-}
-
-@Composable
-fun IconWithText(
-    @DrawableRes iconId: Int,
-    text: String,
-) {
-    Row(
-        Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically
-    ) {
-        Icon(
-            painter = painterResource(iconId), contentDescription = null,
-        )
-
-        Spacer(modifier = Modifier.width(4.dp))
-
-        Text(
-            text = text,
-            style = MaterialTheme.typography.titleSmall,
-            color = MaterialTheme.colorScheme.tertiary
-        )
-    }
-}
-
-@Composable
-fun LineSpacer() {
-    HorizontalDivider(
-        thickness = 1.dp,
-        color = MaterialTheme.colorScheme.outline,
-        modifier = Modifier.padding(vertical = 8.dp)
-    )
-}
-
 @Preview(showSystemUi = true)
 @Composable
 fun PlaygroundScreenPreview() {
@@ -337,7 +266,7 @@ fun PlaygroundScreenPreview() {
             playgroundId = 1,
             isFavourite = true,
             playgroundStateFlow = mockViewModel.playgroundState,
-            playgroundUiState = mockViewModel.uiState,
+            playgroundInfoUiState = mockViewModel.uiState,
             reviewsState = mockViewModel.reviewsState,
             onViewRatingClicked = {},
             getPlaygroundDetails = { _ -> },
@@ -346,7 +275,8 @@ fun PlaygroundScreenPreview() {
             onClickFav = { _ -> },
             onBookNowClicked = { },
             updateShowReview = {},
-            updateFavouriteAndPlaygroundId = { _, _ -> }
+            updateFavouriteAndPlaygroundId = { _, _ -> },
+            playgroundReviewsUiState = mockViewModel.reviewsUiState
         )
     }
 
