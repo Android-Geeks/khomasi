@@ -1,5 +1,6 @@
 package com.company.rentafield.presentation.components.cards
 
+import android.annotation.SuppressLint
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -49,6 +50,7 @@ import com.company.rentafield.theme.lightCard
 import com.company.rentafield.utils.convertToBitmap
 import java.util.Locale
 
+@SuppressLint("DefaultLocale")
 @Composable
 fun PlaygroundCard(
     playground: Playground,
@@ -59,9 +61,25 @@ fun PlaygroundCard(
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme()
 ) {
-    val playgroundImage = remember(playground.playgroundPicture) {
-        playground.playgroundPicture?.convertToBitmap() ?: ""
+    val playgroundImage = remember { playground.playgroundPicture?.convertToBitmap() ?: "" }
+    val gradientOverlay = remember {
+        Modifier.drawWithCache {
+            onDrawWithContent {
+                drawContent()
+                drawRect(
+                    Brush.horizontalGradient(
+                        colors = listOf(
+                            Color.Transparent,
+                            Color.Black.copy(alpha = 0.3f)
+                        ),
+                        startX = 0f,
+                        endX = Float.POSITIVE_INFINITY
+                    )
+                )
+            }
+        }
     }
+
     Card(
         colors = cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -92,21 +110,7 @@ fun PlaygroundCard(
                             .fillMaxWidth()
                             .height(131.dp)
                             .clip(MaterialTheme.shapes.medium)
-                            .drawWithCache {
-                                onDrawWithContent {
-                                    drawContent()
-                                    drawRect(
-                                        Brush.horizontalGradient(
-                                            colors = listOf(
-                                                Color.Transparent,
-                                                Color.Black.copy(alpha = 0.3f)
-                                            ),
-                                            startX = 0f,
-                                            endX = Float.POSITIVE_INFINITY
-                                        )
-                                    )
-                                }
-                            }
+                            .then(gradientOverlay)
                     )
 
                     Row(

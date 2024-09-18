@@ -37,7 +37,7 @@ import com.company.rentafield.presentation.screens.venues.FilterResults
 
 
 @OptIn(ExperimentalMaterial3Api::class)
-fun NavGraphBuilder.rentafieldNavigator(navController: NavHostController) {
+fun NavGraphBuilder.rentAfieldNavigator(navController: NavHostController) {
     navigation(
         route = Screens.RentafieldNavigation.route,
         startDestination = Screens.RentafieldNavigation.Home.route
@@ -52,13 +52,11 @@ fun NavGraphBuilder.rentafieldNavigator(navController: NavHostController) {
                 onClickPlaygroundCard = { playgroundId, isFavourite ->
                     navController.navigate(Screens.RentafieldNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 },
-                getHomeScreenData = homeViewModel::getHomeScreenData,
                 onClickBell = { navController.navigate(Screens.RentafieldNavigation.Notifications.route) },
-                onClickViewAll = { homeViewModel.onClickViewAll() },
+                onClickViewAll = {  navController.navigate( Screens.RentafieldNavigation.Playgrounds.BrowsePlaygrounds.route) },
                 onSearchBarClicked = { navController.navigate(Screens.RentafieldNavigation.Search.route) },
                 onAdClicked = { userId -> navController.navigate(Screens.RentafieldNavigation.AiService.route + "/$userId") },
-                onFavouriteClick = homeViewModel::onFavouriteClicked,
-                getUserData = homeViewModel::getUserData
+                onFavouriteClick = homeViewModel::onFavouriteClicked
             )
         }
 

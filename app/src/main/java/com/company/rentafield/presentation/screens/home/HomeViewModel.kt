@@ -6,12 +6,12 @@ import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.LocalUser
 import com.company.rentafield.domain.model.UserDataResponse
-import com.company.rentafield.domain.model.playground.PlaygroundsResponse
+import com.company.rentafield.domain.model.playground.Playground
 import com.company.rentafield.domain.use_case.ai.AiUseCases
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
+import com.company.rentafield.presentation.screens.home.model.HomeUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,9 +27,9 @@ class HomeViewModel @Inject constructor(
     private val aiUseCases: AiUseCases
 ) : ViewModel() {
 
-    private val _playgroundState: MutableStateFlow<DataState<PlaygroundsResponse>> =
-        MutableStateFlow(DataState.Empty)
-    val playgroundState: StateFlow<DataState<PlaygroundsResponse>> = _playgroundState
+    private val _playgroundState: MutableStateFlow<List<Playground>> =
+        MutableStateFlow(emptyList())
+    val playgroundState: StateFlow<List<Playground>> = _playgroundState
 
     private val _userDataState: MutableStateFlow<DataState<UserDataResponse>> =
         MutableStateFlow(DataState.Empty)
@@ -42,87 +42,93 @@ class HomeViewModel @Inject constructor(
     )
     val localUser: StateFlow<LocalUser> = _localUser
 
+    init {
+        viewModelScope.launch {
+            localUserUseCases.getLocalUser().collect { localUser ->
+                launch { getProfileImage(localUser.userID) }
+                launch { getUploadStatus(localUser.userID) }
+                launch { getUserData(localUser.userID, localUser.token) }
+                launch { getPlaygrounds(localUser.userID, localUser.token) }
+            }
+        }
+    }
 
-    fun getHomeScreenData() {
-        viewModelScope.launch(IO) {
-            remoteUserUseCase.getPlaygroundsUseCase(
-                token = "Bearer ${_localUser.value.token ?: ""}",
-                userId = _localUser.value.userID ?: ""
-            ).collect { playgroundsRes ->
-                _playgroundState.value = playgroundsRes
-            }
-            remoteUserUseCase.getProfileImageUseCase(
-                token = "Bearer ${_localUser.value.token ?: ""}",
-                userId = _localUser.value.userID ?: ""
-            ).collect { profileImageRes ->
-                if (profileImageRes is DataState.Success) {
-                    _homeUiState.update {
-                        it.copy(
-                            profileImage = profileImageRes.data.profilePicture
-                        )
-                    }
-                }
-            }
-            aiUseCases.getUploadStatusUseCase(
-                id = _localUser.value.userID ?: ""
-            ).collect { uploadStatusRes ->
+    private suspend fun getPlaygrounds(
+        userID: String? = _localUser.value.userID,
+        userToken: String? = _localUser.value.token
+    ) {
+        remoteUserUseCase.getPlaygroundsUseCase(
+            token = "Bearer ${userToken ?: ""}",
+            userId = userID ?: ""
+        ).collect { playgroundsRes ->
+            _playgroundState.value =
+                (playgroundsRes as? DataState.Success)?.data?.playgrounds ?: emptyList()
+        }
+    }
+
+    private suspend fun getProfileImage(
+        userID: String? = _localUser.value.userID,
+        userToken: String? = _localUser.value.token
+    ) {
+        remoteUserUseCase.getProfileImageUseCase(
+            token = "Bearer ${userToken ?: ""}",
+            userId = userID ?: ""
+        ).collect { profileImageRes ->
+            if (profileImageRes is DataState.Success) {
                 _homeUiState.update {
                     it.copy(
-                        canUploadVideo = uploadStatusRes is DataState.Success
+                        profileImage = profileImageRes.data.profilePicture
                     )
                 }
             }
         }
     }
 
-
-    fun onClickViewAll() {
-        _homeUiState.update {
-            it.copy(
-                viewAllSwitch = true
-            )
+    private suspend fun getUploadStatus(
+        userID: String? = _localUser.value.userID
+    ) {
+        aiUseCases.getUploadStatusUseCase(
+            id = userID ?: ""
+        ).collect { uploadStatusRes ->
+            _homeUiState.update {
+                it.copy(
+                    canUploadVideo = uploadStatusRes is DataState.Success
+                )
+            }
         }
     }
 
     fun onFavouriteClicked(playgroundId: Int) {
-        if (_playgroundState.value is DataState.Success) {
-            val playgrounds = (_playgroundState.value as DataState.Success).data.playgrounds
-            val playground = playgrounds.find { it.id == playgroundId }
-            if (playground != null) {
-                _playgroundState.value =
-                    DataState.Success(
-                        (_playgroundState.value as DataState.Success).data.copy(
-                            playgrounds = playgrounds.map {
-                                if (it.id == playgroundId) {
-                                    it.copy(isFavourite = !it.isFavourite)
-                                } else {
-                                    it
-                                }
-                            })
-                    )
+        _playgroundState.update { playgroundList ->
+            playgroundList.map {playground ->
+                if (playground.id == playgroundId) {
+                    playground.copy(isFavourite = !playground.isFavourite)
+                } else playground
             }
         }
     }
 
-    fun getUserData() {
-        viewModelScope.launch {
-            remoteUserUseCase.userDataUseCase(
-                token = "Bearer ${_localUser.value.token ?: ""}",
-                userId = _localUser.value.userID ?: ""
-            ).collect { dataState ->
-                _userDataState.value = dataState
-                Log.d("UserResponse", "UserResponse: $dataState")
-                when (dataState) {
-                    is DataState.Success -> {
-                        localUserUseCases.saveLocalUser(
-                            _localUser.value.copy(
-                                coins = dataState.data.coins,
-                                rating = dataState.data.rating
-                            )
+    private suspend fun getUserData(
+        userID: String? = _localUser.value.userID,
+        userToken: String? = _localUser.value.token
+    ) {
+        remoteUserUseCase.userDataUseCase(
+            token = "Bearer ${userToken ?: ""}",
+            userId = userID ?: ""
+        ).collect { dataState ->
+            _userDataState.value = dataState
+            Log.d("UserResponse", "UserResponse: $dataState")
+            when (dataState) {
+                is DataState.Success -> {
+                    localUserUseCases.saveLocalUser(
+                        _localUser.value.copy(
+                            coins = dataState.data.coins,
+                            rating = dataState.data.rating
                         )
-                    }
-                    else -> {}
+                    )
                 }
+
+                else -> {}
             }
         }
     }

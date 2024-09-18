@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.screens.home
+package com.company.rentafield.presentation.screens.home.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,6 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
+import com.company.rentafield.utils.ThemePreviews
 
 @Composable
 fun HomeSearchBar(onSearchBarClicked: () -> Unit) {
@@ -62,4 +63,10 @@ fun HomeSearchBar(onSearchBarClicked: () -> Unit) {
 
         }
     }
+}
+
+@ThemePreviews
+@Composable
+private fun HomeSearchBarPreview() {
+    HomeSearchBar { }
 }
