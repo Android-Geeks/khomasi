@@ -1,5 +1,6 @@
 package com.company.rentafield.presentation.screens.playground.components
 
+import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.Image
@@ -17,7 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,8 +39,7 @@ import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
 import com.company.rentafield.domain.model.playground.PlaygroundX
 import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
 import com.company.rentafield.presentation.components.iconButtons.RoundedFavoriteIcon
-import com.company.rentafield.presentation.screens.playground.ButtonWithIcon
-import com.company.rentafield.presentation.screens.playground.PlaygroundUiState
+import com.company.rentafield.presentation.screens.playground.model.PlaygroundInfoUiState
 import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.utils.convertToBitmap
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -53,24 +53,24 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun ImageSlider(
     playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
-    playgroundState: StateFlow<PlaygroundUiState>,
+    playgroundInfoUiState: StateFlow<PlaygroundInfoUiState>,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
     onClickFav: (Boolean) -> Unit,
+    context: Context = LocalContext.current
 ) {
-    val uiState by playgroundState.collectAsStateWithLifecycle()
+    val uiState by playgroundInfoUiState.collectAsStateWithLifecycle()
 
-    val playgroundState1 by playgroundStateFlow.collectAsStateWithLifecycle()
+    val playgroundStateResponse by playgroundStateFlow.collectAsStateWithLifecycle()
 
-    var playgroundData by remember { mutableStateOf<List<PlaygroundPicture>?>(null) }
+    var playgroundData by rememberSaveable { mutableStateOf<List<PlaygroundPicture>?>(null) }
 
-    LaunchedEffect(playgroundState1) {
-        if (playgroundState1 is DataState.Success) {
-            playgroundData = (playgroundState1 as DataState.Success).data.playgroundPictures
+    LaunchedEffect(playgroundStateResponse) {
+        if (playgroundStateResponse is DataState.Success) {
+            playgroundData = (playgroundStateResponse as DataState.Success).data.playgroundPictures
         }
     }
     val pagerState = rememberPagerState(initialPage = 0)
-    val context = LocalContext.current
 
     Box(
         modifier = Modifier
@@ -202,7 +202,7 @@ fun ImageSliderPreview() {
                     )
                 )
             ),
-            playgroundState = MutableStateFlow(PlaygroundUiState()),
+            playgroundInfoUiState = MutableStateFlow(PlaygroundInfoUiState()),
             onClickBack = {},
             onClickFav = {},
             onClickShare = {}
