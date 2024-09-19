@@ -3,6 +3,7 @@ package com.company.rentafield.presentation.navigation.navigators
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -51,7 +52,16 @@ fun NavGraphBuilder.rentAfieldNavigator(navController: NavHostController) {
                     navController.navigate(Screens.RentafieldNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 },
                 onClickBell = { navController.navigate(Screens.RentafieldNavigation.Notifications.route) },
-                onClickViewAll = { navController.navigate(Screens.RentafieldNavigation.Playgrounds.BrowsePlaygrounds.route) },
+                onClickViewAll = {
+                    navController.navigate(Screens.RentafieldNavigation.Playgrounds.route) {
+                        popUpTo(navController.graph.findStartDestination().id) {
+                            saveState = true
+                        }
+                        launchSingleTop = true
+                        restoreState = true
+
+                    }
+                },
                 onSearchBarClicked = { navController.navigate(Screens.RentafieldNavigation.Search.route) },
                 onAdClicked = { userId -> navController.navigate(Screens.RentafieldNavigation.AiService.route + "/$userId") },
                 onFavouriteClick = homeViewModel::onFavouriteClicked
