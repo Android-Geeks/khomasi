@@ -189,7 +189,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
                 updateFavouriteAndPlaygroundId = playgroundViewModel::updateFavouriteAndPlaygroundId,
                 onClickBack = navController::navigateUp,
                 onClickShare = {},
-                onClickFav = playgroundViewModel::updateUserFavourite,
+//                onClickFav = playgroundViewModel::updateUserFavourite,
                 onBookNowClicked = {
                     navController.navigate(
                         Screens.RentafieldNavigation.BookingPlayground.BookingDetails.route

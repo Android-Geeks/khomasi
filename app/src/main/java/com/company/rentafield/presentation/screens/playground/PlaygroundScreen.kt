@@ -68,7 +68,7 @@ fun PlaygroundScreen(
     getPlaygroundDetails: (Int) -> Unit,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
-    onClickFav: (Boolean) -> Unit,
+//    onClickFav: (Boolean) -> Unit,
     onBookNowClicked: () -> Unit,
     updateShowReview: () -> Unit,
     updateFavouriteAndPlaygroundId: (Boolean, Int) -> Unit,
@@ -93,7 +93,7 @@ fun PlaygroundScreen(
                 onViewRatingClicked = onViewRatingClicked,
                 onClickBack = onClickBack,
                 onClickShare = onClickShare,
-                onClickFav = onClickFav,
+//                onClickFav = onClickFav,
             )
         },
         sheetContent = {
@@ -195,7 +195,7 @@ fun PlaygroundScreenContent(
     onViewRatingClicked: () -> Unit,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
-    onClickFav: (Boolean) -> Unit,
+//    onClickFav: (Boolean) -> Unit,
 ) {
     LazyColumn(
         Modifier.fillMaxSize()
@@ -206,7 +206,7 @@ fun PlaygroundScreenContent(
                 playgroundInfoUiState = uiState,
                 onClickBack = onClickBack,
                 onClickShare = onClickShare,
-                onClickFav = onClickFav
+//                onClickFav = onClickFav
             )
         }
 
@@ -272,7 +272,7 @@ fun PlaygroundScreenPreview() {
             getPlaygroundDetails = { _ -> },
             onClickBack = {},
             onClickShare = {},
-            onClickFav = { _ -> },
+//            onClickFav = { _ -> },
             onBookNowClicked = { },
             updateShowReview = {},
             updateFavouriteAndPlaygroundId = { _, _ -> },

@@ -56,7 +56,7 @@ fun ImageSlider(
     playgroundInfoUiState: StateFlow<PlaygroundInfoUiState>,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
-    onClickFav: (Boolean) -> Unit,
+//    onClickFav: (Boolean) -> Unit,
     context: Context = LocalContext.current
 ) {
     val uiState by playgroundInfoUiState.collectAsStateWithLifecycle()
@@ -148,7 +148,7 @@ fun ImageSlider(
                     Spacer(modifier = Modifier.padding(4.dp))
                     RoundedFavoriteIcon(
                         onFavoriteClick = {
-                            onClickFav(uiState.isFavourite)
+//                            onClickFav(uiState.isFavourite)
                         },
                         isFavorite = uiState.isFavourite,
                     )
@@ -204,7 +204,7 @@ fun ImageSliderPreview() {
             ),
             playgroundInfoUiState = MutableStateFlow(PlaygroundInfoUiState()),
             onClickBack = {},
-            onClickFav = {},
+//            onClickFav = {},
             onClickShare = {}
         )
     }
