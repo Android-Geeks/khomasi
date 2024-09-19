@@ -26,9 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLayoutDirection
@@ -48,6 +45,7 @@ import com.company.rentafield.presentation.components.iconButtons.FavoriteIcon
 import com.company.rentafield.theme.darkCard
 import com.company.rentafield.theme.lightCard
 import com.company.rentafield.utils.convertToBitmap
+import com.company.rentafield.utils.gradientOverlay
 import java.util.Locale
 
 @SuppressLint("DefaultLocale")
@@ -62,23 +60,6 @@ fun PlaygroundCard(
     isDark: Boolean = isSystemInDarkTheme()
 ) {
     val playgroundImage = remember { playground.playgroundPicture?.convertToBitmap() ?: "" }
-    val gradientOverlay = remember {
-        Modifier.drawWithCache {
-            onDrawWithContent {
-                drawContent()
-                drawRect(
-                    Brush.horizontalGradient(
-                        colors = listOf(
-                            Color.Transparent,
-                            Color.Black.copy(alpha = 0.3f)
-                        ),
-                        startX = 0f,
-                        endX = Float.POSITIVE_INFINITY
-                    )
-                )
-            }
-        }
-    }
 
     Card(
         colors = cardColors(
@@ -110,7 +91,7 @@ fun PlaygroundCard(
                             .fillMaxWidth()
                             .height(131.dp)
                             .clip(MaterialTheme.shapes.medium)
-                            .then(gradientOverlay)
+                            .gradientOverlay(.3f)
                     )
 
                     Row(

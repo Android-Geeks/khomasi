@@ -5,7 +5,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -19,8 +18,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
@@ -32,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.lerp
 import com.company.rentafield.R
 import com.company.rentafield.presentation.screens.home.model.AdsContent
+import com.company.rentafield.utils.gradientOverlay
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.HorizontalPagerIndicator
@@ -51,8 +49,6 @@ fun AdsSlider(
 
     val pagerState = rememberPagerState(initialPage = 0)
     val isDraggedState = pagerState.interactionSource.collectIsDraggedAsState()
-    val imageSlider = remember { adsContent.map { it.imageSlider } }
-    val contentSlider = remember { adsContent.map { it.contentText } }
     LaunchedEffect(isDraggedState) {
         snapshotFlow { isDraggedState.value }
             .collectLatest { isDragged ->
@@ -66,7 +62,6 @@ fun AdsSlider(
                 }
             }
     }
-
     Column {
         HorizontalPager(
             count = adsContent.size,
@@ -75,71 +70,48 @@ fun AdsSlider(
                 .height(180.dp)
                 .fillMaxWidth()
         ) { page ->
+            val contentText = stringResource(adsContent[page].contentText)
+            val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+            val (scale, alpha) = remember(pageOffset) {
+                val scale = lerp(0.85f, 1f, 1f - pageOffset.coerceIn(0f, 1f))
+                val alpha = lerp(0.5f, 1f, 1f - pageOffset.coerceIn(0f, 1f))
+                scale to alpha
+            }
+            val clickModifier = remember(page) {
+                if (contentText == "Upload Video and Win Coins Now!")
+                    Modifier.clickable { onAdClicked(userId) }
+                else Modifier
+            }
             Card(
                 shape = MaterialTheme.shapes.large,
                 modifier = Modifier
                     .graphicsLayer {
-                        val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-
-                        lerp(
-                            start = 0.85f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                        ).also { scale ->
-                            scaleX = scale
-                            scaleY = scale
-                        }
-
-                        alpha = lerp(
-                            start = 0.5f, stop = 1f, fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                        )
-
+                        scaleX = scale
+                        scaleY = scale
+                        this.alpha = alpha
                     }
-                    .then(
-                        if (stringResource(adsContent[page].contentText) == "Upload Video and Win Coins Now!")
-                            Modifier.clickable { onAdClicked(userId) }
-                        else
-                            Modifier
-                    )
+                    .then(clickModifier)
             ) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
+                    contentAlignment = Alignment.BottomStart,
+                    modifier = Modifier.fillMaxSize()
                 ) {
                     Image(
-                        painter = painterResource(imageSlider[page]),
+                        painter = painterResource(adsContent[page].imageSlider),
                         contentDescription = "image slider",
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
                             .fillMaxSize()
-                            .drawWithCache {
-                                onDrawWithContent {
-                                    drawContent()
-                                    drawRect(
-                                        Brush.verticalGradient(
-                                            colors = listOf(
-                                                Color.Transparent,
-                                                Color.Black.copy(alpha = .6f)
-                                            ),
-                                            startY = 0f,
-                                            endY = Float.POSITIVE_INFINITY
-                                        )
-                                    )
-                                }
-                            }
+                            .gradientOverlay(.6f)
                     )
-                    Column(
-                        modifier = Modifier.fillMaxSize(),
-                    ) {
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        Text(
-                            text = stringResource(contentSlider[page]),
-                            color = Color.White,
-                            style = MaterialTheme.typography.displayLarge,
-                            modifier = Modifier.padding(8.dp),
-                            textAlign = TextAlign.Start,
-                            maxLines = 2
-                        )
-                    }
+                    Text(
+                        text = contentText,
+                        color = Color.White,
+                        style = MaterialTheme.typography.displayLarge,
+                        modifier = Modifier.padding(8.dp),
+                        textAlign = TextAlign.Start,
+                        maxLines = 2
+                    )
                 }
             }
         }
