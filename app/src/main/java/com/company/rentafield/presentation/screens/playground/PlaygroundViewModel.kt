@@ -125,7 +125,7 @@ class PlaygroundViewModel @Inject constructor(
     //---------------------------------------BookingViewModel---------------------------------------
 
     fun getFreeTimeSlots() {
-        viewModelScope.launch(Dispatchers.Main) {
+        viewModelScope.launch(Dispatchers.IO) {
             val userData = localUserUseCases.getLocalUser().first()
 
             remotePlaygroundUseCase.getFreeTimeSlotsUseCase(
@@ -311,7 +311,7 @@ class PlaygroundViewModel @Inject constructor(
     }
 
     fun bookingPlayground() {
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val userData = localUserUseCases.getLocalUser().first()
             val bookingData = _bookingUiState.value
             val localUser = localUserUseCases.getLocalUser().first()
