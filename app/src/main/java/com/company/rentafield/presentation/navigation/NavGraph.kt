@@ -16,7 +16,7 @@ import com.company.rentafield.presentation.components.connectionStates.LossConne
 import com.company.rentafield.presentation.navigation.components.BottomNavigationBar
 import com.company.rentafield.presentation.navigation.navigators.authNavigator
 import com.company.rentafield.presentation.navigation.navigators.onboardingNavigator
-import com.company.rentafield.presentation.navigation.navigators.rentafieldNavigator
+import com.company.rentafield.presentation.navigation.navigators.rentAfieldNavigator
 import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.utils.ConnectivityObserver
 
@@ -60,8 +60,8 @@ fun NavGraph(
             // Navigation for Auth
             authNavigator(navController)
 
-            // Navigation for Rentafield app
-            rentafieldNavigator(navController)
+            // Navigation for RentAfield app
+            rentAfieldNavigator(navController)
         }
     }
 }

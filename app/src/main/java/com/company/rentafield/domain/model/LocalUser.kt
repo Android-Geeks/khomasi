@@ -1,5 +1,8 @@
 package com.company.rentafield.domain.model
 
+import androidx.compose.runtime.Stable
+
+@Stable
 data class LocalUser(
     val userID: String? = null,
     val firstName: String? = null,

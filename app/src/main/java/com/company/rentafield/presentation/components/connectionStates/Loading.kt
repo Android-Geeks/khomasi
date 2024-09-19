@@ -15,18 +15,19 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.utils.ThemePreviews
 
 
 @Composable
-fun Loading(modifier : Modifier = Modifier){
+fun Loading(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -50,65 +51,56 @@ fun ThreeBounce(
     color: Color = MaterialTheme.colorScheme.primary,
     shape: Shape = CircleShape
 ) {
-    val transition = rememberInfiniteTransition(label = "")
+    val dotSize = size * 3 / 11
 
-    val sizeMultiplier1 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        fraction = 1,
-        durationMillis = durationMillis / 2,
-        repeatMode = RepeatMode.Reverse
-    )
-    val sizeMultiplier2 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        fraction = 1,
-        durationMillis = durationMillis / 2,
-        offsetMillis = delayBetweenDotsMillis,
-        repeatMode = RepeatMode.Reverse
-    )
-    val sizeMultiplier3 = transition.fractionTransition(
-        initialValue = 0f,
-        targetValue = 1f,
-        fraction = 1,
-        durationMillis = durationMillis / 2,
-        offsetMillis = delayBetweenDotsMillis * 2,
-        repeatMode = RepeatMode.Reverse
-    )
+    val sizeMultiplier1 = rememberBounceTransition(durationMillis)
+    val sizeMultiplier2 = rememberBounceTransition(durationMillis, delayBetweenDotsMillis)
+    val sizeMultiplier3 = rememberBounceTransition(durationMillis, delayBetweenDotsMillis * 2)
 
     Row(
         modifier = modifier.size(size),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(modifier = Modifier.size(size * 3 / 11), contentAlignment = Alignment.Center) {
-            Surface(
-                modifier = Modifier.size(size * 3 / 11 * sizeMultiplier1.value),
-                shape = shape,
-                color = color
-            ) {}
-        }
-        Spacer(modifier = Modifier.width(size.width / 1 / 11))
-        Box(modifier = Modifier.size(size * 3 / 11), contentAlignment = Alignment.Center) {
-            Surface(
-                modifier = Modifier.size(size * 3 / 11 * sizeMultiplier2.value),
-                shape = shape,
-                color = color
-            ) {}
-        }
-        Spacer(modifier = Modifier.width(size.width / 1 / 11))
-        Box(modifier = Modifier.size(size * 3 / 11), contentAlignment = Alignment.Center) {
-            Surface(
-                modifier = Modifier.size(size * 3 / 11 * sizeMultiplier3.value),
-                shape = shape,
-                color = color
-            ) {}
-        }
+        BouncingDot(dotSize, sizeMultiplier1, color, shape)
+        Spacer(modifier = Modifier.width(4.dp))
+        BouncingDot(dotSize, sizeMultiplier2, color, shape)
+        Spacer(modifier = Modifier.width(4.dp))
+        BouncingDot(dotSize, sizeMultiplier3, color, shape)
     }
 }
 
+@Composable
+fun BouncingDot(
+    size: DpSize,
+    sizeMultiplier: State<Float>,
+    color: Color,
+    shape: Shape
+) {
+    Box(modifier = Modifier.size(size), contentAlignment = Alignment.Center) {
+        Surface(
+            modifier = Modifier.size(size * sizeMultiplier.value),
+            shape = shape,
+            color = color
+        ) {}
+    }
+}
 
-@Preview(showSystemUi = true)
+@Composable
+fun rememberBounceTransition(
+    durationMillis: Int,
+    offsetMillis: Int = 0
+): State<Float> = rememberInfiniteTransition(label = "").fractionTransition(
+    initialValue = 0f,
+    targetValue = 1f,
+    fraction = 1,
+    durationMillis = durationMillis / 2,
+    offsetMillis = offsetMillis,
+    repeatMode = RepeatMode.Reverse
+)
+
+
+@ThemePreviews
 @Composable
 fun LoadingPreview() {
     RentafieldTheme { Loading() }
