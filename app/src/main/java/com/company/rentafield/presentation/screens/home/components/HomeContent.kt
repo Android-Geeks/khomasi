@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -23,12 +22,14 @@ import com.company.rentafield.domain.model.playground.Playground
 import com.company.rentafield.presentation.components.AdsSlider
 import com.company.rentafield.presentation.components.cards.PlaygroundCard
 import com.company.rentafield.presentation.screens.home.constants.adsList
+import com.company.rentafield.presentation.screens.home.model.AdsContent
 import com.company.rentafield.presentation.screens.home.model.HomeUiState
 import com.company.rentafield.utils.ThemePreviews
 
 @Composable
 fun HomeContent(
     playgroundsData: List<Playground>,
+    adsList: List<AdsContent>,
     homeUiState: HomeUiState,
     userId: String,
     onAdClicked: (String) -> Unit,
@@ -44,7 +45,7 @@ fun HomeContent(
     ) {
         item {
             AdsSlider(
-                adsContent = remember { adsList },
+                adsContent = adsList,
                 userId = userId,
                 onAdClicked = if (homeUiState.canUploadVideo) onAdClicked else { _ ->
                     Toast.makeText(
@@ -56,18 +57,23 @@ fun HomeContent(
         }
 
         item {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                modifier = Modifier.fillMaxSize(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                val clickableModifier =
+                    remember { Modifier.clickable { onClickViewAll() } }
                 Text(
                     text = stringResource(id = R.string.nearby_fields),
                     style = MaterialTheme.typography.displayMedium,
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
-                Spacer(modifier = Modifier.weight(1f))
                 Text(
                     text = stringResource(id = R.string.view_all),
                     style = MaterialTheme.typography.titleLarge,
                     color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.clickable { onClickViewAll() }
+                    modifier = clickableModifier
                 )
             }
         }
@@ -89,6 +95,7 @@ fun HomeContent(
 fun HomeContentPreview() {
     HomeContent(
         playgroundsData = emptyList(),
+        adsList = adsList,
         homeUiState = HomeUiState(),
         userId = "1",
         onAdClicked = { },

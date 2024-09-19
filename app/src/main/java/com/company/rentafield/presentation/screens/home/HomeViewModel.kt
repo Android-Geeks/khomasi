@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.LocalUser
 import com.company.rentafield.domain.model.UserDataResponse
-import com.company.rentafield.domain.model.playground.Playground
 import com.company.rentafield.domain.use_case.ai.AiUseCases
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
@@ -26,11 +25,6 @@ class HomeViewModel @Inject constructor(
     private val localUserUseCases: LocalUserUseCases,
     private val aiUseCases: AiUseCases
 ) : ViewModel() {
-
-    private val _playgroundState: MutableStateFlow<List<Playground>> =
-        MutableStateFlow(emptyList())
-    val playgroundState: StateFlow<List<Playground>> = _playgroundState
-
     private val _userDataState: MutableStateFlow<DataState<UserDataResponse>> =
         MutableStateFlow(DataState.Empty)
 
@@ -40,11 +34,14 @@ class HomeViewModel @Inject constructor(
     private val _localUser = localUserUseCases.getLocalUser().stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5_000), LocalUser()
     )
-    val localUser: StateFlow<LocalUser> = _localUser
 
     init {
         viewModelScope.launch {
-            localUserUseCases.getLocalUser().collect { localUser ->
+            _localUser.collect { localUser ->
+                _homeUiState.value = _homeUiState.value.copy(
+                    userId = localUser.userID ?: "",
+                    userName = localUser.firstName ?: ""
+                )
                 launch { getProfileImage(localUser.userID) }
                 launch { getUploadStatus(localUser.userID) }
                 launch { getUserData(localUser.userID, localUser.token) }
@@ -61,8 +58,10 @@ class HomeViewModel @Inject constructor(
             token = "Bearer ${userToken ?: ""}",
             userId = userID ?: ""
         ).collect { playgroundsRes ->
-            _playgroundState.value =
-                (playgroundsRes as? DataState.Success)?.data?.playgrounds ?: emptyList()
+            if (playgroundsRes is DataState.Success) {
+                _homeUiState.value =
+                    _homeUiState.value.copy(playgrounds = playgroundsRes.data.playgrounds)
+            }
         }
     }
 
@@ -75,11 +74,8 @@ class HomeViewModel @Inject constructor(
             userId = userID ?: ""
         ).collect { profileImageRes ->
             if (profileImageRes is DataState.Success) {
-                _homeUiState.update {
-                    it.copy(
-                        profileImage = profileImageRes.data.profilePicture
-                    )
-                }
+                _homeUiState.value =
+                    _homeUiState.value.copy(profileImage = profileImageRes.data.profilePicture)
             }
         }
     }
@@ -99,13 +95,12 @@ class HomeViewModel @Inject constructor(
     }
 
     fun onFavouriteClicked(playgroundId: Int) {
-        _playgroundState.update { playgroundList ->
-            playgroundList.map {playground ->
-                if (playground.id == playgroundId) {
-                    playground.copy(isFavourite = !playground.isFavourite)
-                } else playground
-            }
+        val updatedPlaygrounds=_homeUiState.value.playgrounds.map {
+            if (it.id == playgroundId) {
+                it.copy(isFavourite = !it.isFavourite)
+            } else it
         }
+        _homeUiState.value=_homeUiState.value.copy(playgrounds = updatedPlaygrounds)
     }
 
     private suspend fun getUserData(

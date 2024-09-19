@@ -45,15 +45,13 @@ fun NavGraphBuilder.rentAfieldNavigator(navController: NavHostController) {
         composable(route = Screens.RentafieldNavigation.Home.route) {
             val homeViewModel: HomeViewModel = hiltViewModel()
             HomeScreen(
-                playgroundsState = homeViewModel.playgroundState,
                 homeUiState = homeViewModel.homeUiState,
-                localUserState = homeViewModel.localUser,
                 onClickUserImage = { navController.navigate(Screens.RentafieldNavigation.Profile.route) },
                 onClickPlaygroundCard = { playgroundId, isFavourite ->
                     navController.navigate(Screens.RentafieldNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
                 },
                 onClickBell = { navController.navigate(Screens.RentafieldNavigation.Notifications.route) },
-                onClickViewAll = {  navController.navigate( Screens.RentafieldNavigation.Playgrounds.BrowsePlaygrounds.route) },
+                onClickViewAll = { navController.navigate(Screens.RentafieldNavigation.Playgrounds.BrowsePlaygrounds.route) },
                 onSearchBarClicked = { navController.navigate(Screens.RentafieldNavigation.Search.route) },
                 onAdClicked = { userId -> navController.navigate(Screens.RentafieldNavigation.AiService.route + "/$userId") },
                 onFavouriteClick = homeViewModel::onFavouriteClicked

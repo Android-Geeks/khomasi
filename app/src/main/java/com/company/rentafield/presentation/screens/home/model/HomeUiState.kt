@@ -1,10 +1,13 @@
 package com.company.rentafield.presentation.screens.home.model
 
-import androidx.compose.runtime.Stable
+import com.company.rentafield.domain.model.playground.Playground
+import com.company.rentafield.presentation.screens.home.constants.adsList
 
-@Stable
 data class HomeUiState(
-    val viewAllSwitch: Boolean = false,
+    val userName: String = "",
+    val userId: String = "",
+    val adList:  List<AdsContent> =adsList,
+    val playgrounds: List<Playground> = listOf(),
     val canUploadVideo: Boolean = false,
     val profileImage: String? = null
 )
