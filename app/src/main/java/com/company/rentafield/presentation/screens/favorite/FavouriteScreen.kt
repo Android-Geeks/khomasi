@@ -19,6 +19,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -30,6 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.SubScreenTopBar
 import com.company.rentafield.presentation.components.cards.PlaygroundCard
+import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
 import com.company.rentafield.theme.RentafieldTheme
 import kotlinx.coroutines.flow.StateFlow
 
@@ -41,6 +46,8 @@ fun FavouriteScreen(
     onPlaygroundClick: (Int, Boolean) -> Unit,
     getFavoritePlaygrounds: () -> Unit,
 ) {
+    var showLoading by remember { mutableStateOf(true) }
+
     LaunchedEffect(Unit) {
         getFavoritePlaygrounds()
     }
@@ -58,6 +65,7 @@ fun FavouriteScreen(
         }
     ) { paddingValues ->
         if (favUiState.playgrounds.isNotEmpty()) {
+            showLoading = false
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -87,9 +95,12 @@ fun FavouriteScreen(
                     )
                 }
             }
-        } else {
+        } else if (!showLoading) {
             EmptyScreen()
         }
+    }
+    if (showLoading) {
+        ThreeBounce(modifier = Modifier.fillMaxSize())
     }
 }
 
