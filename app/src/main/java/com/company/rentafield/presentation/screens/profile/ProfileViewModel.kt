@@ -114,38 +114,42 @@ class ProfileViewModel @Inject constructor(
             }
 
             localUserUseCases.saveLocalUser(_profileUiState.value.user)
-
-            remoteUserUseCase.updateUserUseCase(
-                token = "Bearer ${_profileUiState.value.user.token ?: ""}",
-                userId = _profileUiState.value.user.userID ?: "",
-                user = UserUpdateData(
-                    id = _profileUiState.value.user.userID ?: "",
-                    firstName = _profileUiState.value.user.firstName ?: "",
-                    lastName = _profileUiState.value.user.lastName ?: "",
-                    phoneNumber = _profileUiState.value.user.phoneNumber ?: "",
-                    city = _profileUiState.value.user.city ?: "",
-                    country = _profileUiState.value.user.country ?: "",
-                    longitude = _profileUiState.value.user.longitude ?: 0.0,
-                    latitude = _profileUiState.value.user.latitude ?: 0.0
-                )
-            ).collect()
-
-
-            val imageFile = _profileUiState.value.profileImage
-            if (imageFile?.exists() == true) {
-                val requestFile = imageFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
-                val body =
-                    MultipartBody.Part.createFormData("profilePicture", imageFile.name, requestFile)
-
-                remoteUserUseCase.updateProfilePictureUseCase(
+            viewModelScope.launch(IO) {
+                remoteUserUseCase.updateUserUseCase(
                     token = "Bearer ${_profileUiState.value.user.token ?: ""}",
                     userId = _profileUiState.value.user.userID ?: "",
-                    image = body
-                ).collect {
-                    Log.d("ProfileViewModel", "onSaveProfile: $it")
+                    user = UserUpdateData(
+                        id = _profileUiState.value.user.userID ?: "",
+                        firstName = _profileUiState.value.user.firstName ?: "",
+                        lastName = _profileUiState.value.user.lastName ?: "",
+                        phoneNumber = _profileUiState.value.user.phoneNumber ?: "",
+                        city = _profileUiState.value.user.city ?: "",
+                        country = _profileUiState.value.user.country ?: "",
+                        longitude = _profileUiState.value.user.longitude ?: 0.0,
+                        latitude = _profileUiState.value.user.latitude ?: 0.0
+                    )
+                ).collect()
+
+                val imageFile = _profileUiState.value.profileImage
+                if (imageFile?.exists() == true) {
+                    val requestFile = imageFile.asRequestBody("image/jpeg".toMediaTypeOrNull())
+                    val body =
+                        MultipartBody.Part.createFormData(
+                            "profilePicture",
+                            imageFile.name,
+                            requestFile
+                        )
+
+                    remoteUserUseCase.updateProfilePictureUseCase(
+                        token = "Bearer ${_profileUiState.value.user.token ?: ""}",
+                        userId = _profileUiState.value.user.userID ?: "",
+                        image = body
+                    ).collect {
+                        Log.d("ProfileViewModel", "onSaveProfile: $it")
+                    }
+                } else {
+                    Log.d("ProfileViewModel", "onSaveProfile: File does not exist")
                 }
-            } else {
-                Log.d("ProfileViewModel", "onSaveProfile: File does not exist")
             }
         }
     }

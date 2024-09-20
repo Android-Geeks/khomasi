@@ -27,6 +27,7 @@ private val lightThemeColors = lightColorScheme(
     tertiary = lightSubText,
     outline = lightHint,
     error = lightErrorColor,
+    onSurface = lightIconMask,
 )
 
 private val darkThemeColors = darkColorScheme(
@@ -39,7 +40,8 @@ private val darkThemeColors = darkColorScheme(
     surfaceContainer = darkOverlay,
     tertiary = darkSubText,
     outline = darkHint,
-    error = darkErrorColor
+    error = darkErrorColor,
+    onSurface = darkIconMask,
 )
 
 @Composable

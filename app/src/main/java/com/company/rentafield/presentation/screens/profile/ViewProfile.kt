@@ -2,7 +2,6 @@ package com.company.rentafield.presentation.screens.profile
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -40,7 +39,6 @@ fun ViewProfile(
     onFeedbackChanged: (String) -> Unit,
     onBackClick: () -> Unit,
     onEditProfile: () -> Unit,
-    isDark: Boolean = isSystemInDarkTheme(),
     onFeedbackCategorySelected: (FeedbackCategory) -> Unit,
 ) {
     val localUser = localUserUiState.collectAsStateWithLifecycle().value
@@ -84,7 +82,6 @@ fun ViewProfile(
             },
             logout = onLogout,
             scope = scope,
-            isDark = isDark
         )
     }
 
@@ -99,7 +96,6 @@ fun ViewProfile(
             image = uiState.oldProfileImage,
             onEditProfile = onEditProfile,
             onBackClick = onBackClick,
-            isDark = isDark
         )
 
         ProfileContent(

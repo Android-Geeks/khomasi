@@ -28,8 +28,6 @@ import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyModalBottomSheet
 import com.company.rentafield.presentation.components.MyTextButton
 import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkErrorColor
-import com.company.rentafield.theme.lightErrorColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -40,7 +38,6 @@ fun LogoutBottomSheet(
     onDismissRequest: () -> Unit,
     scope: CoroutineScope,
     logout: () -> Unit,
-    isDark: Boolean
 ) {
     MyModalBottomSheet(
         sheetState = bottomSheetState,
@@ -110,7 +107,7 @@ fun LogoutBottomSheet(
                         },
                         shape = MaterialTheme.shapes.medium,
                         color = ButtonDefaults.buttonColors(
-                            containerColor = if (isDark) darkErrorColor else lightErrorColor
+                            containerColor = MaterialTheme.colorScheme.error
                         ),
                         modifier = Modifier.weight(1f)
                     )
@@ -130,7 +127,6 @@ fun LogoutBottomSheetPreview() {
             onDismissRequest = {},
             scope = rememberCoroutineScope(),
             logout = {},
-            isDark = false
         )
     }
 

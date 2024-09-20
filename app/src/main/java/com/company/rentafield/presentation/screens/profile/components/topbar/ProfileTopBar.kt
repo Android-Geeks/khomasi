@@ -15,6 +15,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,8 +28,6 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.theme.darkIconMask
-import com.company.rentafield.theme.lightIconMask
 
 @Composable
 fun ProfileTopBar(
@@ -34,8 +35,11 @@ fun ProfileTopBar(
     image: String?,
     onEditProfile: () -> Unit,
     onBackClick: () -> Unit,
-    isDark: Boolean
 ) {
+    val profileImage by rememberSaveable(image) {
+        mutableStateOf(image)
+    }
+
     Box(
         contentAlignment = Alignment.TopCenter,
     ) {
@@ -44,7 +48,7 @@ fun ProfileTopBar(
                 .fillMaxWidth()
                 .height(160.dp)
                 .clip(RoundedCornerShape(bottomStart = 16.dp, bottomEnd = 16.dp))
-                .background(if (isDark) darkIconMask else lightIconMask)
+                .background(MaterialTheme.colorScheme.onSurface)
                 .padding(start = 16.dp, end = 16.dp, top = 30.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top
@@ -90,7 +94,7 @@ fun ProfileTopBar(
         }
         ProfileImage(
             name = localUser.firstName + " " + localUser.lastName,
-            image = image,
+            image = profileImage.toString(),
             rating = localUser.rating ?: 0.0,
             coins = localUser.coins ?: 0.0
         )
