@@ -1,11 +1,9 @@
-package com.company.rentafield.presentation.screens.playground
+package com.company.rentafield.presentation.screens.playground.model
 
 
-data class PlaygroundUiState(
+data class PlaygroundInfoUiState(
     val isFavourite: Boolean = false,
     val playgroundId: Int = 0,
-    val showReviews: Boolean = false,
-    val reviewsCount: Int = 0,
     val cardNumber: String = "",
     val cardValidationDate: String = "",
     val cardCvv: String = "",
@@ -13,9 +11,3 @@ data class PlaygroundUiState(
     val totalCoinPrice: Double = 0.0,
 )
 
-enum class PaymentType {
-    Fawry,
-    Visa,
-    Coins,
-    Empty
-}

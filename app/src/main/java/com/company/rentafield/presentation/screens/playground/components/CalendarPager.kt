@@ -59,7 +59,7 @@ fun CalendarPager(
 
     val screenWidth = remember { getScreenWidth(context) }
 
-    val currentDate = LocalDate.now()
+    val currentDate = remember(LocalDate.now()) { LocalDate.now() }
 
     val currentDaysList = remember {
         (0..20).map { day -> (currentDate).plusDays(day.toLong()) }

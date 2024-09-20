@@ -40,7 +40,6 @@ import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
 import com.company.rentafield.domain.model.playground.PlaygroundX
-import com.company.rentafield.presentation.screens.playground.IconWithText
 import com.company.rentafield.theme.RentafieldTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

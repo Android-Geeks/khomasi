@@ -8,6 +8,10 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.util.Base64
 import android.util.Log
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -67,5 +71,21 @@ fun Context.createVideoFile(): File {
         // Log the exception
         Log.e("createVideoFile", "Could not create video file", e)
         throw e
+    }
+}
+
+fun Modifier.gradientOverlay(alpha: Float): Modifier {
+    return drawWithCache {
+        onDrawWithContent {
+            drawContent()
+            drawRect(
+                Brush.verticalGradient(
+                    colors = listOf(
+                        Color.Transparent,
+                        Color.Black.copy(alpha = alpha)
+                    ), startY = 0f, endY = Float.POSITIVE_INFINITY
+                )
+            )
+        }
     }
 }

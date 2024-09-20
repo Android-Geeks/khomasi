@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.screens.home
+package com.company.rentafield.presentation.screens.home.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -26,12 +26,12 @@ import androidx.compose.ui.unit.dp
 import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.company.rentafield.R
-import com.company.rentafield.domain.model.LocalUser
+import com.company.rentafield.utils.ThemePreviews
 import com.company.rentafield.utils.convertToBitmap
 
 @Composable
 fun UserProfileHeader(
-    userData: LocalUser,
+    userFirstName: String,
     profileImage: String?,
     onClickUserImage: () -> Unit,
     onClickBell: () -> Unit
@@ -66,7 +66,7 @@ fun UserProfileHeader(
 
         Column {
             Text(
-                text = "${stringResource(id = R.string.hello)} ${userData.firstName}",
+                text = "${stringResource(id = R.string.hello)} $userFirstName",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
@@ -88,4 +88,14 @@ fun UserProfileHeader(
             )
         }
     }
+}
+
+@ThemePreviews
+@Composable
+fun ProfileHeaderPreview() {
+    UserProfileHeader(
+        userFirstName = "Android",
+        profileImage = null,
+        onClickUserImage = {},
+        onClickBell = {})
 }

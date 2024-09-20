@@ -69,8 +69,8 @@ import com.company.rentafield.domain.model.booking.BookingPlaygroundResponse
 import com.company.rentafield.presentation.components.DoneSuccessfully
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextField
-import com.company.rentafield.presentation.screens.playground.PaymentType
-import com.company.rentafield.presentation.screens.playground.PlaygroundUiState
+import com.company.rentafield.presentation.screens.playground.model.PaymentType
+import com.company.rentafield.presentation.screens.playground.model.PlaygroundInfoUiState
 import com.company.rentafield.theme.RentafieldTheme
 import com.company.rentafield.theme.darkText
 import com.company.rentafield.theme.lightText
@@ -82,7 +82,7 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentScreen(
-    playgroundUiState: StateFlow<PlaygroundUiState>,
+    playgroundInfoUiState: StateFlow<PlaygroundInfoUiState>,
     bookingPlaygroundResponse: StateFlow<DataState<BookingPlaygroundResponse>>,
     context: Context = LocalContext.current,
     updateCardNumber: (String) -> Unit,
@@ -96,7 +96,7 @@ fun PaymentScreen(
     val bookingResponse by bookingPlaygroundResponse.collectAsStateWithLifecycle()
     val showFawryDialog = remember { mutableStateOf(true) }
     val scrollState = rememberScrollState()
-    val uiState by playgroundUiState.collectAsStateWithLifecycle()
+    val uiState by playgroundInfoUiState.collectAsStateWithLifecycle()
     var choice by remember { mutableIntStateOf(3) }
     val keyboardController = LocalSoftwareKeyboardController.current
     val localFocusManager = LocalFocusManager.current
@@ -559,7 +559,7 @@ fun CardContent(
 fun PaymentScreenPreview() {
     RentafieldTheme {
         PaymentScreen(
-            playgroundUiState = MutableStateFlow(PlaygroundUiState()),
+            playgroundInfoUiState = MutableStateFlow(PlaygroundInfoUiState()),
             bookingPlaygroundResponse = MutableStateFlow(
                 DataState.Success(
                     BookingPlaygroundResponse(
