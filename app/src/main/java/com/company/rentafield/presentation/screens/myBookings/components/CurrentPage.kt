@@ -38,7 +38,7 @@ fun CurrentPage(
 ) {
     val uiState by bookingsUiState.collectAsStateWithLifecycle()
     val currentState by myBookingsState.collectAsStateWithLifecycle()
-    var showLoading by remember { mutableStateOf(false) }
+    var showLoading by remember { mutableStateOf(true) }
     val context = LocalContext.current
     LaunchedEffect(currentState) {
         Log.d("CurrentPage", "Current state: $currentState")
@@ -80,7 +80,7 @@ fun CurrentPage(
                         reBook = {}
                     )
                 }
-            } else {
+            } else if (!showLoading) {
                 item {
                     EmptyScreen(
                         onClickBookField = onClickBookField

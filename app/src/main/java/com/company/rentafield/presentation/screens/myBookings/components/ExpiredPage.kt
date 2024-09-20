@@ -60,7 +60,7 @@ fun ExpiredPage(
     val expiredState by bookingsUiState.collectAsStateWithLifecycle()
     val bookingsState by myBookingsState.collectAsStateWithLifecycle()
     val ratingState by reviewState.collectAsStateWithLifecycle()
-    var showLoading by remember { mutableStateOf(false) }
+    var showLoading by remember { mutableStateOf(true) }
     val sheetState = rememberModalBottomSheetState()
     var isOpen by remember { mutableStateOf(false) }
     val imeState = rememberImeState()
@@ -191,7 +191,7 @@ fun ExpiredPage(
                         reBook = { reBook(bookingDetails.playgroundId, bookingDetails.isFavorite) }
                     )
                 }
-            } else {
+            } else if (!showLoading) {
                 item {
                     EmptyScreen(
                         onClickBookField = onClickBookField
