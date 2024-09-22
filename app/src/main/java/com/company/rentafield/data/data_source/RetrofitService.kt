@@ -1,7 +1,7 @@
 package com.company.rentafield.data.data_source
 
 import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.model.ai.AiResponse
+import com.company.rentafield.domain.model.UserDataResponse
 import com.company.rentafield.domain.model.auth.UserLoginResponse
 import com.company.rentafield.domain.model.auth.UserRegisterData
 import com.company.rentafield.domain.model.auth.UserRegisterResponse
@@ -14,7 +14,6 @@ import com.company.rentafield.domain.model.playground.BookingRequest
 import com.company.rentafield.domain.model.playground.FreeTimeSlotsResponse
 import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
 import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
-import com.company.rentafield.domain.model.UserDataResponse
 import com.company.rentafield.domain.model.playground.PlaygroundsResponse
 import com.company.rentafield.domain.model.search.FilteredPlaygroundResponse
 import com.company.rentafield.domain.model.user.FeedbackRequest
@@ -78,14 +77,14 @@ interface RetrofitService {
     ): Response<MyBookingsResponse>
 
     @POST("User/favorite")
-    suspend fun userFavourite(
+    suspend fun addUserFavouritePlayground(
         @Header("Authorization") token: String,
         @Query("userId") userId: String,
         @Query("playgroundId") playgroundId: Int
     ): Response<MessageResponse>
 
     @DELETE("User/favorite")
-    suspend fun deleteUserFavourite(
+    suspend fun deleteUserFavouritePlayground(
         @Header("Authorization") token: String,
         @Query("userId") userId: String,
         @Query("playgroundId") playgroundId: Int
@@ -141,7 +140,7 @@ interface RetrofitService {
     ): Response<MessageResponse>
 
     @POST("Review/review")
-    suspend fun playgroundReview(
+    suspend fun addPlaygroundReview(
         @Header("Authorization") token: String,
         @Body playgroundReview: PlaygroundReviewRequest
     ): Response<MessageResponse>
@@ -172,9 +171,6 @@ interface RetrofitService {
 
     @GET("AI/ai-service")
     suspend fun getUploadVideoStatus(@Query("id") id: String): Response<MessageResponse>
-
-    @GET("AI/ai-response")
-    suspend fun getAiResults(@Query("id") id: String): Response<AiResponse>
 
     @GET("User/user-data")
     suspend fun userData(
