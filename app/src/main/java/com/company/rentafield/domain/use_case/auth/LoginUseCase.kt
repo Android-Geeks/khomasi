@@ -1,11 +1,11 @@
 package com.company.rentafield.domain.use_case.auth
 
-import com.company.rentafield.domain.repository.RemoteUserRepository
+import com.company.rentafield.domain.repository.RemoteUserAuthorization
 
 class LoginUseCase(
-    private val remoteUserRepository: RemoteUserRepository
+    private val remoteUserAuthorization: RemoteUserAuthorization
 ) {
     suspend operator fun invoke(email: String, password: String) =
-        remoteUserRepository.loginUser(email, password)
+        remoteUserAuthorization.loginUser(email, password)
 
 }

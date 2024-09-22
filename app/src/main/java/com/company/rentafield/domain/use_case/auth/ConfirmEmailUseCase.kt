@@ -1,10 +1,10 @@
 package com.company.rentafield.domain.use_case.auth
 
-import com.company.rentafield.domain.repository.RemoteUserRepository
+import com.company.rentafield.domain.repository.RemoteUserAuthorization
 
 class ConfirmEmailUseCase(
-    private val remoteUserRepository: RemoteUserRepository
+    private val remoteUserAuthorization: RemoteUserAuthorization
 ) {
     suspend operator fun invoke(email: String, code: String) =
-        remoteUserRepository.confirmEmail(email, code)
+        remoteUserAuthorization.confirmEmail(email, code)
 }

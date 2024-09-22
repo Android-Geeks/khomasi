@@ -7,11 +7,16 @@ import com.company.rentafield.domain.model.playground.BookingRequest
 import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
 import com.company.rentafield.domain.model.search.FilteredPlaygroundResponse
 import com.company.rentafield.domain.repository.RemotePlaygroundRepository
+import com.company.rentafield.utils.handleApi
 import kotlinx.coroutines.flow.Flow
 
 class RemotePlaygroundRepositoryImpl(
     private val retrofitService: RetrofitService
 ) : RemotePlaygroundRepository {
+
+    override suspend fun getPlaygrounds(token: String, userId: String) =
+        handleApi { retrofitService.getPlaygrounds(token, userId) }
+
     override suspend fun getFreeSlots(token: String, id: Int, dayDiff: Int) =
         handleApi { retrofitService.getOpenSlots(token, id, dayDiff) }
 

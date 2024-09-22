@@ -1,10 +1,10 @@
 package com.company.rentafield.domain.use_case.remote_user
 
-import com.company.rentafield.domain.repository.RemoteUserRepository
+import com.company.rentafield.domain.repository.RemotePlaygroundRepository
 
 class GetPlaygroundsUseCase(
-    private val remoteUserRepository: RemoteUserRepository
+    private val remotePlaygroundsRepository: RemotePlaygroundRepository
 ) {
     suspend operator fun invoke(token: String, userId: String) =
-        remoteUserRepository.getPlaygrounds(token, userId)
+        remotePlaygroundsRepository.getPlaygrounds(token, userId)
 }

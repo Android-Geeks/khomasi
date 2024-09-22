@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.LocalUser
 import com.company.rentafield.domain.model.ai.AiResponse
-import com.company.rentafield.domain.repository.RemoteUserRepository
+import com.company.rentafield.domain.repository.RemoteAiRepository
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -19,7 +19,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class NotificationViewModel @Inject constructor(
-    private val remoteUserRepository: RemoteUserRepository,
+    private val remoteAiRepository: RemoteAiRepository,
     localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
     private val _notificationState: MutableStateFlow<DataState<AiResponse>> =
@@ -33,7 +33,7 @@ class NotificationViewModel @Inject constructor(
 
     fun getAiResult() {
         viewModelScope.launch(IO) {
-            remoteUserRepository.getAiResults(_localUser.value.userID ?: "").collect { aiResponse ->
+            remoteAiRepository.getAiResults(_localUser.value.userID ?: "").collect { aiResponse ->
                 Log.d("notificationState", "user id is ${_localUser.value.userID}")
                 _notificationState.value = aiResponse
             }

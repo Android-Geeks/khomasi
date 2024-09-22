@@ -5,9 +5,15 @@ import com.company.rentafield.data.data_source.RetrofitAiService
 import com.company.rentafield.data.data_source.RetrofitService
 import com.company.rentafield.data.repository.RemoteAiRepositoryImpl
 import com.company.rentafield.data.repository.RemotePlaygroundRepositoryImpl
+import com.company.rentafield.data.repository.RemoteUserAuthorizationImpl
+import com.company.rentafield.data.repository.RemoteUserBookingImpl
+import com.company.rentafield.data.repository.RemoteUserPlaygroundImpl
 import com.company.rentafield.data.repository.RemoteUserRepositoryImpl
 import com.company.rentafield.domain.repository.RemoteAiRepository
 import com.company.rentafield.domain.repository.RemotePlaygroundRepository
+import com.company.rentafield.domain.repository.RemoteUserAuthorization
+import com.company.rentafield.domain.repository.RemoteUserBooking
+import com.company.rentafield.domain.repository.RemoteUserPlayground
 import com.company.rentafield.domain.repository.RemoteUserRepository
 import com.company.rentafield.domain.use_case.ai.AiUseCases
 import com.company.rentafield.domain.use_case.ai.GetAiResultsUseCase
@@ -94,9 +100,27 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideRemoteUserAuthorization(
+        retrofitService: RetrofitService
+    ): RemoteUserAuthorization = RemoteUserAuthorizationImpl(retrofitService)
+
+    @Provides
+    @Singleton
     fun provideRemoteUserRepository(
         retrofitService: RetrofitService
     ): RemoteUserRepository = RemoteUserRepositoryImpl(retrofitService)
+
+    @Provides
+    @Singleton
+    fun provideRemoteUserBooking(
+        retrofitService: RetrofitService
+    ): RemoteUserBooking = RemoteUserBookingImpl(retrofitService)
+
+    @Provides
+    @Singleton
+    fun provideRemoteUserPlayground(
+        retrofitService: RetrofitService
+    ): RemoteUserPlayground = RemoteUserPlaygroundImpl(retrofitService)
 
     @Provides
     @Singleton
@@ -113,32 +137,35 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideAuthUseCases(
-        remoteUserRepository: RemoteUserRepository
+        remoteUserAuthorization: RemoteUserAuthorization
     ): AuthUseCases = AuthUseCases(
-        confirmEmailUseCase = ConfirmEmailUseCase(remoteUserRepository),
-        registerUseCase = RegisterUseCase(remoteUserRepository),
-        loginUseCase = LoginUseCase(remoteUserRepository),
-        getVerificationCodeUseCase = GetVerificationCodeUseCase(remoteUserRepository),
-        recoverAccountUseCase = RecoverAccountUseCase(remoteUserRepository)
+        confirmEmailUseCase = ConfirmEmailUseCase(remoteUserAuthorization),
+        registerUseCase = RegisterUseCase(remoteUserAuthorization),
+        loginUseCase = LoginUseCase(remoteUserAuthorization),
+        getVerificationCodeUseCase = GetVerificationCodeUseCase(remoteUserAuthorization),
+        recoverAccountUseCase = RecoverAccountUseCase(remoteUserAuthorization)
     )
 
     @Provides
     @Singleton
     fun provideRemoteUserUseCase(
-        remoteUserRepository: RemoteUserRepository
+        remoteUserRepository: RemoteUserRepository,
+        remotePlaygroundsRepository: RemotePlaygroundRepository,
+        remoteUserPlayground: RemoteUserPlayground,
+        remoteUserBooking: RemoteUserBooking
     ): RemoteUserUseCase = RemoteUserUseCase(
-        getPlaygroundsUseCase = GetPlaygroundsUseCase(remoteUserRepository),
-        getUserFavoritePlaygroundsUseCase = GetUserFavoritePlaygroundsUseCase(remoteUserRepository),
-        deleteUserFavoriteUseCase = DeleteUserFavouriteUseCase(remoteUserRepository),
-        getUserBookingsUseCase = GetUserBookingsUseCase(remoteUserRepository),
-        userFavouriteUseCase = UserFavouriteUseCase(remoteUserRepository),
-        getSpecificPlaygroundUseCase = GetSpecificPlaygroundUseCase(remoteUserRepository),
+        getPlaygroundsUseCase = GetPlaygroundsUseCase(remotePlaygroundsRepository),
+        getUserFavoritePlaygroundsUseCase = GetUserFavoritePlaygroundsUseCase(remoteUserPlayground),
+        deleteUserFavoriteUseCase = DeleteUserFavouriteUseCase(remoteUserPlayground),
+        getUserBookingsUseCase = GetUserBookingsUseCase(remoteUserBooking),
+        userFavouriteUseCase = UserFavouriteUseCase(remoteUserPlayground),
+        getSpecificPlaygroundUseCase = GetSpecificPlaygroundUseCase(remoteUserPlayground),
         updateProfilePictureUseCase = UpdateProfilePictureUseCase(remoteUserRepository),
         updateUserUseCase = UpdateUserUseCase(remoteUserRepository),
         sendFeedbackUseCase = SendFeedbackUseCase(remoteUserRepository),
         getProfileImageUseCase = GetProfileImageUseCase(remoteUserRepository),
-        cancelBookingUseCase = CancelBookingUseCase(remoteUserRepository),
-        playgroundReviewUseCase = PlaygroundReviewUseCase(remoteUserRepository),
+        cancelBookingUseCase = CancelBookingUseCase(remoteUserBooking),
+        playgroundReviewUseCase = PlaygroundReviewUseCase(remoteUserPlayground),
         userDataUseCase = UserDataUseCase(remoteUserRepository)
     )
 
@@ -160,7 +187,7 @@ object NetworkModule {
         remoteUserRepository: RemoteUserRepository
     ): AiUseCases = AiUseCases(
         uploadVideoUseCase = UploadVideoUseCase(remoteAiRepository),
-        getAiResultsUseCase = GetAiResultsUseCase(remoteUserRepository),
+        getAiResultsUseCase = GetAiResultsUseCase(remoteAiRepository),
         getUploadStatusUseCase = GetUploadStatusUseCase(remoteUserRepository)
     )
 }

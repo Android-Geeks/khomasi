@@ -1,10 +1,10 @@
 package com.company.rentafield.domain.use_case.remote_user
 
-import com.company.rentafield.domain.repository.RemoteUserRepository
+import com.company.rentafield.domain.repository.RemoteUserBooking
 
 class CancelBookingUseCase(
-    private val remoteUserRepository: RemoteUserRepository
+    private val remoteUserBooking: RemoteUserBooking
 ) {
     suspend operator fun invoke(token: String, bookingId: Int, isUser: Boolean) =
-        remoteUserRepository.cancelBooking(token, bookingId, isUser)
+        remoteUserBooking.cancelBooking(token, bookingId, isUser)
 }
