@@ -5,10 +5,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import com.company.rentafield.navigation.Screens
+import com.company.rentafield.presentation.navigation.components.Screens
 import com.company.rentafield.presentation.navigation.components.sharedViewModel
 import com.company.rentafield.presentation.screens.login.LoginScreen
-import com.company.rentafield.presentation.screens.login.LoginViewModel
 import com.company.rentafield.presentation.screens.loginOrSignup.LoginOrRegisterScreen
 import com.company.rentafield.presentation.screens.otp.OtpScreen
 import com.company.rentafield.presentation.screens.otp.OtpViewModel
@@ -39,24 +38,12 @@ fun NavGraphBuilder.authNavigator(
         }
 
         composable(route = Screens.AuthNavigation.Login.route) {
-            val loginViewModel: LoginViewModel = hiltViewModel()
             LoginScreen(
-                uiState = loginViewModel.uiState,
-                loginState = loginViewModel.loginState,
-                updatePassword = loginViewModel::updatePassword,
-                updateEmail = loginViewModel::updateEmail,
-                login = loginViewModel::login,
-                onLoginSuccess = loginViewModel::onLoginSuccess,
                 onRegisterClick = { navController.navigate(Screens.AuthNavigation.Register.route) },
                 onForgotPasswordClick = { navController.navigate(Screens.AuthNavigation.ResetPassword.route) },
-                verifyEmail = {
-                    loginViewModel.verifyEmail()
-                    navController.navigate(Screens.AuthNavigation.OTP.route)
-                },
-                loginWithGmail = loginViewModel::loginWithGmail,
-                privacyAndPolicy = loginViewModel::privacyAndPolicy,
-                helpAndSupport = loginViewModel::helpAndSupport,
-                isValidEmailAndPassword = loginViewModel::isValidEmailAndPassword
+                helpAndSupport = {},
+                privacyAndPolicy = {},
+                onEmailNotConfirmed = { navController.navigate(Screens.AuthNavigation.OTP.route) }
             )
         }
 

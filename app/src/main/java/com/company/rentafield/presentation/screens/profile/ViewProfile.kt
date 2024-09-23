@@ -24,7 +24,7 @@ import com.company.rentafield.presentation.screens.profile.components.content.Pr
 import com.company.rentafield.presentation.screens.profile.components.sheets.FeedbackBottomSheet
 import com.company.rentafield.presentation.screens.profile.components.sheets.LogoutBottomSheet
 import com.company.rentafield.presentation.screens.profile.components.topbar.ProfileTopBar
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 

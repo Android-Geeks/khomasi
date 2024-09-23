@@ -23,11 +23,11 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
-import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkHint
-import com.company.rentafield.theme.darkIcon
-import com.company.rentafield.theme.lightHint
-import com.company.rentafield.theme.lightIcon
+import com.company.rentafield.presentation.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.darkHint
+import com.company.rentafield.presentation.theme.darkIcon
+import com.company.rentafield.presentation.theme.lightHint
+import com.company.rentafield.presentation.theme.lightIcon
 
 @Composable
 fun CustomSearchBar(

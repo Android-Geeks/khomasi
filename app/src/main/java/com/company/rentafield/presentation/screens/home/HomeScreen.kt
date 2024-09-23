@@ -20,7 +20,7 @@ import com.company.rentafield.presentation.screens.home.components.HomeContent
 import com.company.rentafield.presentation.screens.home.components.HomeSearchBar
 import com.company.rentafield.presentation.screens.home.components.UserProfileHeader
 import com.company.rentafield.presentation.screens.home.model.HomeUiState
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.ThemePreviews
 import kotlinx.coroutines.flow.StateFlow
 

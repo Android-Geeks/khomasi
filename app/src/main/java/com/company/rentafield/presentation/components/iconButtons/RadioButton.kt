@@ -7,7 +7,7 @@ import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 
 @Composable
 fun RadioButton(

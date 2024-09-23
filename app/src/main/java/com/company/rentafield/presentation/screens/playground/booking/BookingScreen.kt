@@ -54,9 +54,9 @@ import com.company.rentafield.presentation.components.connectionStates.ThreeBoun
 import com.company.rentafield.presentation.screens.playground.components.CalendarPager
 import com.company.rentafield.presentation.screens.playground.components.DurationSelection
 import com.company.rentafield.presentation.screens.playground.components.SlotItem
-import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkOverlay
-import com.company.rentafield.theme.lightOverlay
+import com.company.rentafield.presentation.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.darkOverlay
+import com.company.rentafield.presentation.theme.lightOverlay
 import com.company.rentafield.utils.extractTimeFromTimestamp
 import com.company.rentafield.utils.screenDimensions.getScreenHeight
 import com.company.rentafield.utils.screenDimensions.getScreenWidth

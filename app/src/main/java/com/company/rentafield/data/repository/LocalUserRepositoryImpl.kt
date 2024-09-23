@@ -29,7 +29,7 @@ import com.company.rentafield.data.repository.PreferenceKeys.TOKEN
 import com.company.rentafield.data.repository.PreferenceKeys.USER_ID
 import com.company.rentafield.domain.model.LocalUser
 import com.company.rentafield.domain.repository.LocalUserRepository
-import com.company.rentafield.navigation.Screens
+import com.company.rentafield.presentation.navigation.components.Screens
 import com.company.rentafield.utils.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map

@@ -39,7 +39,7 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.cards.BookingStatus
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.convertToBitmap
 import com.company.rentafield.utils.extractDateFromTimestamp
 import com.company.rentafield.utils.parseTimestamp

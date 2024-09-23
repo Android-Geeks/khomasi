@@ -4,7 +4,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import com.company.rentafield.navigation.Screens
+import com.company.rentafield.presentation.navigation.components.Screens
 import com.company.rentafield.presentation.screens.onboarding.OnBoardingScreen
 import com.company.rentafield.presentation.screens.onboarding.OnboardingViewModel
 

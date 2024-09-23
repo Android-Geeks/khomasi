@@ -47,7 +47,7 @@ import com.company.rentafield.domain.model.auth.VerificationResponse
 import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.connectionStates.Loading
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import kotlinx.coroutines.flow.StateFlow
 
 @SuppressLint("DefaultLocale")

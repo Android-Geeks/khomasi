@@ -26,7 +26,7 @@ import com.company.rentafield.domain.model.booking.BookingDetails
 import com.company.rentafield.domain.model.booking.MyBookingsResponse
 import com.company.rentafield.presentation.screens.myBookings.components.CurrentPage
 import com.company.rentafield.presentation.screens.myBookings.components.ExpiredPage
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState

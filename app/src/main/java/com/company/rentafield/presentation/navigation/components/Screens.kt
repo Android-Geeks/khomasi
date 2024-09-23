@@ -1,4 +1,4 @@
-package com.company.rentafield.navigation
+package com.company.rentafield.presentation.navigation.components
 
 sealed class Screens(
     val route: String,

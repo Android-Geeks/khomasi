@@ -15,8 +15,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
-import com.company.rentafield.theme.darkOverlay
-import com.company.rentafield.theme.lightOverlay
+import com.company.rentafield.presentation.theme.darkOverlay
+import com.company.rentafield.presentation.theme.lightOverlay
 
 @Composable
 fun MyAlertDialog(

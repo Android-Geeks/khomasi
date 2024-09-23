@@ -27,7 +27,7 @@ import com.company.rentafield.R
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyModalBottomSheet
 import com.company.rentafield.presentation.components.MyOutlinedButton
-import com.company.rentafield.theme.Cairo
+import com.company.rentafield.presentation.theme.Cairo
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

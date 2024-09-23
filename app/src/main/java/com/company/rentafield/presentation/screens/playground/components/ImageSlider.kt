@@ -40,7 +40,7 @@ import com.company.rentafield.domain.model.playground.PlaygroundX
 import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
 import com.company.rentafield.presentation.components.iconButtons.RoundedFavoriteIcon
 import com.company.rentafield.presentation.screens.playground.model.PlaygroundInfoUiState
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.convertToBitmap
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager

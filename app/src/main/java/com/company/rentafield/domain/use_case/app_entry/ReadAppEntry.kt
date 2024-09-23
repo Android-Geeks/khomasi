@@ -1,7 +1,7 @@
 package com.company.rentafield.domain.use_case.app_entry
 
 import com.company.rentafield.domain.repository.LocalUserRepository
-import com.company.rentafield.navigation.Screens
+import com.company.rentafield.presentation.navigation.components.Screens
 import kotlinx.coroutines.flow.Flow
 
 class ReadAppEntry(

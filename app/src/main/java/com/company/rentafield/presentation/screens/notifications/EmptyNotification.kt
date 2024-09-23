@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.screens.notifications.component.NotificationsCard
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 
 
 @Composable

@@ -1,4 +1,4 @@
-package com.company.rentafield.theme
+package com.company.rentafield.presentation.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

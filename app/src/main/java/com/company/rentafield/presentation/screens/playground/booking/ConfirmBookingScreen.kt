@@ -36,7 +36,7 @@ import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.cards.BookingStatus
 import com.company.rentafield.presentation.screens.playground.components.PlaygroundBookingCard
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.extractTimeFromTimestamp
 import com.company.rentafield.utils.parseTimestamp
 import com.company.rentafield.utils.screenDimensions.getScreenHeight

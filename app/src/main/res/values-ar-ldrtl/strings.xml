@@ -242,7 +242,7 @@
     <string name="booking_price">سعر الحجز</string>
     <string name="payment_method">طريقه الدفع</string>
     <string name="pay_with">أدفع عن طريق</string>
-    <string name="invalid_email_or_password">البريد الإلكتروني أو كلمة المرور غير صحيحة</string>
+    <string name="invalid_password"> كلمة المرور غير صحيحة</string>
     <string name="email_not_confirmed">البريد الإلكتروني غير مؤكد</string>
     <string name="login_only_message">"هذا التطبيق للمستخدمين فقط. الحراس: ثبتوا تطبيق Rentafield Guard. الملاك: زوروا موقعنا."</string>
     <string name="booking_failure">فشل في الحصول على الحجوزات</string>
@@ -276,4 +276,5 @@
 .\n                        |• الا تخرج الكرة عن اطار الفيديو
 .\n                        |• تحسب الركلات بالقدم فقط
 .\n                    "</string>
+    <string name="invalid_email_or_password">البريد الالكترونى او كلمة المرور غير صحيح</string>
 </resources>

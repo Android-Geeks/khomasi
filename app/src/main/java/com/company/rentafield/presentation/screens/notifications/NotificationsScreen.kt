@@ -36,7 +36,7 @@ import com.company.rentafield.domain.model.ai.AiLog
 import com.company.rentafield.domain.model.ai.AiResponse
 import com.company.rentafield.presentation.screens.notifications.component.NotificationItem
 import com.company.rentafield.presentation.screens.search.components.MyTopAppBar
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.extractTimeFromTimestamp
 import com.company.rentafield.utils.parseTimestamp
 import kotlinx.coroutines.flow.MutableStateFlow

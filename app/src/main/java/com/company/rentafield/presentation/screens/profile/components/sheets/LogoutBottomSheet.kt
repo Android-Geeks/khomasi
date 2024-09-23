@@ -27,9 +27,9 @@ import com.company.rentafield.R
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyModalBottomSheet
 import com.company.rentafield.presentation.components.MyTextButton
-import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkErrorColor
-import com.company.rentafield.theme.lightErrorColor
+import com.company.rentafield.presentation.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.darkErrorColor
+import com.company.rentafield.presentation.theme.lightErrorColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 

@@ -34,11 +34,11 @@ import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyOutlinedButton
-import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkHint
-import com.company.rentafield.theme.darkSubText
-import com.company.rentafield.theme.lightHint
-import com.company.rentafield.theme.lightSubText
+import com.company.rentafield.presentation.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.darkHint
+import com.company.rentafield.presentation.theme.darkSubText
+import com.company.rentafield.presentation.theme.lightHint
+import com.company.rentafield.presentation.theme.lightSubText
 
 @Composable
 fun LoginOrRegisterScreen(

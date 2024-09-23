@@ -10,14 +10,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.company.rentafield.navigation.Screens
-import com.company.rentafield.navigation.listOfNavItems
 import com.company.rentafield.presentation.components.connectionStates.LossConnection
 import com.company.rentafield.presentation.navigation.components.BottomNavigationBar
+import com.company.rentafield.presentation.navigation.components.Screens
+import com.company.rentafield.presentation.navigation.components.listOfNavItems
 import com.company.rentafield.presentation.navigation.navigators.authNavigator
 import com.company.rentafield.presentation.navigation.navigators.onboardingNavigator
 import com.company.rentafield.presentation.navigation.navigators.rentAfieldNavigator
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.ConnectivityObserver
 
 @Composable

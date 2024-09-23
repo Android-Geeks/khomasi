@@ -39,8 +39,8 @@ import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.presentation.components.SubScreenTopBar
 import com.company.rentafield.presentation.screens.profile.components.PhotoSelectorView
-import com.company.rentafield.theme.darkIconMask
-import com.company.rentafield.theme.lightIconMask
+import com.company.rentafield.presentation.theme.darkIconMask
+import com.company.rentafield.presentation.theme.lightIconMask
 import com.company.rentafield.utils.CheckInputValidation
 import kotlinx.coroutines.flow.StateFlow
 import java.io.File

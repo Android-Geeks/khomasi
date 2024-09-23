@@ -20,9 +20,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
-import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkSubText
-import com.company.rentafield.theme.lightSubText
+import com.company.rentafield.presentation.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.darkSubText
+import com.company.rentafield.presentation.theme.lightSubText
 
 
 @Composable

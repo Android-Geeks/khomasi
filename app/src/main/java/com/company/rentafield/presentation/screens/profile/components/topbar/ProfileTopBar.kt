@@ -25,8 +25,8 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.theme.darkIconMask
-import com.company.rentafield.theme.lightIconMask
+import com.company.rentafield.presentation.theme.darkIconMask
+import com.company.rentafield.presentation.theme.lightIconMask
 
 @Composable
 fun ProfileTopBar(

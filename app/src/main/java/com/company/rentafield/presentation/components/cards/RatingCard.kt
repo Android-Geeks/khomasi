@@ -36,11 +36,11 @@ import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.MyButton
-import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkIcon
-import com.company.rentafield.theme.darkOverlay
-import com.company.rentafield.theme.lightIcon
-import com.company.rentafield.theme.lightOverlay
+import com.company.rentafield.presentation.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.darkIcon
+import com.company.rentafield.presentation.theme.darkOverlay
+import com.company.rentafield.presentation.theme.lightIcon
+import com.company.rentafield.presentation.theme.lightOverlay
 
 @Composable
 fun RatingCard(

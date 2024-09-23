@@ -48,7 +48,7 @@ import com.company.rentafield.presentation.screens.playground.components.Playgro
 import com.company.rentafield.presentation.screens.playground.components.PlaygroundSize
 import com.company.rentafield.presentation.screens.playground.model.PlaygroundInfoUiState
 import com.company.rentafield.presentation.screens.playground.model.PlaygroundReviewsUiState
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

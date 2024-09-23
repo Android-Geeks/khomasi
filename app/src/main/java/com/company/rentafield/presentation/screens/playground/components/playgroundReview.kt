@@ -28,7 +28,8 @@ import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
 import com.company.rentafield.domain.model.playground.Review
 import com.company.rentafield.presentation.components.cards.CommentCard
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.screens.playground.MockPlaygroundViewModel
+import com.company.rentafield.presentation.theme.RentafieldTheme
 
 
 @Composable
@@ -94,7 +95,7 @@ fun PlaygroundReviews(
 fun PlaygroundReviewsPreview() {
     RentafieldTheme {
         val mockViewModel =
-            com.company.rentafield.presentation.screens.playground.MockPlaygroundViewModel()
+            MockPlaygroundViewModel()
         PlaygroundReviews(
             reviews = mockViewModel.reviewsState.collectAsState().value,
             onClickCancel = {}

@@ -30,7 +30,7 @@ import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
 import com.company.rentafield.domain.model.playground.PlaygroundX
 import com.company.rentafield.presentation.components.MyOutlinedButton
 import com.company.rentafield.presentation.screens.playground.model.PlaygroundReviewsUiState
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

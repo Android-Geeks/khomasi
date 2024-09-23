@@ -34,9 +34,9 @@ import com.company.rentafield.presentation.screens.search.components.EmptySearch
 import com.company.rentafield.presentation.screens.search.components.SearchHistory
 import com.company.rentafield.presentation.screens.search.components.SearchResults
 import com.company.rentafield.presentation.screens.search.components.SearchTopAppBar
-import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkErrorColor
-import com.company.rentafield.theme.lightErrorColor
+import com.company.rentafield.presentation.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.darkErrorColor
+import com.company.rentafield.presentation.theme.lightErrorColor
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

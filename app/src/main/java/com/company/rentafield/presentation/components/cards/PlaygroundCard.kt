@@ -42,8 +42,8 @@ import com.company.rentafield.R
 import com.company.rentafield.domain.model.playground.Playground
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.iconButtons.FavoriteIcon
-import com.company.rentafield.theme.darkCard
-import com.company.rentafield.theme.lightCard
+import com.company.rentafield.presentation.theme.darkCard
+import com.company.rentafield.presentation.theme.lightCard
 import com.company.rentafield.utils.convertToBitmap
 import com.company.rentafield.utils.gradientOverlay
 import java.util.Locale

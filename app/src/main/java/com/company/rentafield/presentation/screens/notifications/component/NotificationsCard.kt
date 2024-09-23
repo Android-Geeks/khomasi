@@ -23,9 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.presentation.screens.notifications.DrawLine
-import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkOverlay
-import com.company.rentafield.theme.lightOverlay
+import com.company.rentafield.presentation.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.darkOverlay
+import com.company.rentafield.presentation.theme.lightOverlay
 
 private val MAIN_PADDING = 20.dp
 private val SECONDARY_PADDING = 13.dp

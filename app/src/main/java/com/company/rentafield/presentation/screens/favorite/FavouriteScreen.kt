@@ -30,7 +30,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.SubScreenTopBar
 import com.company.rentafield.presentation.components.cards.PlaygroundCard
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalFoundationApi::class)

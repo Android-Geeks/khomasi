@@ -57,9 +57,9 @@ import com.company.rentafield.presentation.screens.venues.component.MyTimePicker
 import com.company.rentafield.presentation.screens.venues.component.PlaygroundsFilterSelection
 import com.company.rentafield.presentation.screens.venues.component.PriceSlider
 import com.company.rentafield.presentation.screens.venues.component.TypeCard
-import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkOverlay
-import com.company.rentafield.theme.lightOverlay
+import com.company.rentafield.presentation.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.darkOverlay
+import com.company.rentafield.presentation.theme.lightOverlay
 import com.company.rentafield.utils.screenDimensions.getScreenHeight
 import com.company.rentafield.utils.screenDimensions.getScreenWidth
 import kotlinx.coroutines.flow.StateFlow

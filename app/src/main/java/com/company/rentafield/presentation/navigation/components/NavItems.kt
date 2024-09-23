@@ -1,4 +1,4 @@
-package com.company.rentafield.navigation
+package com.company.rentafield.presentation.navigation.components
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes

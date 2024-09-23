@@ -71,9 +71,9 @@ import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.presentation.screens.playground.model.PaymentType
 import com.company.rentafield.presentation.screens.playground.model.PlaygroundInfoUiState
-import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkText
-import com.company.rentafield.theme.lightText
+import com.company.rentafield.presentation.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.darkText
+import com.company.rentafield.presentation.theme.lightText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

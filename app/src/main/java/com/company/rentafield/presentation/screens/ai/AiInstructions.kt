@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.MyOutlinedButton
 import com.company.rentafield.presentation.components.SubScreenTopBar
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 
 @Composable
 fun AiInstructions(

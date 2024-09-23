@@ -21,7 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.CheckInputValidation
 import com.nulabinc.zxcvbn.Zxcvbn
 
@@ -44,19 +44,21 @@ fun PasswordStrengthMeter(
 
 
     val indicatorColoringRange by remember {
-        mutableStateOf(listOf(
-            listOf(0, 1, 2, 3, 4),
-            listOf(2, 3, 4),
-            listOf(3, 4),
-            listOf(4)
-        ))
+        mutableStateOf(
+            listOf(
+                listOf(0, 1, 2, 3, 4),
+                listOf(2, 3, 4),
+                listOf(3, 4),
+                listOf(4)
+            )
+        )
     }
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
         horizontalArrangement = Arrangement.Center
-    ){
+    ) {
         indicatorColoringRange.forEach { config ->
             PasswordStrengthIndicator(
                 passwordStrength = passwordStrength,
@@ -72,9 +74,9 @@ fun PasswordStrengthMeter(
 fun PasswordStrengthIndicator(
     passwordStrength: Int,
     coloringEnableRange: List<Int>,
-    modifier : Modifier = Modifier,
-    enable : Boolean = false,
-){
+    modifier: Modifier = Modifier,
+    enable: Boolean = false,
+) {
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -84,8 +86,8 @@ fun PasswordStrengthIndicator(
                 color = MaterialTheme.colorScheme.background,
                 shape = CircleShape
             )
-    ){
-        if (passwordStrength in coloringEnableRange && enable){
+    ) {
+        if (passwordStrength in coloringEnableRange && enable) {
             Box(
                 modifier = Modifier
                     .fillMaxSize()

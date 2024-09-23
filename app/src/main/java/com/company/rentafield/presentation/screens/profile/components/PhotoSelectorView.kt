@@ -36,7 +36,7 @@ import com.company.rentafield.BuildConfig
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.MyTextButton
 import com.company.rentafield.presentation.screens.profile.components.sheets.UploadPhotoOptionsSheet
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.convertToBitmap
 import com.company.rentafield.utils.createImageFile
 import com.company.rentafield.utils.createImageFromUri

@@ -40,9 +40,9 @@ import com.company.rentafield.presentation.components.SubScreenTopBar
 import com.company.rentafield.presentation.components.cards.BookingCard
 import com.company.rentafield.presentation.components.cards.BookingStatus
 import com.company.rentafield.presentation.screens.myBookings.MyBookingUiState
-import com.company.rentafield.theme.Cairo
-import com.company.rentafield.theme.darkErrorColor
-import com.company.rentafield.theme.lightErrorColor
+import com.company.rentafield.presentation.theme.Cairo
+import com.company.rentafield.presentation.theme.darkErrorColor
+import com.company.rentafield.presentation.theme.lightErrorColor
 import kotlinx.coroutines.flow.StateFlow
 
 

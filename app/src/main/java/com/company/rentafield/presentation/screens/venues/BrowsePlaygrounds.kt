@@ -26,7 +26,7 @@ import com.company.rentafield.domain.model.search.FilteredPlaygroundResponse
 import com.company.rentafield.presentation.components.SubScreenTopBar
 import com.company.rentafield.presentation.components.cards.PlaygroundCard
 import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.ThemePreviews
 import kotlinx.coroutines.flow.StateFlow
 

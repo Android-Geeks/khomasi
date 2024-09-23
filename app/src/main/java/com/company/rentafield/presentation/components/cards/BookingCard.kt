@@ -44,11 +44,11 @@ import com.company.rentafield.R
 import com.company.rentafield.domain.model.booking.BookingDetails
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyOutlinedButton
-import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkErrorColor
-import com.company.rentafield.theme.darkSubText
-import com.company.rentafield.theme.lightErrorColor
-import com.company.rentafield.theme.lightSubText
+import com.company.rentafield.presentation.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.darkErrorColor
+import com.company.rentafield.presentation.theme.darkSubText
+import com.company.rentafield.presentation.theme.lightErrorColor
+import com.company.rentafield.presentation.theme.lightSubText
 import com.company.rentafield.utils.convertToBitmap
 import com.company.rentafield.utils.extractDateFromTimestamp
 import com.company.rentafield.utils.extractTimeFromTimestamp

@@ -243,7 +243,7 @@
     <string name="fawry_pay">FawryPay</string>
     <string name="payment_method">Payment Method</string>
     <string name="pay_with">Pay with</string>
-    <string name="invalid_email_or_password">Invalid email or password</string>
+    <string name="invalid_password">Invalid Password</string>
     <string name="email_not_confirmed">Email is not Confirmed</string>
     <string name="login_only_message">Users login only. Guards: install Rentafield Guard app. Owners: visit website.</string>
     <string name="booking_failure">Failed to get bookings</string>
@@ -271,5 +271,6 @@
     <string name="browse">Browse or Capture a video </string>
     <string name="instructions">Instructions</string>
     <string name="dribbling_challenge_instructions">"\n                        |• Upload a small video where you kick up the ball without touching the ground as much as you can.\n                        |• The person does not go out of the video frame.\n                        |• He does not touch the ball with his hands.\n                        |• The ball does not touch the ground.\n                        |• The ball does not go out of the video frame.\n                        |• Foot kicks only counts.\n                    "</string>
+    <string name="invalid_email_or_password">Invalid Email Or Password</string>
 
 </resources>

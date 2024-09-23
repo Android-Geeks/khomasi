@@ -2,7 +2,7 @@ package com.company.rentafield.domain.repository
 
 
 import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.navigation.Screens
+import com.company.rentafield.presentation.navigation.components.Screens
 import kotlinx.coroutines.flow.Flow
 
 interface LocalUserRepository {

@@ -33,7 +33,7 @@ import com.company.rentafield.presentation.components.cards.PlaygroundCard
 import com.company.rentafield.presentation.screens.search.components.EmptySearch
 import com.company.rentafield.presentation.screens.search.components.MyTopAppBar
 import com.company.rentafield.presentation.screens.search.components.SearchFilterSheetContent
-import com.company.rentafield.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.RentafieldTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch

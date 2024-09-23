@@ -20,9 +20,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.company.rentafield.theme.RentafieldTheme
-import com.company.rentafield.theme.darkIconMask
-import com.company.rentafield.theme.lightIconMask
+import com.company.rentafield.presentation.theme.RentafieldTheme
+import com.company.rentafield.presentation.theme.darkIconMask
+import com.company.rentafield.presentation.theme.lightIconMask
 
 @Composable
 fun PlaygroundStatus(
