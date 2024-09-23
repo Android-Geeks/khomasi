@@ -18,11 +18,7 @@ import com.company.rentafield.utils.rememberFlowWithLifecycle
 @Composable
 fun LoginScreen(
     viewModel: LoginViewModel = hiltViewModel(),
-    onEmailNotConfirmed: () -> Unit,
-    onRegisterClick: () -> Unit,
-    onForgotPasswordClick: () -> Unit,
-    privacyAndPolicy: () -> Unit,
-    helpAndSupport: () -> Unit,
+    onNavigate: (LoginReducer.Effect) -> Unit
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val effect = rememberFlowWithLifecycle(viewModel.effect)
@@ -38,7 +34,7 @@ fun LoginScreen(
                         LoginReducer.Effect.Error.InvalidPassword -> R.string.invalid_password
                         LoginReducer.Effect.Error.EmailNotConfirmed -> {
                             viewModel.verifyEmail()
-                            onEmailNotConfirmed()
+                            onNavigate(LoginReducer.Effect.Error.EmailNotConfirmed)
                             R.string.email_not_confirmed
                         }
 
@@ -48,10 +44,9 @@ fun LoginScreen(
                     Toast.makeText(context, context.getString(message), Toast.LENGTH_SHORT).show()
                 }
 
-                LoginReducer.Effect.NavigateToHelpAndSupport -> helpAndSupport()
-                LoginReducer.Effect.NavigateToPrivacyAndPolicy -> privacyAndPolicy()
-                LoginReducer.Effect.NavigateToRegister -> onRegisterClick()
-                LoginReducer.Effect.NavigateToResetPassword -> onForgotPasswordClick()
+                else -> {
+                    onNavigate(action) // Handle other effects via the higher-order function
+                }
             }
         }
     }

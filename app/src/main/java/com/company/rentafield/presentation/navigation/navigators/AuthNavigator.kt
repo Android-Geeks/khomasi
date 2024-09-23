@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import com.company.rentafield.presentation.navigation.components.Screens
 import com.company.rentafield.presentation.navigation.components.sharedViewModel
+import com.company.rentafield.presentation.screens.login.LoginReducer
 import com.company.rentafield.presentation.screens.login.LoginScreen
 import com.company.rentafield.presentation.screens.loginOrSignup.LoginOrRegisterScreen
 import com.company.rentafield.presentation.screens.otp.OtpScreen
@@ -39,11 +40,18 @@ fun NavGraphBuilder.authNavigator(
 
         composable(route = Screens.AuthNavigation.Login.route) {
             LoginScreen(
-                onRegisterClick = { navController.navigate(Screens.AuthNavigation.Register.route) },
-                onForgotPasswordClick = { navController.navigate(Screens.AuthNavigation.ResetPassword.route) },
-                helpAndSupport = {},
-                privacyAndPolicy = {},
-                onEmailNotConfirmed = { navController.navigate(Screens.AuthNavigation.OTP.route) }
+                onNavigate = {
+                    when (it) {
+                        LoginReducer.Effect.NavigateToHelpAndSupport -> Unit
+                        LoginReducer.Effect.NavigateToPrivacyAndPolicy -> Unit
+                        LoginReducer.Effect.NavigateToRegister -> navController.navigate(Screens.AuthNavigation.Register.route)
+                        LoginReducer.Effect.NavigateToResetPassword -> navController.navigate(
+                            Screens.AuthNavigation.ResetPassword.route
+                        )
+
+                        else -> Unit
+                    }
+                }
             )
         }
 
