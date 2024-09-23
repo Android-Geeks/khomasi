@@ -5,10 +5,12 @@ import com.company.rentafield.domain.model.booking.BookingPlaygroundResponse
 import com.company.rentafield.domain.model.playground.BookingRequest
 import com.company.rentafield.domain.model.playground.FreeTimeSlotsResponse
 import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
+import com.company.rentafield.domain.model.playground.PlaygroundsResponse
 import com.company.rentafield.domain.model.search.FilteredPlaygroundResponse
 import kotlinx.coroutines.flow.Flow
 
 interface RemotePlaygroundRepository {
+    suspend fun getPlaygrounds(token: String, userId: String): Flow<DataState<PlaygroundsResponse>>
     suspend fun getFreeSlots(
         token: String,
         id: Int,
