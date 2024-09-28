@@ -1,9 +1,7 @@
-package com.company.rentafield.presentation.screens.home.vm
+package com.company.rentafield.presentation.screens.home
 
-import android.util.Log
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.LocalUser
 import com.company.rentafield.domain.use_case.ai.AiUseCases
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
@@ -23,19 +21,13 @@ class HomeViewModel @Inject constructor(
     reducer = HomeReducer()
 ) {
 
-    init {
-        getHomeData()
-    }
-
-    private fun getHomeData() {
+    fun getHomeData() {
         viewModelScope.launch(IO) {
             localUserUseCases.getLocalUser().collect { localUser ->
-                if (localUser != LocalUser()) {
-                    sendEvent(HomeReducer.Event.UpdateLocalUser(localUser))
-                    launch { fetchPlaygrounds() }
-                    launch { fetchProfileImage() }
-                    launch { fetchUploadStatus() }
-                }
+                sendEvent(HomeReducer.Event.UpdateLocalUser(localUser))
+                launch { fetchPlaygrounds() }
+                launch { fetchProfileImage() }
+                launch { fetchUploadStatus() }
             }
         }
     }
@@ -46,17 +38,27 @@ class HomeViewModel @Inject constructor(
             state.value.localUser.userID ?: ""
         ).collect { state ->
             when (state) {
-                is DataState.Loading -> sendEvent(HomeReducer.Event.UpdateIsLoading(true))
-                is DataState.Success -> {
-                    sendEvent(
-                        HomeReducer.Event.UpdatePlaygrounds(
-                            state.data.playgrounds.sortedBy { it.distance }.take(3)
-                        )
-                    )
-                    sendEvent(HomeReducer.Event.UpdateIsLoading(false))
+                is DataState.Loading -> {
+                    if (super.state.value.playgrounds.isEmpty())
+                        sendEvent(HomeReducer.Event.UpdateIsLoading(true))
                 }
 
-                else -> sendEvent(HomeReducer.Event.UpdateIsLoading(false))
+                else -> {
+                    sendEvent(HomeReducer.Event.UpdateIsLoading(false))
+                    when (state) {
+                        is DataState.Success -> {
+                            sendEvent(
+                                HomeReducer.Event.UpdatePlaygrounds(
+                                    state.data.playgrounds.sortedBy { it.distance }.take(3)
+                                )
+                            )
+                        }
+
+                        is DataState.Error -> sendEffect(HomeReducer.Effect.Error.PlaygroundsError)
+
+                        else -> Unit
+                    }
+                }
             }
         }
     }
@@ -73,11 +75,14 @@ class HomeViewModel @Inject constructor(
             "Bearer ${state.value.localUser.token}",
             state.value.localUser.userID ?: ""
         ).collect { state ->
-            if (state is DataState.Success) {
-                Log.i("ProfileImage", "ProfileImage: ${state.data.profilePicture}")
-                sendEvent(
+            when (state) {
+                is DataState.Success -> sendEvent(
                     HomeReducer.Event.UpdateProfileImage(state.data.profilePicture ?: "")
                 )
+
+                is DataState.Error -> sendEffect(HomeReducer.Effect.Error.ProfileImageError)
+
+                else -> Unit
             }
         }
     }

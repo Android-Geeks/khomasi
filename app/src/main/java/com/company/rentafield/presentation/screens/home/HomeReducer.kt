@@ -1,5 +1,7 @@
-package com.company.rentafield.presentation.screens.home.vm
+package com.company.rentafield.presentation.screens.home
 
+import androidx.annotation.StringRes
+import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.LocalUser
 import com.company.rentafield.domain.model.UserDataResponse
@@ -40,6 +42,12 @@ class HomeReducer : Reducer<HomeReducer.State, HomeReducer.Event, HomeReducer.Ef
         data class NavigateToPlaygroundDetails(
             val playgroundId: Int, val isFavourite: Boolean
         ) : Effect()
+
+        sealed class Error(@StringRes val message: Int) : Effect() {
+            data object UploadVideoError : Error(R.string.you_can_t_upload_video_now)
+            data object ProfileImageError : Error(R.string.error_fetching_profile_image)
+            data object PlaygroundsError : Error(R.string.error_fetching_playgrounds_data)
+        }
     }
 
     @Immutable
@@ -61,7 +69,11 @@ class HomeReducer : Reducer<HomeReducer.State, HomeReducer.Event, HomeReducer.Ef
 
             is Event.UpdatePlaygrounds -> previousState.copy(playgrounds = event.playgrounds) to null
 
-            is Event.UpdateCanUploadVideo -> previousState.copy(canUploadVideo = event.canUploadVideo) to null
+            is Event.UpdateCanUploadVideo ->
+                previousState.copy(canUploadVideo = event.canUploadVideo) to
+                        if (!event.canUploadVideo)
+                            Effect.Error.UploadVideoError
+                        else null
 
             is Event.UpdateProfileImage -> previousState.copy(profileImage = event.profileImage) to null
 

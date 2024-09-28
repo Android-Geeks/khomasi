@@ -13,8 +13,8 @@ import com.company.rentafield.presentation.navigation.components.sharedViewModel
 import com.company.rentafield.presentation.screens.ai.AiScreen
 import com.company.rentafield.presentation.screens.favorite.FavouriteScreen
 import com.company.rentafield.presentation.screens.favorite.FavouriteViewModel
+import com.company.rentafield.presentation.screens.home.HomeReducer
 import com.company.rentafield.presentation.screens.home.HomeScreen
-import com.company.rentafield.presentation.screens.home.vm.HomeReducer
 import com.company.rentafield.presentation.screens.myBookings.MyBookingScreen
 import com.company.rentafield.presentation.screens.myBookings.MyBookingViewModel
 import com.company.rentafield.presentation.screens.myBookings.components.CancelBookingPage
@@ -73,6 +73,8 @@ fun NavGraphBuilder.rentAfieldNavigator(navController: NavHostController) {
                         is HomeReducer.Effect.NavigateToProfile -> navController.navigate(Screens.RentafieldNavigation.Profile.route)
 
                         is HomeReducer.Effect.NavigateToSearch -> navController.navigate(Screens.RentafieldNavigation.Search.route)
+
+                        else -> Unit
                     }
                 }
             )
