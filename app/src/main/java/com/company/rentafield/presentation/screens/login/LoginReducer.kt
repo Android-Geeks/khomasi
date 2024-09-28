@@ -1,6 +1,8 @@
 package com.company.rentafield.presentation.screens.login
 
+import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
+import com.company.rentafield.R
 import com.company.rentafield.presentation.base.Reducer
 
 class LoginReducer :
@@ -23,13 +25,13 @@ class LoginReducer :
         data object NavigateToResetPassword : Effect()
         data object NavigateToPrivacyAndPolicy : Effect()
         data object NavigateToHelpAndSupport : Effect()
-        sealed class Error(val message: String) : Effect() {
-            data object InvalidEmailOrPassword : Error("Invalid Email or Password")
-            data object InvalidPassword : Error("Invalid Password")
-            data object EmailNotConfirmed : Error("Email Not Confirmed")
-            data object UserNotFound : Error("User Not Found")
-            data object UserLoginOnly : Error("User Login Only")
-            data object Unknown : Error("Unknown Error")
+        sealed class Error(@StringRes val message: Int) : Effect() {
+            data object InvalidEmailOrPassword : Error(R.string.invalid_email_or_password)
+            data object InvalidPassword : Error(R.string.invalid_password)
+            data object EmailNotConfirmed : Error(R.string.email_not_confirmed)
+            data object UserNotFound : Error(R.string.user_not_found)
+            data object UserLoginOnly : Error(R.string.login_only_message)
+            data object Unknown : Error(R.string.something_went_wrong)
         }
     }
 
