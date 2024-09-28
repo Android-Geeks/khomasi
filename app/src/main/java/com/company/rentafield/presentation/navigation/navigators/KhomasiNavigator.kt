@@ -14,7 +14,7 @@ import com.company.rentafield.presentation.screens.ai.AiScreen
 import com.company.rentafield.presentation.screens.favorite.FavouriteScreen
 import com.company.rentafield.presentation.screens.favorite.FavouriteViewModel
 import com.company.rentafield.presentation.screens.home.HomeScreen
-import com.company.rentafield.presentation.screens.home.HomeViewModel
+import com.company.rentafield.presentation.screens.home.vm.HomeReducer
 import com.company.rentafield.presentation.screens.myBookings.MyBookingScreen
 import com.company.rentafield.presentation.screens.myBookings.MyBookingViewModel
 import com.company.rentafield.presentation.screens.myBookings.components.CancelBookingPage
@@ -44,27 +44,37 @@ fun NavGraphBuilder.rentAfieldNavigator(navController: NavHostController) {
         startDestination = Screens.RentafieldNavigation.Home.route
     ) {
         composable(route = Screens.RentafieldNavigation.Home.route) {
-            val homeViewModel: HomeViewModel = hiltViewModel()
             HomeScreen(
-                homeUiState = homeViewModel.homeUiState,
-                onClickUserImage = { navController.navigate(Screens.RentafieldNavigation.Profile.route) },
-                onClickPlaygroundCard = { playgroundId, isFavourite ->
-                    navController.navigate(Screens.RentafieldNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
-                },
-                onClickBell = { navController.navigate(Screens.RentafieldNavigation.Notifications.route) },
-                onClickViewAll = {
-                    navController.navigate(Screens.RentafieldNavigation.Playgrounds.route) {
-                        popUpTo(navController.graph.findStartDestination().id) {
-                            saveState = true
+                onNavigate = { action ->
+                    when (action) {
+                        is HomeReducer.Effect.NavigateToAiService -> {
+                            navController.navigate(Screens.RentafieldNavigation.AiService.route + "/${action.userId}")
                         }
-                        launchSingleTop = true
-                        restoreState = true
 
+                        is HomeReducer.Effect.NavigateToBrowsePlaygrounds -> {
+                            navController.navigate(Screens.RentafieldNavigation.Playgrounds.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+
+                            }
+                        }
+
+                        is HomeReducer.Effect.NavigateToNotifications -> navController.navigate(
+                            Screens.RentafieldNavigation.Notifications.route
+                        )
+
+                        is HomeReducer.Effect.NavigateToPlaygroundDetails -> navController.navigate(
+                            Screens.RentafieldNavigation.BookingPlayground.route + "/${action.playgroundId}" + "/${action.isFavourite}"
+                        )
+
+                        is HomeReducer.Effect.NavigateToProfile -> navController.navigate(Screens.RentafieldNavigation.Profile.route)
+
+                        is HomeReducer.Effect.NavigateToSearch -> navController.navigate(Screens.RentafieldNavigation.Search.route)
                     }
-                },
-                onSearchBarClicked = { navController.navigate(Screens.RentafieldNavigation.Search.route) },
-                onAdClicked = { userId -> navController.navigate(Screens.RentafieldNavigation.AiService.route + "/$userId") },
-                onFavouriteClick = homeViewModel::onFavouriteClicked
+                }
             )
         }
 
