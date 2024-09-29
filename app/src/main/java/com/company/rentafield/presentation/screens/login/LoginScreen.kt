@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.company.rentafield.R
 import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.ThemePreviews
 import com.company.rentafield.utils.rememberFlowWithLifecycle
@@ -28,20 +27,15 @@ fun LoginScreen(
         effect.collect { action ->
             when (action) {
                 is LoginReducer.Effect.Error -> {
-                    val message = when (action) {
-                        LoginReducer.Effect.Error.InvalidEmailOrPassword -> R.string.invalid_email_or_password
-                        LoginReducer.Effect.Error.UserNotFound -> R.string.user_not_found
-                        LoginReducer.Effect.Error.InvalidPassword -> R.string.invalid_password
+                    when (action) {
                         LoginReducer.Effect.Error.EmailNotConfirmed -> {
                             viewModel.verifyEmail()
                             onNavigate(LoginReducer.Effect.Error.EmailNotConfirmed)
-                            R.string.email_not_confirmed
                         }
 
-                        LoginReducer.Effect.Error.UserLoginOnly -> R.string.login_only_message
-                        LoginReducer.Effect.Error.Unknown -> R.string.something_went_wrong
+                        else -> Unit
                     }
-                    Toast.makeText(context, context.getString(message), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, action.message, Toast.LENGTH_SHORT).show()
                 }
 
                 else -> {
