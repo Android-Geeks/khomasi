@@ -68,11 +68,6 @@ fun HomeContent(
                 userId = state.localUser.userID ?: "",
                 onAdClicked = { id ->
                     if (state.canUploadVideo) sendEvent(HomeReducer.Event.AdClicked(id))
-//                    else Toast.makeText(
-//                        context,
-//                        context.getString(R.string.you_can_t_upload_video_now),
-//                        Toast.LENGTH_SHORT
-//                    ).show()
                 }
             )
         }
