@@ -277,4 +277,5 @@
 .\n                        |• تحسب الركلات بالقدم فقط
 .\n                    "</string>
     <string name="invalid_email_or_password">البريد الالكترونى او كلمة المرور غير صحيح</string>
+    <string name="error_fetching_playgrounds_data">حدث خطأ فى تحميل بيانات الملاعب</string>
 </resources>
