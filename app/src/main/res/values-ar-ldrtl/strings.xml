@@ -248,7 +248,7 @@
     <string name="booking_failure">فشل في الحصول على الحجوزات</string>
     <string name="already_rated">تم التقييم بالفعل</string>
     <string name="rating_failure">فشل في التقييم، حاول مرة آخرى</string>
-    <string name="donot_have_notifications">لا توجد لديك اي اشعارات جديدة !</string>
+    <string name="do_not_have_notifications">لا توجد لديك اي اشعارات جديدة !</string>
     <string name="existing_email_message">هذا البريد الالكترونى موجود بالفعل</string>
     <string name="you_can_t_upload_video_now">لا يمكنك رفع فيديو الآن</string>
     <string name="ad_content_1">ارفع فيديو واربح العملات الآن!</string>
@@ -277,4 +277,6 @@
 .\n                        |• تحسب الركلات بالقدم فقط
 .\n                    "</string>
     <string name="invalid_email_or_password">البريد الالكترونى او كلمة المرور غير صحيح</string>
+    <string name="error_fetching_profile_image">حدث خطأ فى تحميل صورة الملف الشخصى</string>
+    <string name="error_fetching_playgrounds_data">حدث خطأ غى تحميل بيانات الملاعب</string>
 </resources>
