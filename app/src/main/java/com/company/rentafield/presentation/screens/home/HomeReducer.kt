@@ -2,9 +2,7 @@ package com.company.rentafield.presentation.screens.home
 
 import androidx.annotation.StringRes
 import com.company.rentafield.R
-import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.UserDataResponse
 import com.company.rentafield.domain.model.playground.Playground
 import com.company.rentafield.presentation.base.Reducer
 import com.company.rentafield.presentation.screens.home.model.AdsContent
@@ -28,7 +26,6 @@ class HomeReducer : Reducer<HomeReducer.State, HomeReducer.Event, HomeReducer.Ef
         data class UpdateProfileImage(val profileImage: String) : Event()
         data class UpdateCanUploadVideo(val canUploadVideo: Boolean) : Event()
         data class UpdatePlaygrounds(val playgrounds: List<Playground>) : Event()
-        data class UpdateDataState(val dataState: DataState<UserDataResponse>) : Event()
         data class PlaygroundClick(val playgroundId: Int, val isFavourite: Boolean) : Event()
     }
 
@@ -57,8 +54,7 @@ class HomeReducer : Reducer<HomeReducer.State, HomeReducer.Event, HomeReducer.Ef
         val profileImage: String,
         val canUploadVideo: Boolean,
         val adList: List<AdsContent>,
-        val playgrounds: List<Playground>,
-        val dataState: DataState<UserDataResponse>
+        val playgrounds: List<Playground>
     ) : Reducer.ViewState
 
     override fun reduce(previousState: State, event: Event): Pair<State, Effect?> {
@@ -78,8 +74,6 @@ class HomeReducer : Reducer<HomeReducer.State, HomeReducer.Event, HomeReducer.Ef
             is Event.UpdateProfileImage -> previousState.copy(profileImage = event.profileImage) to null
 
             is Event.UpdateLocalUser -> previousState.copy(localUser = event.localUser) to null
-
-            is Event.UpdateDataState -> previousState.copy(dataState = event.dataState) to null
 
             is Event.UpdateIsLoading -> previousState.copy(isLoading = event.isLoading) to null
 
@@ -120,8 +114,7 @@ class HomeReducer : Reducer<HomeReducer.State, HomeReducer.Event, HomeReducer.Ef
             profileImage = "",
             canUploadVideo = false,
             localUser = LocalUser(),
-            playgrounds = emptyList(),
-            dataState = DataState.Empty,
+            playgrounds = emptyList()
         )
     }
 }
