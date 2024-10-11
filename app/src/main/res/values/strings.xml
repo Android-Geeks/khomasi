@@ -249,7 +249,7 @@
     <string name="booking_failure">Failed to get bookings</string>
     <string name="already_rated">Already Rated.</string>
     <string name="rating_failure">Failed to rate, try again</string>
-    <string name="donot_have_notifications">You do not have any new notifications!</string>
+    <string name="do_not_have_notifications">You do not have any new notifications!</string>
     <string name="you_can_t_upload_video_now">You can\'t upload video now</string>
     <string name="ad_content_1">Upload Video and Win Coins Now!</string>
     <string name="ad_content_2">Book any playground with a 10% discount</string>
@@ -272,6 +272,6 @@
     <string name="instructions">Instructions</string>
     <string name="dribbling_challenge_instructions">"\n                        |• Upload a small video where you kick up the ball without touching the ground as much as you can.\n                        |• The person does not go out of the video frame.\n                        |• He does not touch the ball with his hands.\n                        |• The ball does not touch the ground.\n                        |• The ball does not go out of the video frame.\n                        |• Foot kicks only counts.\n                    "</string>
     <string name="invalid_email_or_password">Invalid Email Or Password</string>
-    <string name="error_fetching_playgrounds_data">error fetching playground data</string>
-
+    <string name="error_fetching_profile_image">error fetching profile image</string>
+    <string name="error_fetching_playgrounds_data">error fetching playgrounds data</string>
 </resources>

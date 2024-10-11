@@ -34,12 +34,13 @@ fun UserProfileHeader(
     userFirstName: String,
     profileImage: String?,
     onClickUserImage: () -> Unit,
-    onClickBell: () -> Unit
+    onClickBell: () -> Unit,
+    modifier: Modifier=Modifier
 ) {
     val imageRequest = remember(profileImage) {
         profileImage?.convertToBitmap() ?: ""
     }
-    Row {
+    Row(modifier = modifier) {
         SubcomposeAsyncImage(
             modifier = Modifier
                 .size(50.dp)
