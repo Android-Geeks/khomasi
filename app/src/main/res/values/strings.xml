@@ -274,5 +274,4 @@
     <string name="invalid_email_or_password">Invalid Email Or Password</string>
     <string name="error_fetching_profile_image">error fetching profile image</string>
     <string name="error_fetching_playgrounds_data">error fetching playgrounds data</string>
-
 </resources>

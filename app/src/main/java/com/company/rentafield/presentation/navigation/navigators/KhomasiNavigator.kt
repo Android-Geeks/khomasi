@@ -11,8 +11,8 @@ import androidx.navigation.navigation
 import com.company.rentafield.presentation.navigation.components.Screens
 import com.company.rentafield.presentation.navigation.components.sharedViewModel
 import com.company.rentafield.presentation.screens.ai.AiScreen
+import com.company.rentafield.presentation.screens.favorite.FavouriteReducer
 import com.company.rentafield.presentation.screens.favorite.FavouriteScreen
-import com.company.rentafield.presentation.screens.favorite.FavouriteViewModel
 import com.company.rentafield.presentation.screens.home.HomeReducer
 import com.company.rentafield.presentation.screens.home.HomeScreen
 import com.company.rentafield.presentation.screens.myBookings.MyBookingScreen
@@ -91,13 +91,17 @@ fun NavGraphBuilder.rentAfieldNavigator(navController: NavHostController) {
         }
 
         composable(route = Screens.RentafieldNavigation.Favorite.route) {
-            val favouriteViewModel: FavouriteViewModel = hiltViewModel()
             FavouriteScreen(
-                uiState = favouriteViewModel.uiState,
-                getFavoritePlaygrounds = favouriteViewModel::getFavoritePlaygrounds,
-                onFavouriteClick = favouriteViewModel::onFavouriteClicked,
-                onPlaygroundClick = { playgroundId, isFavourite ->
-                    navController.navigate(Screens.RentafieldNavigation.BookingPlayground.route + "/$playgroundId" + "/$isFavourite")
+                onNavigate = { action ->
+                    when (action) {
+                        is FavouriteReducer.Effect.NavigateToPlaygroundDetails -> {
+                            navController.navigate(Screens.RentafieldNavigation.BookingPlayground.route + "/${action.playgroundId}" + "/${action.isFavourite}")
+                        }
+
+                        is FavouriteReducer.Effect.NavigateBack -> navController.navigateUp()
+
+                        else -> Unit
+                    }
                 }
             )
         }
