@@ -50,7 +50,7 @@ fun EmptyNotification(
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = stringResource(R.string.donot_have_notifications),
+            text = stringResource(R.string.do_not_have_notifications),
             color = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.titleSmall,
             textAlign = TextAlign.Center,

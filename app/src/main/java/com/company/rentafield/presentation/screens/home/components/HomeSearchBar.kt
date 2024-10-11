@@ -26,10 +26,10 @@ import com.company.rentafield.R
 import com.company.rentafield.utils.ThemePreviews
 
 @Composable
-fun HomeSearchBar(onSearchBarClicked: () -> Unit) {
+fun HomeSearchBar(onSearchBarClicked: () -> Unit, modifier: Modifier = Modifier) {
     Card(
         colors = CardDefaults.cardColors(Color.Transparent),
-        modifier = Modifier
+        modifier = modifier
             .clickable { onSearchBarClicked() }
             .fillMaxWidth()
             .height(38.dp)
@@ -68,5 +68,5 @@ fun HomeSearchBar(onSearchBarClicked: () -> Unit) {
 @ThemePreviews
 @Composable
 private fun HomeSearchBarPreview() {
-    HomeSearchBar { }
+    HomeSearchBar(onSearchBarClicked = {})
 }
