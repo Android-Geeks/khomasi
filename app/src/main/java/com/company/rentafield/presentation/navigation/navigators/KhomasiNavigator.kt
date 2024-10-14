@@ -11,6 +11,10 @@ import androidx.navigation.navigation
 import com.company.rentafield.presentation.navigation.components.Screens
 import com.company.rentafield.presentation.navigation.components.sharedViewModel
 import com.company.rentafield.presentation.screens.ai.AiScreen
+import com.company.rentafield.presentation.screens.booking.BookingScreen
+import com.company.rentafield.presentation.screens.booking.BookingViewModel
+import com.company.rentafield.presentation.screens.booking.ConfirmBookingScreen
+import com.company.rentafield.presentation.screens.booking.PaymentScreen
 import com.company.rentafield.presentation.screens.favorite.FavouriteReducer
 import com.company.rentafield.presentation.screens.favorite.FavouriteScreen
 import com.company.rentafield.presentation.screens.home.HomeReducer
@@ -22,9 +26,6 @@ import com.company.rentafield.presentation.screens.notifications.NotificationVie
 import com.company.rentafield.presentation.screens.notifications.NotificationsScreen
 import com.company.rentafield.presentation.screens.playground.PlaygroundScreen
 import com.company.rentafield.presentation.screens.playground.PlaygroundViewModel
-import com.company.rentafield.presentation.screens.playground.booking.BookingScreen
-import com.company.rentafield.presentation.screens.playground.booking.ConfirmBookingScreen
-import com.company.rentafield.presentation.screens.playground.booking.PaymentScreen
 import com.company.rentafield.presentation.screens.profile.EditProfile
 import com.company.rentafield.presentation.screens.profile.ProfileViewModel
 import com.company.rentafield.presentation.screens.profile.ViewProfile
@@ -208,7 +209,7 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
 //                onClickFav = playgroundViewModel::updateUserFavourite,
                 onBookNowClicked = {
                     navController.navigate(
-                        Screens.RentafieldNavigation.BookingPlayground.BookingDetails.route
+                        (Screens.RentafieldNavigation.BookingPlayground.BookingDetails.route + "/$playgroundId")
                     )
                 },
                 getPlaygroundDetails = playgroundViewModel::getPlaygroundDetails,
@@ -217,11 +218,13 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
         }
 
         composable(
-            route = Screens.RentafieldNavigation.BookingPlayground.BookingDetails.route,
+            route = Screens.RentafieldNavigation.BookingPlayground.BookingDetails.route + "/{playgroundId}",
         ) { navBackStackEntry ->
             val bookingViewModel =
-                navBackStackEntry.sharedViewModel<PlaygroundViewModel>(navController = navController)
+                navBackStackEntry.sharedViewModel<BookingViewModel>(navController = navController)
+            val playgroundId = navBackStackEntry.arguments?.getString("playgroundId")?.toInt()
             BookingScreen(bookingUiState = bookingViewModel.bookingUiState,
+                playgroundId = playgroundId ?: 1,
                 freeSlotsState = bookingViewModel.freeSlotsState,
                 onBackClicked = navController::navigateUp,
                 updateDuration = bookingViewModel::updateDuration,
@@ -229,29 +232,31 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
                 updateSelectedDay = bookingViewModel::updateSelectedDay,
                 onSlotClicked = bookingViewModel::onSlotClicked,
                 checkValidity = bookingViewModel::checkSlotsConsecutive,
-                onNextClicked = {
+                onNextToConfirmationClicked = {
                     navController.navigate(Screens.RentafieldNavigation.BookingPlayground.BookingConfirmation.route)
                     bookingViewModel.updateBookingTime()
-                })
+                },
+                getPlaygroundDetails = bookingViewModel::getPlaygroundDetails
+            )
         }
 
         composable(route = Screens.RentafieldNavigation.BookingPlayground.BookingConfirmation.route) {
 
             val bookingViewModel =
-                it.sharedViewModel<PlaygroundViewModel>(navController = navController)
+                it.sharedViewModel<BookingViewModel>(navController = navController)
 
             ConfirmBookingScreen(
                 bookingUiState = bookingViewModel.bookingUiState,
                 onBackClicked = navController::navigateUp,
-                onNextClicked = { navController.navigate(Screens.RentafieldNavigation.BookingPlayground.Payment.route) },
+                onNextToPaymentClicked = { navController.navigate(Screens.RentafieldNavigation.BookingPlayground.Payment.route) },
             )
         }
 
         composable(route = Screens.RentafieldNavigation.BookingPlayground.Payment.route) { navBack ->
             val bookingViewModel =
-                navBack.sharedViewModel<PlaygroundViewModel>(navController = navController)
+                navBack.sharedViewModel<BookingViewModel>(navController = navController)
             PaymentScreen(
-                playgroundInfoUiState = bookingViewModel.infoUiState,
+                paymentUiState = bookingViewModel.paymentUiState,
                 bookingPlaygroundResponse = bookingViewModel.bookingResponse,
                 updateCardNumber = bookingViewModel::updateCardNumber,
                 updateCardValidationDate = bookingViewModel::updateCardValidationDate,

@@ -2,6 +2,7 @@ package com.company.rentafield.presentation.screens.playground
 
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -73,14 +75,24 @@ fun PlaygroundScreen(
     updateShowReview: () -> Unit,
     updateFavouriteAndPlaygroundId: (Boolean, Int) -> Unit,
 ) {
-    val showLoading by remember { mutableStateOf(false) }
+    var showLoading by remember { mutableStateOf(false) }
     val reviews by reviewsState.collectAsStateWithLifecycle()
     val bottomSheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+    val playgroundData = playgroundStateFlow.collectAsStateWithLifecycle().value
 
     LaunchedEffect(Unit) {
         updateFavouriteAndPlaygroundId(isFavourite, playgroundId)
         getPlaygroundDetails(playgroundId)
+    }
+    showLoading = when (playgroundData) {
+        is DataState.Loading -> {
+            true
+        }
+
+        else -> {
+            false
+        }
     }
 
     AuthSheet(
@@ -95,9 +107,23 @@ fun PlaygroundScreen(
                 onClickShare = onClickShare,
 //                onClickFav = onClickFav,
             )
+            if (showLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.outline.copy(alpha = 0.5f))
+                ) {
+                    ThreeBounce(
+                        color = MaterialTheme.colorScheme.primary,
+                        size = DpSize(75.dp, 75.dp),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .align(Alignment.Center)
+                    )
+                }
+            }
         },
         sheetContent = {
-            val playgroundData = playgroundStateFlow.collectAsStateWithLifecycle().value
             Column(
                 Modifier
                     .fillMaxWidth()
@@ -131,18 +157,6 @@ fun PlaygroundScreen(
         updateShowReview = updateShowReview
     )
 
-
-    if (showLoading) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            ThreeBounce(
-                color = MaterialTheme.colorScheme.primary,
-                size = DpSize(75.dp, 75.dp),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.Center)
-            )
-        }
-    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

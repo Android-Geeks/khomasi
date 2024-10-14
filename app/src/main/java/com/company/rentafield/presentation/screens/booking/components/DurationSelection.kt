@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.screens.playground.components
+package com.company.rentafield.presentation.screens.booking.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
 import android.content.res.Configuration.UI_MODE_NIGHT_YES

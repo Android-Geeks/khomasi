@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.screens.playground.booking
+package com.company.rentafield.presentation.screens.booking
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -69,8 +69,8 @@ import com.company.rentafield.domain.model.booking.BookingPlaygroundResponse
 import com.company.rentafield.presentation.components.DoneSuccessfully
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextField
-import com.company.rentafield.presentation.screens.playground.model.PaymentType
-import com.company.rentafield.presentation.screens.playground.model.PlaygroundInfoUiState
+import com.company.rentafield.presentation.screens.booking.model.PaymentType
+import com.company.rentafield.presentation.screens.booking.model.PaymentUiState
 import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.presentation.theme.darkText
 import com.company.rentafield.presentation.theme.lightText
@@ -82,7 +82,7 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PaymentScreen(
-    playgroundInfoUiState: StateFlow<PlaygroundInfoUiState>,
+    paymentUiState: StateFlow<PaymentUiState>,
     bookingPlaygroundResponse: StateFlow<DataState<BookingPlaygroundResponse>>,
     context: Context = LocalContext.current,
     updateCardNumber: (String) -> Unit,
@@ -96,7 +96,7 @@ fun PaymentScreen(
     val bookingResponse by bookingPlaygroundResponse.collectAsStateWithLifecycle()
     val showFawryDialog = remember { mutableStateOf(true) }
     val scrollState = rememberScrollState()
-    val uiState by playgroundInfoUiState.collectAsStateWithLifecycle()
+    val uiState by paymentUiState.collectAsStateWithLifecycle()
     var choice by remember { mutableIntStateOf(3) }
     val keyboardController = LocalSoftwareKeyboardController.current
     val localFocusManager = LocalFocusManager.current
@@ -559,7 +559,7 @@ fun CardContent(
 fun PaymentScreenPreview() {
     RentafieldTheme {
         PaymentScreen(
-            playgroundInfoUiState = MutableStateFlow(PlaygroundInfoUiState()),
+            paymentUiState = MutableStateFlow(PaymentUiState()),
             bookingPlaygroundResponse = MutableStateFlow(
                 DataState.Success(
                     BookingPlaygroundResponse(

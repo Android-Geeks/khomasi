@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.screens.playground.booking
+package com.company.rentafield.presentation.screens.booking
 
 import android.content.Context
 import android.content.res.Configuration.UI_MODE_NIGHT_NO
@@ -30,9 +30,6 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
@@ -42,7 +39,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
@@ -50,10 +46,9 @@ import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.playground.FreeTimeSlotsResponse
 import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.MyButton
-import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
-import com.company.rentafield.presentation.screens.playground.components.CalendarPager
-import com.company.rentafield.presentation.screens.playground.components.DurationSelection
-import com.company.rentafield.presentation.screens.playground.components.SlotItem
+import com.company.rentafield.presentation.screens.booking.components.CalendarPager
+import com.company.rentafield.presentation.screens.booking.components.DurationSelection
+import com.company.rentafield.presentation.screens.booking.components.SlotItem
 import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.presentation.theme.darkOverlay
 import com.company.rentafield.presentation.theme.lightOverlay
@@ -68,20 +63,26 @@ import java.util.Locale
 @Composable
 fun BookingScreen(
     bookingUiState: StateFlow<BookingUiState>,
+    playgroundId: Int,
     freeSlotsState: StateFlow<DataState<FreeTimeSlotsResponse>>,
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme(),
     onBackClicked: () -> Unit,
     updateDuration: (String) -> Unit,
+    getPlaygroundDetails: (Int) -> Unit,
     getFreeSlots: () -> Unit,
     updateSelectedDay: (Int) -> Unit,
     onSlotClicked: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
     checkValidity: () -> Boolean,
-    onNextClicked: () -> Unit,
+    onNextToConfirmationClicked: () -> Unit,
 ) {
     val bookingState by bookingUiState.collectAsStateWithLifecycle()
     val freeSlots by freeSlotsState.collectAsStateWithLifecycle()
     val screenHeight = getScreenHeight(context)
+
+    LaunchedEffect(Unit) {
+        getPlaygroundDetails(playgroundId)
+    }
     Scaffold(
         topBar = {
             BookingTopBar(
@@ -113,15 +114,14 @@ fun BookingScreen(
                         getFreeSlots = { getFreeSlots() },
                         updateSelectedDay = updateSelectedDay,
                         onSlotClicked = onSlotClicked,
-                        modifier = Modifier.padding(paddingValues)
+                        modifier = Modifier.padding(paddingValues),
                     )
                 },
                 sheetContent = {
                     BookingBottomSheet(
                         sheetHeight = (screenHeight * 0.16).dp,
                         playgroundPrice = bookingState.totalPrice,
-                        context = context,
-                        onNextClicked = onNextClicked,
+                        context = context, onNextClicked = onNextToConfirmationClicked,
                         checkValidity = checkValidity
                     )
                 }
@@ -143,14 +143,11 @@ fun BookingScreenContent(
     onSlotClicked: (Pair<LocalDateTime, LocalDateTime>) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    LaunchedEffect(bookingUiState.selectedDay) {
+    LaunchedEffect(bookingUiState.selectedDay, bookingUiState.playgroundName) {
         getFreeSlots()
     }
-    var showLoading by remember { mutableStateOf(false) }
+//    val showLoading by remember { mutableStateOf(false) }
 
-    LaunchedEffect(freeSlotsState) {
-        showLoading = freeSlotsState is DataState.Loading
-    }
     Column(
         modifier = modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -248,15 +245,8 @@ fun BookingScreenContent(
                 }
             }
         }
-        if (showLoading) {
-            ThreeBounce(
-                modifier = Modifier.fillMaxSize(),
-                delayBetweenDotsMillis = 50,
-                size = DpSize(75.dp, 75.dp)
-            )
-        }
-
     }
+
 }
 
 @Composable
@@ -381,7 +371,9 @@ fun BookingScreenPreview() {
             updateSelectedDay = { mockViewModel.updateSelectedDay(it) },
             onSlotClicked = { mockViewModel.onSlotClicked(it) },
             checkValidity = { mockViewModel.checkSlotsConsecutive() },
-            onNextClicked = { },
+            onNextToConfirmationClicked = { },
+            playgroundId = 1,
+            getPlaygroundDetails = { _ -> }
         )
     }
 }

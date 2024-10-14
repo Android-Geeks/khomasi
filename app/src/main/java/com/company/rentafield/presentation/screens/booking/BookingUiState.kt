@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.screens.playground.booking
+package com.company.rentafield.presentation.screens.booking
 
 import org.threeten.bp.LocalDateTime
 

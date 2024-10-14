@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.screens.playground.booking
+package com.company.rentafield.presentation.screens.booking
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -49,7 +49,7 @@ fun ConfirmBookingScreen(
     bookingUiState: StateFlow<BookingUiState>,
     context: Context = LocalContext.current,
     onBackClicked: () -> Unit,
-    onNextClicked: () -> Unit,
+    onNextToPaymentClicked: () -> Unit,
 ) {
     val bookingState by bookingUiState.collectAsStateWithLifecycle()
     val screenHeight = getScreenHeight(context)
@@ -85,7 +85,7 @@ fun ConfirmBookingScreen(
                     ConfirmBookingBottomSheet(
                         sheetHeight = (screenHeight * 0.16).dp,
                         playgroundPrice = bookingState.totalPrice,
-                        onContinueToPaymentClicked = { onNextClicked() }
+                        onContinueToPaymentClicked = { onNextToPaymentClicked() }
                     )
                 }
             )

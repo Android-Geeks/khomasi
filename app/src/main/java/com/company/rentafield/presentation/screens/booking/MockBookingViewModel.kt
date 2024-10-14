@@ -1,4 +1,4 @@
-package com.company.rentafield.presentation.screens.playground.booking
+package com.company.rentafield.presentation.screens.booking
 
 
 import androidx.lifecycle.ViewModel
@@ -18,7 +18,6 @@ class MockBookingViewModel : ViewModel() {
     private val _bookingUiState: MutableStateFlow<BookingUiState> =
         MutableStateFlow(BookingUiState())
     val bookingUiState: StateFlow<BookingUiState> = _bookingUiState
-
 
     fun updateDuration(type: String) {
 

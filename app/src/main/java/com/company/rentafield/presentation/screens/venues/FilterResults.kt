@@ -51,7 +51,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.SubScreenTopBar
-import com.company.rentafield.presentation.screens.playground.components.DurationSelection
+import com.company.rentafield.presentation.screens.booking.components.DurationSelection
 import com.company.rentafield.presentation.screens.venues.component.BottomSheetWarning
 import com.company.rentafield.presentation.screens.venues.component.MyTimePickerDialog
 import com.company.rentafield.presentation.screens.venues.component.PlaygroundsFilterSelection
