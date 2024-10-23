@@ -2,7 +2,6 @@ package com.company.rentafield.presentation.screens.home
 
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.LocalUser
 import com.company.rentafield.domain.use_case.ai.AiUseCases
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
@@ -25,17 +24,17 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch(IO) {
             localUserUseCases.getLocalUser().collect { localUser ->
                 sendEvent(HomeReducer.Event.UpdateLocalUser(localUser))
-                launch { fetchPlaygrounds(localUser) }
-                launch { fetchProfileImage(localUser) }
-                launch { fetchUploadStatus(localUser) }
-                launch { fetchUserData(localUser) }
+                launch(IO) { fetchPlaygrounds() }
+                launch(IO) { fetchProfileImage() }
+                launch(IO) { fetchUploadStatus() }
+                launch(IO) { fetchUserData() }
             }
         }
     }
 
-    private suspend fun fetchUserData(localUser: LocalUser) {
+    private suspend fun fetchUserData() {
         remoteUserUseCase.userDataUseCase(
-            "Bearer ${localUser.token}", localUser.userID ?: ""
+            "Bearer ${state.value.localUser.token}", state.value.localUser.userID ?: ""
         ).collect { stat ->
             when (stat) {
                 is DataState.Loading -> {
@@ -55,15 +54,9 @@ class HomeViewModel @Inject constructor(
                                     coins = stat.data.coins, rating = stat.data.rating
                                 )
                             )
-//                            sendEvent(
-//                                HomeReducer.Event.UpdateCoinsAndRating(
-//                                    stat.data.coins,
-//                                    stat.data.rating
-//                                )
-//                            )
                         }
 
-                        is DataState.Error -> sendEffect(HomeReducer.Effect.Error.PlaygroundsError)
+                        is DataState.Error -> Unit
 
                         else -> Unit
                     }
@@ -72,9 +65,9 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchPlaygrounds(localUser: LocalUser) {
+    private suspend fun fetchPlaygrounds() {
         remoteUserUseCase.getPlaygroundsUseCase(
-            "Bearer ${localUser.token}", localUser.userID ?: ""
+            "Bearer ${state.value.localUser.token}", state.value.localUser.userID ?: ""
         ).collect { state ->
             when (state) {
                 is DataState.Loading -> {
@@ -105,15 +98,15 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchUploadStatus(localUser: LocalUser) {
-        aiUseCases.getUploadStatusUseCase(localUser.userID ?: "").collect { state ->
+    private suspend fun fetchUploadStatus() {
+        aiUseCases.getUploadStatusUseCase(state.value.localUser.userID ?: "").collect { state ->
             sendEvent(HomeReducer.Event.UpdateCanUploadVideo(state is DataState.Success))
         }
     }
 
-    private suspend fun fetchProfileImage(localUser: LocalUser) {
+    private suspend fun fetchProfileImage() {
         remoteUserUseCase.getProfileImageUseCase(
-            "Bearer ${localUser.token}", localUser.userID ?: ""
+            "Bearer ${state.value.localUser.token}", state.value.localUser.userID ?: ""
         ).collect { state ->
             when (state) {
                 is DataState.Success -> sendEvent(

@@ -111,7 +111,7 @@ fun PlaygroundScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.outline)
+                        .background(MaterialTheme.colorScheme.background)
                 ) {
                     ThreeBounce(
                         color = MaterialTheme.colorScheme.primary,
