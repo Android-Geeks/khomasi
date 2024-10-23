@@ -60,37 +60,38 @@ fun CurrentPage(
         }
     }
     Box {
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            if (uiState.currentBookings.isNotEmpty()) {
-                itemsIndexed(uiState.currentBookings) { index, it ->
-                    BookingCard(
-                        bookingDetails = it,
-                        bookingStatus = if (!uiState.currentBookings[index].isCanceled) BookingStatus.CONFIRMED else BookingStatus.CANCEL,
-                        onViewPlaygroundClick = {
-                            if (!uiState.currentBookings[index].isCanceled) {
-                                onClickPlaygroundCard(it)
-                            } else {
-                                cancelDetails(it.playgroundId, it.isFavorite)
-                            }
-                        },
-                        toRate = {},
-                        reBook = {}
-                    )
-                }
-            } else {
-                item {
-                    EmptyScreen(
-                        onClickBookField = onClickBookField
-                    )
+        if (showLoading) {
+            ThreeBounce(modifier = Modifier.fillMaxSize())
+        } else {
+            LazyColumn(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+                if (uiState.currentBookings.isNotEmpty()) {
+                    itemsIndexed(uiState.currentBookings) { index, it ->
+                        BookingCard(
+                            bookingDetails = it,
+                            bookingStatus = if (!uiState.currentBookings[index].isCanceled) BookingStatus.CONFIRMED else BookingStatus.CANCEL,
+                            onViewPlaygroundClick = {
+                                if (!uiState.currentBookings[index].isCanceled) {
+                                    onClickPlaygroundCard(it)
+                                } else {
+                                    cancelDetails(it.playgroundId, it.isFavorite)
+                                }
+                            },
+                            toRate = {},
+                            reBook = {}
+                        )
+                    }
+                } else {
+                    item {
+                        EmptyScreen(
+                            onClickBookField = onClickBookField
+                        )
+                    }
                 }
             }
         }
-    }
-    if (showLoading) {
-        ThreeBounce(modifier = Modifier.fillMaxSize())
     }
 }
 

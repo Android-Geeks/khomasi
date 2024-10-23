@@ -1,6 +1,5 @@
 package com.company.rentafield.presentation.screens.myBookings.components
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
@@ -71,7 +70,6 @@ fun ExpiredPage(
             scrollState.animateScrollTo(scrollState.maxValue, tween(300))
         }
     }
-    Log.d("GoingToHave", ratingState.toString())
     LaunchedEffect(bookingsState) {
         when (bookingsState) {
             is DataState.Success -> {
@@ -169,39 +167,45 @@ fun ExpiredPage(
         }
     }
     Box {
-        LazyColumn(
-            modifier = Modifier.padding(horizontal = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-
-            if (expiredState.expiredBookings.isNotEmpty()) {
-                items(expiredState.expiredBookings) { bookingDetails ->
-                    BookingCard(
-                        bookingDetails = bookingDetails,
-                        bookingStatus = BookingStatus.EXPIRED,
-                        onViewPlaygroundClick = {
-                            reBook(
-                                bookingDetails.playgroundId,
-                                bookingDetails.isFavorite
-                            )
-                        },
-                        toRate = {
-                            isOpen = true
-                        },
-                        reBook = { reBook(bookingDetails.playgroundId, bookingDetails.isFavorite) }
-                    )
-                }
-            } else {
-                item {
-                    EmptyScreen(
-                        onClickBookField = onClickBookField
-                    )
-                }
-            }
-
-        }
         if (showLoading) {
             ThreeBounce(modifier = Modifier.fillMaxSize())
+        } else {
+            LazyColumn(
+                modifier = Modifier.padding(horizontal = 16.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+
+                if (!showLoading && expiredState.expiredBookings.isNotEmpty()) {
+                    items(expiredState.expiredBookings) { bookingDetails ->
+                        BookingCard(
+                            bookingDetails = bookingDetails,
+                            bookingStatus = BookingStatus.EXPIRED,
+                            onViewPlaygroundClick = {
+                                reBook(
+                                    bookingDetails.playgroundId,
+                                    bookingDetails.isFavorite
+                                )
+                            },
+                            toRate = {
+                                isOpen = true
+                            },
+                            reBook = {
+                                reBook(
+                                    bookingDetails.playgroundId,
+                                    bookingDetails.isFavorite
+                                )
+                            }
+                        )
+                    }
+                } else {
+                    item {
+                        EmptyScreen(
+                            onClickBookField = onClickBookField
+                        )
+                    }
+                }
+
+            }
         }
     }
 }
