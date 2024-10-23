@@ -27,6 +27,7 @@ class HomeReducer : Reducer<HomeReducer.State, HomeReducer.Event, HomeReducer.Ef
         data class UpdateCanUploadVideo(val canUploadVideo: Boolean) : Event()
         data class UpdatePlaygrounds(val playgrounds: List<Playground>) : Event()
         data class PlaygroundClick(val playgroundId: Int, val isFavourite: Boolean) : Event()
+//        data class UpdateCoinsAndRating(val coins: Double, val rating: Double) : Event()
     }
 
     @Immutable

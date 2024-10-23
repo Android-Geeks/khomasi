@@ -2,6 +2,7 @@ package com.company.rentafield.data.data_source
 
 import com.company.rentafield.domain.model.MessageResponse
 import com.company.rentafield.domain.model.UserDataResponse
+import com.company.rentafield.domain.model.ai.AiResponse
 import com.company.rentafield.domain.model.auth.UserLoginResponse
 import com.company.rentafield.domain.model.auth.UserRegisterData
 import com.company.rentafield.domain.model.auth.UserRegisterResponse
@@ -171,6 +172,9 @@ interface RetrofitService {
 
     @GET("AI/ai-service")
     suspend fun getUploadVideoStatus(@Query("id") id: String): Response<MessageResponse>
+
+    @GET("AI/ai-response")
+    suspend fun getAiResults(@Query("id") id: String): Response<AiResponse>
 
     @GET("User/user-data")
     suspend fun userData(

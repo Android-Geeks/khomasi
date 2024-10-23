@@ -2,6 +2,7 @@ package com.company.rentafield.presentation.screens.home
 
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
+import com.company.rentafield.domain.model.LocalUser
 import com.company.rentafield.domain.use_case.ai.AiUseCases
 import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
 import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
@@ -17,30 +18,71 @@ class HomeViewModel @Inject constructor(
     private val localUserUseCases: LocalUserUseCases,
     private val aiUseCases: AiUseCases
 ) : BaseViewModel<HomeReducer.State, HomeReducer.Event, HomeReducer.Effect>(
-    initialState = HomeReducer.initial(),
-    reducer = HomeReducer()
+    initialState = HomeReducer.initial(), reducer = HomeReducer()
 ) {
 
     fun getHomeData() {
         viewModelScope.launch(IO) {
             localUserUseCases.getLocalUser().collect { localUser ->
                 sendEvent(HomeReducer.Event.UpdateLocalUser(localUser))
-                launch { fetchPlaygrounds() }
-                launch { fetchProfileImage() }
-                launch { fetchUploadStatus() }
+                launch { fetchPlaygrounds(localUser) }
+                launch { fetchProfileImage(localUser) }
+                launch { fetchUploadStatus(localUser) }
+                launch { fetchUserData(localUser) }
             }
         }
     }
 
-    private suspend fun fetchPlaygrounds() {
+    private suspend fun fetchUserData(localUser: LocalUser) {
+        remoteUserUseCase.userDataUseCase(
+            "Bearer ${localUser.token}", localUser.userID ?: ""
+        ).collect { stat ->
+            when (stat) {
+                is DataState.Loading -> {
+                    if (super.state.value.playgrounds.isEmpty()) sendEvent(
+                        HomeReducer.Event.UpdateIsLoading(
+                            true
+                        )
+                    )
+                }
+
+                else -> {
+                    sendEvent(HomeReducer.Event.UpdateIsLoading(false))
+                    when (stat) {
+                        is DataState.Success -> {
+                            localUserUseCases.saveLocalUser(
+                                localUser = state.value.localUser.copy(
+                                    coins = stat.data.coins, rating = stat.data.rating
+                                )
+                            )
+//                            sendEvent(
+//                                HomeReducer.Event.UpdateCoinsAndRating(
+//                                    stat.data.coins,
+//                                    stat.data.rating
+//                                )
+//                            )
+                        }
+
+                        is DataState.Error -> sendEffect(HomeReducer.Effect.Error.PlaygroundsError)
+
+                        else -> Unit
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun fetchPlaygrounds(localUser: LocalUser) {
         remoteUserUseCase.getPlaygroundsUseCase(
-            "Bearer ${state.value.localUser.token}",
-            state.value.localUser.userID ?: ""
+            "Bearer ${localUser.token}", localUser.userID ?: ""
         ).collect { state ->
             when (state) {
                 is DataState.Loading -> {
-                    if (super.state.value.playgrounds.isEmpty())
-                        sendEvent(HomeReducer.Event.UpdateIsLoading(true))
+                    if (super.state.value.playgrounds.isEmpty()) sendEvent(
+                        HomeReducer.Event.UpdateIsLoading(
+                            true
+                        )
+                    )
                 }
 
                 else -> {
@@ -63,17 +105,15 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private suspend fun fetchUploadStatus() {
-        aiUseCases.getUploadStatusUseCase(state.value.localUser.userID ?: "")
-            .collect { state ->
-                sendEvent(HomeReducer.Event.UpdateCanUploadVideo(state is DataState.Success))
-            }
+    private suspend fun fetchUploadStatus(localUser: LocalUser) {
+        aiUseCases.getUploadStatusUseCase(localUser.userID ?: "").collect { state ->
+            sendEvent(HomeReducer.Event.UpdateCanUploadVideo(state is DataState.Success))
+        }
     }
 
-    private suspend fun fetchProfileImage() {
+    private suspend fun fetchProfileImage(localUser: LocalUser) {
         remoteUserUseCase.getProfileImageUseCase(
-            "Bearer ${state.value.localUser.token}",
-            state.value.localUser.userID ?: ""
+            "Bearer ${localUser.token}", localUser.userID ?: ""
         ).collect { state ->
             when (state) {
                 is DataState.Success -> sendEvent(

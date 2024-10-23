@@ -131,8 +131,12 @@ object NetworkModule {
     @Provides
     @Singleton
     fun provideRemoteAiRepository(
-        retrofitAiService: RetrofitAiService
-    ): RemoteAiRepository = RemoteAiRepositoryImpl(retrofitAiService)
+        retrofitAiService: RetrofitAiService,
+        retrofitService: RetrofitService
+    ): RemoteAiRepository = RemoteAiRepositoryImpl(
+        retrofitAiService,
+        retrofitService
+    )
 
     @Provides
     @Singleton
