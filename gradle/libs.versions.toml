@@ -1,0 +1,175 @@
+[versions]
+activityCompose = "1.9.0"
+composeBom = "2024.02.00"
+composeColorfulSliders = "1.2.2"
+composeRatingbar = "1.3.4"
+coreKtx = "1.13.0"
+appCompact = "1.6.1"
+datetime = "0.9.0"
+desugar_jdk_libs = "2.0.4"
+faceDetection = "16.1.6"
+foundation = "1.6.7"
+hiltNavigationCompose = "1.2.0"
+kotlinxCoroutines = "1.8.0"
+kotlinxSerializationJson = "1.6.3"
+lifecycle = "2.7.0"
+kotlin = "1.9.10"
+hilt = "2.50"
+ksp = "1.9.10-1.0.13"
+androidGradlePlugin = "8.1.2"
+lottieCompose = "4.1.0"
+material3 = "1.2.1"
+navigationCompose = "2.7.7"
+okHttp = "4.12.0"
+playServicesLocation = "21.2.0"
+retrofit2KotlinxSerializationConverter = "1.0.0"
+retrofit = "2.9.0"
+rebugger = "1.0.0-rc03"
+room = "2.6.1"
+threetenabp = "1.3.1"
+workManager = "2.8.1"
+datastore = "1.1.1"
+media3 = "1.3.1"
+coil = "2.6.0"
+accompanist = "0.35.0-alpha"
+splashscreen = "1.0.1"
+zxcvbn = "1.5.2"
+
+[libraries]
+accompanist-permissions = { module = "com.google.accompanist:accompanist-permissions", version.ref = "accompanist" }
+accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
+androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appCompact" }
+androidx-hilt-compiler = { module = "androidx.hilt:hilt-compiler", version.ref = "hiltNavigationCompose" }
+androidx-hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hiltNavigationCompose" }
+androidx-hilt-work = { module = "androidx.hilt:hilt-work", version.ref = "hiltNavigationCompose" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-runtime-compose = { group = "androidx.lifecycle", name = "lifecycle-runtime-compose", version.ref = "lifecycle" }
+accompanist-pager = { group = "com.google.accompanist", name = "accompanist-pager", version.ref = "accompanist" }
+accompanist-pager-indicators = { group = "com.google.accompanist", name = "accompanist-pager-indicators", version.ref = "accompanist" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
+androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
+androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-ui = { module = "androidx.compose.ui:ui" }
+androidx-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+androidx-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-colorful-sliders = { module = "com.github.SmartToolFactory:Compose-Colorful-Sliders", version.ref = "composeColorfulSliders" }
+compose-ratingbar = { module = "com.github.a914-gowtham:compose-ratingbar", version.ref = "composeRatingbar" }
+core-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreen" }
+datetime = { module = "io.github.vanpra.compose-material-dialogs:datetime", version.ref = "datetime" }
+desugar_jdk_libs = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+face-detection = { module = "com.google.mlkit:face-detection", version.ref = "faceDetection" }
+hilt-android = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-android-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
+logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okHttp" }
+lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
+okhttp = { module = "com.squareup.okhttp3:okhttp", version.ref = "okHttp" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
+rebugger = { module = "io.github.theapache64:rebugger", version.ref = "rebugger" }
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit2-kotlinx-serialization-converter = { module = "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter", version.ref = "retrofit2KotlinxSerializationConverter" }
+threetenabp = { module = "com.jakewharton.threetenabp:threetenabp", version.ref = "threetenabp" }
+work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx", version.ref = "workManager" }
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "datastore" }
+media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3" }
+media3-ui = { group = "androidx.media3", name = "media3-ui", version.ref = "media3" }
+compose-foundation = { group = "androidx.compose.foundation", name = "foundation", version.ref = "foundation" }
+zxcvbn = { module = "com.nulab-inc:zxcvbn", version.ref = "zxcvbn" }
+
+[bundles]
+compose = [
+    "androidx-activity-compose",
+    "androidx-compose-bom",
+    "androidx-material3",
+    "androidx-navigation-compose",
+    "androidx-lifecycle-runtime-compose",
+    "androidx-lifecycle-viewmodel-compose",
+    "androidx-ui",
+    "androidx-ui-graphics",
+    "androidx-ui-tooling-preview",
+    "compose-foundation",
+    "compose-colorful-sliders",
+    "compose-ratingbar",
+    "lottie-compose"
+]
+
+accompanist = [
+    "accompanist-permissions",
+    "accompanist-systemuicontroller",
+    "accompanist-pager",
+    "accompanist-pager-indicators"
+]
+
+coroutines = [
+    "kotlinx-coroutines-android",
+    "kotlinx-coroutines-core"
+]
+
+hilt = [
+    "hilt-android",
+    "hilt-android-compiler",
+    "androidx-hilt-compiler",
+    "androidx-hilt-navigation-compose",
+    "androidx-hilt-work"
+]
+
+retrofit = [
+    "retrofit",
+    "retrofit2-kotlinx-serialization-converter",
+    "logging-interceptor",
+    "okhttp"
+]
+
+room = [
+    "androidx-room-compiler",
+    "androidx-room-ktx",
+    "androidx-room-runtime"
+]
+
+serialization = [
+    "kotlinx-serialization-json"
+]
+
+media = [
+    "media3-exoplayer",
+    "media3-ui",
+    "coil-compose",
+    "play-services-location"
+]
+
+workmanager = [
+    "work-runtime-ktx"
+]
+
+datastore = [
+    "datastore-preferences"
+]
+
+mlkit = [
+    "face-detection"
+]
+
+utils = [
+    "zxcvbn",
+    "datetime",
+    "rebugger",
+    "threetenabp"
+]
+
+
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }

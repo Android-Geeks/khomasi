@@ -1,11 +1,9 @@
 plugins {
-    id("com.android.application")
-    id("org.jetbrains.kotlin.android")
-    id("kotlin-android")
-    id("kotlin-parcelize")
-    id("com.google.dagger.hilt.android")
-    id("com.google.devtools.ksp")
-    kotlin("plugin.serialization")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.android)
 }
 
 android {
@@ -70,147 +68,107 @@ android {
 }
 
 dependencies {
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
 
-    implementation("androidx.core:core-ktx:1.13.0")
-    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime.compose)
 
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.7.0")
-
-
-    implementation("com.google.accompanist:accompanist-pager:0.28.0")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
-
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
 
     // Splash Api
-    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation(libs.core.splashscreen)
 
-    //Work Manager
-    implementation("androidx.work:work-runtime-ktx:2.8.1")
+    // Work Manager
+    implementation(libs.work.runtime.ktx)
 
-    //Coil
-    implementation("io.coil-kt:coil-compose:2.6.0")
+    // Coil
+    implementation(libs.coil.compose)
 
-    //Datastore
-    implementation("androidx.datastore:datastore-preferences:1.1.1")
+    // Datastore
+    implementation(libs.datastore.preferences)
 
-    //Exo Player
-    implementation("androidx.media3:media3-exoplayer:1.3.1")
-    implementation("androidx.media3:media3-ui:1.3.1")
+    // Exo Player
+    implementation(libs.media3.exoplayer)
+    implementation(libs.media3.ui)
 
+    // Compose Foundation
+    implementation(libs.compose.foundation)
 
-    //Compose Foundation
-    implementation("androidx.compose.foundation:foundation:1.6.7")
-
-    //Accompanist
-    implementation("com.google.accompanist:accompanist-systemuicontroller:0.34.0")
+    // Accompanist
+    implementation(libs.accompanist.systemuicontroller)
 
     // Compose dependencies
-    implementation("androidx.activity:activity-compose:1.9.0")
-    implementation(platform("androidx.compose:compose-bom:2024.02.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3:1.2.1")
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.ui)
+    implementation(libs.androidx.ui.graphics)
+    implementation(libs.androidx.ui.tooling.preview)
+    implementation(libs.androidx.material3)
 
-    val composeVersion = "1.6.1"
-    //noinspection GradleDependency
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${composeVersion}")
-    //noinspection GradleDependency
-    debugImplementation("androidx.compose.ui:ui-tooling:${composeVersion}")
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // Coroutines
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+    implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
     // Location
-    implementation("com.google.android.gms:play-services-location:21.2.0")
-    implementation("com.google.accompanist:accompanist-permissions:0.35.0-alpha")
+    implementation(libs.play.services.location)
+    implementation(libs.accompanist.permissions)
 
-    //Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.50")
-    ksp("com.google.dagger:hilt-android-compiler:2.50")
-    ksp("androidx.hilt:hilt-compiler:1.2.0")
-    implementation("androidx.hilt:hilt-work:1.2.0")
+    // Dagger - Hilt
+    implementation(libs.hilt.android)
+    ksp(libs.hilt.android.compiler)
+    ksp(libs.androidx.hilt.compiler)
+    implementation(libs.androidx.hilt.work)
 
-    //room
-    val room = "2.6.1"
-    implementation("androidx.room:room-runtime:${room}")
-    implementation("androidx.room:room-ktx:${room}")
-    ksp("androidx.room:room-compiler:${room}")
+    // Room
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
     // Kotlinx Serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
-    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation(libs.kotlinx.serialization.json)
+    implementation(libs.retrofit2.kotlinx.serialization.converter)
 
-    //retrofit
-    val retrofit = "2.9.0"
-    val okHttp = "4.12.0"
-    implementation("com.squareup.retrofit2:retrofit:${retrofit}")
-    implementation("com.squareup.okhttp3:okhttp:${okHttp}")
-    implementation("com.squareup.okhttp3:logging-interceptor:${okHttp}")
+    // Retrofit
+    implementation(libs.retrofit)
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 
-    //Navigation
-    implementation("androidx.navigation:navigation-compose:2.7.7")
+    // Navigation
+    implementation(libs.androidx.navigation.compose)
 
-    //RatingBar
-    implementation("com.github.a914-gowtham:compose-ratingbar:1.3.4")
+    // RatingBar
+    implementation(libs.compose.ratingbar)
 
-    //Password meter
-    implementation("com.nulab-inc:zxcvbn:1.5.2")
+    // Password meter
+    implementation(libs.zxcvbn)
 
-    //Pager
-    implementation("com.google.accompanist:accompanist-pager:0.28.0")
-    implementation("com.google.accompanist:accompanist-pager-indicators:0.28.0")
+    // Pager
+    implementation(libs.accompanist.pager)
+    implementation(libs.accompanist.pager.indicators)
 
-    //Face Detection And Camera
-    implementation("com.google.mlkit:face-detection:16.1.6")
+    // Face Detection And Camera
+    implementation(libs.face.detection)
 
-    //Rebugger
-    implementation("io.github.theapache64:rebugger:1.0.0-rc03")
+    // Rebugger
+    implementation(libs.rebugger)
 
-    //LocalDateTime
-    implementation("com.jakewharton.threetenabp:threetenabp:1.3.1")
+    // LocalDateTime
+    implementation(libs.threetenabp)
 
-    //Compose Colorful Sliders
-    implementation("com.github.SmartToolFactory:Compose-Colorful-Sliders:1.2.2")
+    // Compose Colorful Sliders
+    implementation(libs.compose.colorful.sliders)
 
-//    Calender and Time Pickers
-    implementation("io.github.vanpra.compose-material-dialogs:datetime:0.9.0")
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
+    // Calender and Time Pickers
+    implementation(libs.datetime)
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
 
-//    Lottie
-    implementation("com.airbnb.android:lottie-compose:4.1.0")
-
-    // Local unit tests
-    testImplementation("androidx.test:core:1.5.0")
-    testImplementation("junit:junit:4.13.2")
-    testImplementation("androidx.arch.core:core-testing:2.2.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
-    testImplementation("com.google.truth:truth:1.4.1")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.6.7")
-    testImplementation("com.squareup.okhttp3:mockwebserver:${okHttp}")
-    testImplementation("com.squareup.okhttp3:okhttp:${okHttp}")
-
-
-    // Instrumentation tests
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.50")
-    kspAndroidTest("com.google.dagger:hilt-android-compiler:2.50")
-    androidTestImplementation("junit:junit:4.13.2")
-    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
-    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
-    androidTestImplementation("com.google.truth:truth:1.4.1")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test:core-ktx:1.5.0")
-    androidTestImplementation("androidx.test:runner:1.5.2")
-    androidTestImplementation("com.squareup.okhttp3:mockwebserver:${okHttp}")
-    androidTestImplementation("com.squareup.okhttp3:okhttp:${okHttp}")
-
-
+    // Lottie
+    implementation(libs.lottie.compose)
 }
