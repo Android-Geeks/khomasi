@@ -6,8 +6,3 @@ sealed class DataState<out T> {
     data object Loading : DataState<Nothing>()
     data object Empty : DataState<Nothing>()
 }
-
-
-
-
-

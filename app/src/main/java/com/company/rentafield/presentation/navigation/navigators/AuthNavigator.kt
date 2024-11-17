@@ -1,6 +1,5 @@
 package com.company.rentafield.presentation.navigation.navigators
 
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -10,8 +9,7 @@ import com.company.rentafield.presentation.navigation.components.sharedViewModel
 import com.company.rentafield.presentation.screens.login.LoginReducer
 import com.company.rentafield.presentation.screens.login.LoginScreen
 import com.company.rentafield.presentation.screens.loginOrSignup.LoginOrRegisterScreen
-import com.company.rentafield.presentation.screens.otp.OtpScreen
-import com.company.rentafield.presentation.screens.otp.OtpViewModel
+import com.company.rentafield.presentation.screens.otp.OtpScreenRoute
 import com.company.rentafield.presentation.screens.register.RegisterEmailAndPassword
 import com.company.rentafield.presentation.screens.register.RegisterNameAndPhone
 import com.company.rentafield.presentation.screens.register.RegisterViewModel
@@ -58,18 +56,8 @@ fun NavGraphBuilder.authNavigator(
         register(navController = navController)
 
         composable(route = Screens.AuthNavigation.OTP.route) {
-            val otpViewModel: OtpViewModel = hiltViewModel()
-            OtpScreen(
-                onEmailConfirmed = { navController.navigate(Screens.AuthNavigation.Login.route) },
-                uiState = otpViewModel.uiState,
-                confirmEmailState = otpViewModel.confirmEmailState,
-                otpState = otpViewModel.otpState,
-                getRegisterOtp = otpViewModel::getRegisterOtp,
-                updateSmsCode = otpViewModel::updateSmsCode,
-                resendCode = otpViewModel::resendCode,
-                confirmEmail = otpViewModel::confirmEmail,
-                startTimer = otpViewModel::startTimer,
-                resetTimer = otpViewModel::resetTimer,
+            OtpScreenRoute(
+                onEmailConfirmed = { navController.navigate(Screens.AuthNavigation.Login.route) }
             )
         }
         resetPassword(navController = navController)

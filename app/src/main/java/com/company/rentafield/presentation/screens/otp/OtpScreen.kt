@@ -38,8 +38,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.model.MessageResponse
@@ -48,31 +48,22 @@ import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.connectionStates.Loading
 import com.company.rentafield.presentation.theme.RentafieldTheme
-import kotlinx.coroutines.flow.StateFlow
 
-@SuppressLint("DefaultLocale")
 @Composable
-fun OtpScreen(
-    uiState: StateFlow<OtpUiState>,
-    confirmEmailState: StateFlow<DataState<MessageResponse>>,
-    otpState: StateFlow<DataState<VerificationResponse>>,
-    updateSmsCode: (String) -> Unit,
-    resendCode: () -> Unit,
-    onEmailConfirmed: () -> Unit,
-    confirmEmail: () -> Unit,
-    startTimer: (Int) -> Unit,
-    resetTimer: (Int) -> Unit,
-    getRegisterOtp: () -> Unit,
+fun OtpScreenRoute(
     modifier: Modifier = Modifier,
+    onEmailConfirmed: () -> Unit,
+    viewModel: OtpViewModel = hiltViewModel()
 ) {
-    val otpUiState by uiState.collectAsStateWithLifecycle()
-    val otpStatus by otpState.collectAsStateWithLifecycle()
-    val confirmEmailStatus by confirmEmailState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val otpStatus by viewModel.otpState.collectAsStateWithLifecycle()
+    val confirmEmailStatus by viewModel.confirmEmailState.collectAsStateWithLifecycle()
+
     var showLoading by remember { mutableStateOf(false) }
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        getRegisterOtp()
+        viewModel.getRegisterOtp()
     }
 
     LaunchedEffect(key1 = otpStatus) {
@@ -106,7 +97,6 @@ fun OtpScreen(
                 showLoading = false
                 Toast.makeText(context, "Registered Successfully", Toast.LENGTH_LONG).show()
                 onEmailConfirmed()
-
             }
 
             is DataState.Error -> {
@@ -119,6 +109,38 @@ fun OtpScreen(
         }
     }
 
+    OtpScreen(
+        onEmailConfirmed = onEmailConfirmed,
+        uiState = uiState,
+        confirmEmailState = confirmEmailStatus,
+        otpState = otpStatus,
+        getRegisterOtp = viewModel::getRegisterOtp,
+        updateSmsCode = viewModel::updateSmsCode,
+        resendCode = viewModel::resendCode,
+        confirmEmail = viewModel::confirmEmail,
+        startTimer = viewModel::startTimer,
+        resetTimer = viewModel::resetTimer,
+        showLoading = showLoading,
+        modifier = modifier
+    )
+}
+
+@SuppressLint("DefaultLocale")
+@Composable
+fun OtpScreen(
+    uiState: OtpUiState,
+    confirmEmailState: DataState<MessageResponse>,
+    otpState: DataState<VerificationResponse>,
+    updateSmsCode: (String) -> Unit,
+    resendCode: () -> Unit,
+    onEmailConfirmed: () -> Unit,
+    confirmEmail: () -> Unit,
+    startTimer: (Int) -> Unit,
+    resetTimer: (Int) -> Unit,
+    getRegisterOtp: () -> Unit,
+    showLoading: Boolean,
+    modifier: Modifier = Modifier,
+) {
     Box {
         AuthSheet(
             screenContent = {
@@ -162,7 +184,7 @@ fun OtpScreen(
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     Text(
-                        text = otpUiState.email,
+                        text = uiState.email,
                         style = MaterialTheme.typography.bodyMedium,
                         textAlign = TextAlign.End,
                         textDecoration = TextDecoration.Underline
@@ -171,7 +193,7 @@ fun OtpScreen(
                 Spacer(modifier = Modifier.padding(2.dp))
 
                 CodeTextField(
-                    value = otpUiState.code,
+                    value = uiState.code,
                     length = 5,
                     onValueChange = updateSmsCode,
                     textStyle = MaterialTheme.typography.displayLarge.copy(
@@ -185,7 +207,7 @@ fun OtpScreen(
                 MyButton(
                     text = R.string.confirm,
                     onClick = {
-                        if (otpUiState.code.length == 5)
+                        if (uiState.code.length == 5)
                             confirmEmail()
                     },
                     modifier = Modifier
@@ -199,14 +221,14 @@ fun OtpScreen(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 
-                LaunchedEffect(key1 = otpUiState) {
-                    startTimer(otpUiState.timer)
+                LaunchedEffect(key1 = uiState) {
+                    startTimer(uiState.timer)
                 }
 
-                val minutes = String.format("%02d", otpUiState.timer / 60)
-                val seconds = String.format("%02d", otpUiState.timer % 60)
+                val minutes = String.format("%02d", uiState.timer / 60)
+                val seconds = String.format("%02d", uiState.timer % 60)
 
-                if (otpUiState.timer == 0) {
+                if (uiState.timer == 0) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.Center,
@@ -231,7 +253,7 @@ fun OtpScreen(
                     }
                 }
 
-                if (otpUiState.timer > 0) {
+                if (uiState.timer > 0) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center
@@ -275,18 +297,18 @@ fun OtpScreen(
 @Composable
 fun OtpPreview() {
     RentafieldTheme {
-        val mockOtpViewModel: MockOtpViewModel = viewModel()
         OtpScreen(
             onEmailConfirmed = {},
-            uiState = mockOtpViewModel.uiState,
-            confirmEmailState = mockOtpViewModel.confirmEmailState,
-            otpState = mockOtpViewModel.otpState,
+            uiState = OtpUiState(),
+            confirmEmailState = DataState.Empty,
+            otpState = DataState.Empty,
             updateSmsCode = {},
-            resendCode = mockOtpViewModel::resendCode,
-            confirmEmail = mockOtpViewModel::confirmEmail,
+            resendCode = {},
+            confirmEmail = {},
             startTimer = {},
             resetTimer = {},
-            getRegisterOtp = {}
+            getRegisterOtp = {},
+            showLoading = false
         )
     }
 }
