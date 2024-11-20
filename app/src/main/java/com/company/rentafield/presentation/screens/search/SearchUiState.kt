@@ -1,12 +1,10 @@
 package com.company.rentafield.presentation.screens.search
 
-import com.company.rentafield.domain.model.playground.Playground
-
 
 data class SearchUiState(
     val searchFilter: SearchFilter = SearchFilter.LowestPrice,
     val searchHistory: List<String> = listOf(),
-    val playgroundResults: List<Playground> = listOf()
+    val playgroundResults: List<com.company.rentafield.data.models.playground.Playground> = listOf()
 )
 
 enum class SearchFilter {

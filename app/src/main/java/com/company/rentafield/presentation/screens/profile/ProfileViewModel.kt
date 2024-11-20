@@ -4,12 +4,9 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.user.FeedbackRequest
-import com.company.rentafield.domain.model.user.UserUpdateData
-import com.company.rentafield.domain.use_case.app_entry.AppEntryUseCases
-import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
-import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
+import com.company.rentafield.domain.usecases.entry.AppEntryUseCases
+import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
+import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCase
 import com.company.rentafield.utils.toBase64String
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -34,8 +31,11 @@ class ProfileViewModel @Inject constructor(
 
     private val _localUser =
         localUserUseCases.getLocalUser()
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), LocalUser())
-    val localUser: StateFlow<LocalUser> = _localUser
+            .stateIn(
+                viewModelScope, SharingStarted.WhileSubscribed(5_000),
+                com.company.rentafield.data.models.LocalUser()
+            )
+    val localUser: StateFlow<com.company.rentafield.data.models.LocalUser> = _localUser
 
     private val _profileUiState: MutableStateFlow<ProfileUiState> =
         MutableStateFlow(ProfileUiState())
@@ -59,11 +59,11 @@ class ProfileViewModel @Inject constructor(
     fun onLogout() {
         viewModelScope.launch(IO) {
             appEntryUseCases.saveIsLogin(false)
-            localUserUseCases.saveLocalUser(LocalUser())
+            localUserUseCases.saveLocalUser(com.company.rentafield.data.models.LocalUser())
         }
     }
 
-    fun updateUserData(user: LocalUser) {
+    fun updateUserData(user: com.company.rentafield.data.models.LocalUser) {
         _profileUiState.value = _profileUiState.value.copy(
             user = user,
         )
@@ -118,7 +118,7 @@ class ProfileViewModel @Inject constructor(
             remoteUserUseCase.updateUserUseCase(
                 token = "Bearer ${_profileUiState.value.user.token ?: ""}",
                 userId = _profileUiState.value.user.userID ?: "",
-                user = UserUpdateData(
+                user = com.company.rentafield.data.models.user.UserUpdateData(
                     id = _profileUiState.value.user.userID ?: "",
                     firstName = _profileUiState.value.user.firstName ?: "",
                     lastName = _profileUiState.value.user.lastName ?: "",
@@ -154,7 +154,7 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch(IO) {
             remoteUserUseCase.sendFeedbackUseCase(
                 token = "Bearer ${_localUser.value.token ?: ""}",
-                feedback = FeedbackRequest(
+                feedback = com.company.rentafield.data.models.user.FeedbackRequest(
                     userId = _localUser.value.userID ?: "",
                     content = _profileUiState.value.feedback,
                     category = _profileUiState.value.feedbackCategory.name

@@ -19,9 +19,9 @@ import com.company.rentafield.presentation.screens.favorite.FavouriteReducer
 import com.company.rentafield.presentation.screens.favorite.FavouriteScreen
 import com.company.rentafield.presentation.screens.home.HomeReducer
 import com.company.rentafield.presentation.screens.home.HomeScreen
-import com.company.rentafield.presentation.screens.myBookings.MyBookingScreen
-import com.company.rentafield.presentation.screens.myBookings.MyBookingViewModel
-import com.company.rentafield.presentation.screens.myBookings.components.CancelBookingPage
+import com.company.rentafield.presentation.screens.mybookings.MyBookingScreen
+import com.company.rentafield.presentation.screens.mybookings.MyBookingViewModel
+import com.company.rentafield.presentation.screens.mybookings.components.CancelBookingPage
 import com.company.rentafield.presentation.screens.notifications.NotificationViewModel
 import com.company.rentafield.presentation.screens.notifications.NotificationsScreen
 import com.company.rentafield.presentation.screens.playground.PlaygroundScreen
@@ -223,7 +223,8 @@ fun NavGraphBuilder.bookingPlaygroundNavigator(navController: NavHostController)
             val bookingViewModel =
                 navBackStackEntry.sharedViewModel<BookingViewModel>(navController = navController)
             val playgroundId = navBackStackEntry.arguments?.getString("playgroundId")?.toInt()
-            BookingScreen(bookingUiState = bookingViewModel.bookingUiState,
+            BookingScreen(
+                bookingUiState = bookingViewModel.bookingUiState,
                 playgroundId = playgroundId ?: 1,
                 freeSlotsState = bookingViewModel.freeSlotsState,
                 onBackClicked = navController::navigateUp,

@@ -5,8 +5,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.auth.UserRegisterData
-import com.company.rentafield.domain.model.auth.UserRegisterResponse
 import com.company.rentafield.presentation.components.LatandLong
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,13 +15,14 @@ class MockRegisterViewModel : ViewModel() {
     private val _uiState = mutableStateOf(RegisterUiState())
     val uiState: State<RegisterUiState> = _uiState
 
-    private val _registerState: MutableStateFlow<DataState<UserRegisterResponse>> =
+    private val _registerState: MutableStateFlow<DataState<com.company.rentafield.data.models.auth.UserRegisterResponse>> =
         MutableStateFlow(DataState.Empty)
-    val registerState: StateFlow<DataState<UserRegisterResponse>> = _registerState
+    val registerState: StateFlow<DataState<com.company.rentafield.data.models.auth.UserRegisterResponse>> =
+        _registerState
 
     fun onRegister() {
         viewModelScope.launch {
-            val userRegisterData = UserRegisterData(
+            val userRegisterData = com.company.rentafield.data.models.auth.UserRegisterData(
                 firstName = _uiState.value.firstName,
                 lastName = _uiState.value.lastName,
                 email = _uiState.value.email,
@@ -34,7 +33,7 @@ class MockRegisterViewModel : ViewModel() {
                 longitude = 0.0,
                 latitude = 0.0
             )
-            val userRegisterResponse = UserRegisterResponse(
+            val userRegisterResponse = com.company.rentafield.data.models.auth.UserRegisterResponse(
                 email = userRegisterData.email,
                 code = 1234,
                 message = " "

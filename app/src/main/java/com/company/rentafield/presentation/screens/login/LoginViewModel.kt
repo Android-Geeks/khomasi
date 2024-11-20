@@ -2,11 +2,9 @@ package com.company.rentafield.presentation.screens.login
 
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.auth.UserLoginResponse
-import com.company.rentafield.domain.use_case.app_entry.AppEntryUseCases
-import com.company.rentafield.domain.use_case.auth.AuthUseCases
-import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
+import com.company.rentafield.domain.usecases.auth.AuthUseCases
+import com.company.rentafield.domain.usecases.entry.AppEntryUseCases
+import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
 import com.company.rentafield.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -70,10 +68,10 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun onLoginSuccess(loginData: UserLoginResponse) {
+    private fun onLoginSuccess(loginData: com.company.rentafield.data.models.auth.UserLoginResponse) {
         viewModelScope.launch(IO) {
             localUserUseCases.saveLocalUser(
-                LocalUser(
+                com.company.rentafield.data.models.LocalUser(
                     userID = loginData.userLoginData.userID,
                     token = loginData.token,
                     email = loginData.userLoginData.email,
@@ -108,7 +106,7 @@ class LoginViewModel @Inject constructor(
             authUseCases.getVerificationCodeUseCase(state.value.email).collect {
                 if (it is DataState.Success) {
                     localUserUseCases.saveLocalUser(
-                        LocalUser(
+                        com.company.rentafield.data.models.LocalUser(
                             email = state.value.email,
                             otpCode = it.data.code
                         )

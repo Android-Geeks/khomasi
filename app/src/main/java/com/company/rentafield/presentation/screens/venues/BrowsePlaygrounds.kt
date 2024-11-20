@@ -21,20 +21,18 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.search.FilteredPlaygroundResponse
 import com.company.rentafield.presentation.components.SubScreenTopBar
 import com.company.rentafield.presentation.components.cards.PlaygroundCard
-import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
+import com.company.rentafield.presentation.components.connectstates.ThreeBounce
 import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.ThemePreviews
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun BrowsePlaygrounds(
-    localUser: StateFlow<LocalUser>,
+    localUser: StateFlow<com.company.rentafield.data.models.LocalUser>,
     browseUiState: StateFlow<BrowseUiState>,
-    filteredPlayground: StateFlow<DataState<FilteredPlaygroundResponse>>,
+    filteredPlayground: StateFlow<DataState<com.company.rentafield.data.models.search.FilteredPlaygroundResponse>>,
     getFilteredPlaygrounds: () -> Unit,
     onFilterClick: () -> Unit,
     onFavouriteClicked: (Int) -> Unit,

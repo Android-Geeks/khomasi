@@ -3,11 +3,9 @@ package com.company.rentafield.presentation.screens.playground
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
-import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
-import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
-import com.company.rentafield.domain.use_case.remote_user.RemotePlaygroundUseCase
-import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
+import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
+import com.company.rentafield.domain.usecases.remoteuser.RemotePlaygroundUseCase
+import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCase
 import com.company.rentafield.presentation.screens.playground.model.PlaygroundInfoUiState
 import com.company.rentafield.presentation.screens.playground.model.PlaygroundReviewsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -26,9 +24,10 @@ class PlaygroundViewModel @Inject constructor(
     private val localUserUseCases: LocalUserUseCases,
 ) : ViewModel() {
 
-    private val _playgroundState: MutableStateFlow<DataState<PlaygroundScreenResponse>> =
+    private val _playgroundState: MutableStateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundScreenResponse>> =
         MutableStateFlow(DataState.Empty)
-    val playgroundState: StateFlow<DataState<PlaygroundScreenResponse>> = _playgroundState
+    val playgroundState: StateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundScreenResponse>> =
+        _playgroundState
 
     private val _infoUiState: MutableStateFlow<PlaygroundInfoUiState> =
         MutableStateFlow(PlaygroundInfoUiState())
@@ -38,9 +37,10 @@ class PlaygroundViewModel @Inject constructor(
         MutableStateFlow(PlaygroundReviewsUiState())
     val reviewsUiState: StateFlow<PlaygroundReviewsUiState> = _reviewsUiState
 
-    private val _reviewsState: MutableStateFlow<DataState<PlaygroundReviewsResponse>> =
+    private val _reviewsState: MutableStateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundReviewsResponse>> =
         MutableStateFlow(DataState.Empty)
-    val reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>> = _reviewsState
+    val reviewsState: StateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundReviewsResponse>> =
+        _reviewsState
 
 
     fun getPlaygroundDetails(playgroundId: Int) {

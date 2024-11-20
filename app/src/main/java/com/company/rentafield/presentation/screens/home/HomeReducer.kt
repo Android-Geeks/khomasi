@@ -2,8 +2,6 @@ package com.company.rentafield.presentation.screens.home
 
 import androidx.annotation.StringRes
 import com.company.rentafield.R
-import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.playground.Playground
 import com.company.rentafield.presentation.base.Reducer
 import com.company.rentafield.presentation.screens.home.model.AdsContent
 import com.company.rentafield.presentation.screens.home.model.adsList
@@ -21,11 +19,15 @@ class HomeReducer : Reducer<HomeReducer.State, HomeReducer.Event, HomeReducer.Ef
         data class FavouriteClick(val playgroundId: Int) : Event()
         data class BookNowClicked(val playgroundId: Int) : Event()
         data class UpdateIsLoading(val isLoading: Boolean) : Event()
-        data class UpdateLocalUser(val localUser: LocalUser) : Event()
+        data class UpdateLocalUser(val localUser: com.company.rentafield.data.models.LocalUser) :
+            Event()
+
         data class UpdateAdList(val adList: List<AdsContent>) : Event()
         data class UpdateProfileImage(val profileImage: String) : Event()
         data class UpdateCanUploadVideo(val canUploadVideo: Boolean) : Event()
-        data class UpdatePlaygrounds(val playgrounds: List<Playground>) : Event()
+        data class UpdatePlaygrounds(val playgrounds: List<com.company.rentafield.data.models.playground.Playground>) :
+            Event()
+
         data class PlaygroundClick(val playgroundId: Int, val isFavourite: Boolean) : Event()
 //        data class UpdateCoinsAndRating(val coins: Double, val rating: Double) : Event()
     }
@@ -51,11 +53,11 @@ class HomeReducer : Reducer<HomeReducer.State, HomeReducer.Event, HomeReducer.Ef
     @Immutable
     data class State(
         val isLoading: Boolean,
-        val localUser: LocalUser,
+        val localUser: com.company.rentafield.data.models.LocalUser,
         val profileImage: String,
         val canUploadVideo: Boolean,
         val adList: List<AdsContent>,
-        val playgrounds: List<Playground>
+        val playgrounds: List<com.company.rentafield.data.models.playground.Playground>
     ) : Reducer.ViewState
 
     override fun reduce(previousState: State, event: Event): Pair<State, Effect?> {
@@ -114,7 +116,7 @@ class HomeReducer : Reducer<HomeReducer.State, HomeReducer.Event, HomeReducer.Ef
             isLoading = false,
             profileImage = "",
             canUploadVideo = false,
-            localUser = LocalUser(),
+            localUser = com.company.rentafield.data.models.LocalUser(),
             playgrounds = emptyList()
         )
     }

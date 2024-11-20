@@ -25,8 +25,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
-import com.company.rentafield.domain.model.playground.Review
 import com.company.rentafield.presentation.components.cards.CommentCard
 import com.company.rentafield.presentation.screens.playground.MockPlaygroundViewModel
 import com.company.rentafield.presentation.theme.RentafieldTheme
@@ -34,10 +32,12 @@ import com.company.rentafield.presentation.theme.RentafieldTheme
 
 @Composable
 fun PlaygroundReviews(
-    reviews: DataState<PlaygroundReviewsResponse>,
+    reviews: DataState<com.company.rentafield.data.models.playground.PlaygroundReviewsResponse>,
     onClickCancel: () -> Unit
 ) {
-    val reviewsList = remember { mutableStateOf<List<Review>>(emptyList()) }
+    val reviewsList = remember {
+        mutableStateOf<List<com.company.rentafield.data.models.playground.Review>>(emptyList())
+    }
 
     LaunchedEffect(reviews) {
         reviewsList.value = if (reviews is DataState.Success) {

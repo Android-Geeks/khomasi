@@ -4,11 +4,8 @@ package com.company.rentafield.presentation.screens.venues
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.playground.Playground
-import com.company.rentafield.domain.model.search.FilteredPlaygroundResponse
-import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
-import com.company.rentafield.domain.use_case.remote_user.RemotePlaygroundUseCase
+import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
+import com.company.rentafield.domain.usecases.remoteuser.RemotePlaygroundUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,20 +23,23 @@ class BrowsePlaygroundsViewModel @Inject constructor(
 ) : ViewModel() {
 
     val localUser = localUserUseCases.getLocalUser().stateIn(
-        viewModelScope, SharingStarted.WhileSubscribed(5_000), LocalUser()
+        viewModelScope, SharingStarted.WhileSubscribed(5_000),
+        com.company.rentafield.data.models.LocalUser()
     )
 
     private val _uiState = MutableStateFlow(BrowseUiState())
     val uiState: StateFlow<BrowseUiState> = _uiState
 
-    private val _filteredPlaygrounds: MutableStateFlow<DataState<FilteredPlaygroundResponse>> =
+    private val _filteredPlaygrounds: MutableStateFlow<DataState<com.company.rentafield.data.models.search.FilteredPlaygroundResponse>> =
         MutableStateFlow(DataState.Empty)
-    val filteredPlaygrounds: StateFlow<DataState<FilteredPlaygroundResponse>> = _filteredPlaygrounds
+    val filteredPlaygrounds: StateFlow<DataState<com.company.rentafield.data.models.search.FilteredPlaygroundResponse>> =
+        _filteredPlaygrounds
 
     fun getPlaygrounds() {
         viewModelScope.launch(IO) {
 //            _filteredPlaygrounds.value = DataState.Loading
-            var playgrounds: List<Playground> = listOf()
+            var playgrounds: List<com.company.rentafield.data.models.playground.Playground> =
+                listOf()
             remotePlaygroundUseCase.getFilteredPlaygroundsUseCase(
                 token = "Bearer ${localUser.value.token ?: ""}",
                 id = localUser.value.userID ?: "",
@@ -111,7 +111,7 @@ class BrowsePlaygroundsViewModel @Inject constructor(
     }
 
     private fun updatePlaygroundContent(
-        playgrounds: List<Playground>,
+        playgrounds: List<com.company.rentafield.data.models.playground.Playground>,
     ) {
         _uiState.value = _uiState.value.copy(
             playgrounds = playgrounds,
@@ -134,7 +134,8 @@ class BrowsePlaygroundsViewModel @Inject constructor(
     }
 
     fun onFavouriteClicked(playgroundId: Int) {
-        var updatedPlaygrounds: List<Playground> = listOf()
+        var updatedPlaygrounds: List<com.company.rentafield.data.models.playground.Playground> =
+            listOf()
         if (_filteredPlaygrounds.value is DataState.Success) {
             val playgrounds =
                 (_filteredPlaygrounds.value as DataState.Success).data.filteredPlaygrounds

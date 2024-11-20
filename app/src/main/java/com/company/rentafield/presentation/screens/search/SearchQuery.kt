@@ -27,8 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
-import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.playground.Playground
 import com.company.rentafield.presentation.components.MyAlertDialog
 import com.company.rentafield.presentation.screens.search.components.EmptySearch
 import com.company.rentafield.presentation.screens.search.components.SearchHistory
@@ -43,8 +41,8 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun SearchQuery(
     searchUiState: StateFlow<SearchUiState>,
-    localUserState: StateFlow<LocalUser>,
-    playgroundsState: StateFlow<List<Playground>>,
+    localUserState: StateFlow<com.company.rentafield.data.models.LocalUser>,
+    playgroundsState: StateFlow<List<com.company.rentafield.data.models.playground.Playground>>,
     searchQuery: StateFlow<String>,
     getSearchData: () -> Unit,
     onBackClick: () -> Unit,
@@ -165,7 +163,7 @@ fun SearchQueryPreview() {
     RentafieldTheme {
         SearchQuery(
             searchUiState = MutableStateFlow(SearchUiState()),
-            localUserState = MutableStateFlow(LocalUser()),
+            localUserState = MutableStateFlow(com.company.rentafield.data.models.LocalUser()),
             playgroundsState = MutableStateFlow(listOf()),
             searchQuery = MutableStateFlow(""),
             getSearchData = {},

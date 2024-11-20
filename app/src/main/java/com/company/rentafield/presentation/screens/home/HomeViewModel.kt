@@ -2,9 +2,9 @@ package com.company.rentafield.presentation.screens.home
 
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.use_case.ai.AiUseCases
-import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
-import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
+import com.company.rentafield.domain.usecases.ai.AiUseCases
+import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
+import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCase
 import com.company.rentafield.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO

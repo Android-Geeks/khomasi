@@ -31,9 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.ai.AiLog
-import com.company.rentafield.domain.model.ai.AiResponse
 import com.company.rentafield.presentation.screens.notifications.component.NotificationItem
 import com.company.rentafield.presentation.screens.search.components.MyTopAppBar
 import com.company.rentafield.presentation.theme.RentafieldTheme
@@ -45,9 +42,9 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun NotificationsScreen(
     onBackClicked: () -> Unit,
-    notificationStateFlow: StateFlow<DataState<AiResponse>>,
+    notificationStateFlow: StateFlow<DataState<com.company.rentafield.data.models.ai.AiResponse>>,
     getNotifications: () -> Unit,
-    localUserUiState: StateFlow<LocalUser>
+    localUserUiState: StateFlow<com.company.rentafield.data.models.LocalUser>
 ) {
     val localUser = localUserUiState.collectAsStateWithLifecycle().value
 
@@ -73,7 +70,7 @@ fun NotificationsScreen(
         ) {
             val notificationState by notificationStateFlow.collectAsStateWithLifecycle()
             val aiResponse = remember {
-                mutableStateOf<List<AiLog>>(emptyList())
+                mutableStateOf<List<com.company.rentafield.data.models.ai.AiLog>>(emptyList())
             }
             LaunchedEffect(notificationState) {
                 Log.d("notificationState", notificationState.toString())
@@ -97,7 +94,7 @@ fun NotificationsScreen(
 }
 
 @Composable
-fun NotificationContent(notifications: List<AiLog>) {
+fun NotificationContent(notifications: List<com.company.rentafield.data.models.ai.AiLog>) {
     LazyColumn {
         items(notifications) { log ->
             val notificationTime = extractTimeFromTimestamp(parseTimestamp(log.uploadDate))
@@ -173,17 +170,17 @@ fun NotificationsPreview() {
         NotificationsScreen(
             onBackClicked = { },
             getNotifications = {},
-            localUserUiState = MutableStateFlow(LocalUser()),
+            localUserUiState = MutableStateFlow(com.company.rentafield.data.models.LocalUser()),
             notificationStateFlow = MutableStateFlow(
                 DataState.Success(
-                    AiResponse(
+                    com.company.rentafield.data.models.ai.AiResponse(
                         aiLogs = listOf(
-                            AiLog(
+                            com.company.rentafield.data.models.ai.AiLog(
                                 isProcessed = true,
                                 kickupCount = 1,
                                 uploadDate = "2021-09-01T00:00:00.00"
                             ),
-                            AiLog(
+                            com.company.rentafield.data.models.ai.AiLog(
                                 isProcessed = false,
                                 kickupCount = 1,
                                 uploadDate = "2021-09-01T00:00:00.00"

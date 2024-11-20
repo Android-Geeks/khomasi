@@ -8,7 +8,7 @@ import com.company.rentafield.presentation.navigation.components.Screens
 import com.company.rentafield.presentation.navigation.components.sharedViewModel
 import com.company.rentafield.presentation.screens.login.LoginReducer
 import com.company.rentafield.presentation.screens.login.LoginScreen
-import com.company.rentafield.presentation.screens.loginOrSignup.LoginOrRegisterScreen
+import com.company.rentafield.presentation.screens.loginorsignup.LoginOrRegisterScreen
 import com.company.rentafield.presentation.screens.otp.OtpScreenRoute
 import com.company.rentafield.presentation.screens.register.RegisterEmailAndPassword
 import com.company.rentafield.presentation.screens.register.RegisterNameAndPhone

@@ -65,7 +65,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.booking.BookingPlaygroundResponse
 import com.company.rentafield.presentation.components.DoneSuccessfully
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextField
@@ -83,7 +82,7 @@ import java.util.Locale
 @Composable
 fun PaymentScreen(
     paymentUiState: StateFlow<PaymentUiState>,
-    bookingPlaygroundResponse: StateFlow<DataState<BookingPlaygroundResponse>>,
+    bookingPlaygroundResponse: StateFlow<DataState<com.company.rentafield.data.models.booking.BookingPlaygroundResponse>>,
     context: Context = LocalContext.current,
     updateCardNumber: (String) -> Unit,
     updateCardValidationDate: (String) -> Unit,
@@ -562,7 +561,7 @@ fun PaymentScreenPreview() {
             paymentUiState = MutableStateFlow(PaymentUiState()),
             bookingPlaygroundResponse = MutableStateFlow(
                 DataState.Success(
-                    BookingPlaygroundResponse(
+                    com.company.rentafield.data.models.booking.BookingPlaygroundResponse(
                         1,
                         "1",
                         1,

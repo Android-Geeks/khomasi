@@ -4,11 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.playground.Playground
-import com.company.rentafield.domain.model.playground.PlaygroundsResponse
-import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
-import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
+import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
+import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,12 +25,14 @@ class SearchViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState
 
-    private val _playgrounds: MutableStateFlow<DataState<PlaygroundsResponse>> =
+    private val _playgrounds: MutableStateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundsResponse>> =
         MutableStateFlow(DataState.Empty)
-    val playgrounds: StateFlow<DataState<PlaygroundsResponse>> = _playgrounds
+    val playgrounds: StateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundsResponse>> =
+        _playgrounds
 
     val localUser = localUserUseCases.getLocalUser().stateIn(
-        viewModelScope, SharingStarted.WhileSubscribed(5_000), LocalUser()
+        viewModelScope, SharingStarted.WhileSubscribed(5_000),
+        com.company.rentafield.data.models.LocalUser()
     )
 
     fun getSearchData() {
@@ -51,33 +50,34 @@ class SearchViewModel @Inject constructor(
     private val _searchQuery: MutableStateFlow<String> = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
 
-    val searchResults: StateFlow<List<Playground>> = _searchQuery
-        .combine(_playgrounds) { searchQuery, playgroundsResponse ->
-            Log.d("SearchViewModel", "playground: $playgroundsResponse")
-            when (playgroundsResponse) {
-                is DataState.Success -> {
-                    val playgrounds = playgroundsResponse.data.playgrounds
-                    when {
-                        searchQuery.isNotEmpty() -> {
-                            val fields = playgrounds.filter { playground ->
-                                playground.name.contains(searchQuery, ignoreCase = true)
+    val searchResults: StateFlow<List<com.company.rentafield.data.models.playground.Playground>> =
+        _searchQuery
+            .combine(_playgrounds) { searchQuery, playgroundsResponse ->
+                Log.d("SearchViewModel", "playground: $playgroundsResponse")
+                when (playgroundsResponse) {
+                    is DataState.Success -> {
+                        val playgrounds = playgroundsResponse.data.playgrounds
+                        when {
+                            searchQuery.isNotEmpty() -> {
+                                val fields = playgrounds.filter { playground ->
+                                    playground.name.contains(searchQuery, ignoreCase = true)
+                                }
+                                _uiState.value =
+                                    _uiState.value.copy(playgroundResults = fields.sortedBy { it.feesForHour })
+                                fields
                             }
-                            _uiState.value =
-                                _uiState.value.copy(playgroundResults = fields.sortedBy { it.feesForHour })
-                            fields
+
+                            else -> playgrounds
                         }
-
-                        else -> playgrounds
                     }
-                }
 
-                else -> emptyList()
-            }
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = emptyList()
-        )
+                    else -> emptyList()
+                }
+            }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptyList()
+            )
 
 
     fun onSearchQueryChanged(query: String) {

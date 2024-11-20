@@ -39,9 +39,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.rentafield.R
-import com.company.rentafield.domain.model.playground.Playground
 import com.company.rentafield.presentation.components.MyButton
-import com.company.rentafield.presentation.components.iconButtons.FavoriteIcon
+import com.company.rentafield.presentation.components.iconbuttons.FavoriteIcon
 import com.company.rentafield.presentation.theme.darkCard
 import com.company.rentafield.presentation.theme.lightCard
 import com.company.rentafield.utils.convertToBitmap
@@ -51,7 +50,7 @@ import java.util.Locale
 @SuppressLint("DefaultLocale")
 @Composable
 fun PlaygroundCard(
-    playground: Playground,
+    playground: com.company.rentafield.data.models.playground.Playground,
     onFavouriteClick: () -> Unit,
     onViewPlaygroundClick: () -> Unit,
     modifier: Modifier = Modifier,

@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.SubScreenTopBar
 import com.company.rentafield.presentation.components.cards.PlaygroundCard
-import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
+import com.company.rentafield.presentation.components.connectstates.ThreeBounce
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -61,7 +61,13 @@ fun FavouriteContent(
                                 )
                             )
                         },
-                        onFavouriteClick = { sendEvent(FavouriteReducer.Event.FavouriteClick(playground.id)) },
+                        onFavouriteClick = {
+                            sendEvent(
+                                FavouriteReducer.Event.FavouriteClick(
+                                    playground.id
+                                )
+                            )
+                        },
                     )
                 }
             }

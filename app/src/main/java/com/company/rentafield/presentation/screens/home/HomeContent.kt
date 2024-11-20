@@ -24,7 +24,7 @@ import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
 import com.company.rentafield.presentation.components.AdsSlider
 import com.company.rentafield.presentation.components.cards.PlaygroundCard
-import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
+import com.company.rentafield.presentation.components.connectstates.ThreeBounce
 import com.company.rentafield.presentation.screens.home.components.HomeSearchBar
 import com.company.rentafield.presentation.screens.home.components.UserProfileHeader
 import com.company.rentafield.presentation.screens.home.model.adsList

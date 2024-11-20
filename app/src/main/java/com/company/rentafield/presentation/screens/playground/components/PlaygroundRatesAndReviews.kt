@@ -26,8 +26,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
-import com.company.rentafield.domain.model.playground.PlaygroundX
 import com.company.rentafield.presentation.components.MyOutlinedButton
 import com.company.rentafield.presentation.screens.playground.model.PlaygroundReviewsUiState
 import com.company.rentafield.presentation.theme.RentafieldTheme
@@ -37,11 +35,15 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun PlaygroundRatesAndReviews(
     reviewsUiState: StateFlow<PlaygroundReviewsUiState>,
-    playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
+    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundScreenResponse>>,
     onViewRatingClicked: () -> Unit
 ) {
     val playgroundState by playgroundStateFlow.collectAsStateWithLifecycle()
-    var playgroundData by remember { mutableStateOf<PlaygroundScreenResponse?>(null) }
+    var playgroundData by remember {
+        mutableStateOf<com.company.rentafield.data.models.playground.PlaygroundScreenResponse?>(
+            null
+        )
+    }
 
     if (playgroundState is DataState.Success) {
         playgroundData = (playgroundState as DataState.Success).data
@@ -126,9 +128,9 @@ fun PlaygroundRatesAndReviewsPreview() {
             ),
             playgroundStateFlow = MutableStateFlow(
                 DataState.Success(
-                    PlaygroundScreenResponse(
+                    com.company.rentafield.data.models.playground.PlaygroundScreenResponse(
                         playgroundPictures = listOf(),
-                        playground = PlaygroundX(
+                        playground = com.company.rentafield.data.models.playground.PlaygroundX(
                             id = 2,
                             name = "Adventure Island",
                             description = "A thrilling playground with exciting obstacle courses and climbing structures.",

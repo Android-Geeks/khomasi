@@ -17,9 +17,8 @@ import androidx.work.WorkerParameters
 import androidx.work.workDataOf
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.use_case.ai.AiUseCases
-import com.company.rentafield.presentation.mainActivity.MainActivity
+import com.company.rentafield.domain.usecases.ai.AiUseCases
+import com.company.rentafield.presentation.mainactivity.MainActivity
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -59,7 +58,7 @@ class UploadVideoWorker @AssistedInject constructor(
 
 
         return try {
-            var resultData: DataState<MessageResponse>? = null
+            var resultData: DataState<com.company.rentafield.data.models.MessageResponse>? = null
             aiUseCases.uploadVideoUseCase(idRequestBody, videoPart).collect { result ->
                 resultData = result
             }
