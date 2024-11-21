@@ -23,7 +23,7 @@
         android:theme="@style/App.Starting.Theme"
         android:usesCleartextTraffic="true">
         <activity
-            android:name="com.company.rentafield.presentation.mainActivity.MainActivity"
+            android:name="com.company.rentafield.presentation.mainactivity.MainActivity"
             android:exported="true"
             android:theme="@style/App.Starting.Theme"
             android:windowSoftInputMode="adjustResize">

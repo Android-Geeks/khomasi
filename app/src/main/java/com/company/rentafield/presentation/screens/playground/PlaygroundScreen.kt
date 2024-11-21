@@ -33,12 +33,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.playground.PlaygroundReviewsResponse
-import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
 import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyModalBottomSheet
-import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
+import com.company.rentafield.presentation.components.connectstates.ThreeBounce
 import com.company.rentafield.presentation.screens.playground.components.ImageSlider
 import com.company.rentafield.presentation.screens.playground.components.LineSpacer
 import com.company.rentafield.presentation.screens.playground.components.PlaygroundDefinition
@@ -61,10 +59,10 @@ import kotlinx.coroutines.launch
 fun PlaygroundScreen(
     playgroundId: Int,
     isFavourite: Boolean,
-    playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
+    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse>>,
     playgroundInfoUiState: StateFlow<PlaygroundInfoUiState>,
     playgroundReviewsUiState: StateFlow<PlaygroundReviewsUiState>,
-    reviewsState: StateFlow<DataState<PlaygroundReviewsResponse>>,
+    reviewsState: StateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundReviewsResponse>>,
     context: Context = LocalContext.current,
     onViewRatingClicked: () -> Unit,
     getPlaygroundDetails: (Int) -> Unit,
@@ -165,7 +163,7 @@ fun ShowBottomSheet(
     playgroundReviewsUiState: StateFlow<PlaygroundReviewsUiState>,
     bottomSheetState: SheetState,
     scope: CoroutineScope,
-    reviews: DataState<PlaygroundReviewsResponse>,
+    reviews: DataState<com.company.rentafield.domain.models.playground.PlaygroundReviewsResponse>,
     updateShowReview: () -> Unit
 ) {
     val reviewsState by playgroundReviewsUiState.collectAsStateWithLifecycle()
@@ -203,7 +201,7 @@ fun dismissBottomSheet(
 
 @Composable
 fun PlaygroundScreenContent(
-    playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
+    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse>>,
     uiState: StateFlow<PlaygroundInfoUiState>,
     reviewsUiState: StateFlow<PlaygroundReviewsUiState>,
     onViewRatingClicked: () -> Unit,

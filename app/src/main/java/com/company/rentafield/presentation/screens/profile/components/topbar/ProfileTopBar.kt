@@ -24,13 +24,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import com.company.rentafield.R
-import com.company.rentafield.domain.model.LocalUser
 import com.company.rentafield.presentation.theme.darkIconMask
 import com.company.rentafield.presentation.theme.lightIconMask
 
 @Composable
 fun ProfileTopBar(
-    localUser: LocalUser,
+    localUser: com.company.rentafield.domain.models.LocalUser,
     image: String?,
     onEditProfile: () -> Unit,
     onBackClick: () -> Unit,

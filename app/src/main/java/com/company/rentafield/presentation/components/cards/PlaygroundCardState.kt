@@ -1,8 +1,6 @@
 package com.company.rentafield.presentation.components.cards
 
-import com.company.rentafield.domain.model.playground.Playground
-
 data class PlaygroundCardState(
-    val playground: Playground,
+    val playground: com.company.rentafield.domain.models.playground.Playground,
     val isFavorite: Boolean
 )

@@ -4,10 +4,8 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.model.auth.VerificationResponse
-import com.company.rentafield.domain.use_case.auth.AuthUseCases
-import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
+import com.company.rentafield.domain.usecases.auth.AuthUseCases
+import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -26,21 +24,23 @@ class OtpViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(OtpUiState())
     val uiState: StateFlow<OtpUiState> = _uiState
 
-    private val _otpState: MutableStateFlow<DataState<VerificationResponse>> =
+    private val _otpState: MutableStateFlow<DataState<com.company.rentafield.domain.models.auth.VerificationResponse>> =
         MutableStateFlow(DataState.Empty)
 
-    val otpState: StateFlow<DataState<VerificationResponse>> = _otpState
+    val otpState: StateFlow<DataState<com.company.rentafield.domain.models.auth.VerificationResponse>> =
+        _otpState
 
-    private val _confirmEmailState: MutableStateFlow<DataState<MessageResponse>> =
+    private val _confirmEmailState: MutableStateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>> =
         MutableStateFlow(DataState.Empty)
-    val confirmEmailState: StateFlow<DataState<MessageResponse>> = _confirmEmailState
+    val confirmEmailState: StateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>> =
+        _confirmEmailState
 
     fun getRegisterOtp() {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect { localUser ->
                 _uiState.value = _uiState.value.copy(email = localUser.email ?: "")
                 _otpState.value = DataState.Success(
-                    VerificationResponse(
+                    com.company.rentafield.domain.models.auth.VerificationResponse(
                         code = localUser.otpCode ?: 0,
                         email = localUser.email ?: "",
                         message = "Confirmation Code Has Been Sent"

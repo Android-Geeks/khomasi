@@ -3,19 +3,19 @@ package com.company.rentafield.presentation.screens.venues
 
 import androidx.lifecycle.ViewModel
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.search.FilteredPlaygroundResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 class MockBrowseViewModel : ViewModel() {
 
-    val localUser: StateFlow<LocalUser> = MutableStateFlow(LocalUser())
+    val localUser: StateFlow<com.company.rentafield.domain.models.LocalUser> =
+        MutableStateFlow(com.company.rentafield.domain.models.LocalUser())
 
 
-    private val _filteredPlaygrounds: MutableStateFlow<DataState<FilteredPlaygroundResponse>> =
+    private val _filteredPlaygrounds: MutableStateFlow<DataState<com.company.rentafield.domain.models.search.FilteredPlaygroundResponse>> =
         MutableStateFlow(DataState.Empty)
-    val filteredPlaygrounds: StateFlow<DataState<FilteredPlaygroundResponse>> = _filteredPlaygrounds
+    val filteredPlaygrounds: StateFlow<DataState<com.company.rentafield.domain.models.search.FilteredPlaygroundResponse>> =
+        _filteredPlaygrounds
 
     val uiState: StateFlow<BrowseUiState> = MutableStateFlow(
         BrowseUiState(

@@ -44,12 +44,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.MessageResponse
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextButton
 import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.presentation.components.PasswordStrengthMeter
-import com.company.rentafield.presentation.components.connectionStates.Loading
+import com.company.rentafield.presentation.components.connectstates.Loading
 import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.CheckInputValidation
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,7 +59,7 @@ import kotlinx.coroutines.launch
 fun PasswordConfirmation(
     uiState: StateFlow<ResetPasswordUiState>,
     onBackToLogin: () -> Unit,
-    recoverResponse: StateFlow<DataState<MessageResponse>>,
+    recoverResponse: StateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>>,
     onEnteringVerificationCode: (String) -> Unit,
     verifyVerificationCode: (String) -> Unit,
     onEnteringPassword: (String) -> Unit,

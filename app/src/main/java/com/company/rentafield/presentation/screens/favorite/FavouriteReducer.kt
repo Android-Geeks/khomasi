@@ -3,7 +3,6 @@ package com.company.rentafield.presentation.screens.favorite
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
 import com.company.rentafield.R
-import com.company.rentafield.domain.model.playground.Playground
 import com.company.rentafield.presentation.base.Reducer
 
 class FavouriteReducer :
@@ -15,7 +14,8 @@ class FavouriteReducer :
         data class FavouriteClick(val playgroundId: Int) : Event()
         data class UpdateIsLoading(val isLoading: Boolean) : Event()
         data class PlaygroundClick(val playgroundId: Int, val isFavourite: Boolean) : Event()
-        data class UpdateFavouritePlaygrounds(val favouritePlaygrounds: List<Playground>) : Event()
+        data class UpdateFavouritePlaygrounds(val favouritePlaygrounds: List<com.company.rentafield.domain.models.playground.Playground>) :
+            Event()
     }
 
     @Immutable
@@ -34,7 +34,7 @@ class FavouriteReducer :
         val userID: String,
         val userToken: String,
         val isLoading: Boolean,
-        val favouritePlaygrounds: List<Playground>
+        val favouritePlaygrounds: List<com.company.rentafield.domain.models.playground.Playground>
     ) : Reducer.ViewState
 
 

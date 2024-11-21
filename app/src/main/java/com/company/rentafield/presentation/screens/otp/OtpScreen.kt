@@ -42,11 +42,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.model.auth.VerificationResponse
 import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.MyButton
-import com.company.rentafield.presentation.components.connectionStates.Loading
+import com.company.rentafield.presentation.components.connectstates.Loading
 import com.company.rentafield.presentation.theme.RentafieldTheme
 
 @Composable
@@ -129,8 +127,8 @@ fun OtpScreenRoute(
 @Composable
 fun OtpScreen(
     uiState: OtpUiState,
-    confirmEmailState: DataState<MessageResponse>,
-    otpState: DataState<VerificationResponse>,
+    confirmEmailState: DataState<com.company.rentafield.domain.models.MessageResponse>,
+    otpState: DataState<com.company.rentafield.domain.models.auth.VerificationResponse>,
     updateSmsCode: (String) -> Unit,
     resendCode: () -> Unit,
     onEmailConfirmed: () -> Unit,

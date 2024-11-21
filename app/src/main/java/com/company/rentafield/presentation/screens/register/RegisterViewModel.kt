@@ -3,11 +3,8 @@ package com.company.rentafield.presentation.screens.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.LocalUser
-import com.company.rentafield.domain.model.auth.UserRegisterData
-import com.company.rentafield.domain.model.auth.UserRegisterResponse
-import com.company.rentafield.domain.use_case.auth.AuthUseCases
-import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
+import com.company.rentafield.domain.usecases.auth.AuthUseCases
+import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
 import com.company.rentafield.presentation.components.LatandLong
 import com.company.rentafield.utils.CheckInputValidation
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -25,14 +22,15 @@ class RegisterViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(RegisterUiState())
     val uiState: StateFlow<RegisterUiState> = _uiState
 
-    private val _registerState: MutableStateFlow<DataState<UserRegisterResponse>> =
+    private val _registerState: MutableStateFlow<DataState<com.company.rentafield.domain.models.auth.UserRegisterResponse>> =
         MutableStateFlow(DataState.Empty)
-    val registerState: StateFlow<DataState<UserRegisterResponse>> = _registerState
+    val registerState: StateFlow<DataState<com.company.rentafield.domain.models.auth.UserRegisterResponse>> =
+        _registerState
 
     fun onRegister() {
         viewModelScope.launch {
             authUseCases.registerUseCase(
-                UserRegisterData(
+                com.company.rentafield.domain.models.auth.UserRegisterData(
                     firstName = _uiState.value.firstName,
                     lastName = _uiState.value.lastName,
                     email = _uiState.value.email,
@@ -47,7 +45,7 @@ class RegisterViewModel @Inject constructor(
                 _registerState.value = it
                 if (it is DataState.Success) {
                     localUserUseCases.saveLocalUser(
-                        LocalUser(
+                        com.company.rentafield.domain.models.LocalUser(
                             email = it.data.email,
                             otpCode = it.data.code
                         )

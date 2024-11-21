@@ -41,7 +41,6 @@ import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.company.rentafield.R
-import com.company.rentafield.domain.model.booking.BookingDetails
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyOutlinedButton
 import com.company.rentafield.presentation.theme.RentafieldTheme
@@ -56,7 +55,7 @@ import com.company.rentafield.utils.parseTimestamp
 
 @Composable
 fun BookingCard(
-    bookingDetails: BookingDetails,
+    bookingDetails: com.company.rentafield.domain.models.booking.BookingDetails,
     modifier: Modifier = Modifier,
     onViewPlaygroundClick: () -> Unit,
     isDark: Boolean = isSystemInDarkTheme(),
@@ -210,7 +209,7 @@ fun BookingCard(
 
 @Composable
 fun BookingCardDetails(
-    bookingDetails: BookingDetails,
+    bookingDetails: com.company.rentafield.domain.models.booking.BookingDetails,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     isDark: Boolean
@@ -313,7 +312,7 @@ fun TextWithIcon(
 private fun BookingCardPreview() {
     RentafieldTheme {
         BookingCard(
-            bookingDetails = BookingDetails(
+            bookingDetails = com.company.rentafield.domain.models.booking.BookingDetails(
                 1,
                 1,
                 "Al Zamalek Club",

@@ -3,9 +3,7 @@ package com.company.rentafield.presentation.screens.resetPassword
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.MessageResponse
-import com.company.rentafield.domain.model.auth.VerificationResponse
-import com.company.rentafield.domain.use_case.auth.AuthUseCases
+import com.company.rentafield.domain.usecases.auth.AuthUseCases
 import com.company.rentafield.utils.CheckInputValidation
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,12 +21,16 @@ class ResetPasswordViewModel @Inject constructor(
     val resetUiState: StateFlow<ResetPasswordUiState> = _resetUiState
 
     private val _verificationRes =
-        MutableStateFlow<DataState<VerificationResponse>>(DataState.Empty)
-    val verificationRes: StateFlow<DataState<VerificationResponse>> = _verificationRes
+        MutableStateFlow<DataState<com.company.rentafield.domain.models.auth.VerificationResponse>>(
+            DataState.Empty
+        )
+    val verificationRes: StateFlow<DataState<com.company.rentafield.domain.models.auth.VerificationResponse>> =
+        _verificationRes
 
     private val _recoverResponse =
-        MutableStateFlow<DataState<MessageResponse>>(DataState.Empty)
-    val recoverResponse: StateFlow<DataState<MessageResponse>> = _recoverResponse
+        MutableStateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>>(DataState.Empty)
+    val recoverResponse: StateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>> =
+        _recoverResponse
 
     fun onUserEmailChange(email: String) {
         _resetUiState.update {

@@ -3,8 +3,8 @@ package com.company.rentafield.presentation.components.cards
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.company.rentafield.domain.use_case.local_user.LocalUserUseCases
-import com.company.rentafield.domain.use_case.remote_user.RemoteUserUseCase
+import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
+import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

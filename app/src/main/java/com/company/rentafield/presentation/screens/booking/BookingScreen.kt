@@ -43,7 +43,6 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.playground.FreeTimeSlotsResponse
 import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.screens.booking.components.CalendarPager
@@ -64,7 +63,7 @@ import java.util.Locale
 fun BookingScreen(
     bookingUiState: StateFlow<BookingUiState>,
     playgroundId: Int,
-    freeSlotsState: StateFlow<DataState<FreeTimeSlotsResponse>>,
+    freeSlotsState: StateFlow<DataState<com.company.rentafield.domain.models.playground.FreeTimeSlotsResponse>>,
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme(),
     onBackClicked: () -> Unit,
@@ -133,7 +132,7 @@ fun BookingScreen(
 @Composable
 fun BookingScreenContent(
     bookingUiState: BookingUiState,
-    freeSlotsState: DataState<FreeTimeSlotsResponse>,
+    freeSlotsState: DataState<com.company.rentafield.domain.models.playground.FreeTimeSlotsResponse>,
     hourlyIntervalsList: List<Pair<LocalDateTime, LocalDateTime>>,
     isDark: Boolean,
     context: Context,

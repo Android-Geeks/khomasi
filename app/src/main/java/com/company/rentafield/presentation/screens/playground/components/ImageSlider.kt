@@ -34,11 +34,8 @@ import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.playground.PlaygroundPicture
-import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
-import com.company.rentafield.domain.model.playground.PlaygroundX
-import com.company.rentafield.presentation.components.connectionStates.ThreeBounce
-import com.company.rentafield.presentation.components.iconButtons.RoundedFavoriteIcon
+import com.company.rentafield.presentation.components.connectstates.ThreeBounce
+import com.company.rentafield.presentation.components.iconbuttons.RoundedFavoriteIcon
 import com.company.rentafield.presentation.screens.playground.model.PlaygroundInfoUiState
 import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.convertToBitmap
@@ -52,7 +49,7 @@ import kotlinx.coroutines.flow.StateFlow
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ImageSlider(
-    playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
+    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse>>,
     playgroundInfoUiState: StateFlow<PlaygroundInfoUiState>,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
@@ -63,7 +60,11 @@ fun ImageSlider(
 
     val playgroundStateResponse by playgroundStateFlow.collectAsStateWithLifecycle()
 
-    var playgroundData by rememberSaveable { mutableStateOf<List<PlaygroundPicture>?>(null) }
+    var playgroundData by rememberSaveable {
+        mutableStateOf<List<com.company.rentafield.domain.models.playground.PlaygroundPicture>?>(
+            null
+        )
+    }
 
     LaunchedEffect(playgroundStateResponse) {
         if (playgroundStateResponse is DataState.Success) {
@@ -178,9 +179,9 @@ fun ImageSliderPreview() {
         ImageSlider(
             playgroundStateFlow = MutableStateFlow(
                 DataState.Success(
-                    PlaygroundScreenResponse(
+                    com.company.rentafield.domain.models.playground.PlaygroundScreenResponse(
                         playgroundPictures = listOf(),
-                        playground = PlaygroundX(
+                        playground = com.company.rentafield.domain.models.playground.PlaygroundX(
                             id = 2,
                             name = "Adventure Island",
                             description = "A thrilling playground with exciting obstacle courses and climbing structures.",

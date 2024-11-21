@@ -29,14 +29,13 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.playground.PlaygroundScreenResponse
 import com.company.rentafield.presentation.theme.RentafieldTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun PlaygroundSize(
-    playgroundStateFlow: StateFlow<DataState<PlaygroundScreenResponse>>,
+    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse>>,
 ) {
     val playgroundState by playgroundStateFlow.collectAsStateWithLifecycle()
     var playgroundData by remember { mutableIntStateOf(5) }

@@ -46,11 +46,10 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.auth.VerificationResponse
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextButton
 import com.company.rentafield.presentation.components.MyTextField
-import com.company.rentafield.presentation.components.connectionStates.Loading
+import com.company.rentafield.presentation.components.connectstates.Loading
 import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.CheckInputValidation
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -60,7 +59,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun EmailVerification(
     uiState: StateFlow<ResetPasswordUiState>,
-    verificationRes: StateFlow<DataState<VerificationResponse>>,
+    verificationRes: StateFlow<DataState<com.company.rentafield.domain.models.auth.VerificationResponse>>,
     onCorrectCodeChange: (String) -> Unit,
     onUserEmailChange: (String) -> Unit,
     onCancelClick: () -> Unit,

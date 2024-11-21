@@ -41,7 +41,7 @@ import com.company.rentafield.R
 import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextField
-import com.company.rentafield.presentation.components.connectionStates.Loading
+import com.company.rentafield.presentation.components.connectstates.Loading
 import com.company.rentafield.presentation.theme.darkHint
 import com.company.rentafield.presentation.theme.darkSubText
 import com.company.rentafield.presentation.theme.lightHint

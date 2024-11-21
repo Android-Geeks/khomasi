@@ -46,13 +46,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.company.rentafield.R
 import com.company.rentafield.domain.DataState
-import com.company.rentafield.domain.model.auth.UserRegisterResponse
 import com.company.rentafield.presentation.components.AuthSheet
 import com.company.rentafield.presentation.components.MyButton
 import com.company.rentafield.presentation.components.MyTextButton
 import com.company.rentafield.presentation.components.MyTextField
 import com.company.rentafield.presentation.components.PasswordStrengthMeter
-import com.company.rentafield.presentation.components.connectionStates.Loading
+import com.company.rentafield.presentation.components.connectstates.Loading
 import com.company.rentafield.presentation.theme.RentafieldTheme
 import com.company.rentafield.utils.CheckInputValidation
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -61,7 +60,7 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun RegisterEmailAndPassword(
     uiState: StateFlow<RegisterUiState>,
-    registerState: StateFlow<DataState<UserRegisterResponse>>,
+    registerState: StateFlow<DataState<com.company.rentafield.domain.models.auth.UserRegisterResponse>>,
     onRegister: () -> Unit,
     onDoneClick: () -> Unit,
     isValidEmailAndPassword: (String, String) -> Boolean,

@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.company.rentafield.domain.model.LocalUser
 import com.company.rentafield.presentation.screens.profile.components.content.ProfileContent
 import com.company.rentafield.presentation.screens.profile.components.sheets.FeedbackBottomSheet
 import com.company.rentafield.presentation.screens.profile.components.sheets.LogoutBottomSheet
@@ -32,10 +31,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun ViewProfile(
     profileUiState: StateFlow<ProfileUiState>,
-    localUserUiState: StateFlow<LocalUser>,
+    localUserUiState: StateFlow<com.company.rentafield.domain.models.LocalUser>,
     getProfileImage: () -> Unit,
     onLogout: () -> Unit,
-    updateUserData: (LocalUser) -> Unit,
+    updateUserData: (com.company.rentafield.domain.models.LocalUser) -> Unit,
     sendFeedback: () -> Unit,
     onFeedbackChanged: (String) -> Unit,
     onBackClick: () -> Unit,
