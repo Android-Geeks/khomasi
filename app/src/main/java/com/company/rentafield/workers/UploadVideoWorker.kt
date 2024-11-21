@@ -58,7 +58,7 @@ class UploadVideoWorker @AssistedInject constructor(
 
 
         return try {
-            var resultData: DataState<com.company.rentafield.data.models.MessageResponse>? = null
+            var resultData: DataState<com.company.rentafield.domain.models.MessageResponse>? = null
             aiUseCases.uploadVideoUseCase(idRequestBody, videoPart).collect { result ->
                 resultData = result
             }

@@ -12,6 +12,6 @@ class UploadVideoUseCase(
     suspend operator fun invoke(
         id: RequestBody,
         video: MultipartBody.Part
-    ): Flow<DataState<com.company.rentafield.data.models.MessageResponse>> =
+    ): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>> =
         remoteAiRepository.uploadVideo(id, video)
 }

@@ -7,11 +7,11 @@ interface RemoteUserBooking {
     suspend fun getUserBookings(
         token: String,
         id: String
-    ): Flow<DataState<com.company.rentafield.data.models.booking.MyBookingsResponse>>
+    ): Flow<DataState<com.company.rentafield.domain.models.booking.MyBookingsResponse>>
 
     suspend fun cancelBooking(
         token: String,
         bookingId: Int,
         isUser: Boolean
-    ): Flow<DataState<com.company.rentafield.data.models.MessageResponse>>
+    ): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>>
 }

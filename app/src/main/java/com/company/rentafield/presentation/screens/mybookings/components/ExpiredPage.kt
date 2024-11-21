@@ -46,8 +46,8 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun ExpiredPage(
     bookingsUiState: StateFlow<MyBookingUiState>,
-    myBookingsState: StateFlow<DataState<com.company.rentafield.data.models.booking.MyBookingsResponse>>,
-    reviewState: StateFlow<DataState<com.company.rentafield.data.models.MessageResponse>>,
+    myBookingsState: StateFlow<DataState<com.company.rentafield.domain.models.booking.MyBookingsResponse>>,
+    reviewState: StateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>>,
     playgroundReview: () -> Unit,
     onCommentChange: (String) -> Unit,
     onRatingChange: (Float) -> Unit,

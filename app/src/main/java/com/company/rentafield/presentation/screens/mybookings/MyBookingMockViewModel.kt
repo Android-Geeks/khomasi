@@ -8,11 +8,11 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class MyBookingMockViewModel : ViewModel() {
     private val _myBooking =
-        MutableStateFlow<DataState<com.company.rentafield.data.models.booking.MyBookingsResponse>>(
+        MutableStateFlow<DataState<com.company.rentafield.domain.models.booking.MyBookingsResponse>>(
             DataState.Success(
-                com.company.rentafield.data.models.booking.MyBookingsResponse(
+                com.company.rentafield.domain.models.booking.MyBookingsResponse(
                     results = listOf(
-                        com.company.rentafield.data.models.booking.BookingDetails(
+                        com.company.rentafield.domain.models.booking.BookingDetails(
                             bookingNumber = 1,
                             playgroundId = 101,
                             playgroundName = "Playground A",
@@ -30,12 +30,12 @@ class MyBookingMockViewModel : ViewModel() {
                 )
             )
         )
-    val myBooking: StateFlow<DataState<com.company.rentafield.data.models.booking.MyBookingsResponse>> =
+    val myBooking: StateFlow<DataState<com.company.rentafield.domain.models.booking.MyBookingsResponse>> =
         _myBooking.asStateFlow()
     private val _uiState: MutableStateFlow<MyBookingUiState> = MutableStateFlow(
         MyBookingUiState(
             currentBookings = listOf(
-                com.company.rentafield.data.models.booking.BookingDetails(
+                com.company.rentafield.domain.models.booking.BookingDetails(
                     bookingNumber = 1,
                     playgroundId = 101,
                     playgroundName = "Playground A",
@@ -51,7 +51,7 @@ class MyBookingMockViewModel : ViewModel() {
                 ),
             ),
             expiredBookings = listOf(
-                com.company.rentafield.data.models.booking.BookingDetails(
+                com.company.rentafield.domain.models.booking.BookingDetails(
                     bookingNumber = 1,
                     playgroundId = 101,
                     playgroundName = "Playground A",
@@ -69,7 +69,7 @@ class MyBookingMockViewModel : ViewModel() {
         )
     )
     val uiState: StateFlow<MyBookingUiState> = _uiState.asStateFlow()
-    val reviewState: StateFlow<DataState<com.company.rentafield.data.models.MessageResponse>> =
+    val reviewState: StateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>> =
         MutableStateFlow(DataState.Empty)
 
 

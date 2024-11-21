@@ -42,9 +42,9 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun NotificationsScreen(
     onBackClicked: () -> Unit,
-    notificationStateFlow: StateFlow<DataState<com.company.rentafield.data.models.ai.AiResponse>>,
+    notificationStateFlow: StateFlow<DataState<com.company.rentafield.domain.models.ai.AiResponse>>,
     getNotifications: () -> Unit,
-    localUserUiState: StateFlow<com.company.rentafield.data.models.LocalUser>
+    localUserUiState: StateFlow<com.company.rentafield.domain.models.LocalUser>
 ) {
     val localUser = localUserUiState.collectAsStateWithLifecycle().value
 
@@ -70,7 +70,7 @@ fun NotificationsScreen(
         ) {
             val notificationState by notificationStateFlow.collectAsStateWithLifecycle()
             val aiResponse = remember {
-                mutableStateOf<List<com.company.rentafield.data.models.ai.AiLog>>(emptyList())
+                mutableStateOf<List<com.company.rentafield.domain.models.ai.AiLog>>(emptyList())
             }
             LaunchedEffect(notificationState) {
                 Log.d("notificationState", notificationState.toString())
@@ -94,7 +94,7 @@ fun NotificationsScreen(
 }
 
 @Composable
-fun NotificationContent(notifications: List<com.company.rentafield.data.models.ai.AiLog>) {
+fun NotificationContent(notifications: List<com.company.rentafield.domain.models.ai.AiLog>) {
     LazyColumn {
         items(notifications) { log ->
             val notificationTime = extractTimeFromTimestamp(parseTimestamp(log.uploadDate))
@@ -170,17 +170,17 @@ fun NotificationsPreview() {
         NotificationsScreen(
             onBackClicked = { },
             getNotifications = {},
-            localUserUiState = MutableStateFlow(com.company.rentafield.data.models.LocalUser()),
+            localUserUiState = MutableStateFlow(com.company.rentafield.domain.models.LocalUser()),
             notificationStateFlow = MutableStateFlow(
                 DataState.Success(
-                    com.company.rentafield.data.models.ai.AiResponse(
+                    com.company.rentafield.domain.models.ai.AiResponse(
                         aiLogs = listOf(
-                            com.company.rentafield.data.models.ai.AiLog(
+                            com.company.rentafield.domain.models.ai.AiLog(
                                 isProcessed = true,
                                 kickupCount = 1,
                                 uploadDate = "2021-09-01T00:00:00.00"
                             ),
-                            com.company.rentafield.data.models.ai.AiLog(
+                            com.company.rentafield.domain.models.ai.AiLog(
                                 isProcessed = false,
                                 kickupCount = 1,
                                 uploadDate = "2021-09-01T00:00:00.00"

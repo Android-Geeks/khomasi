@@ -30,9 +30,9 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun BrowsePlaygrounds(
-    localUser: StateFlow<com.company.rentafield.data.models.LocalUser>,
+    localUser: StateFlow<com.company.rentafield.domain.models.LocalUser>,
     browseUiState: StateFlow<BrowseUiState>,
-    filteredPlayground: StateFlow<DataState<com.company.rentafield.data.models.search.FilteredPlaygroundResponse>>,
+    filteredPlayground: StateFlow<DataState<com.company.rentafield.domain.models.search.FilteredPlaygroundResponse>>,
     getFilteredPlaygrounds: () -> Unit,
     onFilterClick: () -> Unit,
     onFavouriteClicked: (Int) -> Unit,

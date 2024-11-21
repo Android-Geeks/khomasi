@@ -25,25 +25,25 @@ class BookingViewModel @Inject constructor(
     private val localUserUseCases: LocalUserUseCases,
 ) : ViewModel() {
 
-    private val _playgroundState: MutableStateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundScreenResponse>> =
+    private val _playgroundState: MutableStateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse>> =
         MutableStateFlow(DataState.Empty)
-    val playgroundState: StateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundScreenResponse>> =
+    val playgroundState: StateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse>> =
         _playgroundState
 
     private val _bookingResponse =
-        MutableStateFlow<DataState<com.company.rentafield.data.models.booking.BookingPlaygroundResponse>>(
+        MutableStateFlow<DataState<com.company.rentafield.domain.models.booking.BookingPlaygroundResponse>>(
             DataState.Empty
         )
-    val bookingResponse: StateFlow<DataState<com.company.rentafield.data.models.booking.BookingPlaygroundResponse>> =
+    val bookingResponse: StateFlow<DataState<com.company.rentafield.domain.models.booking.BookingPlaygroundResponse>> =
         _bookingResponse
 
     private val _bookingUiState: MutableStateFlow<BookingUiState> =
         MutableStateFlow(BookingUiState())
     val bookingUiState: StateFlow<BookingUiState> = _bookingUiState
 
-    private val _freeSlotsState: MutableStateFlow<DataState<com.company.rentafield.data.models.playground.FreeTimeSlotsResponse>> =
+    private val _freeSlotsState: MutableStateFlow<DataState<com.company.rentafield.domain.models.playground.FreeTimeSlotsResponse>> =
         MutableStateFlow(DataState.Empty)
-    val freeSlotsState: StateFlow<DataState<com.company.rentafield.data.models.playground.FreeTimeSlotsResponse>> =
+    val freeSlotsState: StateFlow<DataState<com.company.rentafield.domain.models.playground.FreeTimeSlotsResponse>> =
         _freeSlotsState
 
     private val _paymentUiState: MutableStateFlow<PaymentUiState> =
@@ -104,9 +104,9 @@ class BookingViewModel @Inject constructor(
     private fun calculateHourlyIntervalsList(): List<Pair<LocalDateTime, LocalDateTime>> {
         val selectedDuration = _bookingUiState.value.selectedDuration
 
-        return if (_freeSlotsState.value is DataState.Success<com.company.rentafield.data.models.playground.FreeTimeSlotsResponse>) {
+        return if (_freeSlotsState.value is DataState.Success<com.company.rentafield.domain.models.playground.FreeTimeSlotsResponse>) {
 
-            (_freeSlotsState.value as DataState.Success<com.company.rentafield.data.models.playground.FreeTimeSlotsResponse>).data.freeTimeSlots.mapIndexed { _, daySlots ->
+            (_freeSlotsState.value as DataState.Success<com.company.rentafield.domain.models.playground.FreeTimeSlotsResponse>).data.freeTimeSlots.mapIndexed { _, daySlots ->
                 val startTime = parseTimestamp(daySlots.start).withMinute(0).withSecond(0)
                 val endTime = parseTimestamp(daySlots.end).withMinute(0).withSecond(0)
 
@@ -267,7 +267,7 @@ class BookingViewModel @Inject constructor(
 
             remotePlaygroundUseCase.bookingPlaygroundUseCase(
                 token = "Bearer ${userData.token}",
-                body = com.company.rentafield.data.models.playground.BookingRequest(
+                body = com.company.rentafield.domain.models.playground.BookingRequest(
                     playgroundId = bookingData.playgroundId,
                     userId = userData.userID ?: "",
                     bookingTime = bookingData.bookingTime,

@@ -7,6 +7,6 @@ class BookingPlaygroundUseCase(
 ) {
     suspend operator fun invoke(
         token: String,
-        body: com.company.rentafield.data.models.playground.BookingRequest
+        body: com.company.rentafield.domain.models.playground.BookingRequest
     ) = remotePlaygroundRepository.bookingPlayground(token, body)
 }

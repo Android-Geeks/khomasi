@@ -9,6 +9,6 @@ class GetAiResultsUseCase(
 ) {
     suspend operator fun invoke(
         id: String
-    ): Flow<DataState<com.company.rentafield.data.models.ai.AiResponse>> =
+    ): Flow<DataState<com.company.rentafield.domain.models.ai.AiResponse>> =
         remoteAiRepository.getAiResults(id)
 }

@@ -50,7 +50,7 @@ import java.util.Locale
 @SuppressLint("DefaultLocale")
 @Composable
 fun PlaygroundCard(
-    playground: com.company.rentafield.data.models.playground.Playground,
+    playground: com.company.rentafield.domain.models.playground.Playground,
     onFavouriteClick: () -> Unit,
     onViewPlaygroundClick: () -> Unit,
     modifier: Modifier = Modifier,

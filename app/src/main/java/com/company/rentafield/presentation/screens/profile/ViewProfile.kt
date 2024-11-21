@@ -31,10 +31,10 @@ import kotlinx.coroutines.launch
 @Composable
 fun ViewProfile(
     profileUiState: StateFlow<ProfileUiState>,
-    localUserUiState: StateFlow<com.company.rentafield.data.models.LocalUser>,
+    localUserUiState: StateFlow<com.company.rentafield.domain.models.LocalUser>,
     getProfileImage: () -> Unit,
     onLogout: () -> Unit,
-    updateUserData: (com.company.rentafield.data.models.LocalUser) -> Unit,
+    updateUserData: (com.company.rentafield.domain.models.LocalUser) -> Unit,
     sendFeedback: () -> Unit,
     onFeedbackChanged: (String) -> Unit,
     onBackClick: () -> Unit,

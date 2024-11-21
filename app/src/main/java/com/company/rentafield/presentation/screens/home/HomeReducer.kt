@@ -19,13 +19,13 @@ class HomeReducer : Reducer<HomeReducer.State, HomeReducer.Event, HomeReducer.Ef
         data class FavouriteClick(val playgroundId: Int) : Event()
         data class BookNowClicked(val playgroundId: Int) : Event()
         data class UpdateIsLoading(val isLoading: Boolean) : Event()
-        data class UpdateLocalUser(val localUser: com.company.rentafield.data.models.LocalUser) :
+        data class UpdateLocalUser(val localUser: com.company.rentafield.domain.models.LocalUser) :
             Event()
 
         data class UpdateAdList(val adList: List<AdsContent>) : Event()
         data class UpdateProfileImage(val profileImage: String) : Event()
         data class UpdateCanUploadVideo(val canUploadVideo: Boolean) : Event()
-        data class UpdatePlaygrounds(val playgrounds: List<com.company.rentafield.data.models.playground.Playground>) :
+        data class UpdatePlaygrounds(val playgrounds: List<com.company.rentafield.domain.models.playground.Playground>) :
             Event()
 
         data class PlaygroundClick(val playgroundId: Int, val isFavourite: Boolean) : Event()
@@ -53,11 +53,11 @@ class HomeReducer : Reducer<HomeReducer.State, HomeReducer.Event, HomeReducer.Ef
     @Immutable
     data class State(
         val isLoading: Boolean,
-        val localUser: com.company.rentafield.data.models.LocalUser,
+        val localUser: com.company.rentafield.domain.models.LocalUser,
         val profileImage: String,
         val canUploadVideo: Boolean,
         val adList: List<AdsContent>,
-        val playgrounds: List<com.company.rentafield.data.models.playground.Playground>
+        val playgrounds: List<com.company.rentafield.domain.models.playground.Playground>
     ) : Reducer.ViewState
 
     override fun reduce(previousState: State, event: Event): Pair<State, Effect?> {
@@ -116,7 +116,7 @@ class HomeReducer : Reducer<HomeReducer.State, HomeReducer.Event, HomeReducer.Ef
             isLoading = false,
             profileImage = "",
             canUploadVideo = false,
-            localUser = com.company.rentafield.data.models.LocalUser(),
+            localUser = com.company.rentafield.domain.models.LocalUser(),
             playgrounds = emptyList()
         )
     }

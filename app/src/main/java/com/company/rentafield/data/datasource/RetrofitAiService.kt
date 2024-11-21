@@ -14,5 +14,5 @@ interface RetrofitAiService {
     suspend fun uploadVideo(
         @Part("id") id: RequestBody,
         @Part video: MultipartBody.Part
-    ): Response<com.company.rentafield.data.models.MessageResponse>
+    ): Response<com.company.rentafield.domain.models.MessageResponse>
 }

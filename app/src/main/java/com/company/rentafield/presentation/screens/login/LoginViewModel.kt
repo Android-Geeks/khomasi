@@ -68,10 +68,10 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private fun onLoginSuccess(loginData: com.company.rentafield.data.models.auth.UserLoginResponse) {
+    private fun onLoginSuccess(loginData: com.company.rentafield.domain.models.auth.UserLoginResponse) {
         viewModelScope.launch(IO) {
             localUserUseCases.saveLocalUser(
-                com.company.rentafield.data.models.LocalUser(
+                com.company.rentafield.domain.models.LocalUser(
                     userID = loginData.userLoginData.userID,
                     token = loginData.token,
                     email = loginData.userLoginData.email,
@@ -106,7 +106,7 @@ class LoginViewModel @Inject constructor(
             authUseCases.getVerificationCodeUseCase(state.value.email).collect {
                 if (it is DataState.Success) {
                     localUserUseCases.saveLocalUser(
-                        com.company.rentafield.data.models.LocalUser(
+                        com.company.rentafield.domain.models.LocalUser(
                             email = state.value.email,
                             otpCode = it.data.code
                         )

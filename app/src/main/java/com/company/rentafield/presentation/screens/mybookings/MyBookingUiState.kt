@@ -1,13 +1,13 @@
 package com.company.rentafield.presentation.screens.mybookings
 
 data class MyBookingUiState(
-    val currentBookings: List<com.company.rentafield.data.models.booking.BookingDetails> = listOf(),
-    val expiredBookings: List<com.company.rentafield.data.models.booking.BookingDetails> = listOf(),
+    val currentBookings: List<com.company.rentafield.domain.models.booking.BookingDetails> = listOf(),
+    val expiredBookings: List<com.company.rentafield.domain.models.booking.BookingDetails> = listOf(),
     val playgroundId: Int = 1,
     val rating: Float = 0f,
     val comment: String = " ",
     val isCanceled: Boolean = false,
-    val cancelBookingDetails: com.company.rentafield.data.models.booking.BookingDetails = com.company.rentafield.data.models.booking.BookingDetails(
+    val cancelBookingDetails: com.company.rentafield.domain.models.booking.BookingDetails = com.company.rentafield.domain.models.booking.BookingDetails(
         bookingNumber = 0,
         playgroundId = 0,
         playgroundName = "",

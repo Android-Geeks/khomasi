@@ -59,7 +59,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun EmailVerification(
     uiState: StateFlow<ResetPasswordUiState>,
-    verificationRes: StateFlow<DataState<com.company.rentafield.data.models.auth.VerificationResponse>>,
+    verificationRes: StateFlow<DataState<com.company.rentafield.domain.models.auth.VerificationResponse>>,
     onCorrectCodeChange: (String) -> Unit,
     onUserEmailChange: (String) -> Unit,
     onCancelClick: () -> Unit,

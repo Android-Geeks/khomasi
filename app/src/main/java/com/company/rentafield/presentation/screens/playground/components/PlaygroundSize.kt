@@ -35,7 +35,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun PlaygroundSize(
-    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundScreenResponse>>,
+    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse>>,
 ) {
     val playgroundState by playgroundStateFlow.collectAsStateWithLifecycle()
     var playgroundData by remember { mutableIntStateOf(5) }

@@ -29,7 +29,7 @@ import com.company.rentafield.presentation.theme.lightIconMask
 
 @Composable
 fun ProfileTopBar(
-    localUser: com.company.rentafield.data.models.LocalUser,
+    localUser: com.company.rentafield.domain.models.LocalUser,
     image: String?,
     onEditProfile: () -> Unit,
     onBackClick: () -> Unit,

@@ -24,15 +24,15 @@ class OtpViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(OtpUiState())
     val uiState: StateFlow<OtpUiState> = _uiState
 
-    private val _otpState: MutableStateFlow<DataState<com.company.rentafield.data.models.auth.VerificationResponse>> =
+    private val _otpState: MutableStateFlow<DataState<com.company.rentafield.domain.models.auth.VerificationResponse>> =
         MutableStateFlow(DataState.Empty)
 
-    val otpState: StateFlow<DataState<com.company.rentafield.data.models.auth.VerificationResponse>> =
+    val otpState: StateFlow<DataState<com.company.rentafield.domain.models.auth.VerificationResponse>> =
         _otpState
 
-    private val _confirmEmailState: MutableStateFlow<DataState<com.company.rentafield.data.models.MessageResponse>> =
+    private val _confirmEmailState: MutableStateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>> =
         MutableStateFlow(DataState.Empty)
-    val confirmEmailState: StateFlow<DataState<com.company.rentafield.data.models.MessageResponse>> =
+    val confirmEmailState: StateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>> =
         _confirmEmailState
 
     fun getRegisterOtp() {
@@ -40,7 +40,7 @@ class OtpViewModel @Inject constructor(
             localUserUseCases.getLocalUser().collect { localUser ->
                 _uiState.value = _uiState.value.copy(email = localUser.email ?: "")
                 _otpState.value = DataState.Success(
-                    com.company.rentafield.data.models.auth.VerificationResponse(
+                    com.company.rentafield.domain.models.auth.VerificationResponse(
                         code = localUser.otpCode ?: 0,
                         email = localUser.email ?: "",
                         message = "Confirmation Code Has Been Sent"

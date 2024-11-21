@@ -21,15 +21,15 @@ class ResetPasswordViewModel @Inject constructor(
     val resetUiState: StateFlow<ResetPasswordUiState> = _resetUiState
 
     private val _verificationRes =
-        MutableStateFlow<DataState<com.company.rentafield.data.models.auth.VerificationResponse>>(
+        MutableStateFlow<DataState<com.company.rentafield.domain.models.auth.VerificationResponse>>(
             DataState.Empty
         )
-    val verificationRes: StateFlow<DataState<com.company.rentafield.data.models.auth.VerificationResponse>> =
+    val verificationRes: StateFlow<DataState<com.company.rentafield.domain.models.auth.VerificationResponse>> =
         _verificationRes
 
     private val _recoverResponse =
-        MutableStateFlow<DataState<com.company.rentafield.data.models.MessageResponse>>(DataState.Empty)
-    val recoverResponse: StateFlow<DataState<com.company.rentafield.data.models.MessageResponse>> =
+        MutableStateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>>(DataState.Empty)
+    val recoverResponse: StateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>> =
         _recoverResponse
 
     fun onUserEmailChange(email: String) {

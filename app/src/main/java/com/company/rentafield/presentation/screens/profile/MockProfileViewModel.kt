@@ -8,11 +8,11 @@ class MockProfileViewModel : ViewModel() {
 
     val profileUiState: StateFlow<ProfileUiState> = MutableStateFlow(
         ProfileUiState(
-            user = com.company.rentafield.data.models.LocalUser()
+            user = com.company.rentafield.domain.models.LocalUser()
         )
     )
-    val localUser: StateFlow<com.company.rentafield.data.models.LocalUser> =
-        MutableStateFlow(com.company.rentafield.data.models.LocalUser())
+    val localUser: StateFlow<com.company.rentafield.domain.models.LocalUser> =
+        MutableStateFlow(com.company.rentafield.domain.models.LocalUser())
 
 
     fun onLogout() {}

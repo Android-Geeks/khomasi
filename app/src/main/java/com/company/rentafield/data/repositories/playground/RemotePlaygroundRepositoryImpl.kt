@@ -18,7 +18,7 @@ class RemotePlaygroundRepositoryImpl(
     override suspend fun getPlaygroundReviews(
         token: String,
         id: Int
-    ): Flow<DataState<com.company.rentafield.data.models.playground.PlaygroundReviewsResponse>> =
+    ): Flow<DataState<com.company.rentafield.domain.models.playground.PlaygroundReviewsResponse>> =
         handleApi { retrofitService.getPlaygroundReviews(token, id) }
 
     override suspend fun getFilteredPlaygrounds(
@@ -28,7 +28,7 @@ class RemotePlaygroundRepositoryImpl(
         type: Int,
         bookingTime: String,
         duration: Double
-    ): Flow<DataState<com.company.rentafield.data.models.search.FilteredPlaygroundResponse>> =
+    ): Flow<DataState<com.company.rentafield.domain.models.search.FilteredPlaygroundResponse>> =
         handleApi {
             retrofitService.getFilteredPlaygrounds(
                 token,
@@ -42,8 +42,8 @@ class RemotePlaygroundRepositoryImpl(
 
     override suspend fun bookingPlayground(
         token: String,
-        body: com.company.rentafield.data.models.playground.BookingRequest
-    ): Flow<DataState<com.company.rentafield.data.models.booking.BookingPlaygroundResponse>> =
+        body: com.company.rentafield.domain.models.playground.BookingRequest
+    ): Flow<DataState<com.company.rentafield.domain.models.booking.BookingPlaygroundResponse>> =
         handleApi {
             retrofitService.bookingPlayground(token, body)
         }

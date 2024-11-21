@@ -36,9 +36,9 @@ class LocalUserRepositoryImpl(
     private val context: Context
 ) : LocalUserRepository {
 
-    override fun getLocalUser(): Flow<com.company.rentafield.data.models.LocalUser> {
+    override fun getLocalUser(): Flow<com.company.rentafield.domain.models.LocalUser> {
         return context.dataStore.data.map { preferences ->
-            com.company.rentafield.data.models.LocalUser(
+            com.company.rentafield.domain.models.LocalUser(
                 userID = preferences[USER_ID] ?: "",
                 firstName = preferences[FIRST_NAME] ?: "",
                 lastName = preferences[LAST_NAME] ?: "",
@@ -56,7 +56,7 @@ class LocalUserRepositoryImpl(
         }
     }
 
-    override suspend fun saveLocalUser(localUser: com.company.rentafield.data.models.LocalUser) {
+    override suspend fun saveLocalUser(localUser: com.company.rentafield.domain.models.LocalUser) {
         context.dataStore.edit { settings ->
             settings[USER_ID] = localUser.userID ?: ""
             settings[FIRST_NAME] = localUser.firstName ?: ""

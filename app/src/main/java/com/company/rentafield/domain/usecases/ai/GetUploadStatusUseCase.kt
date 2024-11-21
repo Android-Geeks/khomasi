@@ -10,6 +10,6 @@ class GetUploadStatusUseCase(
 ) {
     suspend operator fun invoke(
         id: String
-    ): Flow<DataState<com.company.rentafield.data.models.MessageResponse>> =
+    ): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>> =
         remoteUserRepository.getUploadVideoStatus(id)
 }

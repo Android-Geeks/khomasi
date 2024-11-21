@@ -24,21 +24,21 @@ class BrowsePlaygroundsViewModel @Inject constructor(
 
     val localUser = localUserUseCases.getLocalUser().stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5_000),
-        com.company.rentafield.data.models.LocalUser()
+        com.company.rentafield.domain.models.LocalUser()
     )
 
     private val _uiState = MutableStateFlow(BrowseUiState())
     val uiState: StateFlow<BrowseUiState> = _uiState
 
-    private val _filteredPlaygrounds: MutableStateFlow<DataState<com.company.rentafield.data.models.search.FilteredPlaygroundResponse>> =
+    private val _filteredPlaygrounds: MutableStateFlow<DataState<com.company.rentafield.domain.models.search.FilteredPlaygroundResponse>> =
         MutableStateFlow(DataState.Empty)
-    val filteredPlaygrounds: StateFlow<DataState<com.company.rentafield.data.models.search.FilteredPlaygroundResponse>> =
+    val filteredPlaygrounds: StateFlow<DataState<com.company.rentafield.domain.models.search.FilteredPlaygroundResponse>> =
         _filteredPlaygrounds
 
     fun getPlaygrounds() {
         viewModelScope.launch(IO) {
 //            _filteredPlaygrounds.value = DataState.Loading
-            var playgrounds: List<com.company.rentafield.data.models.playground.Playground> =
+            var playgrounds: List<com.company.rentafield.domain.models.playground.Playground> =
                 listOf()
             remotePlaygroundUseCase.getFilteredPlaygroundsUseCase(
                 token = "Bearer ${localUser.value.token ?: ""}",
@@ -111,7 +111,7 @@ class BrowsePlaygroundsViewModel @Inject constructor(
     }
 
     private fun updatePlaygroundContent(
-        playgrounds: List<com.company.rentafield.data.models.playground.Playground>,
+        playgrounds: List<com.company.rentafield.domain.models.playground.Playground>,
     ) {
         _uiState.value = _uiState.value.copy(
             playgrounds = playgrounds,
@@ -134,7 +134,7 @@ class BrowsePlaygroundsViewModel @Inject constructor(
     }
 
     fun onFavouriteClicked(playgroundId: Int) {
-        var updatedPlaygrounds: List<com.company.rentafield.data.models.playground.Playground> =
+        var updatedPlaygrounds: List<com.company.rentafield.domain.models.playground.Playground> =
             listOf()
         if (_filteredPlaygrounds.value is DataState.Success) {
             val playgrounds =

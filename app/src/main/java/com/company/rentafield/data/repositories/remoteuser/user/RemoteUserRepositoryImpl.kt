@@ -21,21 +21,21 @@ class RemoteUserRepositoryImpl(
     override suspend fun updateUser(
         token: String,
         userId: String,
-        user: com.company.rentafield.data.models.user.UserUpdateData
+        user: com.company.rentafield.domain.models.user.UserUpdateData
     ) =
         handleApi { retrofitService.updateUser(token, userId, user) }
 
 
     override suspend fun sendFeedback(
         token: String,
-        feedback: com.company.rentafield.data.models.user.FeedbackRequest
+        feedback: com.company.rentafield.domain.models.user.FeedbackRequest
     ) =
         handleApi { retrofitService.sendFeedback(token, feedback) }
 
     override suspend fun getProfileImage(token: String, userId: String) =
         handleApi { retrofitService.getProfileImage(token, userId) }
 
-    override suspend fun getUploadVideoStatus(id: String): Flow<DataState<com.company.rentafield.data.models.MessageResponse>> =
+    override suspend fun getUploadVideoStatus(id: String): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>> =
         handleApi { retrofitService.getUploadVideoStatus(id) }
 
     override suspend fun userData(

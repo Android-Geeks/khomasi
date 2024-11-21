@@ -55,7 +55,7 @@ import com.company.rentafield.utils.parseTimestamp
 
 @Composable
 fun BookingCard(
-    bookingDetails: com.company.rentafield.data.models.booking.BookingDetails,
+    bookingDetails: com.company.rentafield.domain.models.booking.BookingDetails,
     modifier: Modifier = Modifier,
     onViewPlaygroundClick: () -> Unit,
     isDark: Boolean = isSystemInDarkTheme(),
@@ -209,7 +209,7 @@ fun BookingCard(
 
 @Composable
 fun BookingCardDetails(
-    bookingDetails: com.company.rentafield.data.models.booking.BookingDetails,
+    bookingDetails: com.company.rentafield.domain.models.booking.BookingDetails,
     modifier: Modifier = Modifier,
     context: Context = LocalContext.current,
     isDark: Boolean
@@ -312,7 +312,7 @@ fun TextWithIcon(
 private fun BookingCardPreview() {
     RentafieldTheme {
         BookingCard(
-            bookingDetails = com.company.rentafield.data.models.booking.BookingDetails(
+            bookingDetails = com.company.rentafield.domain.models.booking.BookingDetails(
                 1,
                 1,
                 "Al Zamalek Club",

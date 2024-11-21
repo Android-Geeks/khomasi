@@ -22,15 +22,15 @@ class RegisterViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(RegisterUiState())
     val uiState: StateFlow<RegisterUiState> = _uiState
 
-    private val _registerState: MutableStateFlow<DataState<com.company.rentafield.data.models.auth.UserRegisterResponse>> =
+    private val _registerState: MutableStateFlow<DataState<com.company.rentafield.domain.models.auth.UserRegisterResponse>> =
         MutableStateFlow(DataState.Empty)
-    val registerState: StateFlow<DataState<com.company.rentafield.data.models.auth.UserRegisterResponse>> =
+    val registerState: StateFlow<DataState<com.company.rentafield.domain.models.auth.UserRegisterResponse>> =
         _registerState
 
     fun onRegister() {
         viewModelScope.launch {
             authUseCases.registerUseCase(
-                com.company.rentafield.data.models.auth.UserRegisterData(
+                com.company.rentafield.domain.models.auth.UserRegisterData(
                     firstName = _uiState.value.firstName,
                     lastName = _uiState.value.lastName,
                     email = _uiState.value.email,
@@ -45,7 +45,7 @@ class RegisterViewModel @Inject constructor(
                 _registerState.value = it
                 if (it is DataState.Success) {
                     localUserUseCases.saveLocalUser(
-                        com.company.rentafield.data.models.LocalUser(
+                        com.company.rentafield.domain.models.LocalUser(
                             email = it.data.email,
                             otpCode = it.data.code
                         )

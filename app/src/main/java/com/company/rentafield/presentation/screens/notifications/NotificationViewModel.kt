@@ -20,16 +20,16 @@ class NotificationViewModel @Inject constructor(
     private val remoteAiRepository: RemoteAiRepository,
     localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
-    private val _notificationState: MutableStateFlow<DataState<com.company.rentafield.data.models.ai.AiResponse>> =
+    private val _notificationState: MutableStateFlow<DataState<com.company.rentafield.domain.models.ai.AiResponse>> =
         MutableStateFlow(DataState.Empty)
-    val notificationState: StateFlow<DataState<com.company.rentafield.data.models.ai.AiResponse>> =
+    val notificationState: StateFlow<DataState<com.company.rentafield.domain.models.ai.AiResponse>> =
         _notificationState
 
     private val _localUser = localUserUseCases.getLocalUser().stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5_000),
-        com.company.rentafield.data.models.LocalUser()
+        com.company.rentafield.domain.models.LocalUser()
     )
-    val localUser: StateFlow<com.company.rentafield.data.models.LocalUser> = _localUser
+    val localUser: StateFlow<com.company.rentafield.domain.models.LocalUser> = _localUser
 
     fun getAiResult() {
         viewModelScope.launch(IO) {

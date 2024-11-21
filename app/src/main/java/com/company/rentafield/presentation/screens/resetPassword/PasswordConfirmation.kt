@@ -59,7 +59,7 @@ import kotlinx.coroutines.launch
 fun PasswordConfirmation(
     uiState: StateFlow<ResetPasswordUiState>,
     onBackToLogin: () -> Unit,
-    recoverResponse: StateFlow<DataState<com.company.rentafield.data.models.MessageResponse>>,
+    recoverResponse: StateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>>,
     onEnteringVerificationCode: (String) -> Unit,
     verifyVerificationCode: (String) -> Unit,
     onEnteringPassword: (String) -> Unit,

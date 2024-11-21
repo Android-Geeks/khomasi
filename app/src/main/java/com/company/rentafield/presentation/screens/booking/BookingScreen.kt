@@ -63,7 +63,7 @@ import java.util.Locale
 fun BookingScreen(
     bookingUiState: StateFlow<BookingUiState>,
     playgroundId: Int,
-    freeSlotsState: StateFlow<DataState<com.company.rentafield.data.models.playground.FreeTimeSlotsResponse>>,
+    freeSlotsState: StateFlow<DataState<com.company.rentafield.domain.models.playground.FreeTimeSlotsResponse>>,
     context: Context = LocalContext.current,
     isDark: Boolean = isSystemInDarkTheme(),
     onBackClicked: () -> Unit,
@@ -132,7 +132,7 @@ fun BookingScreen(
 @Composable
 fun BookingScreenContent(
     bookingUiState: BookingUiState,
-    freeSlotsState: DataState<com.company.rentafield.data.models.playground.FreeTimeSlotsResponse>,
+    freeSlotsState: DataState<com.company.rentafield.domain.models.playground.FreeTimeSlotsResponse>,
     hourlyIntervalsList: List<Pair<LocalDateTime, LocalDateTime>>,
     isDark: Boolean,
     context: Context,

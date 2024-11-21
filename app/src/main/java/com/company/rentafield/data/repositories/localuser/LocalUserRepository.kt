@@ -5,8 +5,8 @@ import com.company.rentafield.presentation.navigation.components.Screens
 import kotlinx.coroutines.flow.Flow
 
 interface LocalUserRepository {
-    fun getLocalUser(): Flow<com.company.rentafield.data.models.LocalUser>
-    suspend fun saveLocalUser(localUser: com.company.rentafield.data.models.LocalUser)
+    fun getLocalUser(): Flow<com.company.rentafield.domain.models.LocalUser>
+    suspend fun saveLocalUser(localUser: com.company.rentafield.domain.models.LocalUser)
     suspend fun saveAppEntry()
     suspend fun saveIsLogin(isLogin: Boolean)
     fun readAppEntry(): Flow<Screens>

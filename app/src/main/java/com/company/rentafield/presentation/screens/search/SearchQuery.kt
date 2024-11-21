@@ -41,8 +41,8 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun SearchQuery(
     searchUiState: StateFlow<SearchUiState>,
-    localUserState: StateFlow<com.company.rentafield.data.models.LocalUser>,
-    playgroundsState: StateFlow<List<com.company.rentafield.data.models.playground.Playground>>,
+    localUserState: StateFlow<com.company.rentafield.domain.models.LocalUser>,
+    playgroundsState: StateFlow<List<com.company.rentafield.domain.models.playground.Playground>>,
     searchQuery: StateFlow<String>,
     getSearchData: () -> Unit,
     onBackClick: () -> Unit,
@@ -163,7 +163,7 @@ fun SearchQueryPreview() {
     RentafieldTheme {
         SearchQuery(
             searchUiState = MutableStateFlow(SearchUiState()),
-            localUserState = MutableStateFlow(com.company.rentafield.data.models.LocalUser()),
+            localUserState = MutableStateFlow(com.company.rentafield.domain.models.LocalUser()),
             playgroundsState = MutableStateFlow(listOf()),
             searchQuery = MutableStateFlow(""),
             getSearchData = {},

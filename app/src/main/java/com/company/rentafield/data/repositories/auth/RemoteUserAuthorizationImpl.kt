@@ -7,7 +7,7 @@ class RemoteUserAuthorizationImpl(
     private val retrofitService: RetrofitService
 ) : RemoteUserAuthorization {
 
-    override suspend fun registerUser(userRegisterData: com.company.rentafield.data.models.auth.UserRegisterData) =
+    override suspend fun registerUser(userRegisterData: com.company.rentafield.domain.models.auth.UserRegisterData) =
         handleApi { retrofitService.registerUser(userRegisterData) }
 
     override suspend fun loginUser(email: String, password: String) =

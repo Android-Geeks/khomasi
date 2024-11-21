@@ -59,10 +59,10 @@ import kotlinx.coroutines.launch
 fun PlaygroundScreen(
     playgroundId: Int,
     isFavourite: Boolean,
-    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundScreenResponse>>,
+    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse>>,
     playgroundInfoUiState: StateFlow<PlaygroundInfoUiState>,
     playgroundReviewsUiState: StateFlow<PlaygroundReviewsUiState>,
-    reviewsState: StateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundReviewsResponse>>,
+    reviewsState: StateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundReviewsResponse>>,
     context: Context = LocalContext.current,
     onViewRatingClicked: () -> Unit,
     getPlaygroundDetails: (Int) -> Unit,
@@ -163,7 +163,7 @@ fun ShowBottomSheet(
     playgroundReviewsUiState: StateFlow<PlaygroundReviewsUiState>,
     bottomSheetState: SheetState,
     scope: CoroutineScope,
-    reviews: DataState<com.company.rentafield.data.models.playground.PlaygroundReviewsResponse>,
+    reviews: DataState<com.company.rentafield.domain.models.playground.PlaygroundReviewsResponse>,
     updateShowReview: () -> Unit
 ) {
     val reviewsState by playgroundReviewsUiState.collectAsStateWithLifecycle()
@@ -201,7 +201,7 @@ fun dismissBottomSheet(
 
 @Composable
 fun PlaygroundScreenContent(
-    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundScreenResponse>>,
+    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse>>,
     uiState: StateFlow<PlaygroundInfoUiState>,
     reviewsUiState: StateFlow<PlaygroundReviewsUiState>,
     onViewRatingClicked: () -> Unit,

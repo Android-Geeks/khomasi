@@ -7,7 +7,7 @@ class SendFeedbackUseCase(
 ) {
     suspend operator fun invoke(
         token: String,
-        feedback: com.company.rentafield.data.models.user.FeedbackRequest
+        feedback: com.company.rentafield.domain.models.user.FeedbackRequest
     ) =
         remoteUserRepository.sendFeedback(token, feedback)
 }

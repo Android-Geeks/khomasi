@@ -15,8 +15,8 @@ data class BrowseUiState(
     val duration: Double = 1.0,
     val selectedDuration: Int = 60,
     val selectedFilter: SelectedFilter = SelectedFilter.Rating,
-    val playgrounds: List<com.company.rentafield.data.models.playground.Playground> = listOf(),
-    val playgroundsResult: List<com.company.rentafield.data.models.playground.Playground> = listOf(),
+    val playgrounds: List<com.company.rentafield.domain.models.playground.Playground> = listOf(),
+    val playgroundsResult: List<com.company.rentafield.domain.models.playground.Playground> = listOf(),
     val choice: MutableIntState = mutableIntStateOf(0),
     val listOfTypes: List<Int> = listOf(5, 6, 8, 11),
     val selectedType: SnapshotStateList<Int> = mutableStateListOf(5)

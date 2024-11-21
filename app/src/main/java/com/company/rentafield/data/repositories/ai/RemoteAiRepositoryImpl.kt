@@ -13,12 +13,12 @@ class RemoteAiRepositoryImpl(
     private val retrofitService: RetrofitService
 ) : RemoteAiRepository {
 
-    override suspend fun getAiResults(id: String): Flow<DataState<com.company.rentafield.data.models.ai.AiResponse>> =
+    override suspend fun getAiResults(id: String): Flow<DataState<com.company.rentafield.domain.models.ai.AiResponse>> =
         handleApi { retrofitService.getAiResults(id) }
 
     override suspend fun uploadVideo(
         id: RequestBody,
         video: MultipartBody.Part
-    ): Flow<DataState<com.company.rentafield.data.models.MessageResponse>> =
+    ): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>> =
         handleApi { retrofitAiService.uploadVideo(id, video) }
 }

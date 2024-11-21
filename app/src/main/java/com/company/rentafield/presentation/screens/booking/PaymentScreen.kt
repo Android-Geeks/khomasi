@@ -82,7 +82,7 @@ import java.util.Locale
 @Composable
 fun PaymentScreen(
     paymentUiState: StateFlow<PaymentUiState>,
-    bookingPlaygroundResponse: StateFlow<DataState<com.company.rentafield.data.models.booking.BookingPlaygroundResponse>>,
+    bookingPlaygroundResponse: StateFlow<DataState<com.company.rentafield.domain.models.booking.BookingPlaygroundResponse>>,
     context: Context = LocalContext.current,
     updateCardNumber: (String) -> Unit,
     updateCardValidationDate: (String) -> Unit,
@@ -561,7 +561,7 @@ fun PaymentScreenPreview() {
             paymentUiState = MutableStateFlow(PaymentUiState()),
             bookingPlaygroundResponse = MutableStateFlow(
                 DataState.Success(
-                    com.company.rentafield.data.models.booking.BookingPlaygroundResponse(
+                    com.company.rentafield.domain.models.booking.BookingPlaygroundResponse(
                         1,
                         "1",
                         1,

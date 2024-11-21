@@ -6,9 +6,9 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 interface RemoteAiRepository {
-    suspend fun getAiResults(id: String): Flow<DataState<com.company.rentafield.data.models.ai.AiResponse>>
+    suspend fun getAiResults(id: String): Flow<DataState<com.company.rentafield.domain.models.ai.AiResponse>>
     suspend fun uploadVideo(
         id: RequestBody,
         video: MultipartBody.Part
-    ): Flow<DataState<com.company.rentafield.data.models.MessageResponse>>
+    ): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>>
 }

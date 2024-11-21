@@ -34,7 +34,7 @@ import java.util.Locale
 
 @Composable
 fun SearchResults(
-    playgrounds: List<com.company.rentafield.data.models.playground.Playground>,
+    playgrounds: List<com.company.rentafield.domain.models.playground.Playground>,
     query: String,
     onQueryChange: (String) -> Unit,
     onSearchQuerySubmitted: (String) -> Unit,

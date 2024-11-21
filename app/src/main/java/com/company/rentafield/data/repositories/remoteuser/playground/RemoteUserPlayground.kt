@@ -8,27 +8,27 @@ interface RemoteUserPlayground {
         token: String,
         userId: String,
         playgroundId: Int
-    ): Flow<DataState<com.company.rentafield.data.models.MessageResponse>>
+    ): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>>
 
     suspend fun getUserFavouritePlaygrounds(
         token: String,
         userId: String
-    ): Flow<DataState<com.company.rentafield.data.models.favourite.FavouritePlaygroundResponse>>
+    ): Flow<DataState<com.company.rentafield.domain.models.favourite.FavouritePlaygroundResponse>>
 
     suspend fun addUserFavouritePlayground(
         token: String,
         userId: String,
         playgroundId: Int
-    ): Flow<DataState<com.company.rentafield.data.models.MessageResponse>>
+    ): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>>
 
     suspend fun getSpecificPlayground(
         token: String,
         id: Int
-    ): Flow<DataState<com.company.rentafield.data.models.playground.PlaygroundScreenResponse>>
+    ): Flow<DataState<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse>>
 
     suspend fun addPlaygroundReview(
         token: String,
-        playgroundReview: com.company.rentafield.data.models.booking.PlaygroundReviewRequest
-    ): Flow<DataState<com.company.rentafield.data.models.MessageResponse>>
+        playgroundReview: com.company.rentafield.domain.models.booking.PlaygroundReviewRequest
+    ): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>>
 
 }

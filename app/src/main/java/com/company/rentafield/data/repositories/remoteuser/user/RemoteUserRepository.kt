@@ -9,30 +9,30 @@ interface RemoteUserRepository {
         token: String,
         userId: String,
         picture: MultipartBody.Part
-    ): Flow<DataState<com.company.rentafield.data.models.MessageResponse>>
+    ): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>>
 
     suspend fun updateUser(
         token: String,
         userId: String,
-        user: com.company.rentafield.data.models.user.UserUpdateData
-    ): Flow<DataState<com.company.rentafield.data.models.MessageResponse>>
+        user: com.company.rentafield.domain.models.user.UserUpdateData
+    ): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>>
 
     suspend fun sendFeedback(
         token: String,
-        feedback: com.company.rentafield.data.models.user.FeedbackRequest
-    ): Flow<DataState<com.company.rentafield.data.models.MessageResponse>>
+        feedback: com.company.rentafield.domain.models.user.FeedbackRequest
+    ): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>>
 
     suspend fun getProfileImage(
         token: String,
         userId: String
-    ): Flow<DataState<com.company.rentafield.data.models.user.ProfileImageResponse>>
+    ): Flow<DataState<com.company.rentafield.domain.models.user.ProfileImageResponse>>
 
     suspend fun getUploadVideoStatus(
         id: String
-    ): Flow<DataState<com.company.rentafield.data.models.MessageResponse>>
+    ): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>>
 
     suspend fun userData(
         token: String,
         userId: String
-    ): Flow<DataState<com.company.rentafield.data.models.UserDataResponse>>
+    ): Flow<DataState<com.company.rentafield.domain.models.UserDataResponse>>
 }

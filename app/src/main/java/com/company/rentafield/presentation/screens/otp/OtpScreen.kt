@@ -127,8 +127,8 @@ fun OtpScreenRoute(
 @Composable
 fun OtpScreen(
     uiState: OtpUiState,
-    confirmEmailState: DataState<com.company.rentafield.data.models.MessageResponse>,
-    otpState: DataState<com.company.rentafield.data.models.auth.VerificationResponse>,
+    confirmEmailState: DataState<com.company.rentafield.domain.models.MessageResponse>,
+    otpState: DataState<com.company.rentafield.domain.models.auth.VerificationResponse>,
     updateSmsCode: (String) -> Unit,
     resendCode: () -> Unit,
     onEmailConfirmed: () -> Unit,

@@ -5,6 +5,6 @@ import com.company.rentafield.data.repositories.localuser.LocalUserRepository
 class SaveLocalUser(
     private val localUserRepository: LocalUserRepository
 ) {
-    suspend operator fun invoke(localUser: com.company.rentafield.data.models.LocalUser) =
+    suspend operator fun invoke(localUser: com.company.rentafield.domain.models.LocalUser) =
         localUserRepository.saveLocalUser(localUser)
 }

@@ -10,9 +10,9 @@ import org.threeten.bp.LocalDateTime
 
 
 class MockBookingViewModel : ViewModel() {
-    private val _freeSlotsState: MutableStateFlow<DataState<com.company.rentafield.data.models.playground.FreeTimeSlotsResponse>> =
+    private val _freeSlotsState: MutableStateFlow<DataState<com.company.rentafield.domain.models.playground.FreeTimeSlotsResponse>> =
         MutableStateFlow(DataState.Empty)
-    val freeSlotsState: StateFlow<DataState<com.company.rentafield.data.models.playground.FreeTimeSlotsResponse>> =
+    val freeSlotsState: StateFlow<DataState<com.company.rentafield.domain.models.playground.FreeTimeSlotsResponse>> =
         _freeSlotsState
 
     private val _bookingUiState: MutableStateFlow<BookingUiState> =

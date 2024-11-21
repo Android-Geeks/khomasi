@@ -37,11 +37,11 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun PlaygroundFeatures(
-    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundScreenResponse>>
+    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse>>
 ) {
     val playgroundState by playgroundStateFlow.collectAsStateWithLifecycle()
     var playgroundData by remember {
-        mutableStateOf<com.company.rentafield.data.models.playground.PlaygroundScreenResponse?>(
+        mutableStateOf<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse?>(
             null
         )
     }
@@ -115,9 +115,9 @@ fun PlaygroundFeaturesPreview() {
         PlaygroundFeatures(
             MutableStateFlow(
                 DataState.Success(
-                    com.company.rentafield.data.models.playground.PlaygroundScreenResponse(
+                    com.company.rentafield.domain.models.playground.PlaygroundScreenResponse(
                         playgroundPictures = listOf(),
-                        playground = com.company.rentafield.data.models.playground.PlaygroundX(
+                        playground = com.company.rentafield.domain.models.playground.PlaygroundX(
                             id = 2,
                             name = "Adventure Island",
                             description = "A thrilling playground with exciting obstacle courses and climbing structures.",

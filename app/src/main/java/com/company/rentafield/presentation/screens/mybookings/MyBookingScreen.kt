@@ -34,9 +34,9 @@ import kotlinx.coroutines.launch
 @Composable
 fun MyBookingScreen(
     uiState: StateFlow<MyBookingUiState>,
-    myBookingsState: StateFlow<DataState<com.company.rentafield.data.models.booking.MyBookingsResponse>>,
-    reviewState: StateFlow<DataState<com.company.rentafield.data.models.MessageResponse>>,
-    onClickPlaygroundCard: (com.company.rentafield.data.models.booking.BookingDetails) -> Unit,
+    myBookingsState: StateFlow<DataState<com.company.rentafield.domain.models.booking.MyBookingsResponse>>,
+    reviewState: StateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>>,
+    onClickPlaygroundCard: (com.company.rentafield.domain.models.booking.BookingDetails) -> Unit,
     myBookingPlaygrounds: () -> Unit,
     playgroundReview: () -> Unit,
     onCommentChange: (String) -> Unit,
@@ -114,11 +114,11 @@ fun Tabs(tabs: List<Int>, pagerState: PagerState) {
 @Composable
 fun TabContent(
     uiState: StateFlow<MyBookingUiState>,
-    myBookingsState: StateFlow<DataState<com.company.rentafield.data.models.booking.MyBookingsResponse>>,
-    reviewState: StateFlow<DataState<com.company.rentafield.data.models.MessageResponse>>,
+    myBookingsState: StateFlow<DataState<com.company.rentafield.domain.models.booking.MyBookingsResponse>>,
+    reviewState: StateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>>,
     pagerState: PagerState,
     pagerItems: List<Int>,
-    onClickPlaygroundCard: (com.company.rentafield.data.models.booking.BookingDetails) -> Unit,
+    onClickPlaygroundCard: (com.company.rentafield.domain.models.booking.BookingDetails) -> Unit,
     playgroundReview: () -> Unit,
     onCommentChange: (String) -> Unit,
     onRatingChange: (Float) -> Unit,

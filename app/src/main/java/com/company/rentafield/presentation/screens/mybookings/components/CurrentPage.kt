@@ -29,8 +29,8 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun CurrentPage(
     bookingsUiState: StateFlow<MyBookingUiState>,
-    myBookingsState: StateFlow<DataState<com.company.rentafield.data.models.booking.MyBookingsResponse>>,
-    onClickPlaygroundCard: (com.company.rentafield.data.models.booking.BookingDetails) -> Unit,
+    myBookingsState: StateFlow<DataState<com.company.rentafield.domain.models.booking.MyBookingsResponse>>,
+    onClickPlaygroundCard: (com.company.rentafield.domain.models.booking.BookingDetails) -> Unit,
     onClickBookField: () -> Unit,
     cancelDetails: (Int, Boolean) -> Unit
 ) {

@@ -49,7 +49,7 @@ import kotlinx.coroutines.flow.StateFlow
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun ImageSlider(
-    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundScreenResponse>>,
+    playgroundStateFlow: StateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse>>,
     playgroundInfoUiState: StateFlow<PlaygroundInfoUiState>,
     onClickBack: () -> Unit,
     onClickShare: () -> Unit,
@@ -61,7 +61,7 @@ fun ImageSlider(
     val playgroundStateResponse by playgroundStateFlow.collectAsStateWithLifecycle()
 
     var playgroundData by rememberSaveable {
-        mutableStateOf<List<com.company.rentafield.data.models.playground.PlaygroundPicture>?>(
+        mutableStateOf<List<com.company.rentafield.domain.models.playground.PlaygroundPicture>?>(
             null
         )
     }
@@ -179,9 +179,9 @@ fun ImageSliderPreview() {
         ImageSlider(
             playgroundStateFlow = MutableStateFlow(
                 DataState.Success(
-                    com.company.rentafield.data.models.playground.PlaygroundScreenResponse(
+                    com.company.rentafield.domain.models.playground.PlaygroundScreenResponse(
                         playgroundPictures = listOf(),
-                        playground = com.company.rentafield.data.models.playground.PlaygroundX(
+                        playground = com.company.rentafield.domain.models.playground.PlaygroundX(
                             id = 2,
                             name = "Adventure Island",
                             description = "A thrilling playground with exciting obstacle courses and climbing structures.",

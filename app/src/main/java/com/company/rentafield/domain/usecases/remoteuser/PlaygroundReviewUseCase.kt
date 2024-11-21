@@ -7,7 +7,7 @@ class PlaygroundReviewUseCase(
 
 ) {
     suspend operator fun invoke(
-        playgroundReview: com.company.rentafield.data.models.booking.PlaygroundReviewRequest,
+        playgroundReview: com.company.rentafield.domain.models.booking.PlaygroundReviewRequest,
         token: String,
     ) =
         remoteUserPlayground.addPlaygroundReview(token, playgroundReview)

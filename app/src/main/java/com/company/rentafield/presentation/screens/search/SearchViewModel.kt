@@ -25,14 +25,14 @@ class SearchViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(SearchUiState())
     val uiState: StateFlow<SearchUiState> = _uiState
 
-    private val _playgrounds: MutableStateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundsResponse>> =
+    private val _playgrounds: MutableStateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundsResponse>> =
         MutableStateFlow(DataState.Empty)
-    val playgrounds: StateFlow<DataState<com.company.rentafield.data.models.playground.PlaygroundsResponse>> =
+    val playgrounds: StateFlow<DataState<com.company.rentafield.domain.models.playground.PlaygroundsResponse>> =
         _playgrounds
 
     val localUser = localUserUseCases.getLocalUser().stateIn(
         viewModelScope, SharingStarted.WhileSubscribed(5_000),
-        com.company.rentafield.data.models.LocalUser()
+        com.company.rentafield.domain.models.LocalUser()
     )
 
     fun getSearchData() {
@@ -50,7 +50,7 @@ class SearchViewModel @Inject constructor(
     private val _searchQuery: MutableStateFlow<String> = MutableStateFlow("")
     val searchQuery: StateFlow<String> = _searchQuery
 
-    val searchResults: StateFlow<List<com.company.rentafield.data.models.playground.Playground>> =
+    val searchResults: StateFlow<List<com.company.rentafield.domain.models.playground.Playground>> =
         _searchQuery
             .combine(_playgrounds) { searchQuery, playgroundsResponse ->
                 Log.d("SearchViewModel", "playground: $playgroundsResponse")

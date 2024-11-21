@@ -8,13 +8,13 @@ import kotlinx.coroutines.flow.StateFlow
 
 class MockBrowseViewModel : ViewModel() {
 
-    val localUser: StateFlow<com.company.rentafield.data.models.LocalUser> =
-        MutableStateFlow(com.company.rentafield.data.models.LocalUser())
+    val localUser: StateFlow<com.company.rentafield.domain.models.LocalUser> =
+        MutableStateFlow(com.company.rentafield.domain.models.LocalUser())
 
 
-    private val _filteredPlaygrounds: MutableStateFlow<DataState<com.company.rentafield.data.models.search.FilteredPlaygroundResponse>> =
+    private val _filteredPlaygrounds: MutableStateFlow<DataState<com.company.rentafield.domain.models.search.FilteredPlaygroundResponse>> =
         MutableStateFlow(DataState.Empty)
-    val filteredPlaygrounds: StateFlow<DataState<com.company.rentafield.data.models.search.FilteredPlaygroundResponse>> =
+    val filteredPlaygrounds: StateFlow<DataState<com.company.rentafield.domain.models.search.FilteredPlaygroundResponse>> =
         _filteredPlaygrounds
 
     val uiState: StateFlow<BrowseUiState> = MutableStateFlow(

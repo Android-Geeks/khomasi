@@ -29,6 +29,6 @@ class RemoteUserPlaygroundImpl(
 
     override suspend fun addPlaygroundReview(
         token: String,
-        playgroundReview: com.company.rentafield.data.models.booking.PlaygroundReviewRequest
+        playgroundReview: com.company.rentafield.domain.models.booking.PlaygroundReviewRequest
     ) = handleApi { retrofitService.addPlaygroundReview(token, playgroundReview) }
 }

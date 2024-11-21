@@ -8,6 +8,6 @@ class UpdateUserUseCase(
     suspend operator fun invoke(
         token: String,
         userId: String,
-        user: com.company.rentafield.data.models.user.UserUpdateData
+        user: com.company.rentafield.domain.models.user.UserUpdateData
     ) = remoteUserRepository.updateUser(token, userId, user)
 }

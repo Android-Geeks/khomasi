@@ -22,13 +22,13 @@ class MyBookingViewModel @Inject constructor(
     val uiState: StateFlow<MyBookingUiState> = _uiState
 
     private val _reviewState =
-        MutableStateFlow<DataState<com.company.rentafield.data.models.MessageResponse>>(DataState.Empty)
-    val reviewState: StateFlow<DataState<com.company.rentafield.data.models.MessageResponse>> =
+        MutableStateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>>(DataState.Empty)
+    val reviewState: StateFlow<DataState<com.company.rentafield.domain.models.MessageResponse>> =
         _reviewState
 
-    private val _myBookingState: MutableStateFlow<DataState<com.company.rentafield.data.models.booking.MyBookingsResponse>> =
+    private val _myBookingState: MutableStateFlow<DataState<com.company.rentafield.domain.models.booking.MyBookingsResponse>> =
         MutableStateFlow(DataState.Empty)
-    val myBookingState: StateFlow<DataState<com.company.rentafield.data.models.booking.MyBookingsResponse>> =
+    val myBookingState: StateFlow<DataState<com.company.rentafield.domain.models.booking.MyBookingsResponse>> =
         _myBookingState
 
     fun myBookingPlaygrounds() {
@@ -78,7 +78,7 @@ class MyBookingViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(comment = comment)
     }
 
-    fun onClickPlayground(bookingDetails: com.company.rentafield.data.models.booking.BookingDetails) {
+    fun onClickPlayground(bookingDetails: com.company.rentafield.domain.models.booking.BookingDetails) {
         _uiState.value = _uiState.value.copy(
             cancelBookingDetails = bookingDetails
         )
@@ -89,7 +89,7 @@ class MyBookingViewModel @Inject constructor(
             localUserUseCases.getLocalUser().collect { userData ->
                 remoteUserUseCase.playgroundReviewUseCase(
                     token = "Bearer ${userData.token}",
-                    playgroundReview = com.company.rentafield.data.models.booking.PlaygroundReviewRequest(
+                    playgroundReview = com.company.rentafield.domain.models.booking.PlaygroundReviewRequest(
                         playgroundId = _uiState.value.playgroundId,
                         userId = userData.userID ?: "",
                         comment = _uiState.value.comment,

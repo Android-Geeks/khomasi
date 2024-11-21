@@ -33,9 +33,9 @@ class ProfileViewModel @Inject constructor(
         localUserUseCases.getLocalUser()
             .stateIn(
                 viewModelScope, SharingStarted.WhileSubscribed(5_000),
-                com.company.rentafield.data.models.LocalUser()
+                com.company.rentafield.domain.models.LocalUser()
             )
-    val localUser: StateFlow<com.company.rentafield.data.models.LocalUser> = _localUser
+    val localUser: StateFlow<com.company.rentafield.domain.models.LocalUser> = _localUser
 
     private val _profileUiState: MutableStateFlow<ProfileUiState> =
         MutableStateFlow(ProfileUiState())
@@ -59,11 +59,11 @@ class ProfileViewModel @Inject constructor(
     fun onLogout() {
         viewModelScope.launch(IO) {
             appEntryUseCases.saveIsLogin(false)
-            localUserUseCases.saveLocalUser(com.company.rentafield.data.models.LocalUser())
+            localUserUseCases.saveLocalUser(com.company.rentafield.domain.models.LocalUser())
         }
     }
 
-    fun updateUserData(user: com.company.rentafield.data.models.LocalUser) {
+    fun updateUserData(user: com.company.rentafield.domain.models.LocalUser) {
         _profileUiState.value = _profileUiState.value.copy(
             user = user,
         )
@@ -118,7 +118,7 @@ class ProfileViewModel @Inject constructor(
             remoteUserUseCase.updateUserUseCase(
                 token = "Bearer ${_profileUiState.value.user.token ?: ""}",
                 userId = _profileUiState.value.user.userID ?: "",
-                user = com.company.rentafield.data.models.user.UserUpdateData(
+                user = com.company.rentafield.domain.models.user.UserUpdateData(
                     id = _profileUiState.value.user.userID ?: "",
                     firstName = _profileUiState.value.user.firstName ?: "",
                     lastName = _profileUiState.value.user.lastName ?: "",
@@ -154,7 +154,7 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch(IO) {
             remoteUserUseCase.sendFeedbackUseCase(
                 token = "Bearer ${_localUser.value.token ?: ""}",
-                feedback = com.company.rentafield.data.models.user.FeedbackRequest(
+                feedback = com.company.rentafield.domain.models.user.FeedbackRequest(
                     userId = _localUser.value.userID ?: "",
                     content = _profileUiState.value.feedback,
                     category = _profileUiState.value.feedbackCategory.name

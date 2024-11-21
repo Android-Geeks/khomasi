@@ -15,14 +15,14 @@ class MockRegisterViewModel : ViewModel() {
     private val _uiState = mutableStateOf(RegisterUiState())
     val uiState: State<RegisterUiState> = _uiState
 
-    private val _registerState: MutableStateFlow<DataState<com.company.rentafield.data.models.auth.UserRegisterResponse>> =
+    private val _registerState: MutableStateFlow<DataState<com.company.rentafield.domain.models.auth.UserRegisterResponse>> =
         MutableStateFlow(DataState.Empty)
-    val registerState: StateFlow<DataState<com.company.rentafield.data.models.auth.UserRegisterResponse>> =
+    val registerState: StateFlow<DataState<com.company.rentafield.domain.models.auth.UserRegisterResponse>> =
         _registerState
 
     fun onRegister() {
         viewModelScope.launch {
-            val userRegisterData = com.company.rentafield.data.models.auth.UserRegisterData(
+            val userRegisterData = com.company.rentafield.domain.models.auth.UserRegisterData(
                 firstName = _uiState.value.firstName,
                 lastName = _uiState.value.lastName,
                 email = _uiState.value.email,
@@ -33,11 +33,12 @@ class MockRegisterViewModel : ViewModel() {
                 longitude = 0.0,
                 latitude = 0.0
             )
-            val userRegisterResponse = com.company.rentafield.data.models.auth.UserRegisterResponse(
-                email = userRegisterData.email,
-                code = 1234,
-                message = " "
-            )
+            val userRegisterResponse =
+                com.company.rentafield.domain.models.auth.UserRegisterResponse(
+                    email = userRegisterData.email,
+                    code = 1234,
+                    message = " "
+                )
             _registerState.value = DataState.Success(userRegisterResponse)
 
         }

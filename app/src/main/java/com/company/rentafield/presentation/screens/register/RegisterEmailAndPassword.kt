@@ -60,7 +60,7 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 fun RegisterEmailAndPassword(
     uiState: StateFlow<RegisterUiState>,
-    registerState: StateFlow<DataState<com.company.rentafield.data.models.auth.UserRegisterResponse>>,
+    registerState: StateFlow<DataState<com.company.rentafield.domain.models.auth.UserRegisterResponse>>,
     onRegister: () -> Unit,
     onDoneClick: () -> Unit,
     isValidEmailAndPassword: (String, String) -> Boolean,

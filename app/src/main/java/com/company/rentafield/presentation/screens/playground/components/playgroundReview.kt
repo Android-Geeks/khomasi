@@ -32,11 +32,11 @@ import com.company.rentafield.presentation.theme.RentafieldTheme
 
 @Composable
 fun PlaygroundReviews(
-    reviews: DataState<com.company.rentafield.data.models.playground.PlaygroundReviewsResponse>,
+    reviews: DataState<com.company.rentafield.domain.models.playground.PlaygroundReviewsResponse>,
     onClickCancel: () -> Unit
 ) {
     val reviewsList = remember {
-        mutableStateOf<List<com.company.rentafield.data.models.playground.Review>>(emptyList())
+        mutableStateOf<List<com.company.rentafield.domain.models.playground.Review>>(emptyList())
     }
 
     LaunchedEffect(reviews) {
