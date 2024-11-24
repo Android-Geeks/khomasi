@@ -21,11 +21,6 @@ interface RemoteUserPlayground {
         playgroundId: Int
     ): Flow<DataState<com.company.rentafield.domain.models.MessageResponse>>
 
-    suspend fun getSpecificPlayground(
-        token: String,
-        id: Int
-    ): Flow<DataState<com.company.rentafield.domain.models.playground.PlaygroundScreenResponse>>
-
     suspend fun addPlaygroundReview(
         token: String,
         playgroundReview: com.company.rentafield.domain.models.booking.PlaygroundReviewRequest

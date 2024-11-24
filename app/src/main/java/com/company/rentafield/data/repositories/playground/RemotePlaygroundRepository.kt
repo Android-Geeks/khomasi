@@ -1,6 +1,7 @@
 package com.company.rentafield.data.repositories.playground
 
 import com.company.rentafield.domain.DataState
+import com.company.rentafield.domain.models.playground.PlaygroundScreenResponse
 import kotlinx.coroutines.flow.Flow
 
 interface RemotePlaygroundRepository {
@@ -33,4 +34,9 @@ interface RemotePlaygroundRepository {
         token: String,
         body: com.company.rentafield.domain.models.playground.BookingRequest
     ): Flow<DataState<com.company.rentafield.domain.models.booking.BookingPlaygroundResponse>>
+
+    suspend fun getSpecificPlayground(
+        token: String,
+        id: Int
+    ): Flow<DataState<PlaygroundScreenResponse>>
 }

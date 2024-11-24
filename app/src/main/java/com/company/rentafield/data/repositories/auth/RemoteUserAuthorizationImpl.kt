@@ -1,24 +1,24 @@
 package com.company.rentafield.data.repositories.auth
 
-import com.company.rentafield.data.services.RetrofitService
+import com.company.rentafield.data.services.RetrofitAuthService
 import com.company.rentafield.utils.handleApi
 
 class RemoteUserAuthorizationImpl(
-    private val retrofitService: RetrofitService
+    private val retrofitAuthService: RetrofitAuthService
 ) : RemoteUserAuthorization {
 
     override suspend fun registerUser(userRegisterData: com.company.rentafield.domain.models.auth.UserRegisterData) =
-        handleApi { retrofitService.registerUser(userRegisterData) }
+        handleApi { retrofitAuthService.registerUser(userRegisterData) }
 
     override suspend fun loginUser(email: String, password: String) =
-        handleApi { retrofitService.loginUser(email, password) }
+        handleApi { retrofitAuthService.loginUser(email, password) }
 
     override suspend fun getVerificationCode(email: String) =
-        handleApi { retrofitService.getVerificationCode(email) }
+        handleApi { retrofitAuthService.getVerificationCode(email) }
 
     override suspend fun confirmEmail(email: String, code: String) =
-        handleApi { retrofitService.confirmEmail(email, code) }
+        handleApi { retrofitAuthService.confirmEmail(email, code) }
 
     override suspend fun recoverAccount(email: String, code: String, newPassword: String) =
-        handleApi { retrofitService.recoverAccount(email, code, newPassword) }
+        handleApi { retrofitAuthService.recoverAccount(email, code, newPassword) }
 }

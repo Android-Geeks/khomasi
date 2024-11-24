@@ -1,25 +1,25 @@
 package com.company.rentafield.data.repositories.playground
 
-import com.company.rentafield.data.services.RetrofitService
+import com.company.rentafield.data.services.RetrofitPlaygroundService
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.utils.handleApi
 import kotlinx.coroutines.flow.Flow
 
 class RemotePlaygroundRepositoryImpl(
-    private val retrofitService: RetrofitService
+    private val retrofitPlaygroundService: RetrofitPlaygroundService
 ) : RemotePlaygroundRepository {
 
     override suspend fun getPlaygrounds(token: String, userId: String) =
-        handleApi { retrofitService.getPlaygrounds(token, userId) }
+        handleApi { retrofitPlaygroundService.getPlaygrounds(token, userId) }
 
     override suspend fun getFreeSlots(token: String, id: Int, dayDiff: Int) =
-        handleApi { retrofitService.getOpenSlots(token, id, dayDiff) }
+        handleApi { retrofitPlaygroundService.getOpenSlots(token, id, dayDiff) }
 
     override suspend fun getPlaygroundReviews(
         token: String,
         id: Int
     ): Flow<DataState<com.company.rentafield.domain.models.playground.PlaygroundReviewsResponse>> =
-        handleApi { retrofitService.getPlaygroundReviews(token, id) }
+        handleApi { retrofitPlaygroundService.getPlaygroundReviews(token, id) }
 
     override suspend fun getFilteredPlaygrounds(
         token: String,
@@ -30,7 +30,7 @@ class RemotePlaygroundRepositoryImpl(
         duration: Double
     ): Flow<DataState<com.company.rentafield.domain.models.search.FilteredPlaygroundResponse>> =
         handleApi {
-            retrofitService.getFilteredPlaygrounds(
+            retrofitPlaygroundService.getFilteredPlaygrounds(
                 token,
                 id,
                 price,
@@ -45,7 +45,10 @@ class RemotePlaygroundRepositoryImpl(
         body: com.company.rentafield.domain.models.playground.BookingRequest
     ): Flow<DataState<com.company.rentafield.domain.models.booking.BookingPlaygroundResponse>> =
         handleApi {
-            retrofitService.bookingPlayground(token, body)
+            retrofitPlaygroundService.bookingPlayground(token, body)
         }
+
+    override suspend fun getSpecificPlayground(token: String, id: Int) =
+        handleApi { retrofitPlaygroundService.getSpecificPlayground(token, id) }
 }
 
