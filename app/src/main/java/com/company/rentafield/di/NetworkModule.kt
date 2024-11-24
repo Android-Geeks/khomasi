@@ -14,7 +14,10 @@ import com.company.rentafield.data.repositories.remoteuser.playground.RemoteUser
 import com.company.rentafield.data.repositories.remoteuser.user.RemoteUserRepository
 import com.company.rentafield.data.repositories.remoteuser.user.RemoteUserRepositoryImpl
 import com.company.rentafield.data.services.RetrofitAiService
-import com.company.rentafield.data.services.RetrofitService
+import com.company.rentafield.data.services.RetrofitAiStatusService
+import com.company.rentafield.data.services.RetrofitAuthService
+import com.company.rentafield.data.services.RetrofitPlaygroundService
+import com.company.rentafield.data.services.RetrofitUserService
 import com.company.rentafield.domain.usecases.ai.AiUseCases
 import com.company.rentafield.domain.usecases.ai.GetAiResultsUseCase
 import com.company.rentafield.domain.usecases.ai.GetUploadStatusUseCase
@@ -76,66 +79,86 @@ object NetworkModule {
         }.build()
     }
 
-    @Provides
-    @Singleton
-    fun provideService(okHttpClient: OkHttpClient): RetrofitService {
+    private inline fun <reified T> provideRetrofitService(
+        okHttpClient: OkHttpClient,
+        baseUrl: String
+    ): T {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(baseUrl)
             .client(okHttpClient)
             .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
             .build()
-            .create(RetrofitService::class.java)
+            .create(T::class.java)
     }
 
     @Provides
     @Singleton
     fun provideAiService(okHttpClient: OkHttpClient): RetrofitAiService {
-        return Retrofit.Builder()
-            .baseUrl(AI_URL)
-            .client(okHttpClient)
-            .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
-            .build()
-            .create(RetrofitAiService::class.java)
+        return provideRetrofitService(okHttpClient, AI_URL)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofitAuthService(okHttpClient: OkHttpClient): RetrofitAuthService {
+        return provideRetrofitService(okHttpClient, BASE_URL)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofitUserService(okHttpClient: OkHttpClient): RetrofitUserService {
+        return provideRetrofitService(okHttpClient, BASE_URL)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofitPlaygroundService(okHttpClient: OkHttpClient): RetrofitPlaygroundService {
+        return provideRetrofitService(okHttpClient, BASE_URL)
+    }
+
+    @Provides
+    @Singleton
+    fun provideRetrofitAiStatusService(okHttpClient: OkHttpClient): RetrofitAiStatusService {
+        return provideRetrofitService(okHttpClient, BASE_URL)
     }
 
     @Provides
     @Singleton
     fun provideRemoteUserAuthorization(
-        retrofitService: RetrofitService
-    ): RemoteUserAuthorization = RemoteUserAuthorizationImpl(retrofitService)
+        retrofitAuthService: RetrofitAuthService
+    ): RemoteUserAuthorization = RemoteUserAuthorizationImpl(retrofitAuthService)
 
     @Provides
     @Singleton
     fun provideRemoteUserRepository(
-        retrofitService: RetrofitService
-    ): RemoteUserRepository = RemoteUserRepositoryImpl(retrofitService)
+        retrofitUserService: RetrofitUserService
+    ): RemoteUserRepository = RemoteUserRepositoryImpl(retrofitUserService)
 
     @Provides
     @Singleton
     fun provideRemoteUserBooking(
-        retrofitService: RetrofitService
-    ): RemoteUserBooking = RemoteUserBookingImpl(retrofitService)
+        retrofitUserService: RetrofitUserService
+    ): RemoteUserBooking = RemoteUserBookingImpl(retrofitUserService)
 
     @Provides
     @Singleton
     fun provideRemoteUserPlayground(
-        retrofitService: RetrofitService
-    ): RemoteUserPlayground = RemoteUserPlaygroundImpl(retrofitService)
+        retrofitUserService: RetrofitUserService
+    ): RemoteUserPlayground = RemoteUserPlaygroundImpl(retrofitUserService)
 
     @Provides
     @Singleton
     fun provideRemotePlaygroundRepository(
-        retrofitService: RetrofitService
-    ): RemotePlaygroundRepository = RemotePlaygroundRepositoryImpl(retrofitService)
+        retrofitPlaygroundService: RetrofitPlaygroundService
+    ): RemotePlaygroundRepository = RemotePlaygroundRepositoryImpl(retrofitPlaygroundService)
 
     @Provides
     @Singleton
     fun provideRemoteAiRepository(
         retrofitAiService: RetrofitAiService,
-        retrofitService: RetrofitService
+        retrofitUserService: RetrofitUserService
     ): RemoteAiRepository = RemoteAiRepositoryImpl(
         retrofitAiService,
-        retrofitService
+        retrofitUserService
     )
 
     @Provides
@@ -163,7 +186,7 @@ object NetworkModule {
         deleteUserFavoriteUseCase = DeleteUserFavouriteUseCase(remoteUserPlayground),
         getUserBookingsUseCase = GetUserBookingsUseCase(remoteUserBooking),
         userFavouriteUseCase = UserFavouriteUseCase(remoteUserPlayground),
-        getSpecificPlaygroundUseCase = GetSpecificPlaygroundUseCase(remoteUserPlayground),
+        getSpecificPlaygroundUseCase = GetSpecificPlaygroundUseCase(remotePlaygroundsRepository),
         updateProfilePictureUseCase = UpdateProfilePictureUseCase(remoteUserRepository),
         updateUserUseCase = UpdateUserUseCase(remoteUserRepository),
         sendFeedbackUseCase = SendFeedbackUseCase(remoteUserRepository),
