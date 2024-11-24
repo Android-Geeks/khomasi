@@ -1,6 +1,6 @@
 package com.company.rentafield.data.repositories.playground
 
-import com.company.rentafield.data.datasource.RetrofitService
+import com.company.rentafield.data.services.RetrofitService
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.utils.handleApi
 import kotlinx.coroutines.flow.Flow

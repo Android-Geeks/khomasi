@@ -1,8 +1,6 @@
 package com.company.rentafield.di
 
 
-import com.company.rentafield.data.datasource.RetrofitAiService
-import com.company.rentafield.data.datasource.RetrofitService
 import com.company.rentafield.data.repositories.ai.RemoteAiRepository
 import com.company.rentafield.data.repositories.ai.RemoteAiRepositoryImpl
 import com.company.rentafield.data.repositories.auth.RemoteUserAuthorization
@@ -15,6 +13,8 @@ import com.company.rentafield.data.repositories.remoteuser.playground.RemoteUser
 import com.company.rentafield.data.repositories.remoteuser.playground.RemoteUserPlaygroundImpl
 import com.company.rentafield.data.repositories.remoteuser.user.RemoteUserRepository
 import com.company.rentafield.data.repositories.remoteuser.user.RemoteUserRepositoryImpl
+import com.company.rentafield.data.services.RetrofitAiService
+import com.company.rentafield.data.services.RetrofitService
 import com.company.rentafield.domain.usecases.ai.AiUseCases
 import com.company.rentafield.domain.usecases.ai.GetAiResultsUseCase
 import com.company.rentafield.domain.usecases.ai.GetUploadStatusUseCase

@@ -1,6 +1,6 @@
 package com.company.rentafield.data.repositories.remoteuser.playground
 
-import com.company.rentafield.data.datasource.RetrofitService
+import com.company.rentafield.data.services.RetrofitService
 import com.company.rentafield.utils.handleApi
 
 class RemoteUserPlaygroundImpl(
