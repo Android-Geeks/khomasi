@@ -14,7 +14,6 @@ import com.company.rentafield.data.repositories.remoteuser.playground.RemoteUser
 import com.company.rentafield.data.repositories.remoteuser.user.RemoteUserRepository
 import com.company.rentafield.data.repositories.remoteuser.user.RemoteUserRepositoryImpl
 import com.company.rentafield.data.services.RetrofitAiService
-import com.company.rentafield.data.services.RetrofitAiStatusService
 import com.company.rentafield.data.services.RetrofitAuthService
 import com.company.rentafield.data.services.RetrofitPlaygroundService
 import com.company.rentafield.data.services.RetrofitUserService
@@ -115,11 +114,6 @@ object NetworkModule {
         return provideRetrofitService(okHttpClient, BASE_URL)
     }
 
-    @Provides
-    @Singleton
-    fun provideRetrofitAiStatusService(okHttpClient: OkHttpClient): RetrofitAiStatusService {
-        return provideRetrofitService(okHttpClient, BASE_URL)
-    }
 
     @Provides
     @Singleton
