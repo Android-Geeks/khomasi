@@ -1,34 +1,31 @@
 package com.company.rentafield.data.repositories.remoteuser.playground
 
-import com.company.rentafield.data.datasource.RetrofitService
+import com.company.rentafield.data.services.RetrofitUserService
 import com.company.rentafield.utils.handleApi
 
 class RemoteUserPlaygroundImpl(
-    private val retrofitService: RetrofitService
+    private val retrofitUserService: RetrofitUserService
 ) : RemoteUserPlayground {
-
-    override suspend fun getSpecificPlayground(token: String, id: Int) =
-        handleApi { retrofitService.getSpecificPlayground(token, id) }
 
     override suspend fun deleteUserFavouritePlayground(
         token: String,
         userId: String,
         playgroundId: Int
     ) =
-        handleApi { retrofitService.deleteUserFavouritePlayground(token, userId, playgroundId) }
+        handleApi { retrofitUserService.deleteUserFavouritePlayground(token, userId, playgroundId) }
 
     override suspend fun getUserFavouritePlaygrounds(token: String, userId: String) =
-        handleApi { retrofitService.getUserFavouritePlaygrounds(token, userId) }
+        handleApi { retrofitUserService.getUserFavouritePlaygrounds(token, userId) }
 
     override suspend fun addUserFavouritePlayground(
         token: String,
         userId: String,
         playgroundId: Int
     ) =
-        handleApi { retrofitService.addUserFavouritePlayground(token, userId, playgroundId) }
+        handleApi { retrofitUserService.addUserFavouritePlayground(token, userId, playgroundId) }
 
     override suspend fun addPlaygroundReview(
         token: String,
         playgroundReview: com.company.rentafield.domain.models.booking.PlaygroundReviewRequest
-    ) = handleApi { retrofitService.addPlaygroundReview(token, playgroundReview) }
+    ) = handleApi { retrofitUserService.addPlaygroundReview(token, playgroundReview) }
 }

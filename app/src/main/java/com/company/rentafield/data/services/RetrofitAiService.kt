@@ -1,4 +1,4 @@
-package com.company.rentafield.data.datasource
+package com.company.rentafield.data.services
 
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
