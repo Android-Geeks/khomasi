@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
-import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCase
+import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyBookingViewModel @Inject constructor(
-    private val remoteUserUseCase: RemoteUserUseCase,
+    private val remoteUserUseCases: RemoteUserUseCases,
     private val localUserUseCases: LocalUserUseCases,
 ) : ViewModel() {
 
@@ -34,7 +34,7 @@ class MyBookingViewModel @Inject constructor(
     fun myBookingPlaygrounds() {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect { userData ->
-                remoteUserUseCase.getUserBookingsUseCase(
+                remoteUserUseCases.getUserBookingsUseCase(
                     "Bearer ${userData.token}",
                     userData.userID ?: ""
                 ).collect { dataState ->
@@ -59,7 +59,7 @@ class MyBookingViewModel @Inject constructor(
     fun cancelBooking(bookingId: Int) {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect { userData ->
-                remoteUserUseCase.cancelBookingUseCase(
+                remoteUserUseCases.cancelBookingUseCase(
                     "Bearer ${userData.token}",
                     bookingId,
                     true
@@ -87,7 +87,7 @@ class MyBookingViewModel @Inject constructor(
     fun playgroundReview() {
         viewModelScope.launch {
             localUserUseCases.getLocalUser().collect { userData ->
-                remoteUserUseCase.playgroundReviewUseCase(
+                remoteUserUseCases.playgroundReviewUseCase(
                     token = "Bearer ${userData.token}",
                     playgroundReview = com.company.rentafield.domain.models.booking.PlaygroundReviewRequest(
                         playgroundId = _uiState.value.playgroundId,

@@ -7,8 +7,9 @@ import com.company.rentafield.utils.handleApi
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import javax.inject.Inject
 
-class RemoteAiRepositoryImpl(
+class RemoteAiRepositoryImpl @Inject constructor(
     private val retrofitAiService: RetrofitAiService,
     private val retrofitUserService: RetrofitUserService
 ) : RemoteAiRepository {

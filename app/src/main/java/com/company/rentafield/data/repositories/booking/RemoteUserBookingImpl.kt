@@ -2,8 +2,9 @@ package com.company.rentafield.data.repositories.booking
 
 import com.company.rentafield.data.services.RetrofitUserService
 import com.company.rentafield.utils.handleApi
+import javax.inject.Inject
 
-class RemoteUserBookingImpl(
+class RemoteUserBookingImpl @Inject constructor(
     private val retrofitUserService: RetrofitUserService
 ) : RemoteUserBooking {
 

@@ -4,8 +4,9 @@ import com.company.rentafield.data.services.RetrofitPlaygroundService
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.utils.handleApi
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class RemotePlaygroundRepositoryImpl(
+class RemotePlaygroundRepositoryImpl @Inject constructor(
     private val retrofitPlaygroundService: RetrofitPlaygroundService
 ) : RemotePlaygroundRepository {
 

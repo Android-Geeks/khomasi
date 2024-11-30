@@ -3,7 +3,7 @@ package com.company.rentafield.data.repositories.remoteuser.playground
 import com.company.rentafield.domain.DataState
 import kotlinx.coroutines.flow.Flow
 
-interface RemoteUserPlayground {
+interface RemotePlaygroundUserRepository {
     suspend fun deleteUserFavouritePlayground(
         token: String,
         userId: String,

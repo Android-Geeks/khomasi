@@ -4,14 +4,14 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
-import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCase
+import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class PlaygroundCardViewModel @Inject constructor(
-    private val remoteUserUseCase: RemoteUserUseCase,
+    private val remoteUserUseCases: RemoteUserUseCases,
     private val localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
 
@@ -21,7 +21,7 @@ class PlaygroundCardViewModel @Inject constructor(
             localUserUseCases.getLocalUser().collect { localUser ->
                 Log.d("PlaygroundCardViewModel", "updateUserFavourite: $isFavourite")
                 if (isFavourite) {
-                    remoteUserUseCase.deleteUserFavoriteUseCase(
+                    remoteUserUseCases.deleteUserFavoriteUseCase(
                         token = "Bearer ${localUser.token ?: ""}",
                         userId = localUser.userID ?: "",
                         playgroundId = playgroundId,
@@ -29,7 +29,7 @@ class PlaygroundCardViewModel @Inject constructor(
                         Log.d("PlaygroundCardViewModel", "updateUserFavourite: $it")
                     }
                 } else {
-                    remoteUserUseCase.userFavouriteUseCase(
+                    remoteUserUseCases.userFavouriteUseCase(
                         token = "Bearer ${localUser.token ?: ""}",
                         userId = localUser.userID ?: "",
                         playgroundId = playgroundId,

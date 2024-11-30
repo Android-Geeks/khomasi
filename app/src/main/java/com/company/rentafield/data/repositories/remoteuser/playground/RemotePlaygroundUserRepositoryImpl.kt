@@ -2,10 +2,11 @@ package com.company.rentafield.data.repositories.remoteuser.playground
 
 import com.company.rentafield.data.services.RetrofitUserService
 import com.company.rentafield.utils.handleApi
+import javax.inject.Inject
 
-class RemoteUserPlaygroundImpl(
+class RemotePlaygroundUserRepositoryImpl @Inject constructor(
     private val retrofitUserService: RetrofitUserService
-) : RemoteUserPlayground {
+) : RemotePlaygroundUserRepository {
 
     override suspend fun deleteUserFavouritePlayground(
         token: String,
