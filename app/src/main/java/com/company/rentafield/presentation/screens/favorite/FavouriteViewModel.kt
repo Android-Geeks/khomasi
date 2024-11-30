@@ -3,7 +3,7 @@ package com.company.rentafield.presentation.screens.favorite
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
-import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCase
+import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCases
 import com.company.rentafield.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class FavouriteViewModel @Inject constructor(
-    private val remoteUserUseCase: RemoteUserUseCase,
+    private val remoteUserUseCases: RemoteUserUseCases,
     private val localUserUseCases: LocalUserUseCases
 ) : BaseViewModel<FavouriteReducer.State, FavouriteReducer.Event, FavouriteReducer.Effect>(
     initialState = FavouriteReducer.initial(),
@@ -21,7 +21,7 @@ class FavouriteViewModel @Inject constructor(
         viewModelScope.launch {
             sendEvent(FavouriteReducer.Event.UpdateIsLoading(true))
             localUserUseCases.getLocalUser().collect { localUser ->
-                remoteUserUseCase.getUserFavoritePlaygroundsUseCase(
+                remoteUserUseCases.getUserFavoritePlaygroundsUseCase(
                     "Bearer ${localUser.token}",
                     localUser.userID ?: ""
                 ).collect { dataState ->

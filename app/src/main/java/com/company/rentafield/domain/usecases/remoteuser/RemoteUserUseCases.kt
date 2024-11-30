@@ -1,6 +1,6 @@
 package com.company.rentafield.domain.usecases.remoteuser
 
-data class RemoteUserUseCase(
+data class RemoteUserUseCases(
     val getPlaygroundsUseCase: GetPlaygroundsUseCase,
     val getUserBookingsUseCase: GetUserBookingsUseCase,
     val deleteUserFavoriteUseCase: DeleteUserFavouriteUseCase,

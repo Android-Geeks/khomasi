@@ -1,11 +1,11 @@
 package com.company.rentafield.domain.usecases.remoteuser
 
-import com.company.rentafield.data.repositories.remoteuser.playground.RemoteUserPlayground
+import com.company.rentafield.data.repositories.remoteuser.playground.RemotePlaygroundUserRepository
 
 class GetUserFavoritePlaygroundsUseCase(
-    private val remoteUserPlayground: RemoteUserPlayground
+    private val remotePlaygroundUserRepository: RemotePlaygroundUserRepository
 
 ) {
     suspend operator fun invoke(token: String, userId: String) =
-        remoteUserPlayground.getUserFavouritePlaygrounds(token, userId)
+        remotePlaygroundUserRepository.getUserFavouritePlaygrounds(token, userId)
 }

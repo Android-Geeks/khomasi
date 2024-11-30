@@ -6,7 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.usecases.entry.AppEntryUseCases
 import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
-import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCase
+import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCases
 import com.company.rentafield.utils.toBase64String
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -24,7 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val remoteUserUseCase: RemoteUserUseCase,
+    private val remoteUserUseCases: RemoteUserUseCases,
     private val localUserUseCases: LocalUserUseCases,
     private val appEntryUseCases: AppEntryUseCases
 ) : ViewModel() {
@@ -43,7 +43,7 @@ class ProfileViewModel @Inject constructor(
 
     fun getProfileImage() {
         viewModelScope.launch {
-            remoteUserUseCase.getProfileImageUseCase(
+            remoteUserUseCases.getProfileImageUseCase(
                 token = "Bearer ${_profileUiState.value.user.token ?: ""}",
                 userId = _profileUiState.value.user.userID ?: ""
             ).collect {
@@ -115,7 +115,7 @@ class ProfileViewModel @Inject constructor(
 
             localUserUseCases.saveLocalUser(_profileUiState.value.user)
 
-            remoteUserUseCase.updateUserUseCase(
+            remoteUserUseCases.updateUserUseCase(
                 token = "Bearer ${_profileUiState.value.user.token ?: ""}",
                 userId = _profileUiState.value.user.userID ?: "",
                 user = com.company.rentafield.domain.models.user.UserUpdateData(
@@ -137,7 +137,7 @@ class ProfileViewModel @Inject constructor(
                 val body =
                     MultipartBody.Part.createFormData("profilePicture", imageFile.name, requestFile)
 
-                remoteUserUseCase.updateProfilePictureUseCase(
+                remoteUserUseCases.updateProfilePictureUseCase(
                     token = "Bearer ${_profileUiState.value.user.token ?: ""}",
                     userId = _profileUiState.value.user.userID ?: "",
                     image = body
@@ -152,7 +152,7 @@ class ProfileViewModel @Inject constructor(
 
     fun sendFeedback() {
         viewModelScope.launch(IO) {
-            remoteUserUseCase.sendFeedbackUseCase(
+            remoteUserUseCases.sendFeedbackUseCase(
                 token = "Bearer ${_localUser.value.token ?: ""}",
                 feedback = com.company.rentafield.domain.models.user.FeedbackRequest(
                     userId = _localUser.value.userID ?: "",

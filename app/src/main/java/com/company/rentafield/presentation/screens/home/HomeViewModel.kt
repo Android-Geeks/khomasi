@@ -4,7 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.usecases.ai.AiUseCases
 import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
-import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCase
+import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCases
 import com.company.rentafield.presentation.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
@@ -13,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val remoteUserUseCase: RemoteUserUseCase,
+    private val remoteUserUseCases: RemoteUserUseCases,
     private val localUserUseCases: LocalUserUseCases,
     private val aiUseCases: AiUseCases
 ) : BaseViewModel<HomeReducer.State, HomeReducer.Event, HomeReducer.Effect>(
@@ -33,7 +33,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun fetchUserData() {
-        remoteUserUseCase.userDataUseCase(
+        remoteUserUseCases.userDataUseCase(
             "Bearer ${state.value.localUser.token}", state.value.localUser.userID ?: ""
         ).collect { stat ->
             when (stat) {
@@ -66,7 +66,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun fetchPlaygrounds() {
-        remoteUserUseCase.getPlaygroundsUseCase(
+        remoteUserUseCases.getPlaygroundsUseCase(
             "Bearer ${state.value.localUser.token}", state.value.localUser.userID ?: ""
         ).collect { state ->
             when (state) {
@@ -105,7 +105,7 @@ class HomeViewModel @Inject constructor(
     }
 
     private suspend fun fetchProfileImage() {
-        remoteUserUseCase.getProfileImageUseCase(
+        remoteUserUseCases.getProfileImageUseCase(
             "Bearer ${state.value.localUser.token}", state.value.localUser.userID ?: ""
         ).collect { state ->
             when (state) {

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
-import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCase
+import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val remoteUserUseCase: RemoteUserUseCase,
+    private val remoteUserUseCases: RemoteUserUseCases,
     private val localUserUseCases: LocalUserUseCases
 ) : ViewModel() {
 
@@ -115,7 +115,7 @@ class SearchViewModel @Inject constructor(
 
     private fun getPlaygrounds(token: String, userId: String) {
         viewModelScope.launch {
-            remoteUserUseCase.getPlaygroundsUseCase("Bearer $token", userId).collect {
+            remoteUserUseCases.getPlaygroundsUseCase("Bearer $token", userId).collect {
                 _playgrounds.value = it
             }
         }
