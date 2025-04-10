@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.company.rentafield.domain.DataState
 import com.company.rentafield.domain.usecases.localuser.LocalUserUseCases
 import com.company.rentafield.domain.usecases.remoteuser.RemotePlaygroundUseCase
-import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCase
+import com.company.rentafield.domain.usecases.remoteuser.RemoteUserUseCases
 import com.company.rentafield.presentation.screens.booking.model.PaymentUiState
 import com.company.rentafield.utils.parseTimestamp
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookingViewModel @Inject constructor(
-    private val remoteUserUseCase: RemoteUserUseCase,
+    private val remoteUserUseCases: RemoteUserUseCases,
     private val remotePlaygroundUseCase: RemotePlaygroundUseCase,
     private val localUserUseCases: LocalUserUseCases,
 ) : ViewModel() {
@@ -54,7 +54,7 @@ class BookingViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val localUser = localUserUseCases.getLocalUser().first()
 
-            remoteUserUseCase.getSpecificPlaygroundUseCase(
+            remoteUserUseCases.getSpecificPlaygroundUseCase(
                 token = "Bearer ${localUser.token}", id = playgroundId
             ).collect { playgroundRes ->
                 _playgroundState.value = playgroundRes

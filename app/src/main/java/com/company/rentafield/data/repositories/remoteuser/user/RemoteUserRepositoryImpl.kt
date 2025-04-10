@@ -6,8 +6,9 @@ import com.company.rentafield.domain.DataState
 import com.company.rentafield.utils.handleApi
 import kotlinx.coroutines.flow.Flow
 import okhttp3.MultipartBody
+import javax.inject.Inject
 
-class RemoteUserRepositoryImpl(
+class RemoteUserRepositoryImpl @Inject constructor(
     private val retrofitUserService: RetrofitUserService
 ) : RemoteUserRepository {
 
